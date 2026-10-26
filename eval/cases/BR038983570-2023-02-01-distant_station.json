@@ -1,0 +1,359 @@
+{
+  "id": "BR038983570-2023-02-01-distant_station",
+  "category": "distant_station",
+  "policy": {
+    "policy_id": "POL-EVAL-BR038983570-2023-02-01",
+    "group_name": "Maceio evaluation cooperative (synthetic)",
+    "crop": "maize",
+    "synthetic": true,
+    "farm_lat": -9.517,
+    "farm_lon": -35.783,
+    "ref_station_id": "BR038983570",
+    "window_start": "2023-02-01",
+    "window_end": "2023-02-28",
+    "trigger_mm": 25.2,
+    "exit_mm": 10.8,
+    "sum_insured_ngn": 100000,
+    "borderline_band_mm": 5,
+    "min_coverage": 0.95,
+    "max_station_km": 20,
+    "power_table": "power_br038983570_daily"
+  },
+  "station": {
+    "source": "ghcn",
+    "id": "BR038983570",
+    "lat": -8.517,
+    "lon": -35.783,
+    "window": {
+      "start": "2023-02-01",
+      "end": "2023-02-28"
+    },
+    "days": [
+      {
+        "date": "2023-02-01",
+        "mm": 14,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-02",
+        "mm": 9.9,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-03",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-04",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-05",
+        "mm": 0.5,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-06",
+        "mm": 0.5,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-07",
+        "mm": 3,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-08",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-09",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-10",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-12",
+        "mm": 0.5,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-13",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-14",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-15",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-16",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-17",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-18",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-19",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-20",
+        "mm": 0.5,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-21",
+        "mm": 0.3,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-22",
+        "mm": 0.3,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-23",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-24",
+        "mm": 0.3,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-25",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-26",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-27",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2023-02-28",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      }
+    ],
+    "fetched_sql": []
+  },
+  "satellite": {
+    "source": "power",
+    "id": "power_br038983570_daily",
+    "lat": -9.517,
+    "lon": -35.783,
+    "window": {
+      "start": "2023-02-01",
+      "end": "2023-02-28"
+    },
+    "days": [
+      {
+        "date": "2023-02-01",
+        "mm": 2.86
+      },
+      {
+        "date": "2023-02-02",
+        "mm": 0
+      },
+      {
+        "date": "2023-02-03",
+        "mm": 0
+      },
+      {
+        "date": "2023-02-04",
+        "mm": 0
+      },
+      {
+        "date": "2023-02-05",
+        "mm": 0.27
+      },
+      {
+        "date": "2023-02-06",
+        "mm": 7.14
+      },
+      {
+        "date": "2023-02-07",
+        "mm": 0
+      },
+      {
+        "date": "2023-02-08",
+        "mm": 0
+      },
+      {
+        "date": "2023-02-09",
+        "mm": 0
+      },
+      {
+        "date": "2023-02-10",
+        "mm": 0
+      },
+      {
+        "date": "2023-02-11",
+        "mm": 0
+      },
+      {
+        "date": "2023-02-12",
+        "mm": 0
+      },
+      {
+        "date": "2023-02-13",
+        "mm": 0
+      },
+      {
+        "date": "2023-02-14",
+        "mm": 0
+      },
+      {
+        "date": "2023-02-15",
+        "mm": 0.62
+      },
+      {
+        "date": "2023-02-16",
+        "mm": 0
+      },
+      {
+        "date": "2023-02-17",
+        "mm": 0
+      },
+      {
+        "date": "2023-02-18",
+        "mm": 0
+      },
+      {
+        "date": "2023-02-19",
+        "mm": 1.6
+      },
+      {
+        "date": "2023-02-20",
+        "mm": 13.1
+      },
+      {
+        "date": "2023-02-21",
+        "mm": 3.45
+      },
+      {
+        "date": "2023-02-22",
+        "mm": 2.23
+      },
+      {
+        "date": "2023-02-23",
+        "mm": 0.32
+      },
+      {
+        "date": "2023-02-24",
+        "mm": 0
+      },
+      {
+        "date": "2023-02-25",
+        "mm": 0
+      },
+      {
+        "date": "2023-02-26",
+        "mm": 0
+      },
+      {
+        "date": "2023-02-27",
+        "mm": 0
+      },
+      {
+        "date": "2023-02-28",
+        "mm": 0
+      }
+    ],
+    "fetched_sql": []
+  },
+  "label": {
+    "payout_due": false,
+    "expected_inspection": true,
+    "basis": "Known distant_station fault injected into BR038983570-2023-02-01; the original clean-window contractual amount is unchanged. At least95% real NOAA coverage and complete independent POWER record; clean contractual station total 29.80 mm. Trigger/exit calibrated from prior complete years using scripts/climatology.ts."
+  },
+  "provenance": {
+    "station_url": "https://noaa-ghcn-pds.s3.amazonaws.com/csv/by_station/BR038983570.csv",
+    "satellite_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=IMERG_PRECTOT&community=AG&longitude=-35.783&latitude=-9.517&start=20010101&end=20241231&format=JSON&time-standard=UTC",
+    "fault": "distant_station"
+  }
+}

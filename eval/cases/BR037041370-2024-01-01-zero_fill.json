@@ -1,0 +1,399 @@
+{
+  "id": "BR037041370-2024-01-01-zero_fill",
+  "category": "zero_fill",
+  "policy": {
+    "policy_id": "POL-EVAL-BR037041370-2024-01-01",
+    "group_name": "Teresina evaluation cooperative (synthetic)",
+    "crop": "maize",
+    "synthetic": true,
+    "farm_lat": -5.05,
+    "farm_lon": -42.817,
+    "ref_station_id": "BR037041370",
+    "window_start": "2024-01-01",
+    "window_end": "2024-01-31",
+    "trigger_mm": 150.8,
+    "exit_mm": 64.6,
+    "sum_insured_ngn": 100000,
+    "borderline_band_mm": 5,
+    "min_coverage": 0.95,
+    "max_station_km": 20,
+    "power_table": "power_br037041370_daily"
+  },
+  "station": {
+    "source": "ghcn",
+    "id": "BR037041370",
+    "lat": -5.05,
+    "lon": -42.817,
+    "window": {
+      "start": "2024-01-01",
+      "end": "2024-01-31"
+    },
+    "days": [
+      {
+        "date": "2024-01-01",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-02",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-03",
+        "mm": 7.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-04",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-05",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-06",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-07",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-08",
+        "mm": 7.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-09",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-10",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-11",
+        "mm": 7.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-12",
+        "mm": 11.9,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-13",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-14",
+        "mm": 17,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-15",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-16",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-17",
+        "mm": 2,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-18",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-19",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-20",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-21",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-22",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-23",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-24",
+        "mm": 16,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-25",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-26",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-27",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-28",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-29",
+        "mm": 3,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-30",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-01-31",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      }
+    ],
+    "fetched_sql": []
+  },
+  "satellite": {
+    "source": "power",
+    "id": "power_br037041370_daily",
+    "lat": -5.05,
+    "lon": -42.817,
+    "window": {
+      "start": "2024-01-01",
+      "end": "2024-01-31"
+    },
+    "days": [
+      {
+        "date": "2024-01-01",
+        "mm": 6.8
+      },
+      {
+        "date": "2024-01-02",
+        "mm": 0.34
+      },
+      {
+        "date": "2024-01-03",
+        "mm": 15.56
+      },
+      {
+        "date": "2024-01-04",
+        "mm": 0.02
+      },
+      {
+        "date": "2024-01-05",
+        "mm": 1.33
+      },
+      {
+        "date": "2024-01-06",
+        "mm": 0
+      },
+      {
+        "date": "2024-01-07",
+        "mm": 2.7
+      },
+      {
+        "date": "2024-01-08",
+        "mm": 0
+      },
+      {
+        "date": "2024-01-09",
+        "mm": 0
+      },
+      {
+        "date": "2024-01-10",
+        "mm": 0
+      },
+      {
+        "date": "2024-01-11",
+        "mm": 16.09
+      },
+      {
+        "date": "2024-01-12",
+        "mm": 19.65
+      },
+      {
+        "date": "2024-01-13",
+        "mm": 3.18
+      },
+      {
+        "date": "2024-01-14",
+        "mm": 8.2
+      },
+      {
+        "date": "2024-01-15",
+        "mm": 2.13
+      },
+      {
+        "date": "2024-01-16",
+        "mm": 1.28
+      },
+      {
+        "date": "2024-01-17",
+        "mm": 0
+      },
+      {
+        "date": "2024-01-18",
+        "mm": 0
+      },
+      {
+        "date": "2024-01-19",
+        "mm": 0
+      },
+      {
+        "date": "2024-01-20",
+        "mm": 0
+      },
+      {
+        "date": "2024-01-21",
+        "mm": 0
+      },
+      {
+        "date": "2024-01-22",
+        "mm": 0
+      },
+      {
+        "date": "2024-01-23",
+        "mm": 7
+      },
+      {
+        "date": "2024-01-24",
+        "mm": 9.85
+      },
+      {
+        "date": "2024-01-25",
+        "mm": 0
+      },
+      {
+        "date": "2024-01-26",
+        "mm": 0.17
+      },
+      {
+        "date": "2024-01-27",
+        "mm": 0.44
+      },
+      {
+        "date": "2024-01-28",
+        "mm": 24.97
+      },
+      {
+        "date": "2024-01-29",
+        "mm": 13.69
+      },
+      {
+        "date": "2024-01-30",
+        "mm": 0.62
+      },
+      {
+        "date": "2024-01-31",
+        "mm": 0
+      }
+    ],
+    "fetched_sql": []
+  },
+  "label": {
+    "payout_due": true,
+    "expected_inspection": true,
+    "basis": "Known zero_fill fault injected into BR037041370-2024-01-01; the original clean-window contractual amount is unchanged. At least95% real NOAA coverage and complete independent POWER record; clean contractual station total 109.30 mm. Trigger/exit calibrated from prior complete years using scripts/climatology.ts."
+  },
+  "provenance": {
+    "station_url": "https://noaa-ghcn-pds.s3.amazonaws.com/csv/by_station/BR037041370.csv",
+    "satellite_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=IMERG_PRECTOT&community=AG&longitude=-42.817&latitude=-5.05&start=20010101&end=20241231&format=JSON&time-standard=UTC",
+    "fault": "zero_fill"
+  }
+}

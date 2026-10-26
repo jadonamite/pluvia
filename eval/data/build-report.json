@@ -1,0 +1,22 @@
+{
+  "cases": 45,
+  "excluded": [
+    {
+      "station": "BR00E3-0070",
+      "reason": "No complete, agreeing monthly window with eight complete prior calibration windows found."
+    },
+    {
+      "station": "TZM00063870",
+      "reason": "No complete, agreeing monthly window with eight complete prior calibration windows found."
+    },
+    {
+      "station": "KE000063820",
+      "reason": "No complete, agreeing monthly window with eight complete prior calibration windows found."
+    },
+    {
+      "station": "TZ000063756",
+      "reason": "No complete, agreeing monthly window with eight complete prior calibration windows found."
+    }
+  ],
+  "selection": "Prescribed candidate stations only; at least95% calendar-month station coverage, complete satellite coverage; source gap <=40% and <=50mm; most recent qualifying month. Fault positions deterministic every third day. No gate output used for labels."
+}

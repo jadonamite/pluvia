@@ -1,0 +1,286 @@
+{
+  "id": "NIM00065201-2024-07-01-real_sparse",
+  "category": "real_sparse",
+  "policy": {
+    "crop": "maize",
+    "synthetic": true,
+    "farm_lat": 6.577,
+    "farm_lon": 3.321,
+    "ref_station_id": "NIM00065201",
+    "window_start": "2024-07-01",
+    "window_end": "2024-07-31",
+    "trigger_mm": 144.4,
+    "exit_mm": 61.9,
+    "borderline_band_mm": 5,
+    "min_coverage": 0.8,
+    "max_station_km": 20,
+    "power_table": "power_lagos_2024_daily",
+    "policy_id": "POL-EVAL-LAG-2024",
+    "group_name": "Ikorodu Maize Cooperative (synthetic)",
+    "sum_insured_ngn": 2500000
+  },
+  "station": {
+    "source": "ghcn",
+    "id": "NIM00065201",
+    "lat": 6.577,
+    "lon": 3.321,
+    "window": {
+      "start": "2024-07-01",
+      "end": "2024-07-31"
+    },
+    "days": [
+      {
+        "date": "2024-07-01",
+        "mm": 3,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-07-02",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-07-03",
+        "mm": 156,
+        "m_flag": "B",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-07-09",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-07-10",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-07-11",
+        "mm": 5.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-07-12",
+        "mm": 25.9,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-07-13",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-07-20",
+        "mm": 0,
+        "m_flag": "B",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-07-21",
+        "mm": 5.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-07-22",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-07-25",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-07-27",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-07-28",
+        "mm": 1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-07-29",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      }
+    ],
+    "fetched_sql": []
+  },
+  "satellite": {
+    "source": "power",
+    "id": "power_lagos_2024_daily",
+    "lat": 6.577,
+    "lon": 3.321,
+    "window": {
+      "start": "2024-07-01",
+      "end": "2024-07-31"
+    },
+    "days": [
+      {
+        "date": "2024-07-01",
+        "mm": 3.49
+      },
+      {
+        "date": "2024-07-02",
+        "mm": 32.98
+      },
+      {
+        "date": "2024-07-03",
+        "mm": 68.94
+      },
+      {
+        "date": "2024-07-04",
+        "mm": 5.79
+      },
+      {
+        "date": "2024-07-05",
+        "mm": 2.27
+      },
+      {
+        "date": "2024-07-06",
+        "mm": 7.76
+      },
+      {
+        "date": "2024-07-07",
+        "mm": 6.4
+      },
+      {
+        "date": "2024-07-08",
+        "mm": 22.04
+      },
+      {
+        "date": "2024-07-09",
+        "mm": 3.09
+      },
+      {
+        "date": "2024-07-10",
+        "mm": 21.93
+      },
+      {
+        "date": "2024-07-11",
+        "mm": 11.93
+      },
+      {
+        "date": "2024-07-12",
+        "mm": 6.64
+      },
+      {
+        "date": "2024-07-13",
+        "mm": 0.93
+      },
+      {
+        "date": "2024-07-14",
+        "mm": 2.05
+      },
+      {
+        "date": "2024-07-15",
+        "mm": 1.02
+      },
+      {
+        "date": "2024-07-16",
+        "mm": 1.16
+      },
+      {
+        "date": "2024-07-17",
+        "mm": 0.71
+      },
+      {
+        "date": "2024-07-18",
+        "mm": 0
+      },
+      {
+        "date": "2024-07-19",
+        "mm": 0.51
+      },
+      {
+        "date": "2024-07-20",
+        "mm": 0.63
+      },
+      {
+        "date": "2024-07-21",
+        "mm": 0.12
+      },
+      {
+        "date": "2024-07-22",
+        "mm": 1.16
+      },
+      {
+        "date": "2024-07-23",
+        "mm": 0
+      },
+      {
+        "date": "2024-07-24",
+        "mm": 0.26
+      },
+      {
+        "date": "2024-07-25",
+        "mm": 0.5
+      },
+      {
+        "date": "2024-07-26",
+        "mm": 0
+      },
+      {
+        "date": "2024-07-27",
+        "mm": 0.76
+      },
+      {
+        "date": "2024-07-28",
+        "mm": 1.76
+      },
+      {
+        "date": "2024-07-29",
+        "mm": 0.86
+      },
+      {
+        "date": "2024-07-30",
+        "mm": 0.22
+      },
+      {
+        "date": "2024-07-31",
+        "mm": 0
+      }
+    ],
+    "fetched_sql": []
+  },
+  "label": {
+    "payout_due": null,
+    "expected_inspection": true,
+    "basis": "Real archive coverage: 15 of 31 valid days. Farm loss and correct payout are unknown; label derives from independently counted missing observations, not a system decision."
+  },
+  "provenance": {
+    "station_url": "https://noaa-ghcn-pds.s3.amazonaws.com/csv/by_station/NIM00065201.csv",
+    "satellite_url": "data/snapshots/power/lagos_prior.json"
+  }
+}

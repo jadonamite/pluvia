@@ -1,0 +1,392 @@
+{
+  "id": "BR038983570-2024-05-01-distant_station",
+  "category": "distant_station",
+  "policy": {
+    "policy_id": "POL-EVAL-BR038983570-2024-05-01",
+    "group_name": "Maceio evaluation cooperative (synthetic)",
+    "crop": "maize",
+    "synthetic": true,
+    "farm_lat": -9.517,
+    "farm_lon": -35.783,
+    "ref_station_id": "BR038983570",
+    "window_start": "2024-05-01",
+    "window_end": "2024-05-31",
+    "trigger_mm": 103.6,
+    "exit_mm": 44.4,
+    "sum_insured_ngn": 100000,
+    "borderline_band_mm": 5,
+    "min_coverage": 0.95,
+    "max_station_km": 20,
+    "power_table": "power_br038983570_daily"
+  },
+  "station": {
+    "source": "ghcn",
+    "id": "BR038983570",
+    "lat": -8.517,
+    "lon": -35.783,
+    "window": {
+      "start": "2024-05-01",
+      "end": "2024-05-31"
+    },
+    "days": [
+      {
+        "date": "2024-05-02",
+        "mm": 6.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-03",
+        "mm": 8.9,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-04",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-05",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-06",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-07",
+        "mm": 51.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-08",
+        "mm": 7.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-09",
+        "mm": 8.9,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-10",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-11",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-12",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-13",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-14",
+        "mm": 2,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-15",
+        "mm": 9.9,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-16",
+        "mm": 0.3,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-17",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-18",
+        "mm": 4.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-19",
+        "mm": 22.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-20",
+        "mm": 23.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-21",
+        "mm": 13,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-22",
+        "mm": 3,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-23",
+        "mm": 6.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-24",
+        "mm": 4.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-25",
+        "mm": 7.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-26",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-27",
+        "mm": 0.8,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-28",
+        "mm": 7.9,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-29",
+        "mm": 7.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-30",
+        "mm": 7.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2024-05-31",
+        "mm": 0.3,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      }
+    ],
+    "fetched_sql": []
+  },
+  "satellite": {
+    "source": "power",
+    "id": "power_br038983570_daily",
+    "lat": -9.517,
+    "lon": -35.783,
+    "window": {
+      "start": "2024-05-01",
+      "end": "2024-05-31"
+    },
+    "days": [
+      {
+        "date": "2024-05-01",
+        "mm": 0
+      },
+      {
+        "date": "2024-05-02",
+        "mm": 4.56
+      },
+      {
+        "date": "2024-05-03",
+        "mm": 0
+      },
+      {
+        "date": "2024-05-04",
+        "mm": 0
+      },
+      {
+        "date": "2024-05-05",
+        "mm": 0
+      },
+      {
+        "date": "2024-05-06",
+        "mm": 49.3
+      },
+      {
+        "date": "2024-05-07",
+        "mm": 115.7
+      },
+      {
+        "date": "2024-05-08",
+        "mm": 4.68
+      },
+      {
+        "date": "2024-05-09",
+        "mm": 2.81
+      },
+      {
+        "date": "2024-05-10",
+        "mm": 0
+      },
+      {
+        "date": "2024-05-11",
+        "mm": 0.13
+      },
+      {
+        "date": "2024-05-12",
+        "mm": 0
+      },
+      {
+        "date": "2024-05-13",
+        "mm": 0.47
+      },
+      {
+        "date": "2024-05-14",
+        "mm": 0
+      },
+      {
+        "date": "2024-05-15",
+        "mm": 0
+      },
+      {
+        "date": "2024-05-16",
+        "mm": 0
+      },
+      {
+        "date": "2024-05-17",
+        "mm": 0.31
+      },
+      {
+        "date": "2024-05-18",
+        "mm": 7.67
+      },
+      {
+        "date": "2024-05-19",
+        "mm": 32.01
+      },
+      {
+        "date": "2024-05-20",
+        "mm": 0
+      },
+      {
+        "date": "2024-05-21",
+        "mm": 0.64
+      },
+      {
+        "date": "2024-05-22",
+        "mm": 0
+      },
+      {
+        "date": "2024-05-23",
+        "mm": 0.11
+      },
+      {
+        "date": "2024-05-24",
+        "mm": 0
+      },
+      {
+        "date": "2024-05-25",
+        "mm": 0.2
+      },
+      {
+        "date": "2024-05-26",
+        "mm": 0
+      },
+      {
+        "date": "2024-05-27",
+        "mm": 0.4
+      },
+      {
+        "date": "2024-05-28",
+        "mm": 0
+      },
+      {
+        "date": "2024-05-29",
+        "mm": 0.13
+      },
+      {
+        "date": "2024-05-30",
+        "mm": 0
+      },
+      {
+        "date": "2024-05-31",
+        "mm": 1.05
+      }
+    ],
+    "fetched_sql": []
+  },
+  "label": {
+    "payout_due": false,
+    "expected_inspection": true,
+    "basis": "Known distant_station fault injected into BR038983570-2024-05-01; the original clean-window contractual amount is unchanged. At least95% real NOAA coverage and complete independent POWER record; clean contractual station total 200.10 mm. Trigger/exit calibrated from prior complete years using scripts/climatology.ts."
+  },
+  "provenance": {
+    "station_url": "https://noaa-ghcn-pds.s3.amazonaws.com/csv/by_station/BR038983570.csv",
+    "satellite_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=IMERG_PRECTOT&community=AG&longitude=-35.783&latitude=-9.517&start=20010101&end=20241231&format=JSON&time-standard=UTC",
+    "fault": "distant_station"
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "downloaded_at": "2026-10-26T01:57:52.772Z",
+  "additional_sources": [
+    {
+      "id": "NIM00065201",
+      "station_url": "https://noaa-ghcn-pds.s3.amazonaws.com/csv/by_station/NIM00065201.csv",
+      "satellite_snapshots": [
+        "data/snapshots/power/lagos_2025.json",
+        "data/snapshots/power/lagos_prior.json"
+      ]
+    },
+    {
+      "id": "TZ000063862",
+      "station_url": "https://noaa-ghcn-pds.s3.amazonaws.com/csv/by_station/TZ000063862.csv",
+      "dated_fixture": "eval/data/dodoma-zero-run.json",
+      "prior_satellite_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=IMERG_PRECTOT&community=AG&longitude=35.767&latitude=-6.167&start=20010101&end=20031231&format=JSON&time-standard=UTC"
+    }
+  ],
+  "fault_positions": "Deterministic every-third-day positions; truncation removes seven trailing days; dates shift forward three days; distance fault shifts latitude one degree. No random draws or learned thresholds.",
+  "stations": [
+    {
+      "id": "BR038983570",
+      "name": "Maceio",
+      "lat": -9.517,
+      "lon": -35.783,
+      "station_url": "https://noaa-ghcn-pds.s3.amazonaws.com/csv/by_station/BR038983570.csv",
+      "satellite_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=IMERG_PRECTOT&community=AG&longitude=-35.783&latitude=-9.517&start=20010101&end=20241231&format=JSON&time-standard=UTC",
+      "station_sha256": "794ef5550a39d0499c825b752ffe2479e8f566e192e709cb58927b607e8e12e3",
+      "satellite_sha256": "fb235c1bceb7945443436b09245dd3cd2be6abc9c987e5728b94d2a0ea05d2a9"
+    },
+    {
+      "id": "BR00E3-0070",
+      "name": "Sao Paulo",
+      "lat": -23.5,
+      "lon": -46.617,
+      "station_url": "https://noaa-ghcn-pds.s3.amazonaws.com/csv/by_station/BR00E3-0070.csv",
+      "satellite_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=IMERG_PRECTOT&community=AG&longitude=-46.617&latitude=-23.5&start=20010101&end=20241231&format=JSON&time-standard=UTC",
+      "station_sha256": "1ecbcde6d6d07a0c14744cef08e049e1bc0119f021d1cc9c58da03a384eae9c9",
+      "satellite_sha256": "99b0889d6fe32aecbb36c0b8510775e6fca31a8e298807501b7c4e1af984fa9b"
+    },
+    {
+      "id": "BR037041370",
+      "name": "Teresina",
+      "lat": -5.05,
+      "lon": -42.817,
+      "station_url": "https://noaa-ghcn-pds.s3.amazonaws.com/csv/by_station/BR037041370.csv",
+      "satellite_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=IMERG_PRECTOT&community=AG&longitude=-42.817&latitude=-5.05&start=20010101&end=20241231&format=JSON&time-standard=UTC",
+      "station_sha256": "74c2a3dbbc2877ae760175a1392185489c519c8879c8b31b5c90eb70d5d1fe67",
+      "satellite_sha256": "f1e07006efb37aa0a1b2c24413972aba890f2902491cd024dbdc080418984705"
+    },
+    {
+      "id": "KE000063661",
+      "name": "Kitale",
+      "lat": 1.016,
+      "lon": 35,
+      "station_url": "https://noaa-ghcn-pds.s3.amazonaws.com/csv/by_station/KE000063661.csv",
+      "satellite_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=IMERG_PRECTOT&community=AG&longitude=35&latitude=1.016&start=20010101&end=20241231&format=JSON&time-standard=UTC",
+      "station_sha256": "d3b656ec50cf4d6d05159b4e1ee0eca196fcbfc3203b4112b2f91ca72b8e5242",
+      "satellite_sha256": "df11ba0a3f9815211d8d2026a8fd405cf71982422ee26d320cc3f8320ee40c8d"
+    },
+    {
+      "id": "TZ000063894",
+      "name": "Dar es Salaam",
+      "lat": -6.867,
+      "lon": 39.2,
+      "station_url": "https://noaa-ghcn-pds.s3.amazonaws.com/csv/by_station/TZ000063894.csv",
+      "satellite_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=IMERG_PRECTOT&community=AG&longitude=39.2&latitude=-6.867&start=20010101&end=20241231&format=JSON&time-standard=UTC",
+      "station_sha256": "c7c851657dd576c8fbf0eca558345a540dcc7f8228293bf9c629a5fec027c5d4",
+      "satellite_sha256": "6a95b5c3977dd3d097e910f09ee55aabc30e43fc7f27dc05e15171deb24021b0"
+    },
+    {
+      "id": "TZM00063870",
+      "name": "Zanzibar",
+      "lat": -6.222,
+      "lon": 39.225,
+      "station_url": "https://noaa-ghcn-pds.s3.amazonaws.com/csv/by_station/TZM00063870.csv",
+      "satellite_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=IMERG_PRECTOT&community=AG&longitude=39.225&latitude=-6.222&start=20010101&end=20241231&format=JSON&time-standard=UTC",
+      "station_sha256": "49c27f6b282a20865f83e35cc635ec61535aefe33e5284df8369e4d845a0fd8d",
+      "satellite_sha256": "b849e63f6a05b1d33cb34e40c2379837d4f598db0cf7fbd5635921f7d0475e56"
+    },
+    {
+      "id": "KE000063820",
+      "name": "Mombasa",
+      "lat": -4.033,
+      "lon": 39.617,
+      "station_url": "https://noaa-ghcn-pds.s3.amazonaws.com/csv/by_station/KE000063820.csv",
+      "satellite_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=IMERG_PRECTOT&community=AG&longitude=39.617&latitude=-4.033&start=20010101&end=20241231&format=JSON&time-standard=UTC",
+      "station_sha256": "467ed28cbc834e5f02fa637b4f1fa2fa3330c72534b1fb38e7eda42c7ceb5c5f",
+      "satellite_sha256": "bb8c2fd4e8d39aeec864dd4c0d17373e0a883978d595bc1cb921e6e121352187"
+    },
+    {
+      "id": "TZ000063756",
+      "name": "Mwanza",
+      "lat": -2.467,
+      "lon": 32.917,
+      "station_url": "https://noaa-ghcn-pds.s3.amazonaws.com/csv/by_station/TZ000063756.csv",
+      "satellite_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=IMERG_PRECTOT&community=AG&longitude=32.917&latitude=-2.467&start=20010101&end=20241231&format=JSON&time-standard=UTC",
+      "station_sha256": "482896ecdeb10488fb339a92c30401b4f96d609f037d85c9c33dc266282dd1ce",
+      "satellite_sha256": "8d52482be2ea7fed0b08a1af839d4eed482853278eeb2a58a335a17691ab72a7"
+    }
+  ]
+}
