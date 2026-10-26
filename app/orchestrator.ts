@@ -18,6 +18,12 @@ import { createTrace } from './trace.js';
 import { PluviaMemory } from './memory/pluviaMemory.js';
 import { DataAgent } from './agents/data.js';
 import { modelJson } from './agents/modelJson.js';
+import { policyTerms, probeSummaries, summarizeExtra } from './agents/modelPayloads.js';
+
+// Short-output agents: the Auditor explanation is capped at 120 words and the
+// Reporter summary at a few sentences. The Nightshift adapter's 800-token floor still applies.
+const AUDITOR_MAX_TOKENS = 800;
+const REPORTER_MAX_TOKENS = 800;
 import { runProbes } from './probes/index.js';
 import { policyGate } from './agents/policyGate.js';
 import { normalizeSeries, policyWindow, windowDates } from './domain/series.js';
@@ -376,16 +382,18 @@ export class Orchestrator {
       if (!Number.isFinite(requestedRounds)) throw new Error('Invalid extra-round budget');
       const maxRounds = Math.max(0, Math.min(2, Math.floor(requestedRounds)));
       let extra: unknown[] = [];
+      let extraKind: string | undefined;
 
       // Iterative audit and adjudication loop.
       for (;;) {
         probes = runProbes({ policy, ...evidence });
         event('AuditorAgent', 'deterministic_probes', 'ok', { probes });
 
+        const findings = probeSummaries(probes);
         const explanation = await modelJson(
           model,
           'AuditorAgent',
-          { probes, contract: { explanation: 'string citing probe IDs' } },
+          { probes: findings, contract: { explanation: 'string citing probe IDs' } },
           z.object({
             explanation: z
               .string()
@@ -397,7 +405,8 @@ export class Orchestrator {
               .map(p => `${p.id}: ${p.evidence}`)
               .join(' '),
           }),
-          signal
+          signal,
+          AUDITOR_MAX_TOKENS
         );
         event('AuditorAgent', 'explain_findings');
 
@@ -405,11 +414,11 @@ export class Orchestrator {
           model,
           'AdjudicatorAgent',
           {
-            policy,
-            probes,
-            explanation,
+            policy: policyTerms(policy),
+            probes: findings,
+            explanation: explanation.explanation,
             recalled,
-            extra,
+            extra: extraKind ? summarizeExtra(extraKind, extra, policy) : null,
             round: rounds,
             contract: {
               action: 'decide|request_evidence',
@@ -433,8 +442,9 @@ export class Orchestrator {
         if (proposal.action !== 'request_evidence' || rounds >= maxRounds) break;
         rounds++;
 
+        extraKind = proposal.kind ?? 'prior_years';
         try {
-          extra = await data.fetchExtra(policy, proposal.kind ?? 'prior_years', signal);
+          extra = await data.fetchExtra(policy, extraKind, signal);
           event('DataAgent', 'extra_evidence', 'ok', {
             kind: proposal.kind,
             row_count: extra.length,
@@ -533,7 +543,15 @@ export class Orchestrator {
         model,
         'ReporterAgent',
         {
-          decision,
+          decision: {
+            verdict: decision.verdict,
+            index_source: decision.index_source,
+            human_review_required: decision.human_review_required,
+            reasons: decision.reasons,
+            inspection_question: decision.inspection_question,
+            counter_case: decision.counter_case,
+            probes: probeSummaries(decision.probes),
+          },
           contract: {
             summary:
               'plain prose without numbers; final financial terms come from the decision',
@@ -545,7 +563,8 @@ export class Orchestrator {
         () => ({
           summary: 'Review the attached evidence and policy decision.',
         }),
-        signal
+        signal,
+        REPORTER_MAX_TOKENS
       );
       event('ReporterAgent', 'report_decision');
 
