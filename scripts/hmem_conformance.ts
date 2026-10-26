@@ -1,11 +1,10 @@
 import { spawn } from 'node:child_process';
-import { mkdirSync, openSync, closeSync } from 'node:fs';
+import { mkdirSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 mkdirSync(path.join(root, 'logs'), { recursive: true });
-const output = openSync(path.join(root, 'logs/hmem-conformance.txt'), 'w', 0o600);
 const runner = spawn(
   process.execPath,
   [
@@ -18,21 +17,28 @@ const runner = spawn(
     stdio: ['ignore', 'pipe', 'pipe']
   }
 );
-const { writeSync } = await import('node:fs');
+let scorecard = '';
 runner.stdout.on('data', (chunk) => {
   process.stdout.write(chunk);
-  writeSync(output, chunk);
+  scorecard += chunk;
 });
 runner.stderr.on('data', (chunk) => {
   process.stderr.write(chunk);
-  writeSync(output, chunk);
+  scorecard += chunk;
 });
+// Writes the scorecard with repository-relative paths so it can be committed as evidence.
+const save = () => {
+  const relative = scorecard
+    .split(root + path.sep)
+    .join('')
+    .replace(/app\\memory\\index\.ts/g, 'app/memory/index.ts');
+  writeFileSync(path.join(root, 'logs/hmem-conformance.txt'), relative);
+};
 runner.once('error', () => {
-  closeSync(output);
   process.stderr.write('The conformance runner could not start. Run npm ci first.\n');
   process.exitCode = 1;
 });
 runner.once('exit', (code) => {
-  closeSync(output);
+  save();
   process.exitCode = code ?? 1;
 });

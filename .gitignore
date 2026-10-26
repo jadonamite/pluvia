@@ -19,6 +19,7 @@ build/
 logs/*
 !logs/.gitkeep
 !logs/trace-demo-*.jsonl
+!logs/hmem-conformance.txt
 
 # not the product
 workbench/
