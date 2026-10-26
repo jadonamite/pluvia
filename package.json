@@ -1,0 +1,31 @@
+{
+  "name": "pluvia",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=20.19"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "start": "tsx run.ts serve",
+    "claim": "tsx run.ts claim",
+    "eval": "tsx run.ts eval",
+    "conformance": "tsx scripts/hmem_conformance.ts",
+    "check": "npm run typecheck && npm test && npm run conformance"
+  },
+  "dependencies": {
+    "@duckdb/node-api": "^1.4.1-r.1",
+    "@hono/node-server": "^1.19.0",
+    "hono": "^4.10.0",
+    "openai": "^6.7.0",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.18.0",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0",
+    "vitest": "^4.1.12"
+  }
+}

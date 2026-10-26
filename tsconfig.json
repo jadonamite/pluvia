@@ -1,0 +1,24 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "types": [
+      "node"
+    ],
+    "outDir": "dist",
+    "allowImportingTsExtensions": true
+  },
+  "include": [
+    "app/**/*.ts",
+    "tests/**/*.ts",
+    "run.ts",
+    "eval/**/*.ts",
+    "scripts/**/*.ts"
+  ]
+}
