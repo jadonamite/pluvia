@@ -46,7 +46,7 @@ export async function createRuntime(options: RuntimeOptions = {}): Promise<Runti
   let query: QueryAdapter;
   let model: ModelAdapter;
 
-  if (config.sampleMode) {
+  if (config.sample.zetaris || config.sample.nightshift) {
     // Dynamic import paths keep optional adapters out of static module resolution.
     const queryPath = './adapters/zetarisSample.js';
     const modelPath = './adapters/nightshiftSample.js';
@@ -86,8 +86,12 @@ export async function createRuntime(options: RuntimeOptions = {}): Promise<Runti
     }) => ModelAdapter;
 
     try {
-      query = new Query({ dataDirectory: options.dataDirectory });
-      model = new Model({ dataDirectory: options.dataDirectory });
+      query = config.sample.zetaris
+        ? new Query({ dataDirectory: options.dataDirectory })
+        : new ZetarisAdapter(config.zetaris);
+      model = config.sample.nightshift
+        ? new Model({ dataDirectory: options.dataDirectory })
+        : new NightshiftAdapter(config.nightshift);
     } catch {
       throw new RuntimeError(
         'sample_adapter_initialization',
@@ -106,6 +110,7 @@ export async function createRuntime(options: RuntimeOptions = {}): Promise<Runti
     model,
     sampleMode: config.sampleMode,
     sampleModeReason: config.sampleModeReason,
+    sample: config.sample,
     logDirectory: options.logDirectory,
     stdout: options.stdout,
   });

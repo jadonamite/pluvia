@@ -15,9 +15,30 @@ describe('configuration mode selection', () => {
     }
     expect(() => loadConfig({ SAMPLE_MODE: 'invalid' })).toThrow('SAMPLE_MODE');
   });
-  it('keeps partial credentials in live mode', () => {
-    expect(loadConfig({ ZETARIS_API_KEY: 'test-key' }).sampleMode).toBe(false);
-    expect(loadConfig({ METERLESS_RUNTIME_TOKEN: 'test-token' }).sampleMode).toBe(false);
+  it('runs each service live or cached on its own credential', () => {
+    const zetarisOnly = loadConfig({ ZETARIS_API_KEY: 'test-key' });
+    expect(zetarisOnly.sample).toEqual({ zetaris: false, nightshift: true });
+    expect(zetarisOnly.sampleMode).toBe(true);
+    expect(zetarisOnly.sampleModeReason).toContain('Zetaris is live');
+
+    const nightshiftOnly = loadConfig({ METERLESS_RUNTIME_TOKEN: 'test-token' });
+    expect(nightshiftOnly.sample).toEqual({ zetaris: true, nightshift: false });
+    expect(nightshiftOnly.sampleMode).toBe(true);
+    expect(nightshiftOnly.sampleModeReason).toContain('Nightshift is live');
+
+    const both = loadConfig({ ZETARIS_API_KEY: 'k', METERLESS_RUNTIME_TOKEN: 't' });
+    expect(both.sample).toEqual({ zetaris: false, nightshift: false });
+    expect(both.sampleMode).toBe(false);
+  });
+  it('lets an explicit flag override both services', () => {
+    expect(loadConfig({ ZETARIS_API_KEY: 'k', SAMPLE_MODE: 'true' }).sample).toEqual({
+      zetaris: true,
+      nightshift: true
+    });
+    expect(loadConfig({ SAMPLE_MODE: 'false' }).sample).toEqual({
+      zetaris: false,
+      nightshift: false
+    });
   });
   it('exposes the automatic choice in health', async () => {
     const config = loadConfig({});

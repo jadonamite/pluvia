@@ -82,6 +82,7 @@ export class Orchestrator {
       memory?: PluviaMemory;
       sampleMode?: boolean;
       sampleModeReason?: string;
+      sample?: { zetaris: boolean; nightshift: boolean };
       logDirectory?: string;
       stdout?: boolean;
     }
@@ -108,16 +109,21 @@ export class Orchestrator {
     nightshift: AdapterHealth;
     sample_mode: boolean;
     sample_mode_reason: string;
+    sample_data: boolean;
+    sample_model: boolean;
   }> {
     const [zetaris, nightshift] = await Promise.all([
       this.dependencies.query.health(),
       this.dependencies.model.health(),
     ]);
+    const overall = Boolean(this.dependencies.sampleMode);
     return {
       zetaris,
       nightshift,
-      sample_mode: Boolean(this.dependencies.sampleMode),
+      sample_mode: overall,
       sample_mode_reason: this.dependencies.sampleModeReason ?? 'Mode supplied by runtime caller',
+      sample_data: this.dependencies.sample?.zetaris ?? overall,
+      sample_model: this.dependencies.sample?.nightshift ?? overall,
     };
   }
 
