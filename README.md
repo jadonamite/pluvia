@@ -12,7 +12,7 @@ Requires Node 20.19 or later. From a clean source checkout:
 npm ci && npm start
 ```
 
-Open [the claims desk](http://localhost:8000). With neither Zetaris nor Nightshift credentials supplied, Pluvia selects sample mode automatically. Startup and `/health` report the mode and reason. `SAMPLE_MODE=true` and `SAMPLE_MODE=false` override the default. Supplying either service credential selects live mode unless explicitly overridden, so partial credentials cannot silently fall back to samples. No environment file or account is needed for the default run. The three supplied claims share one genuine Lagos weather window; they demonstrate memory across claims rather than three independent weather events.
+Open [the claims desk](http://localhost:8000). With neither Zetaris nor Nightshift credentials supplied, Pluvia selects sample mode automatically. Startup and `/health` report the mode and reason. `SAMPLE_MODE=true` and `SAMPLE_MODE=false` override the default. Supplying either service credential selects live mode unless explicitly overridden, so partial credentials cannot silently fall back to samples. No environment file or account is needed for the default run. The three Lagos claims share one genuine weather window and demonstrate memory across claims. Two further sample pairs exercise the historical Teresina and Dodoma evidence.
 
 ```sh
 SAMPLE_MODE=true npm run claim -- input_examples/lagos_01.json
@@ -21,6 +21,21 @@ SAMPLE_MODE=true npm run claim -- input_examples/lagos_03.json
 ```
 
 The first claim on a fresh station/window requests more evidence. A later claim recalls the lesson and avoids that extra round. Real outputs from the supplied inputs are in [output_examples](output_examples/). Run traces go to stdout and `logs/<run_id>.jsonl`; memory persists under `logs/memory/`. A browser review appears at `GET /runs/:id` during the current server session.
+
+Two historical sample inputs run through the same full agent loop with isolated memory:
+
+```sh
+npx tsx scripts/run_sample_case.ts input_examples/teresina_zero_run.json
+npx tsx scripts/run_sample_case.ts input_examples/dodoma_dry_spell.json
+```
+
+| Pair | Actual finding | Current verdict |
+|---|---|---|
+| `lagos_01` through `lagos_03` | Sparse station coverage, conflicting zeros and memory recall | `INSPECT` |
+| `teresina_zero_run` | 534 reported zeros over 1,146 calendar days, with 612 missing days; 15 reported zeros conflict with satellite rain | `INSPECT` |
+| `dodoma_dry_spell` | No suspect-zero days; 56 absent calendar dates and fixed relative divergence still fail | `INSPECT` |
+
+These five pairs cover three evidence scenarios, not three verdict types. Dodoma's reported dry spell must not trigger suspect-zero detection, and does not. Its complete-window no-findings requirement remains unresolved. Teresina's matched satellite dates total 379.19 mm, with a maximum day of 42.76 mm; the complete calendar window totals 4,460.59 mm. Its historical policy terms are illustrative synthetic thresholds, not calibrated insurance terms. The checked-in outputs are actual runner responses, including the current limitations. To run another existing evaluation case, point `case_file` in an input JSON file to that case; this runner always uses cached evidence and `sample-rules`.
 
 With Docker:
 
@@ -42,13 +57,13 @@ For July 2025 at Lagos station `NIM00065201`:
 
 Nine of the ten reported gauge days are exactly 0.0 mm with blank quality flags. The other 21 days are missing, not zero. A blank quality flag means a value passed the archive's checks; it does not establish that the record can settle this claim.
 
-Because the policy covers drought (rainfall below 144.3 mm), a naive rule summing what is present sees 6.1 mm and pays ₦2,500,000 in full for a drought that never occurred. Pluvia catches this unfit record and blocks the settlement, protecting the pool from wrongful payouts.
+With a 144.3 mm trigger, a naive rule sums the incomplete station record to 6.1 mm and pays ₦2,500,000 in full. The satellite total of 131.7 mm is also below the trigger; neither source establishes farm loss. Pluvia routes the claim to inspection because the missing days and source conflict leave the record unfit for settlement.
 
 Index basis risk is two-sided:
 - **Preventing wrongful payouts:** Unfit records with missing days treated as zero look like severe drought. Naive index settlement would drain insurance pools on non-events. Pluvia's probes detect incomplete coverage (P1), suspect zeros (P2), and divergence (P6) to prevent fraudulent or erroneous payouts.
 - **Guarding against wrongful refusals:** Conversely, a gauge measuring a storm 40 km away can suppress a payout owed to a farm experiencing localized drought. Pluvia protects farmers by barring any refusal without complete independent satellite evidence, forcing inspection whenever data conflicts, and requiring every proposed refusal to attach the strongest case for paying with mandatory human officer review.
 
-The example policies are calibrated from complete July windows in prior-year independent satellite data. The method and inputs are recorded in [data/register/calibration.json](data/register/calibration.json). Farmer groups, claims, policy terms and payout amounts are synthetic. Rainfall observations are real; [data/README.md](data/README.md) records their sources and units.
+The Lagos example policies are calibrated from complete July windows in prior-year independent satellite data. The method and inputs are recorded in [data/register/calibration.json](data/register/calibration.json). Farmer groups, claims, policy terms and payout amounts are synthetic. Rainfall observations are real; [data/README.md](data/README.md) records their sources and units.
 
 Pluvia identifies a record unfit to settle a claim. It does not diagnose a broken instrument. Suspect zero runs cluster across countries in 2002–2005, so an archive ingest problem is a plausible explanation.
 
@@ -139,6 +154,6 @@ The original dated Dodoma fixture was not available. The recovered observation s
 
 ## Limits
 
-Pluvia cannot establish what happened on a farm from these two indexes alone. Thin station coverage and legitimate point-versus-area differences can require inspection. The current sample examples cover one Lagos window. Policy calibration is a documented demonstration assumption, not actuarially validated pricing. The optional learned-bias detector is not implemented. No forecasting, yield modelling, underwriting or real settlement is provided. Live Zetaris and Nightshift adapters are fully implemented, but authenticated live registration and a served Nemotron model have not yet been verified against production credentials. No funds are transferred.
+Pluvia cannot establish what happened on a farm from these two indexes alone. Thin station coverage and legitimate point-versus-area differences can require inspection. The sample examples cover Lagos, Teresina and Dodoma; all currently inspect. The measured Kitale evaluation separately demonstrates `PAY_ANYWAY` with a synthetic distance assumption. Policy calibration is a documented demonstration assumption, not actuarially validated pricing. The optional learned-bias detector is not implemented. No forecasting, yield modelling, underwriting or real settlement is provided. Live Zetaris and Nightshift adapters are fully implemented, but authenticated live registration and a served Nemotron model have not yet been verified against production credentials. No funds are transferred.
 
 MIT for Pluvia. The vendored H-MEM code retains its Apache 2.0 licence.

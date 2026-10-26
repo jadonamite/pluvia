@@ -20,7 +20,7 @@ describe('evaluation provenance and sample execution', () => {
       rows: {
         id: string;
         category: string;
-        label: { payout_due: boolean | null };
+        label: EvaluationCase['label'];
         deciders: Record<string, unknown>;
         decider_elapsed_ms: Record<string, number>;
       }[];
@@ -34,7 +34,8 @@ describe('evaluation provenance and sample execution', () => {
     expect(report.cases).toBe(files.length);
     expect(results.case_count).toBe(files.length);
     expect(results.rows.map((row) => row.id).sort()).toEqual(cases.map((c) => c.id).sort());
-    const labelled = cases.filter((c) => typeof c.label.payout_due === 'boolean');
+    const unknownCategories = ['real_sparse', 'true_negative'];
+    const labelled = cases.filter((c) => !unknownCategories.includes(c.category));
     expect(results.metrics.pluvia).toMatchObject({
       cases: files.length,
       labelled_cases: labelled.length
@@ -42,7 +43,12 @@ describe('evaluation provenance and sample execution', () => {
     for (const c of cases) {
       expect(c.label.basis.trim().length).toBeGreaterThan(0);
       expect(typeof c.label.expected_inspection).toBe('boolean');
-      expect(c.label.payout_due === null || typeof c.label.payout_due === 'boolean').toBe(true);
+      if (unknownCategories.includes(c.category)) {
+        expect(c.label.payout_due).toBeNull();
+      } else {
+        expect(typeof c.label.payout_due).toBe('boolean');
+      }
+      expect(results.rows.find((row) => row.id === c.id)?.label).toEqual(c.label);
     }
     expect(results.model_baseline).toMatch(/Unmeasured/);
     expect(results.rows.every((row) => row.deciders.raw_totals_model === null)).toBe(true);

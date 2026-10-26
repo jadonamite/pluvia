@@ -32,7 +32,7 @@ for smallholders. The whole arrangement trusts one number: what the gauge says.
 
 July is the middle of the rainy season. The station was not reporting, and the twenty-one
 absent days are *missing*, not zero. A payout rule that sums what is present sees 6.1 mm,
-declares a severe drought, and pays in full for a drought that never happened.
+declares a severe drought, and triggers a full payout without settleable evidence. The satellite total does not establish farm loss or prove that no drought occurred.
 
 Worse, nine of the ten days the gauge did report read exactly 0.0 mm, and every one of
 them carries a blank quality flag, meaning it passed every check the archive performs.
@@ -312,7 +312,7 @@ Measured against the live archives on 25 and 26 October 2026.
 | Measurement flag `A` marks a multi-day accumulation; `B` and `D` mark twelve- and six-hour parts; companion fields carry the multi-day total and its day count. A blank quality flag means the value passed every check | Archive readme |
 | Station completeness must be measured over the **satellite-overlap era, not the lifetime**. One station measures 73 per cent complete across its full record and 10 per cent since 2001 | Measured both ways |
 | **Eight clean station-windows** for the evaluation, by satellite-era coverage: Maceió 65%, São Paulo 62%, Teresina 56%, Kitale 54%, Dar es Salaam 43%, Zanzibar 42%, Mombasa 42%, Mwanza 40% | Measured per station |
-| A definitive unfit-record case: Teresina `BR037041370`, **534 consecutive days of exactly 0.0 mm** from June 2002 while the satellite recorded 379.2 mm, including one day at 42.8 mm | Measured |
+| A definitive unfit-record case: Teresina `BR037041370`, **534 consecutive reported zero observations** from 2 June 2002 to 21 July 2005, spanning 1,146 calendar days with 612 absent station days. Satellite rainfall on those reported dates totalled 379.2 mm, including one day at 42.8 mm | Measured |
 | A true-negative case: Dodoma `TZ000063862`, a 175-day run of zeros the satellite corroborates | Measured |
 
 ### 8.2 Two traps, already paid for

@@ -5,7 +5,7 @@ import type { ModelAdapter } from '../app/adapters/contracts.js';
 import { ZetarisSampleAdapter } from '../app/adapters/zetarisSample.js';
 import { Orchestrator } from '../app/orchestrator.js';
 import type { EvaluationCase } from './types.js';
-export async function evaluateClaim(c: EvaluationCase, model: ModelAdapter) {
+export async function runEvaluationClaim(c: EvaluationCase, model: ModelAdapter) {
   const dir = await mkdtemp(path.join(tmpdir(), 'pluvia-eval-')),
     data = path.join(dir, 'data');
   let query: ZetarisSampleAdapter | undefined;
@@ -81,17 +81,22 @@ export async function evaluateClaim(c: EvaluationCase, model: ModelAdapter) {
       stdout: false
     }).run({ claim_id: c.id });
     if (!run.output) throw new Error('Evaluation claim failed before a guarded decision');
-    return {
-      ...run.output.decision,
-      run_status: run.status,
-      model_names: [
-        ...new Set(run.trace.filter((e) => e.action === 'model_response').map((e) => e.model))
-      ],
-      agent_names: run.agents.map((a) => a.name),
-      evidence_requests: run.trace.filter((e) => e.action === 'request_evidence').length
-    };
+    return run;
   } finally {
     await query?.close();
     await rm(dir, { recursive: true, force: true });
   }
+}
+
+export async function evaluateClaim(c: EvaluationCase, model: ModelAdapter) {
+  const run = await runEvaluationClaim(c, model);
+  return {
+    ...run.output!.decision,
+    run_status: run.status,
+    model_names: [
+      ...new Set(run.trace.filter((e) => e.action === 'model_response').map((e) => e.model))
+    ],
+    agent_names: run.agents.map((a) => a.name),
+    evidence_requests: run.trace.filter((e) => e.action === 'request_evidence').length
+  };
 }

@@ -1,0 +1,8379 @@
+{
+  "id": "BR037041370-2002-06-02-reported-zero-run",
+  "category": "real_sparse",
+  "policy": {
+    "policy_id": "POL-SAMPLE-TERESINA-ZERO-RUN",
+    "group_name": "Teresina historical reference group (synthetic)",
+    "crop": "maize",
+    "synthetic": true,
+    "farm_lat": -5.05,
+    "farm_lon": -42.817,
+    "ref_station_id": "BR037041370",
+    "window_start": "2002-06-02",
+    "window_end": "2005-07-21",
+    "trigger_mm": 150,
+    "exit_mm": 60,
+    "sum_insured_ngn": 100000,
+    "borderline_band_mm": 5,
+    "min_coverage": 0.8,
+    "max_station_km": 20,
+    "power_table": "power_teresina_zero_run_daily"
+  },
+  "station": {
+    "lat": -5.05,
+    "lon": -42.817,
+    "window": {
+      "start": "2002-06-02",
+      "end": "2005-07-21"
+    },
+    "fetched_sql": [],
+    "source": "ghcn",
+    "id": "BR037041370",
+    "days": [
+      {
+        "date": "2002-06-02",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-08-30",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-09-01",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-09-03",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-09-06",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-09-07",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-09-08",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-09-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-09-10",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-09-11",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-09-12",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-09-13",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-09-15",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-09-16",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-09-18",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-09-19",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-09-20",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-09-21",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-09-22",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-09-23",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-09-24",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-09-25",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-09-26",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-10-01",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-10-03",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-10-04",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-10-05",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-10-06",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-10-08",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-10-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-10-10",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-10-11",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-10-12",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-10-13",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-10-16",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-10-17",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-10-18",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-10-19",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-10-20",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-10-21",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-10-22",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-10-27",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-10-28",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-10-29",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-10-31",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-01",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-02",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-03",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-04",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-06",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-07",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-11",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-12",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-13",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-14",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-15",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-16",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-17",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-19",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-20",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-21",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-22",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-26",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-27",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-28",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-29",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-11-30",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-12-05",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-12-06",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-12-07",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-12-08",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-12-10",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-12-12",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-12-14",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-12-15",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-12-16",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-12-17",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-12-20",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-12-27",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2002-12-31",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-01-01",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-01-03",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-01-05",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-01-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-01-10",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-01-11",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-01-12",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-01-13",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-01-16",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-01-17",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-01-18",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-01-24",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-01-25",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-02-02",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-02-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-03-02",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-03-05",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-03-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-03-13",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-04-13",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-04-21",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-04-22",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-04-23",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-04-24",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-04-25",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-04-30",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-05-08",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-05-11",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-05-12",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-05-14",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-05-16",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-05-17",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-05-18",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-05-19",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-05-20",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-05-21",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-05-22",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-05-24",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-05-25",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-05-26",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-05-27",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-05-30",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-06-01",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-06-07",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-06-08",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-06-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-06-10",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-06-13",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-06-15",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-06-18",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-06-19",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-06-24",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-06-26",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-06-27",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-06-28",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-06-29",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-06-30",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-01",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-02",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-04",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-05",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-07",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-08",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-10",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-11",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-12",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-13",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-14",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-15",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-16",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-17",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-18",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-19",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-20",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-21",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-22",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-23",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-24",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-26",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-27",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-28",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-29",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-30",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-07-31",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-01",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-02",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-03",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-04",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-05",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-06",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-07",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-08",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-10",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-11",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-12",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-13",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-14",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-15",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-20",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-22",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-23",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-24",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-25",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-26",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-27",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-28",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-08-30",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-09-02",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-09-03",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-09-04",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-09-05",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-09-06",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-09-07",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-09-10",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-09-11",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-09-14",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-09-17",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-09-18",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-09-19",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-09-20",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-09-22",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-09-24",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-09-25",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-09-26",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-09-27",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-09-28",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-09-29",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-09-30",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-01",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-02",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-03",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-04",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-05",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-06",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-08",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-10",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-11",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-12",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-13",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-14",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-15",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-17",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-18",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-21",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-22",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-23",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-24",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-25",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-26",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-27",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-28",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-10-29",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-11-04",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-11-08",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-11-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-11-10",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-11-11",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-11-12",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-11-13",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-11-14",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-11-15",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-11-16",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-11-17",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-11-18",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-11-19",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-11-21",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-11-22",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-11-25",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-11-26",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-11-27",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-11-28",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-11-29",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-11-30",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-12-01",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-12-02",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-12-03",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-12-04",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-12-05",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-12-06",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-12-08",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-12-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-12-10",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-12-11",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-12-14",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-12-15",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-12-20",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-12-22",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-12-23",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-12-24",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-12-25",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-12-27",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2003-12-31",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-01-05",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-01-08",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-02-11",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-02-12",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-02-15",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-03-02",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-03-13",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-03-15",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-03-19",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-03-20",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-03-28",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-03-29",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-03-30",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-04-11",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-04-12",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-04-13",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-04-14",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-04-15",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-04-21",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-04-22",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-04-24",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-04-29",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-04-30",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-05-01",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-05-03",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-05-07",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-05-14",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-05-15",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-05-17",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-05-20",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-05-23",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-05-24",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-05-25",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-05-27",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-05-28",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-06-01",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-06-02",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-06-04",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-06-06",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-06-08",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-06-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-06-10",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-06-11",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-06-12",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-06-13",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-06-18",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-06-20",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-06-22",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-06-26",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-07-01",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-07-03",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-07-06",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-07-07",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-07-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-07-10",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-07-11",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-07-12",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-07-14",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-07-16",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-07-19",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-07-20",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-07-21",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-07-22",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-07-23",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-07-24",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-07-25",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-07-27",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-07-28",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-07-29",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-07-30",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-07-31",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-08-01",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-08-06",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-08-07",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-08-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-08-11",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-08-12",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-08-13",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-08-14",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-08-15",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-08-16",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-08-17",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-08-19",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-08-20",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-08-21",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-08-23",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-08-25",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-08-29",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-08-30",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-08-31",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-09-02",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-09-03",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-09-05",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-09-08",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-09-10",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-09-11",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-09-14",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-09-15",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-09-16",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-09-17",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-09-20",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-09-21",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-09-23",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-09-24",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-09-25",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-09-26",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-09-27",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-09-29",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-09-30",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-10-01",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-10-03",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-10-06",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-10-07",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-10-08",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-10-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-10-10",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-10-11",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-10-13",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-10-15",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-10-16",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-10-17",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-10-18",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-10-20",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-10-23",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-10-24",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-10-25",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-10-26",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-10-29",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-11-01",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-11-02",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-11-03",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-11-04",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-11-05",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-11-06",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-11-07",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-11-08",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-11-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-11-10",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-11-11",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-11-12",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-11-13",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-11-14",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-11-15",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-11-16",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-11-17",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-11-18",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-11-19",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-11-21",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-11-24",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-11-25",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-12-01",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-12-02",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-12-03",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-12-04",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-12-05",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-12-07",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-12-10",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-12-12",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-12-13",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-12-14",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-12-16",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-12-19",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-12-21",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-12-23",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-12-24",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-12-25",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2004-12-27",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-01-04",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-01-06",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-01-08",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-01-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-01-10",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-01-12",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-01-13",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-01-20",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-01-21",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-01-27",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-01-28",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-01-30",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-01-31",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-02-01",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-02-02",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-02-03",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-02-04",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-02-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-02-13",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-02-19",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-02-25",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-02-26",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-03-01",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-03-02",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-03-05",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-03-07",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-03-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-03-15",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-03-24",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-03-27",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-04-03",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-04-07",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-04-08",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-04-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-04-10",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-04-17",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-04-18",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-04-19",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-04-21",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-04-22",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-04-28",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-05-07",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-05-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-05-10",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-05-11",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-05-12",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-05-13",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-05-16",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-05-17",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-05-18",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-05-20",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-05-26",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-05-27",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-05-29",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-05-30",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-05-31",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-06-01",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-06-02",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-06-04",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-06-05",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-06-06",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-06-07",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-06-08",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-06-09",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-06-10",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-06-11",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-06-15",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-06-16",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-06-17",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-06-18",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-06-21",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-06-23",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-06-24",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-06-25",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-06-26",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-06-27",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-07-01",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-07-02",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-07-03",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-07-04",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-07-05",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-07-06",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-07-07",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-07-10",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-07-11",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-07-13",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-07-14",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-07-16",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-07-17",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-07-18",
+        "mm": 0,
+        "m_flag": "D",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2005-07-21",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      }
+    ]
+  },
+  "satellite": {
+    "lat": -5.05,
+    "lon": -42.817,
+    "window": {
+      "start": "2002-06-02",
+      "end": "2005-07-21"
+    },
+    "fetched_sql": [],
+    "source": "power",
+    "id": "power_teresina_zero_run_daily",
+    "days": [
+      {
+        "date": "2002-06-02",
+        "mm": 0
+      },
+      {
+        "date": "2002-06-03",
+        "mm": 0
+      },
+      {
+        "date": "2002-06-04",
+        "mm": 0
+      },
+      {
+        "date": "2002-06-05",
+        "mm": 0
+      },
+      {
+        "date": "2002-06-06",
+        "mm": 0
+      },
+      {
+        "date": "2002-06-07",
+        "mm": 0.44
+      },
+      {
+        "date": "2002-06-08",
+        "mm": 7.06
+      },
+      {
+        "date": "2002-06-09",
+        "mm": 7.67
+      },
+      {
+        "date": "2002-06-10",
+        "mm": 0
+      },
+      {
+        "date": "2002-06-11",
+        "mm": 0.62
+      },
+      {
+        "date": "2002-06-12",
+        "mm": 0
+      },
+      {
+        "date": "2002-06-13",
+        "mm": 0
+      },
+      {
+        "date": "2002-06-14",
+        "mm": 0.31
+      },
+      {
+        "date": "2002-06-15",
+        "mm": 0
+      },
+      {
+        "date": "2002-06-16",
+        "mm": 2.05
+      },
+      {
+        "date": "2002-06-17",
+        "mm": 0
+      },
+      {
+        "date": "2002-06-18",
+        "mm": 0
+      },
+      {
+        "date": "2002-06-19",
+        "mm": 0.38
+      },
+      {
+        "date": "2002-06-20",
+        "mm": 0
+      },
+      {
+        "date": "2002-06-21",
+        "mm": 0
+      },
+      {
+        "date": "2002-06-22",
+        "mm": 0
+      },
+      {
+        "date": "2002-06-23",
+        "mm": 0
+      },
+      {
+        "date": "2002-06-24",
+        "mm": 0
+      },
+      {
+        "date": "2002-06-25",
+        "mm": 0.47
+      },
+      {
+        "date": "2002-06-26",
+        "mm": 3.12
+      },
+      {
+        "date": "2002-06-27",
+        "mm": 0.28
+      },
+      {
+        "date": "2002-06-28",
+        "mm": 0
+      },
+      {
+        "date": "2002-06-29",
+        "mm": 0
+      },
+      {
+        "date": "2002-06-30",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-01",
+        "mm": 5.18
+      },
+      {
+        "date": "2002-07-02",
+        "mm": 0.69
+      },
+      {
+        "date": "2002-07-03",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-04",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-05",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-06",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-07",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-08",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-09",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-10",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-11",
+        "mm": 2.47
+      },
+      {
+        "date": "2002-07-12",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-13",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-14",
+        "mm": 0.92
+      },
+      {
+        "date": "2002-07-15",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-16",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-17",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-18",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-19",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-20",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-21",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-22",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-23",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-24",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-25",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-26",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-27",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-28",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-29",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-30",
+        "mm": 0
+      },
+      {
+        "date": "2002-07-31",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-01",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-02",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-03",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-04",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-05",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-06",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-07",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-08",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-09",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-10",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-11",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-12",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-13",
+        "mm": 0.22
+      },
+      {
+        "date": "2002-08-14",
+        "mm": 1.26
+      },
+      {
+        "date": "2002-08-15",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-16",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-17",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-18",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-19",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-20",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-21",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-22",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-23",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-24",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-25",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-26",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-27",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-28",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-29",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-30",
+        "mm": 0
+      },
+      {
+        "date": "2002-08-31",
+        "mm": 0
+      },
+      {
+        "date": "2002-09-01",
+        "mm": 0
+      },
+      {
+        "date": "2002-09-02",
+        "mm": 0
+      },
+      {
+        "date": "2002-09-03",
+        "mm": 4.11
+      },
+      {
+        "date": "2002-09-04",
+        "mm": 0.47
+      },
+      {
+        "date": "2002-09-05",
+        "mm": 20
+      },
+      {
+        "date": "2002-09-06",
+        "mm": 0
+      },
+      {
+        "date": "2002-09-07",
+        "mm": 0
+      },
+      {
+        "date": "2002-09-08",
+        "mm": 0
+      },
+      {
+        "date": "2002-09-09",
+        "mm": 0
+      },
+      {
+        "date": "2002-09-10",
+        "mm": 0
+      },
+      {
+        "date": "2002-09-11",
+        "mm": 0
+      },
+      {
+        "date": "2002-09-12",
+        "mm": 0
+      },
+      {
+        "date": "2002-09-13",
+        "mm": 0
+      },
+      {
+        "date": "2002-09-14",
+        "mm": 0
+      },
+      {
+        "date": "2002-09-15",
+        "mm": 0
+      },
+      {
+        "date": "2002-09-16",
+        "mm": 3.77
+      },
+      {
+        "date": "2002-09-17",
+        "mm": 0
+      },
+      {
+        "date": "2002-09-18",
+        "mm": 0
+      },
+      {
+        "date": "2002-09-19",
+        "mm": 0
+      },
+      {
+        "date": "2002-09-20",
+        "mm": 0
+      },
+      {
+        "date": "2002-09-21",
+        "mm": 0
+      },
+      {
+        "date": "2002-09-22",
+        "mm": 0
+      },
+      {
+        "date": "2002-09-23",
+        "mm": 0.32
+      },
+      {
+        "date": "2002-09-24",
+        "mm": 0
+      },
+      {
+        "date": "2002-09-25",
+        "mm": 0
+      },
+      {
+        "date": "2002-09-26",
+        "mm": 0
+      },
+      {
+        "date": "2002-09-27",
+        "mm": 0.85
+      },
+      {
+        "date": "2002-09-28",
+        "mm": 2.65
+      },
+      {
+        "date": "2002-09-29",
+        "mm": 2.41
+      },
+      {
+        "date": "2002-09-30",
+        "mm": 0
+      },
+      {
+        "date": "2002-10-01",
+        "mm": 0
+      },
+      {
+        "date": "2002-10-02",
+        "mm": 0.59
+      },
+      {
+        "date": "2002-10-03",
+        "mm": 0.56
+      },
+      {
+        "date": "2002-10-04",
+        "mm": 3.05
+      },
+      {
+        "date": "2002-10-05",
+        "mm": 0
+      },
+      {
+        "date": "2002-10-06",
+        "mm": 0
+      },
+      {
+        "date": "2002-10-07",
+        "mm": 0
+      },
+      {
+        "date": "2002-10-08",
+        "mm": 0
+      },
+      {
+        "date": "2002-10-09",
+        "mm": 0
+      },
+      {
+        "date": "2002-10-10",
+        "mm": 0
+      },
+      {
+        "date": "2002-10-11",
+        "mm": 0
+      },
+      {
+        "date": "2002-10-12",
+        "mm": 0
+      },
+      {
+        "date": "2002-10-13",
+        "mm": 0.77
+      },
+      {
+        "date": "2002-10-14",
+        "mm": 0
+      },
+      {
+        "date": "2002-10-15",
+        "mm": 0
+      },
+      {
+        "date": "2002-10-16",
+        "mm": 0.62
+      },
+      {
+        "date": "2002-10-17",
+        "mm": 3.29
+      },
+      {
+        "date": "2002-10-18",
+        "mm": 0
+      },
+      {
+        "date": "2002-10-19",
+        "mm": 1.34
+      },
+      {
+        "date": "2002-10-20",
+        "mm": 0
+      },
+      {
+        "date": "2002-10-21",
+        "mm": 0
+      },
+      {
+        "date": "2002-10-22",
+        "mm": 2.19
+      },
+      {
+        "date": "2002-10-23",
+        "mm": 0
+      },
+      {
+        "date": "2002-10-24",
+        "mm": 0.42
+      },
+      {
+        "date": "2002-10-25",
+        "mm": 0
+      },
+      {
+        "date": "2002-10-26",
+        "mm": 0.25
+      },
+      {
+        "date": "2002-10-27",
+        "mm": 0
+      },
+      {
+        "date": "2002-10-28",
+        "mm": 0.29
+      },
+      {
+        "date": "2002-10-29",
+        "mm": 0
+      },
+      {
+        "date": "2002-10-30",
+        "mm": 1.86
+      },
+      {
+        "date": "2002-10-31",
+        "mm": 0
+      },
+      {
+        "date": "2002-11-01",
+        "mm": 0
+      },
+      {
+        "date": "2002-11-02",
+        "mm": 1.66
+      },
+      {
+        "date": "2002-11-03",
+        "mm": 0
+      },
+      {
+        "date": "2002-11-04",
+        "mm": 0
+      },
+      {
+        "date": "2002-11-05",
+        "mm": 0
+      },
+      {
+        "date": "2002-11-06",
+        "mm": 0
+      },
+      {
+        "date": "2002-11-07",
+        "mm": 0.28
+      },
+      {
+        "date": "2002-11-08",
+        "mm": 6.94
+      },
+      {
+        "date": "2002-11-09",
+        "mm": 1.36
+      },
+      {
+        "date": "2002-11-10",
+        "mm": 0
+      },
+      {
+        "date": "2002-11-11",
+        "mm": 0
+      },
+      {
+        "date": "2002-11-12",
+        "mm": 0
+      },
+      {
+        "date": "2002-11-13",
+        "mm": 0
+      },
+      {
+        "date": "2002-11-14",
+        "mm": 0
+      },
+      {
+        "date": "2002-11-15",
+        "mm": 1.22
+      },
+      {
+        "date": "2002-11-16",
+        "mm": 1.06
+      },
+      {
+        "date": "2002-11-17",
+        "mm": 1.22
+      },
+      {
+        "date": "2002-11-18",
+        "mm": 0
+      },
+      {
+        "date": "2002-11-19",
+        "mm": 0
+      },
+      {
+        "date": "2002-11-20",
+        "mm": 0
+      },
+      {
+        "date": "2002-11-21",
+        "mm": 0
+      },
+      {
+        "date": "2002-11-22",
+        "mm": 0
+      },
+      {
+        "date": "2002-11-23",
+        "mm": 0
+      },
+      {
+        "date": "2002-11-24",
+        "mm": 2.38
+      },
+      {
+        "date": "2002-11-25",
+        "mm": 5.9
+      },
+      {
+        "date": "2002-11-26",
+        "mm": 0
+      },
+      {
+        "date": "2002-11-27",
+        "mm": 0
+      },
+      {
+        "date": "2002-11-28",
+        "mm": 0
+      },
+      {
+        "date": "2002-11-29",
+        "mm": 0.46
+      },
+      {
+        "date": "2002-11-30",
+        "mm": 0.72
+      },
+      {
+        "date": "2002-12-01",
+        "mm": 8.85
+      },
+      {
+        "date": "2002-12-02",
+        "mm": 3.76
+      },
+      {
+        "date": "2002-12-03",
+        "mm": 5.52
+      },
+      {
+        "date": "2002-12-04",
+        "mm": 0
+      },
+      {
+        "date": "2002-12-05",
+        "mm": 0
+      },
+      {
+        "date": "2002-12-06",
+        "mm": 0
+      },
+      {
+        "date": "2002-12-07",
+        "mm": 0.87
+      },
+      {
+        "date": "2002-12-08",
+        "mm": 4.45
+      },
+      {
+        "date": "2002-12-09",
+        "mm": 3.61
+      },
+      {
+        "date": "2002-12-10",
+        "mm": 11.28
+      },
+      {
+        "date": "2002-12-11",
+        "mm": 27.68
+      },
+      {
+        "date": "2002-12-12",
+        "mm": 0
+      },
+      {
+        "date": "2002-12-13",
+        "mm": 0
+      },
+      {
+        "date": "2002-12-14",
+        "mm": 0.69
+      },
+      {
+        "date": "2002-12-15",
+        "mm": 0.13
+      },
+      {
+        "date": "2002-12-16",
+        "mm": 0
+      },
+      {
+        "date": "2002-12-17",
+        "mm": 2.25
+      },
+      {
+        "date": "2002-12-18",
+        "mm": 4.65
+      },
+      {
+        "date": "2002-12-19",
+        "mm": 1.11
+      },
+      {
+        "date": "2002-12-20",
+        "mm": 20.61
+      },
+      {
+        "date": "2002-12-21",
+        "mm": 5.47
+      },
+      {
+        "date": "2002-12-22",
+        "mm": 0
+      },
+      {
+        "date": "2002-12-23",
+        "mm": 2.28
+      },
+      {
+        "date": "2002-12-24",
+        "mm": 10.68
+      },
+      {
+        "date": "2002-12-25",
+        "mm": 7.57
+      },
+      {
+        "date": "2002-12-26",
+        "mm": 0.18
+      },
+      {
+        "date": "2002-12-27",
+        "mm": 2.25
+      },
+      {
+        "date": "2002-12-28",
+        "mm": 2.12
+      },
+      {
+        "date": "2002-12-29",
+        "mm": 0
+      },
+      {
+        "date": "2002-12-30",
+        "mm": 0.57
+      },
+      {
+        "date": "2002-12-31",
+        "mm": 0.05
+      },
+      {
+        "date": "2003-01-01",
+        "mm": 0.26
+      },
+      {
+        "date": "2003-01-02",
+        "mm": 0
+      },
+      {
+        "date": "2003-01-03",
+        "mm": 0
+      },
+      {
+        "date": "2003-01-04",
+        "mm": 0
+      },
+      {
+        "date": "2003-01-05",
+        "mm": 0
+      },
+      {
+        "date": "2003-01-06",
+        "mm": 1.15
+      },
+      {
+        "date": "2003-01-07",
+        "mm": 2.19
+      },
+      {
+        "date": "2003-01-08",
+        "mm": 0.31
+      },
+      {
+        "date": "2003-01-09",
+        "mm": 0.81
+      },
+      {
+        "date": "2003-01-10",
+        "mm": 0.29
+      },
+      {
+        "date": "2003-01-11",
+        "mm": 0
+      },
+      {
+        "date": "2003-01-12",
+        "mm": 0
+      },
+      {
+        "date": "2003-01-13",
+        "mm": 0.45
+      },
+      {
+        "date": "2003-01-14",
+        "mm": 12.43
+      },
+      {
+        "date": "2003-01-15",
+        "mm": 0
+      },
+      {
+        "date": "2003-01-16",
+        "mm": 0
+      },
+      {
+        "date": "2003-01-17",
+        "mm": 0
+      },
+      {
+        "date": "2003-01-18",
+        "mm": 0.38
+      },
+      {
+        "date": "2003-01-19",
+        "mm": 2.52
+      },
+      {
+        "date": "2003-01-20",
+        "mm": 0.13
+      },
+      {
+        "date": "2003-01-21",
+        "mm": 1.54
+      },
+      {
+        "date": "2003-01-22",
+        "mm": 32.89
+      },
+      {
+        "date": "2003-01-23",
+        "mm": 18.35
+      },
+      {
+        "date": "2003-01-24",
+        "mm": 4.85
+      },
+      {
+        "date": "2003-01-25",
+        "mm": 0.01
+      },
+      {
+        "date": "2003-01-26",
+        "mm": 1.38
+      },
+      {
+        "date": "2003-01-27",
+        "mm": 16.73
+      },
+      {
+        "date": "2003-01-28",
+        "mm": 18.8
+      },
+      {
+        "date": "2003-01-29",
+        "mm": 0.53
+      },
+      {
+        "date": "2003-01-30",
+        "mm": 27.59
+      },
+      {
+        "date": "2003-01-31",
+        "mm": 6.96
+      },
+      {
+        "date": "2003-02-01",
+        "mm": 1.28
+      },
+      {
+        "date": "2003-02-02",
+        "mm": 1.03
+      },
+      {
+        "date": "2003-02-03",
+        "mm": 9.36
+      },
+      {
+        "date": "2003-02-04",
+        "mm": 2.27
+      },
+      {
+        "date": "2003-02-05",
+        "mm": 1.87
+      },
+      {
+        "date": "2003-02-06",
+        "mm": 0.83
+      },
+      {
+        "date": "2003-02-07",
+        "mm": 0.68
+      },
+      {
+        "date": "2003-02-08",
+        "mm": 7.5
+      },
+      {
+        "date": "2003-02-09",
+        "mm": 14.68
+      },
+      {
+        "date": "2003-02-10",
+        "mm": 16.32
+      },
+      {
+        "date": "2003-02-11",
+        "mm": 10.24
+      },
+      {
+        "date": "2003-02-12",
+        "mm": 23.55
+      },
+      {
+        "date": "2003-02-13",
+        "mm": 9.82
+      },
+      {
+        "date": "2003-02-14",
+        "mm": 5.9
+      },
+      {
+        "date": "2003-02-15",
+        "mm": 3.18
+      },
+      {
+        "date": "2003-02-16",
+        "mm": 3.26
+      },
+      {
+        "date": "2003-02-17",
+        "mm": 30.01
+      },
+      {
+        "date": "2003-02-18",
+        "mm": 12.15
+      },
+      {
+        "date": "2003-02-19",
+        "mm": 14.6
+      },
+      {
+        "date": "2003-02-20",
+        "mm": 35.57
+      },
+      {
+        "date": "2003-02-21",
+        "mm": 16
+      },
+      {
+        "date": "2003-02-22",
+        "mm": 0
+      },
+      {
+        "date": "2003-02-23",
+        "mm": 13.33
+      },
+      {
+        "date": "2003-02-24",
+        "mm": 7.92
+      },
+      {
+        "date": "2003-02-25",
+        "mm": 0.35
+      },
+      {
+        "date": "2003-02-26",
+        "mm": 7.07
+      },
+      {
+        "date": "2003-02-27",
+        "mm": 7.05
+      },
+      {
+        "date": "2003-02-28",
+        "mm": 53.01
+      },
+      {
+        "date": "2003-03-01",
+        "mm": 15.76
+      },
+      {
+        "date": "2003-03-02",
+        "mm": 0
+      },
+      {
+        "date": "2003-03-03",
+        "mm": 1.36
+      },
+      {
+        "date": "2003-03-04",
+        "mm": 1.89
+      },
+      {
+        "date": "2003-03-05",
+        "mm": 1.8
+      },
+      {
+        "date": "2003-03-06",
+        "mm": 6.02
+      },
+      {
+        "date": "2003-03-07",
+        "mm": 1.2
+      },
+      {
+        "date": "2003-03-08",
+        "mm": 0.51
+      },
+      {
+        "date": "2003-03-09",
+        "mm": 1.87
+      },
+      {
+        "date": "2003-03-10",
+        "mm": 16.62
+      },
+      {
+        "date": "2003-03-11",
+        "mm": 19.08
+      },
+      {
+        "date": "2003-03-12",
+        "mm": 11.1
+      },
+      {
+        "date": "2003-03-13",
+        "mm": 0
+      },
+      {
+        "date": "2003-03-14",
+        "mm": 2.8
+      },
+      {
+        "date": "2003-03-15",
+        "mm": 5.88
+      },
+      {
+        "date": "2003-03-16",
+        "mm": 3.51
+      },
+      {
+        "date": "2003-03-17",
+        "mm": 32.85
+      },
+      {
+        "date": "2003-03-18",
+        "mm": 4.15
+      },
+      {
+        "date": "2003-03-19",
+        "mm": 9.25
+      },
+      {
+        "date": "2003-03-20",
+        "mm": 35.14
+      },
+      {
+        "date": "2003-03-21",
+        "mm": 0.82
+      },
+      {
+        "date": "2003-03-22",
+        "mm": 1.13
+      },
+      {
+        "date": "2003-03-23",
+        "mm": 8.69
+      },
+      {
+        "date": "2003-03-24",
+        "mm": 2.92
+      },
+      {
+        "date": "2003-03-25",
+        "mm": 5.24
+      },
+      {
+        "date": "2003-03-26",
+        "mm": 37.34
+      },
+      {
+        "date": "2003-03-27",
+        "mm": 44.99
+      },
+      {
+        "date": "2003-03-28",
+        "mm": 23.59
+      },
+      {
+        "date": "2003-03-29",
+        "mm": 14.26
+      },
+      {
+        "date": "2003-03-30",
+        "mm": 15.3
+      },
+      {
+        "date": "2003-03-31",
+        "mm": 17.09
+      },
+      {
+        "date": "2003-04-01",
+        "mm": 25.86
+      },
+      {
+        "date": "2003-04-02",
+        "mm": 17.27
+      },
+      {
+        "date": "2003-04-03",
+        "mm": 9.33
+      },
+      {
+        "date": "2003-04-04",
+        "mm": 50.89
+      },
+      {
+        "date": "2003-04-05",
+        "mm": 27.92
+      },
+      {
+        "date": "2003-04-06",
+        "mm": 2.91
+      },
+      {
+        "date": "2003-04-07",
+        "mm": 0.01
+      },
+      {
+        "date": "2003-04-08",
+        "mm": 6.62
+      },
+      {
+        "date": "2003-04-09",
+        "mm": 1.47
+      },
+      {
+        "date": "2003-04-10",
+        "mm": 2.67
+      },
+      {
+        "date": "2003-04-11",
+        "mm": 1.19
+      },
+      {
+        "date": "2003-04-12",
+        "mm": 14.12
+      },
+      {
+        "date": "2003-04-13",
+        "mm": 0.82
+      },
+      {
+        "date": "2003-04-14",
+        "mm": 4.88
+      },
+      {
+        "date": "2003-04-15",
+        "mm": 15.57
+      },
+      {
+        "date": "2003-04-16",
+        "mm": 13.45
+      },
+      {
+        "date": "2003-04-17",
+        "mm": 0.42
+      },
+      {
+        "date": "2003-04-18",
+        "mm": 0
+      },
+      {
+        "date": "2003-04-19",
+        "mm": 4.38
+      },
+      {
+        "date": "2003-04-20",
+        "mm": 0
+      },
+      {
+        "date": "2003-04-21",
+        "mm": 0
+      },
+      {
+        "date": "2003-04-22",
+        "mm": 0
+      },
+      {
+        "date": "2003-04-23",
+        "mm": 0.4
+      },
+      {
+        "date": "2003-04-24",
+        "mm": 0
+      },
+      {
+        "date": "2003-04-25",
+        "mm": 1.38
+      },
+      {
+        "date": "2003-04-26",
+        "mm": 5.04
+      },
+      {
+        "date": "2003-04-27",
+        "mm": 3.45
+      },
+      {
+        "date": "2003-04-28",
+        "mm": 7.13
+      },
+      {
+        "date": "2003-04-29",
+        "mm": 0.24
+      },
+      {
+        "date": "2003-04-30",
+        "mm": 2.03
+      },
+      {
+        "date": "2003-05-01",
+        "mm": 7.72
+      },
+      {
+        "date": "2003-05-02",
+        "mm": 0
+      },
+      {
+        "date": "2003-05-03",
+        "mm": 9.54
+      },
+      {
+        "date": "2003-05-04",
+        "mm": 23.6
+      },
+      {
+        "date": "2003-05-05",
+        "mm": 27.16
+      },
+      {
+        "date": "2003-05-06",
+        "mm": 4.11
+      },
+      {
+        "date": "2003-05-07",
+        "mm": 0
+      },
+      {
+        "date": "2003-05-08",
+        "mm": 0
+      },
+      {
+        "date": "2003-05-09",
+        "mm": 8.33
+      },
+      {
+        "date": "2003-05-10",
+        "mm": 0
+      },
+      {
+        "date": "2003-05-11",
+        "mm": 0
+      },
+      {
+        "date": "2003-05-12",
+        "mm": 0
+      },
+      {
+        "date": "2003-05-13",
+        "mm": 1.88
+      },
+      {
+        "date": "2003-05-14",
+        "mm": 0
+      },
+      {
+        "date": "2003-05-15",
+        "mm": 0
+      },
+      {
+        "date": "2003-05-16",
+        "mm": 0
+      },
+      {
+        "date": "2003-05-17",
+        "mm": 0
+      },
+      {
+        "date": "2003-05-18",
+        "mm": 0
+      },
+      {
+        "date": "2003-05-19",
+        "mm": 2.25
+      },
+      {
+        "date": "2003-05-20",
+        "mm": 0.39
+      },
+      {
+        "date": "2003-05-21",
+        "mm": 0.14
+      },
+      {
+        "date": "2003-05-22",
+        "mm": 0
+      },
+      {
+        "date": "2003-05-23",
+        "mm": 0
+      },
+      {
+        "date": "2003-05-24",
+        "mm": 0
+      },
+      {
+        "date": "2003-05-25",
+        "mm": 0
+      },
+      {
+        "date": "2003-05-26",
+        "mm": 0
+      },
+      {
+        "date": "2003-05-27",
+        "mm": 7.03
+      },
+      {
+        "date": "2003-05-28",
+        "mm": 0
+      },
+      {
+        "date": "2003-05-29",
+        "mm": 1.18
+      },
+      {
+        "date": "2003-05-30",
+        "mm": 7.06
+      },
+      {
+        "date": "2003-05-31",
+        "mm": 16.37
+      },
+      {
+        "date": "2003-06-01",
+        "mm": 0
+      },
+      {
+        "date": "2003-06-02",
+        "mm": 0.17
+      },
+      {
+        "date": "2003-06-03",
+        "mm": 0
+      },
+      {
+        "date": "2003-06-04",
+        "mm": 0.39
+      },
+      {
+        "date": "2003-06-05",
+        "mm": 3.11
+      },
+      {
+        "date": "2003-06-06",
+        "mm": 0
+      },
+      {
+        "date": "2003-06-07",
+        "mm": 0
+      },
+      {
+        "date": "2003-06-08",
+        "mm": 0
+      },
+      {
+        "date": "2003-06-09",
+        "mm": 0
+      },
+      {
+        "date": "2003-06-10",
+        "mm": 0
+      },
+      {
+        "date": "2003-06-11",
+        "mm": 2.9
+      },
+      {
+        "date": "2003-06-12",
+        "mm": 3.22
+      },
+      {
+        "date": "2003-06-13",
+        "mm": 0
+      },
+      {
+        "date": "2003-06-14",
+        "mm": 1.34
+      },
+      {
+        "date": "2003-06-15",
+        "mm": 0.75
+      },
+      {
+        "date": "2003-06-16",
+        "mm": 47.18
+      },
+      {
+        "date": "2003-06-17",
+        "mm": 0.65
+      },
+      {
+        "date": "2003-06-18",
+        "mm": 0
+      },
+      {
+        "date": "2003-06-19",
+        "mm": 0
+      },
+      {
+        "date": "2003-06-20",
+        "mm": 0
+      },
+      {
+        "date": "2003-06-21",
+        "mm": 5.89
+      },
+      {
+        "date": "2003-06-22",
+        "mm": 0
+      },
+      {
+        "date": "2003-06-23",
+        "mm": 8.1
+      },
+      {
+        "date": "2003-06-24",
+        "mm": 0
+      },
+      {
+        "date": "2003-06-25",
+        "mm": 0
+      },
+      {
+        "date": "2003-06-26",
+        "mm": 0
+      },
+      {
+        "date": "2003-06-27",
+        "mm": 0
+      },
+      {
+        "date": "2003-06-28",
+        "mm": 0
+      },
+      {
+        "date": "2003-06-29",
+        "mm": 0
+      },
+      {
+        "date": "2003-06-30",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-01",
+        "mm": 0.38
+      },
+      {
+        "date": "2003-07-02",
+        "mm": 0.32
+      },
+      {
+        "date": "2003-07-03",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-04",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-05",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-06",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-07",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-08",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-09",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-10",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-11",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-12",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-13",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-14",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-15",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-16",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-17",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-18",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-19",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-20",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-21",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-22",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-23",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-24",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-25",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-26",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-27",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-28",
+        "mm": 1.81
+      },
+      {
+        "date": "2003-07-29",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-30",
+        "mm": 0
+      },
+      {
+        "date": "2003-07-31",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-01",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-02",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-03",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-04",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-05",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-06",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-07",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-08",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-09",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-10",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-11",
+        "mm": 0.07
+      },
+      {
+        "date": "2003-08-12",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-13",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-14",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-15",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-16",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-17",
+        "mm": 0.04
+      },
+      {
+        "date": "2003-08-18",
+        "mm": 13.58
+      },
+      {
+        "date": "2003-08-19",
+        "mm": 0.22
+      },
+      {
+        "date": "2003-08-20",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-21",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-22",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-23",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-24",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-25",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-26",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-27",
+        "mm": 0.76
+      },
+      {
+        "date": "2003-08-28",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-29",
+        "mm": 1.77
+      },
+      {
+        "date": "2003-08-30",
+        "mm": 0
+      },
+      {
+        "date": "2003-08-31",
+        "mm": 6.35
+      },
+      {
+        "date": "2003-09-01",
+        "mm": 1.32
+      },
+      {
+        "date": "2003-09-02",
+        "mm": 0
+      },
+      {
+        "date": "2003-09-03",
+        "mm": 0
+      },
+      {
+        "date": "2003-09-04",
+        "mm": 0
+      },
+      {
+        "date": "2003-09-05",
+        "mm": 0
+      },
+      {
+        "date": "2003-09-06",
+        "mm": 0
+      },
+      {
+        "date": "2003-09-07",
+        "mm": 0
+      },
+      {
+        "date": "2003-09-08",
+        "mm": 0
+      },
+      {
+        "date": "2003-09-09",
+        "mm": 0
+      },
+      {
+        "date": "2003-09-10",
+        "mm": 0
+      },
+      {
+        "date": "2003-09-11",
+        "mm": 0
+      },
+      {
+        "date": "2003-09-12",
+        "mm": 4.82
+      },
+      {
+        "date": "2003-09-13",
+        "mm": 3.64
+      },
+      {
+        "date": "2003-09-14",
+        "mm": 4.42
+      },
+      {
+        "date": "2003-09-15",
+        "mm": 0.28
+      },
+      {
+        "date": "2003-09-16",
+        "mm": 0.56
+      },
+      {
+        "date": "2003-09-17",
+        "mm": 0
+      },
+      {
+        "date": "2003-09-18",
+        "mm": 0
+      },
+      {
+        "date": "2003-09-19",
+        "mm": 0
+      },
+      {
+        "date": "2003-09-20",
+        "mm": 0
+      },
+      {
+        "date": "2003-09-21",
+        "mm": 0
+      },
+      {
+        "date": "2003-09-22",
+        "mm": 0
+      },
+      {
+        "date": "2003-09-23",
+        "mm": 1.46
+      },
+      {
+        "date": "2003-09-24",
+        "mm": 0
+      },
+      {
+        "date": "2003-09-25",
+        "mm": 0
+      },
+      {
+        "date": "2003-09-26",
+        "mm": 0
+      },
+      {
+        "date": "2003-09-27",
+        "mm": 0
+      },
+      {
+        "date": "2003-09-28",
+        "mm": 0
+      },
+      {
+        "date": "2003-09-29",
+        "mm": 0
+      },
+      {
+        "date": "2003-09-30",
+        "mm": 0
+      },
+      {
+        "date": "2003-10-01",
+        "mm": 0
+      },
+      {
+        "date": "2003-10-02",
+        "mm": 0
+      },
+      {
+        "date": "2003-10-03",
+        "mm": 0.5
+      },
+      {
+        "date": "2003-10-04",
+        "mm": 0
+      },
+      {
+        "date": "2003-10-05",
+        "mm": 0
+      },
+      {
+        "date": "2003-10-06",
+        "mm": 0
+      },
+      {
+        "date": "2003-10-07",
+        "mm": 0
+      },
+      {
+        "date": "2003-10-08",
+        "mm": 0
+      },
+      {
+        "date": "2003-10-09",
+        "mm": 0
+      },
+      {
+        "date": "2003-10-10",
+        "mm": 0
+      },
+      {
+        "date": "2003-10-11",
+        "mm": 0
+      },
+      {
+        "date": "2003-10-12",
+        "mm": 0
+      },
+      {
+        "date": "2003-10-13",
+        "mm": 0
+      },
+      {
+        "date": "2003-10-14",
+        "mm": 0.72
+      },
+      {
+        "date": "2003-10-15",
+        "mm": 0
+      },
+      {
+        "date": "2003-10-16",
+        "mm": 0
+      },
+      {
+        "date": "2003-10-17",
+        "mm": 1.48
+      },
+      {
+        "date": "2003-10-18",
+        "mm": 5.89
+      },
+      {
+        "date": "2003-10-19",
+        "mm": 0.75
+      },
+      {
+        "date": "2003-10-20",
+        "mm": 0
+      },
+      {
+        "date": "2003-10-21",
+        "mm": 0
+      },
+      {
+        "date": "2003-10-22",
+        "mm": 0
+      },
+      {
+        "date": "2003-10-23",
+        "mm": 3.05
+      },
+      {
+        "date": "2003-10-24",
+        "mm": 0
+      },
+      {
+        "date": "2003-10-25",
+        "mm": 0
+      },
+      {
+        "date": "2003-10-26",
+        "mm": 0.97
+      },
+      {
+        "date": "2003-10-27",
+        "mm": 0
+      },
+      {
+        "date": "2003-10-28",
+        "mm": 0
+      },
+      {
+        "date": "2003-10-29",
+        "mm": 2.23
+      },
+      {
+        "date": "2003-10-30",
+        "mm": 0.58
+      },
+      {
+        "date": "2003-10-31",
+        "mm": 5.15
+      },
+      {
+        "date": "2003-11-01",
+        "mm": 24.93
+      },
+      {
+        "date": "2003-11-02",
+        "mm": 2.04
+      },
+      {
+        "date": "2003-11-03",
+        "mm": 9.99
+      },
+      {
+        "date": "2003-11-04",
+        "mm": 0.25
+      },
+      {
+        "date": "2003-11-05",
+        "mm": 12.74
+      },
+      {
+        "date": "2003-11-06",
+        "mm": 6.43
+      },
+      {
+        "date": "2003-11-07",
+        "mm": 0
+      },
+      {
+        "date": "2003-11-08",
+        "mm": 11.14
+      },
+      {
+        "date": "2003-11-09",
+        "mm": 1.69
+      },
+      {
+        "date": "2003-11-10",
+        "mm": 0.42
+      },
+      {
+        "date": "2003-11-11",
+        "mm": 0
+      },
+      {
+        "date": "2003-11-12",
+        "mm": 0
+      },
+      {
+        "date": "2003-11-13",
+        "mm": 0.56
+      },
+      {
+        "date": "2003-11-14",
+        "mm": 0
+      },
+      {
+        "date": "2003-11-15",
+        "mm": 0
+      },
+      {
+        "date": "2003-11-16",
+        "mm": 0
+      },
+      {
+        "date": "2003-11-17",
+        "mm": 0
+      },
+      {
+        "date": "2003-11-18",
+        "mm": 0
+      },
+      {
+        "date": "2003-11-19",
+        "mm": 1.88
+      },
+      {
+        "date": "2003-11-20",
+        "mm": 0.03
+      },
+      {
+        "date": "2003-11-21",
+        "mm": 0
+      },
+      {
+        "date": "2003-11-22",
+        "mm": 0.52
+      },
+      {
+        "date": "2003-11-23",
+        "mm": 8.48
+      },
+      {
+        "date": "2003-11-24",
+        "mm": 1.68
+      },
+      {
+        "date": "2003-11-25",
+        "mm": 0
+      },
+      {
+        "date": "2003-11-26",
+        "mm": 0.31
+      },
+      {
+        "date": "2003-11-27",
+        "mm": 0
+      },
+      {
+        "date": "2003-11-28",
+        "mm": 0
+      },
+      {
+        "date": "2003-11-29",
+        "mm": 0
+      },
+      {
+        "date": "2003-11-30",
+        "mm": 0.44
+      },
+      {
+        "date": "2003-12-01",
+        "mm": 0
+      },
+      {
+        "date": "2003-12-02",
+        "mm": 0.26
+      },
+      {
+        "date": "2003-12-03",
+        "mm": 0
+      },
+      {
+        "date": "2003-12-04",
+        "mm": 0
+      },
+      {
+        "date": "2003-12-05",
+        "mm": 0.2
+      },
+      {
+        "date": "2003-12-06",
+        "mm": 0.76
+      },
+      {
+        "date": "2003-12-07",
+        "mm": 0
+      },
+      {
+        "date": "2003-12-08",
+        "mm": 0
+      },
+      {
+        "date": "2003-12-09",
+        "mm": 0.16
+      },
+      {
+        "date": "2003-12-10",
+        "mm": 0
+      },
+      {
+        "date": "2003-12-11",
+        "mm": 0
+      },
+      {
+        "date": "2003-12-12",
+        "mm": 1.2
+      },
+      {
+        "date": "2003-12-13",
+        "mm": 13.62
+      },
+      {
+        "date": "2003-12-14",
+        "mm": 0.3
+      },
+      {
+        "date": "2003-12-15",
+        "mm": 4.96
+      },
+      {
+        "date": "2003-12-16",
+        "mm": 7.34
+      },
+      {
+        "date": "2003-12-17",
+        "mm": 0
+      },
+      {
+        "date": "2003-12-18",
+        "mm": 0.42
+      },
+      {
+        "date": "2003-12-19",
+        "mm": 7.08
+      },
+      {
+        "date": "2003-12-20",
+        "mm": 1.29
+      },
+      {
+        "date": "2003-12-21",
+        "mm": 0.36
+      },
+      {
+        "date": "2003-12-22",
+        "mm": 0
+      },
+      {
+        "date": "2003-12-23",
+        "mm": 0
+      },
+      {
+        "date": "2003-12-24",
+        "mm": 0
+      },
+      {
+        "date": "2003-12-25",
+        "mm": 0
+      },
+      {
+        "date": "2003-12-26",
+        "mm": 1.22
+      },
+      {
+        "date": "2003-12-27",
+        "mm": 0.47
+      },
+      {
+        "date": "2003-12-28",
+        "mm": 2.29
+      },
+      {
+        "date": "2003-12-29",
+        "mm": 10.14
+      },
+      {
+        "date": "2003-12-30",
+        "mm": 10.25
+      },
+      {
+        "date": "2003-12-31",
+        "mm": 11.96
+      },
+      {
+        "date": "2004-01-01",
+        "mm": 12.92
+      },
+      {
+        "date": "2004-01-02",
+        "mm": 4.81
+      },
+      {
+        "date": "2004-01-03",
+        "mm": 4.36
+      },
+      {
+        "date": "2004-01-04",
+        "mm": 5.86
+      },
+      {
+        "date": "2004-01-05",
+        "mm": 0
+      },
+      {
+        "date": "2004-01-06",
+        "mm": 0
+      },
+      {
+        "date": "2004-01-07",
+        "mm": 0.26
+      },
+      {
+        "date": "2004-01-08",
+        "mm": 0
+      },
+      {
+        "date": "2004-01-09",
+        "mm": 4.43
+      },
+      {
+        "date": "2004-01-10",
+        "mm": 22.54
+      },
+      {
+        "date": "2004-01-11",
+        "mm": 1.22
+      },
+      {
+        "date": "2004-01-12",
+        "mm": 3.09
+      },
+      {
+        "date": "2004-01-13",
+        "mm": 0.33
+      },
+      {
+        "date": "2004-01-14",
+        "mm": 44.35
+      },
+      {
+        "date": "2004-01-15",
+        "mm": 0.79
+      },
+      {
+        "date": "2004-01-16",
+        "mm": 1.04
+      },
+      {
+        "date": "2004-01-17",
+        "mm": 49.45
+      },
+      {
+        "date": "2004-01-18",
+        "mm": 45.73
+      },
+      {
+        "date": "2004-01-19",
+        "mm": 0.92
+      },
+      {
+        "date": "2004-01-20",
+        "mm": 12.77
+      },
+      {
+        "date": "2004-01-21",
+        "mm": 15.22
+      },
+      {
+        "date": "2004-01-22",
+        "mm": 7.49
+      },
+      {
+        "date": "2004-01-23",
+        "mm": 17.89
+      },
+      {
+        "date": "2004-01-24",
+        "mm": 29.21
+      },
+      {
+        "date": "2004-01-25",
+        "mm": 38.97
+      },
+      {
+        "date": "2004-01-26",
+        "mm": 13.1
+      },
+      {
+        "date": "2004-01-27",
+        "mm": 98.8
+      },
+      {
+        "date": "2004-01-28",
+        "mm": 3.27
+      },
+      {
+        "date": "2004-01-29",
+        "mm": 14.57
+      },
+      {
+        "date": "2004-01-30",
+        "mm": 0.54
+      },
+      {
+        "date": "2004-01-31",
+        "mm": 2.35
+      },
+      {
+        "date": "2004-02-01",
+        "mm": 3.47
+      },
+      {
+        "date": "2004-02-02",
+        "mm": 18.11
+      },
+      {
+        "date": "2004-02-03",
+        "mm": 0.42
+      },
+      {
+        "date": "2004-02-04",
+        "mm": 46.52
+      },
+      {
+        "date": "2004-02-05",
+        "mm": 34.1
+      },
+      {
+        "date": "2004-02-06",
+        "mm": 12.97
+      },
+      {
+        "date": "2004-02-07",
+        "mm": 5.77
+      },
+      {
+        "date": "2004-02-08",
+        "mm": 10.18
+      },
+      {
+        "date": "2004-02-09",
+        "mm": 5.96
+      },
+      {
+        "date": "2004-02-10",
+        "mm": 0
+      },
+      {
+        "date": "2004-02-11",
+        "mm": 0.5
+      },
+      {
+        "date": "2004-02-12",
+        "mm": 0.86
+      },
+      {
+        "date": "2004-02-13",
+        "mm": 9.05
+      },
+      {
+        "date": "2004-02-14",
+        "mm": 22.21
+      },
+      {
+        "date": "2004-02-15",
+        "mm": 3.23
+      },
+      {
+        "date": "2004-02-16",
+        "mm": 25.56
+      },
+      {
+        "date": "2004-02-17",
+        "mm": 2.21
+      },
+      {
+        "date": "2004-02-18",
+        "mm": 0
+      },
+      {
+        "date": "2004-02-19",
+        "mm": 0.43
+      },
+      {
+        "date": "2004-02-20",
+        "mm": 19.93
+      },
+      {
+        "date": "2004-02-21",
+        "mm": 8.89
+      },
+      {
+        "date": "2004-02-22",
+        "mm": 2.33
+      },
+      {
+        "date": "2004-02-23",
+        "mm": 15.25
+      },
+      {
+        "date": "2004-02-24",
+        "mm": 4.84
+      },
+      {
+        "date": "2004-02-25",
+        "mm": 6.35
+      },
+      {
+        "date": "2004-02-26",
+        "mm": 34.82
+      },
+      {
+        "date": "2004-02-27",
+        "mm": 50.9
+      },
+      {
+        "date": "2004-02-28",
+        "mm": 1.55
+      },
+      {
+        "date": "2004-02-29",
+        "mm": 18.41
+      },
+      {
+        "date": "2004-03-01",
+        "mm": 3.78
+      },
+      {
+        "date": "2004-03-02",
+        "mm": 0.72
+      },
+      {
+        "date": "2004-03-03",
+        "mm": 12.42
+      },
+      {
+        "date": "2004-03-04",
+        "mm": 9.59
+      },
+      {
+        "date": "2004-03-05",
+        "mm": 4.94
+      },
+      {
+        "date": "2004-03-06",
+        "mm": 4.24
+      },
+      {
+        "date": "2004-03-07",
+        "mm": 37.35
+      },
+      {
+        "date": "2004-03-08",
+        "mm": 21.04
+      },
+      {
+        "date": "2004-03-09",
+        "mm": 22.44
+      },
+      {
+        "date": "2004-03-10",
+        "mm": 13.99
+      },
+      {
+        "date": "2004-03-11",
+        "mm": 5.11
+      },
+      {
+        "date": "2004-03-12",
+        "mm": 3.13
+      },
+      {
+        "date": "2004-03-13",
+        "mm": 0.03
+      },
+      {
+        "date": "2004-03-14",
+        "mm": 0.01
+      },
+      {
+        "date": "2004-03-15",
+        "mm": 0.22
+      },
+      {
+        "date": "2004-03-16",
+        "mm": 7.87
+      },
+      {
+        "date": "2004-03-17",
+        "mm": 4.69
+      },
+      {
+        "date": "2004-03-18",
+        "mm": 33.24
+      },
+      {
+        "date": "2004-03-19",
+        "mm": 0.67
+      },
+      {
+        "date": "2004-03-20",
+        "mm": 0
+      },
+      {
+        "date": "2004-03-21",
+        "mm": 0
+      },
+      {
+        "date": "2004-03-22",
+        "mm": 0.37
+      },
+      {
+        "date": "2004-03-23",
+        "mm": 10.16
+      },
+      {
+        "date": "2004-03-24",
+        "mm": 19.06
+      },
+      {
+        "date": "2004-03-25",
+        "mm": 2.81
+      },
+      {
+        "date": "2004-03-26",
+        "mm": 34.1
+      },
+      {
+        "date": "2004-03-27",
+        "mm": 20.49
+      },
+      {
+        "date": "2004-03-28",
+        "mm": 0.8
+      },
+      {
+        "date": "2004-03-29",
+        "mm": 0
+      },
+      {
+        "date": "2004-03-30",
+        "mm": 0.55
+      },
+      {
+        "date": "2004-03-31",
+        "mm": 4.78
+      },
+      {
+        "date": "2004-04-01",
+        "mm": 35.14
+      },
+      {
+        "date": "2004-04-02",
+        "mm": 1.88
+      },
+      {
+        "date": "2004-04-03",
+        "mm": 12.3
+      },
+      {
+        "date": "2004-04-04",
+        "mm": 0.36
+      },
+      {
+        "date": "2004-04-05",
+        "mm": 11.97
+      },
+      {
+        "date": "2004-04-06",
+        "mm": 14.65
+      },
+      {
+        "date": "2004-04-07",
+        "mm": 26.7
+      },
+      {
+        "date": "2004-04-08",
+        "mm": 19.41
+      },
+      {
+        "date": "2004-04-09",
+        "mm": 17.92
+      },
+      {
+        "date": "2004-04-10",
+        "mm": 0
+      },
+      {
+        "date": "2004-04-11",
+        "mm": 0
+      },
+      {
+        "date": "2004-04-12",
+        "mm": 0.12
+      },
+      {
+        "date": "2004-04-13",
+        "mm": 0
+      },
+      {
+        "date": "2004-04-14",
+        "mm": 0.02
+      },
+      {
+        "date": "2004-04-15",
+        "mm": 0.02
+      },
+      {
+        "date": "2004-04-16",
+        "mm": 8.38
+      },
+      {
+        "date": "2004-04-17",
+        "mm": 8.76
+      },
+      {
+        "date": "2004-04-18",
+        "mm": 4.26
+      },
+      {
+        "date": "2004-04-19",
+        "mm": 18.45
+      },
+      {
+        "date": "2004-04-20",
+        "mm": 2.15
+      },
+      {
+        "date": "2004-04-21",
+        "mm": 1.53
+      },
+      {
+        "date": "2004-04-22",
+        "mm": 2.37
+      },
+      {
+        "date": "2004-04-23",
+        "mm": 2.87
+      },
+      {
+        "date": "2004-04-24",
+        "mm": 0.86
+      },
+      {
+        "date": "2004-04-25",
+        "mm": 13.6
+      },
+      {
+        "date": "2004-04-26",
+        "mm": 3.48
+      },
+      {
+        "date": "2004-04-27",
+        "mm": 8.47
+      },
+      {
+        "date": "2004-04-28",
+        "mm": 0.23
+      },
+      {
+        "date": "2004-04-29",
+        "mm": 0
+      },
+      {
+        "date": "2004-04-30",
+        "mm": 0
+      },
+      {
+        "date": "2004-05-01",
+        "mm": 1.46
+      },
+      {
+        "date": "2004-05-02",
+        "mm": 0
+      },
+      {
+        "date": "2004-05-03",
+        "mm": 3.26
+      },
+      {
+        "date": "2004-05-04",
+        "mm": 1.76
+      },
+      {
+        "date": "2004-05-05",
+        "mm": 2.21
+      },
+      {
+        "date": "2004-05-06",
+        "mm": 0
+      },
+      {
+        "date": "2004-05-07",
+        "mm": 4.58
+      },
+      {
+        "date": "2004-05-08",
+        "mm": 6.99
+      },
+      {
+        "date": "2004-05-09",
+        "mm": 0.6
+      },
+      {
+        "date": "2004-05-10",
+        "mm": 18.27
+      },
+      {
+        "date": "2004-05-11",
+        "mm": 0.49
+      },
+      {
+        "date": "2004-05-12",
+        "mm": 5.85
+      },
+      {
+        "date": "2004-05-13",
+        "mm": 2.33
+      },
+      {
+        "date": "2004-05-14",
+        "mm": 0
+      },
+      {
+        "date": "2004-05-15",
+        "mm": 0
+      },
+      {
+        "date": "2004-05-16",
+        "mm": 1.37
+      },
+      {
+        "date": "2004-05-17",
+        "mm": 0
+      },
+      {
+        "date": "2004-05-18",
+        "mm": 1.65
+      },
+      {
+        "date": "2004-05-19",
+        "mm": 0.11
+      },
+      {
+        "date": "2004-05-20",
+        "mm": 0
+      },
+      {
+        "date": "2004-05-21",
+        "mm": 14.8
+      },
+      {
+        "date": "2004-05-22",
+        "mm": 0
+      },
+      {
+        "date": "2004-05-23",
+        "mm": 0
+      },
+      {
+        "date": "2004-05-24",
+        "mm": 0
+      },
+      {
+        "date": "2004-05-25",
+        "mm": 6.81
+      },
+      {
+        "date": "2004-05-26",
+        "mm": 0
+      },
+      {
+        "date": "2004-05-27",
+        "mm": 0
+      },
+      {
+        "date": "2004-05-28",
+        "mm": 22.51
+      },
+      {
+        "date": "2004-05-29",
+        "mm": 5.24
+      },
+      {
+        "date": "2004-05-30",
+        "mm": 0
+      },
+      {
+        "date": "2004-05-31",
+        "mm": 0
+      },
+      {
+        "date": "2004-06-01",
+        "mm": 1.37
+      },
+      {
+        "date": "2004-06-02",
+        "mm": 16.08
+      },
+      {
+        "date": "2004-06-03",
+        "mm": 0
+      },
+      {
+        "date": "2004-06-04",
+        "mm": 2.84
+      },
+      {
+        "date": "2004-06-05",
+        "mm": 0.05
+      },
+      {
+        "date": "2004-06-06",
+        "mm": 0
+      },
+      {
+        "date": "2004-06-07",
+        "mm": 0.38
+      },
+      {
+        "date": "2004-06-08",
+        "mm": 0.27
+      },
+      {
+        "date": "2004-06-09",
+        "mm": 0
+      },
+      {
+        "date": "2004-06-10",
+        "mm": 0
+      },
+      {
+        "date": "2004-06-11",
+        "mm": 0
+      },
+      {
+        "date": "2004-06-12",
+        "mm": 0
+      },
+      {
+        "date": "2004-06-13",
+        "mm": 0
+      },
+      {
+        "date": "2004-06-14",
+        "mm": 2.68
+      },
+      {
+        "date": "2004-06-15",
+        "mm": 0.31
+      },
+      {
+        "date": "2004-06-16",
+        "mm": 1.8
+      },
+      {
+        "date": "2004-06-17",
+        "mm": 5.49
+      },
+      {
+        "date": "2004-06-18",
+        "mm": 0.89
+      },
+      {
+        "date": "2004-06-19",
+        "mm": 3.88
+      },
+      {
+        "date": "2004-06-20",
+        "mm": 0.32
+      },
+      {
+        "date": "2004-06-21",
+        "mm": 0
+      },
+      {
+        "date": "2004-06-22",
+        "mm": 0
+      },
+      {
+        "date": "2004-06-23",
+        "mm": 0
+      },
+      {
+        "date": "2004-06-24",
+        "mm": 0
+      },
+      {
+        "date": "2004-06-25",
+        "mm": 0
+      },
+      {
+        "date": "2004-06-26",
+        "mm": 1.04
+      },
+      {
+        "date": "2004-06-27",
+        "mm": 1.22
+      },
+      {
+        "date": "2004-06-28",
+        "mm": 0
+      },
+      {
+        "date": "2004-06-29",
+        "mm": 0
+      },
+      {
+        "date": "2004-06-30",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-01",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-02",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-03",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-04",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-05",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-06",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-07",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-08",
+        "mm": 2.53
+      },
+      {
+        "date": "2004-07-09",
+        "mm": 0.58
+      },
+      {
+        "date": "2004-07-10",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-11",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-12",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-13",
+        "mm": 2.56
+      },
+      {
+        "date": "2004-07-14",
+        "mm": 0.88
+      },
+      {
+        "date": "2004-07-15",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-16",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-17",
+        "mm": 10.66
+      },
+      {
+        "date": "2004-07-18",
+        "mm": 0.55
+      },
+      {
+        "date": "2004-07-19",
+        "mm": 0.39
+      },
+      {
+        "date": "2004-07-20",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-21",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-22",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-23",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-24",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-25",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-26",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-27",
+        "mm": 0.75
+      },
+      {
+        "date": "2004-07-28",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-29",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-30",
+        "mm": 0
+      },
+      {
+        "date": "2004-07-31",
+        "mm": 0
+      },
+      {
+        "date": "2004-08-01",
+        "mm": 0
+      },
+      {
+        "date": "2004-08-02",
+        "mm": 2.31
+      },
+      {
+        "date": "2004-08-03",
+        "mm": 0.59
+      },
+      {
+        "date": "2004-08-04",
+        "mm": 0
+      },
+      {
+        "date": "2004-08-05",
+        "mm": 0
+      },
+      {
+        "date": "2004-08-06",
+        "mm": 0.31
+      },
+      {
+        "date": "2004-08-07",
+        "mm": 0
+      },
+      {
+        "date": "2004-08-08",
+        "mm": 0
+      },
+      {
+        "date": "2004-08-09",
+        "mm": 0.11
+      },
+      {
+        "date": "2004-08-10",
+        "mm": 2.44
+      },
+      {
+        "date": "2004-08-11",
+        "mm": 1.68
+      },
+      {
+        "date": "2004-08-12",
+        "mm": 0
+      },
+      {
+        "date": "2004-08-13",
+        "mm": 0
+      },
+      {
+        "date": "2004-08-14",
+        "mm": 0
+      },
+      {
+        "date": "2004-08-15",
+        "mm": 0
+      },
+      {
+        "date": "2004-08-16",
+        "mm": 0
+      },
+      {
+        "date": "2004-08-17",
+        "mm": 0
+      },
+      {
+        "date": "2004-08-18",
+        "mm": 0
+      },
+      {
+        "date": "2004-08-19",
+        "mm": 0
+      },
+      {
+        "date": "2004-08-20",
+        "mm": 0
+      },
+      {
+        "date": "2004-08-21",
+        "mm": 1.34
+      },
+      {
+        "date": "2004-08-22",
+        "mm": 0
+      },
+      {
+        "date": "2004-08-23",
+        "mm": 1.33
+      },
+      {
+        "date": "2004-08-24",
+        "mm": 2.37
+      },
+      {
+        "date": "2004-08-25",
+        "mm": 2.01
+      },
+      {
+        "date": "2004-08-26",
+        "mm": 2.25
+      },
+      {
+        "date": "2004-08-27",
+        "mm": 0.15
+      },
+      {
+        "date": "2004-08-28",
+        "mm": 0.19
+      },
+      {
+        "date": "2004-08-29",
+        "mm": 0
+      },
+      {
+        "date": "2004-08-30",
+        "mm": 0
+      },
+      {
+        "date": "2004-08-31",
+        "mm": 0
+      },
+      {
+        "date": "2004-09-01",
+        "mm": 1.97
+      },
+      {
+        "date": "2004-09-02",
+        "mm": 0
+      },
+      {
+        "date": "2004-09-03",
+        "mm": 0
+      },
+      {
+        "date": "2004-09-04",
+        "mm": 0
+      },
+      {
+        "date": "2004-09-05",
+        "mm": 0.44
+      },
+      {
+        "date": "2004-09-06",
+        "mm": 2.62
+      },
+      {
+        "date": "2004-09-07",
+        "mm": 0.56
+      },
+      {
+        "date": "2004-09-08",
+        "mm": 0
+      },
+      {
+        "date": "2004-09-09",
+        "mm": 0
+      },
+      {
+        "date": "2004-09-10",
+        "mm": 0.1
+      },
+      {
+        "date": "2004-09-11",
+        "mm": 0.16
+      },
+      {
+        "date": "2004-09-12",
+        "mm": 1.2
+      },
+      {
+        "date": "2004-09-13",
+        "mm": 0.13
+      },
+      {
+        "date": "2004-09-14",
+        "mm": 0.2
+      },
+      {
+        "date": "2004-09-15",
+        "mm": 0.62
+      },
+      {
+        "date": "2004-09-16",
+        "mm": 0
+      },
+      {
+        "date": "2004-09-17",
+        "mm": 0
+      },
+      {
+        "date": "2004-09-18",
+        "mm": 0
+      },
+      {
+        "date": "2004-09-19",
+        "mm": 0.21
+      },
+      {
+        "date": "2004-09-20",
+        "mm": 0
+      },
+      {
+        "date": "2004-09-21",
+        "mm": 1
+      },
+      {
+        "date": "2004-09-22",
+        "mm": 1.82
+      },
+      {
+        "date": "2004-09-23",
+        "mm": 0
+      },
+      {
+        "date": "2004-09-24",
+        "mm": 0
+      },
+      {
+        "date": "2004-09-25",
+        "mm": 0.9
+      },
+      {
+        "date": "2004-09-26",
+        "mm": 0.97
+      },
+      {
+        "date": "2004-09-27",
+        "mm": 0
+      },
+      {
+        "date": "2004-09-28",
+        "mm": 0
+      },
+      {
+        "date": "2004-09-29",
+        "mm": 0
+      },
+      {
+        "date": "2004-09-30",
+        "mm": 0
+      },
+      {
+        "date": "2004-10-01",
+        "mm": 2.83
+      },
+      {
+        "date": "2004-10-02",
+        "mm": 0.38
+      },
+      {
+        "date": "2004-10-03",
+        "mm": 0
+      },
+      {
+        "date": "2004-10-04",
+        "mm": 1.83
+      },
+      {
+        "date": "2004-10-05",
+        "mm": 5.74
+      },
+      {
+        "date": "2004-10-06",
+        "mm": 0
+      },
+      {
+        "date": "2004-10-07",
+        "mm": 0.12
+      },
+      {
+        "date": "2004-10-08",
+        "mm": 0
+      },
+      {
+        "date": "2004-10-09",
+        "mm": 0
+      },
+      {
+        "date": "2004-10-10",
+        "mm": 0
+      },
+      {
+        "date": "2004-10-11",
+        "mm": 0
+      },
+      {
+        "date": "2004-10-12",
+        "mm": 0
+      },
+      {
+        "date": "2004-10-13",
+        "mm": 0
+      },
+      {
+        "date": "2004-10-14",
+        "mm": 0
+      },
+      {
+        "date": "2004-10-15",
+        "mm": 0
+      },
+      {
+        "date": "2004-10-16",
+        "mm": 0
+      },
+      {
+        "date": "2004-10-17",
+        "mm": 0
+      },
+      {
+        "date": "2004-10-18",
+        "mm": 0
+      },
+      {
+        "date": "2004-10-19",
+        "mm": 0.71
+      },
+      {
+        "date": "2004-10-20",
+        "mm": 0.78
+      },
+      {
+        "date": "2004-10-21",
+        "mm": 5.28
+      },
+      {
+        "date": "2004-10-22",
+        "mm": 0.21
+      },
+      {
+        "date": "2004-10-23",
+        "mm": 0.22
+      },
+      {
+        "date": "2004-10-24",
+        "mm": 0
+      },
+      {
+        "date": "2004-10-25",
+        "mm": 0
+      },
+      {
+        "date": "2004-10-26",
+        "mm": 0.13
+      },
+      {
+        "date": "2004-10-27",
+        "mm": 5.57
+      },
+      {
+        "date": "2004-10-28",
+        "mm": 0
+      },
+      {
+        "date": "2004-10-29",
+        "mm": 0
+      },
+      {
+        "date": "2004-10-30",
+        "mm": 0
+      },
+      {
+        "date": "2004-10-31",
+        "mm": 0
+      },
+      {
+        "date": "2004-11-01",
+        "mm": 0.57
+      },
+      {
+        "date": "2004-11-02",
+        "mm": 0
+      },
+      {
+        "date": "2004-11-03",
+        "mm": 0.11
+      },
+      {
+        "date": "2004-11-04",
+        "mm": 0
+      },
+      {
+        "date": "2004-11-05",
+        "mm": 0
+      },
+      {
+        "date": "2004-11-06",
+        "mm": 0
+      },
+      {
+        "date": "2004-11-07",
+        "mm": 0
+      },
+      {
+        "date": "2004-11-08",
+        "mm": 5.36
+      },
+      {
+        "date": "2004-11-09",
+        "mm": 0.42
+      },
+      {
+        "date": "2004-11-10",
+        "mm": 0
+      },
+      {
+        "date": "2004-11-11",
+        "mm": 0
+      },
+      {
+        "date": "2004-11-12",
+        "mm": 0
+      },
+      {
+        "date": "2004-11-13",
+        "mm": 0
+      },
+      {
+        "date": "2004-11-14",
+        "mm": 0
+      },
+      {
+        "date": "2004-11-15",
+        "mm": 0.25
+      },
+      {
+        "date": "2004-11-16",
+        "mm": 0
+      },
+      {
+        "date": "2004-11-17",
+        "mm": 0
+      },
+      {
+        "date": "2004-11-18",
+        "mm": 0
+      },
+      {
+        "date": "2004-11-19",
+        "mm": 0
+      },
+      {
+        "date": "2004-11-20",
+        "mm": 0
+      },
+      {
+        "date": "2004-11-21",
+        "mm": 0.31
+      },
+      {
+        "date": "2004-11-22",
+        "mm": 0.76
+      },
+      {
+        "date": "2004-11-23",
+        "mm": 8.03
+      },
+      {
+        "date": "2004-11-24",
+        "mm": 0
+      },
+      {
+        "date": "2004-11-25",
+        "mm": 0
+      },
+      {
+        "date": "2004-11-26",
+        "mm": 26.7
+      },
+      {
+        "date": "2004-11-27",
+        "mm": 12.66
+      },
+      {
+        "date": "2004-11-28",
+        "mm": 0
+      },
+      {
+        "date": "2004-11-29",
+        "mm": 0
+      },
+      {
+        "date": "2004-11-30",
+        "mm": 0
+      },
+      {
+        "date": "2004-12-01",
+        "mm": 0
+      },
+      {
+        "date": "2004-12-02",
+        "mm": 0
+      },
+      {
+        "date": "2004-12-03",
+        "mm": 1.39
+      },
+      {
+        "date": "2004-12-04",
+        "mm": 0.19
+      },
+      {
+        "date": "2004-12-05",
+        "mm": 0
+      },
+      {
+        "date": "2004-12-06",
+        "mm": 1.42
+      },
+      {
+        "date": "2004-12-07",
+        "mm": 0.45
+      },
+      {
+        "date": "2004-12-08",
+        "mm": 11.11
+      },
+      {
+        "date": "2004-12-09",
+        "mm": 0.02
+      },
+      {
+        "date": "2004-12-10",
+        "mm": 5.51
+      },
+      {
+        "date": "2004-12-11",
+        "mm": 0.45
+      },
+      {
+        "date": "2004-12-12",
+        "mm": 0
+      },
+      {
+        "date": "2004-12-13",
+        "mm": 0
+      },
+      {
+        "date": "2004-12-14",
+        "mm": 0.22
+      },
+      {
+        "date": "2004-12-15",
+        "mm": 0.26
+      },
+      {
+        "date": "2004-12-16",
+        "mm": 0
+      },
+      {
+        "date": "2004-12-17",
+        "mm": 0.08
+      },
+      {
+        "date": "2004-12-18",
+        "mm": 0.7
+      },
+      {
+        "date": "2004-12-19",
+        "mm": 0
+      },
+      {
+        "date": "2004-12-20",
+        "mm": 0.55
+      },
+      {
+        "date": "2004-12-21",
+        "mm": 0
+      },
+      {
+        "date": "2004-12-22",
+        "mm": 1.07
+      },
+      {
+        "date": "2004-12-23",
+        "mm": 0
+      },
+      {
+        "date": "2004-12-24",
+        "mm": 0
+      },
+      {
+        "date": "2004-12-25",
+        "mm": 0.2
+      },
+      {
+        "date": "2004-12-26",
+        "mm": 6.63
+      },
+      {
+        "date": "2004-12-27",
+        "mm": 0.32
+      },
+      {
+        "date": "2004-12-28",
+        "mm": 36.82
+      },
+      {
+        "date": "2004-12-29",
+        "mm": 0.47
+      },
+      {
+        "date": "2004-12-30",
+        "mm": 0.07
+      },
+      {
+        "date": "2004-12-31",
+        "mm": 1.39
+      },
+      {
+        "date": "2005-01-01",
+        "mm": 0
+      },
+      {
+        "date": "2005-01-02",
+        "mm": 0.14
+      },
+      {
+        "date": "2005-01-03",
+        "mm": 0
+      },
+      {
+        "date": "2005-01-04",
+        "mm": 0
+      },
+      {
+        "date": "2005-01-05",
+        "mm": 0
+      },
+      {
+        "date": "2005-01-06",
+        "mm": 0
+      },
+      {
+        "date": "2005-01-07",
+        "mm": 0
+      },
+      {
+        "date": "2005-01-08",
+        "mm": 0
+      },
+      {
+        "date": "2005-01-09",
+        "mm": 3.28
+      },
+      {
+        "date": "2005-01-10",
+        "mm": 1
+      },
+      {
+        "date": "2005-01-11",
+        "mm": 0.42
+      },
+      {
+        "date": "2005-01-12",
+        "mm": 0
+      },
+      {
+        "date": "2005-01-13",
+        "mm": 0.13
+      },
+      {
+        "date": "2005-01-14",
+        "mm": 2.12
+      },
+      {
+        "date": "2005-01-15",
+        "mm": 50.89
+      },
+      {
+        "date": "2005-01-16",
+        "mm": 4.86
+      },
+      {
+        "date": "2005-01-17",
+        "mm": 4.91
+      },
+      {
+        "date": "2005-01-18",
+        "mm": 1.01
+      },
+      {
+        "date": "2005-01-19",
+        "mm": 1.1
+      },
+      {
+        "date": "2005-01-20",
+        "mm": 0.24
+      },
+      {
+        "date": "2005-01-21",
+        "mm": 0
+      },
+      {
+        "date": "2005-01-22",
+        "mm": 24.03
+      },
+      {
+        "date": "2005-01-23",
+        "mm": 26
+      },
+      {
+        "date": "2005-01-24",
+        "mm": 0
+      },
+      {
+        "date": "2005-01-25",
+        "mm": 41.17
+      },
+      {
+        "date": "2005-01-26",
+        "mm": 13.94
+      },
+      {
+        "date": "2005-01-27",
+        "mm": 0
+      },
+      {
+        "date": "2005-01-28",
+        "mm": 0.04
+      },
+      {
+        "date": "2005-01-29",
+        "mm": 0.33
+      },
+      {
+        "date": "2005-01-30",
+        "mm": 0.33
+      },
+      {
+        "date": "2005-01-31",
+        "mm": 1.27
+      },
+      {
+        "date": "2005-02-01",
+        "mm": 0.29
+      },
+      {
+        "date": "2005-02-02",
+        "mm": 0.09
+      },
+      {
+        "date": "2005-02-03",
+        "mm": 0
+      },
+      {
+        "date": "2005-02-04",
+        "mm": 0.84
+      },
+      {
+        "date": "2005-02-05",
+        "mm": 0.54
+      },
+      {
+        "date": "2005-02-06",
+        "mm": 0.46
+      },
+      {
+        "date": "2005-02-07",
+        "mm": 3.86
+      },
+      {
+        "date": "2005-02-08",
+        "mm": 0.43
+      },
+      {
+        "date": "2005-02-09",
+        "mm": 0
+      },
+      {
+        "date": "2005-02-10",
+        "mm": 0.66
+      },
+      {
+        "date": "2005-02-11",
+        "mm": 3.71
+      },
+      {
+        "date": "2005-02-12",
+        "mm": 30.44
+      },
+      {
+        "date": "2005-02-13",
+        "mm": 0.91
+      },
+      {
+        "date": "2005-02-14",
+        "mm": 4.68
+      },
+      {
+        "date": "2005-02-15",
+        "mm": 13.62
+      },
+      {
+        "date": "2005-02-16",
+        "mm": 30.19
+      },
+      {
+        "date": "2005-02-17",
+        "mm": 10.12
+      },
+      {
+        "date": "2005-02-18",
+        "mm": 48.68
+      },
+      {
+        "date": "2005-02-19",
+        "mm": 0
+      },
+      {
+        "date": "2005-02-20",
+        "mm": 10.97
+      },
+      {
+        "date": "2005-02-21",
+        "mm": 1.16
+      },
+      {
+        "date": "2005-02-22",
+        "mm": 22.12
+      },
+      {
+        "date": "2005-02-23",
+        "mm": 5.6
+      },
+      {
+        "date": "2005-02-24",
+        "mm": 1.8
+      },
+      {
+        "date": "2005-02-25",
+        "mm": 0.34
+      },
+      {
+        "date": "2005-02-26",
+        "mm": 11.36
+      },
+      {
+        "date": "2005-02-27",
+        "mm": 1.22
+      },
+      {
+        "date": "2005-02-28",
+        "mm": 49.81
+      },
+      {
+        "date": "2005-03-01",
+        "mm": 0.07
+      },
+      {
+        "date": "2005-03-02",
+        "mm": 0.21
+      },
+      {
+        "date": "2005-03-03",
+        "mm": 8.44
+      },
+      {
+        "date": "2005-03-04",
+        "mm": 77.94
+      },
+      {
+        "date": "2005-03-05",
+        "mm": 0
+      },
+      {
+        "date": "2005-03-06",
+        "mm": 0
+      },
+      {
+        "date": "2005-03-07",
+        "mm": 0.66
+      },
+      {
+        "date": "2005-03-08",
+        "mm": 28.77
+      },
+      {
+        "date": "2005-03-09",
+        "mm": 0.01
+      },
+      {
+        "date": "2005-03-10",
+        "mm": 0.05
+      },
+      {
+        "date": "2005-03-11",
+        "mm": 7.34
+      },
+      {
+        "date": "2005-03-12",
+        "mm": 2.47
+      },
+      {
+        "date": "2005-03-13",
+        "mm": 1.64
+      },
+      {
+        "date": "2005-03-14",
+        "mm": 20.46
+      },
+      {
+        "date": "2005-03-15",
+        "mm": 0.64
+      },
+      {
+        "date": "2005-03-16",
+        "mm": 7.45
+      },
+      {
+        "date": "2005-03-17",
+        "mm": 1.05
+      },
+      {
+        "date": "2005-03-18",
+        "mm": 19.7
+      },
+      {
+        "date": "2005-03-19",
+        "mm": 13.16
+      },
+      {
+        "date": "2005-03-20",
+        "mm": 16.88
+      },
+      {
+        "date": "2005-03-21",
+        "mm": 30.49
+      },
+      {
+        "date": "2005-03-22",
+        "mm": 21.87
+      },
+      {
+        "date": "2005-03-23",
+        "mm": 0
+      },
+      {
+        "date": "2005-03-24",
+        "mm": 0.15
+      },
+      {
+        "date": "2005-03-25",
+        "mm": 1.52
+      },
+      {
+        "date": "2005-03-26",
+        "mm": 0.72
+      },
+      {
+        "date": "2005-03-27",
+        "mm": 42.76
+      },
+      {
+        "date": "2005-03-28",
+        "mm": 6.86
+      },
+      {
+        "date": "2005-03-29",
+        "mm": 6.48
+      },
+      {
+        "date": "2005-03-30",
+        "mm": 5.65
+      },
+      {
+        "date": "2005-03-31",
+        "mm": 50.14
+      },
+      {
+        "date": "2005-04-01",
+        "mm": 0
+      },
+      {
+        "date": "2005-04-02",
+        "mm": 1.62
+      },
+      {
+        "date": "2005-04-03",
+        "mm": 0.82
+      },
+      {
+        "date": "2005-04-04",
+        "mm": 2.12
+      },
+      {
+        "date": "2005-04-05",
+        "mm": 0
+      },
+      {
+        "date": "2005-04-06",
+        "mm": 0.13
+      },
+      {
+        "date": "2005-04-07",
+        "mm": 0.53
+      },
+      {
+        "date": "2005-04-08",
+        "mm": 0.4
+      },
+      {
+        "date": "2005-04-09",
+        "mm": 0.39
+      },
+      {
+        "date": "2005-04-10",
+        "mm": 0.65
+      },
+      {
+        "date": "2005-04-11",
+        "mm": 5.13
+      },
+      {
+        "date": "2005-04-12",
+        "mm": 0
+      },
+      {
+        "date": "2005-04-13",
+        "mm": 7.52
+      },
+      {
+        "date": "2005-04-14",
+        "mm": 6.02
+      },
+      {
+        "date": "2005-04-15",
+        "mm": 1.25
+      },
+      {
+        "date": "2005-04-16",
+        "mm": 1.92
+      },
+      {
+        "date": "2005-04-17",
+        "mm": 0
+      },
+      {
+        "date": "2005-04-18",
+        "mm": 0
+      },
+      {
+        "date": "2005-04-19",
+        "mm": 4.38
+      },
+      {
+        "date": "2005-04-20",
+        "mm": 1.45
+      },
+      {
+        "date": "2005-04-21",
+        "mm": 0.62
+      },
+      {
+        "date": "2005-04-22",
+        "mm": 2.06
+      },
+      {
+        "date": "2005-04-23",
+        "mm": 9.93
+      },
+      {
+        "date": "2005-04-24",
+        "mm": 4.35
+      },
+      {
+        "date": "2005-04-25",
+        "mm": 31.4
+      },
+      {
+        "date": "2005-04-26",
+        "mm": 1.73
+      },
+      {
+        "date": "2005-04-27",
+        "mm": 0
+      },
+      {
+        "date": "2005-04-28",
+        "mm": 0.84
+      },
+      {
+        "date": "2005-04-29",
+        "mm": 50.82
+      },
+      {
+        "date": "2005-04-30",
+        "mm": 37.38
+      },
+      {
+        "date": "2005-05-01",
+        "mm": 0
+      },
+      {
+        "date": "2005-05-02",
+        "mm": 35.31
+      },
+      {
+        "date": "2005-05-03",
+        "mm": 5.76
+      },
+      {
+        "date": "2005-05-04",
+        "mm": 18.17
+      },
+      {
+        "date": "2005-05-05",
+        "mm": 0
+      },
+      {
+        "date": "2005-05-06",
+        "mm": 0
+      },
+      {
+        "date": "2005-05-07",
+        "mm": 0.47
+      },
+      {
+        "date": "2005-05-08",
+        "mm": 0
+      },
+      {
+        "date": "2005-05-09",
+        "mm": 0
+      },
+      {
+        "date": "2005-05-10",
+        "mm": 0
+      },
+      {
+        "date": "2005-05-11",
+        "mm": 0
+      },
+      {
+        "date": "2005-05-12",
+        "mm": 0.96
+      },
+      {
+        "date": "2005-05-13",
+        "mm": 0.51
+      },
+      {
+        "date": "2005-05-14",
+        "mm": 1.83
+      },
+      {
+        "date": "2005-05-15",
+        "mm": 0
+      },
+      {
+        "date": "2005-05-16",
+        "mm": 0.31
+      },
+      {
+        "date": "2005-05-17",
+        "mm": 0
+      },
+      {
+        "date": "2005-05-18",
+        "mm": 0.24
+      },
+      {
+        "date": "2005-05-19",
+        "mm": 0.64
+      },
+      {
+        "date": "2005-05-20",
+        "mm": 0.73
+      },
+      {
+        "date": "2005-05-21",
+        "mm": 3.21
+      },
+      {
+        "date": "2005-05-22",
+        "mm": 3.4
+      },
+      {
+        "date": "2005-05-23",
+        "mm": 47.69
+      },
+      {
+        "date": "2005-05-24",
+        "mm": 3.57
+      },
+      {
+        "date": "2005-05-25",
+        "mm": 0.79
+      },
+      {
+        "date": "2005-05-26",
+        "mm": 0.53
+      },
+      {
+        "date": "2005-05-27",
+        "mm": 2.67
+      },
+      {
+        "date": "2005-05-28",
+        "mm": 2.06
+      },
+      {
+        "date": "2005-05-29",
+        "mm": 0
+      },
+      {
+        "date": "2005-05-30",
+        "mm": 0
+      },
+      {
+        "date": "2005-05-31",
+        "mm": 0
+      },
+      {
+        "date": "2005-06-01",
+        "mm": 0
+      },
+      {
+        "date": "2005-06-02",
+        "mm": 1.44
+      },
+      {
+        "date": "2005-06-03",
+        "mm": 2.17
+      },
+      {
+        "date": "2005-06-04",
+        "mm": 0
+      },
+      {
+        "date": "2005-06-05",
+        "mm": 0
+      },
+      {
+        "date": "2005-06-06",
+        "mm": 0
+      },
+      {
+        "date": "2005-06-07",
+        "mm": 0
+      },
+      {
+        "date": "2005-06-08",
+        "mm": 0
+      },
+      {
+        "date": "2005-06-09",
+        "mm": 0.6
+      },
+      {
+        "date": "2005-06-10",
+        "mm": 0
+      },
+      {
+        "date": "2005-06-11",
+        "mm": 0
+      },
+      {
+        "date": "2005-06-12",
+        "mm": 0
+      },
+      {
+        "date": "2005-06-13",
+        "mm": 0
+      },
+      {
+        "date": "2005-06-14",
+        "mm": 2.41
+      },
+      {
+        "date": "2005-06-15",
+        "mm": 0
+      },
+      {
+        "date": "2005-06-16",
+        "mm": 0
+      },
+      {
+        "date": "2005-06-17",
+        "mm": 0
+      },
+      {
+        "date": "2005-06-18",
+        "mm": 0
+      },
+      {
+        "date": "2005-06-19",
+        "mm": 12.96
+      },
+      {
+        "date": "2005-06-20",
+        "mm": 0
+      },
+      {
+        "date": "2005-06-21",
+        "mm": 4.4
+      },
+      {
+        "date": "2005-06-22",
+        "mm": 0.76
+      },
+      {
+        "date": "2005-06-23",
+        "mm": 0
+      },
+      {
+        "date": "2005-06-24",
+        "mm": 3.04
+      },
+      {
+        "date": "2005-06-25",
+        "mm": 1.1
+      },
+      {
+        "date": "2005-06-26",
+        "mm": 0
+      },
+      {
+        "date": "2005-06-27",
+        "mm": 0
+      },
+      {
+        "date": "2005-06-28",
+        "mm": 0
+      },
+      {
+        "date": "2005-06-29",
+        "mm": 0
+      },
+      {
+        "date": "2005-06-30",
+        "mm": 0
+      },
+      {
+        "date": "2005-07-01",
+        "mm": 0
+      },
+      {
+        "date": "2005-07-02",
+        "mm": 0
+      },
+      {
+        "date": "2005-07-03",
+        "mm": 0
+      },
+      {
+        "date": "2005-07-04",
+        "mm": 0
+      },
+      {
+        "date": "2005-07-05",
+        "mm": 0
+      },
+      {
+        "date": "2005-07-06",
+        "mm": 0.07
+      },
+      {
+        "date": "2005-07-07",
+        "mm": 0
+      },
+      {
+        "date": "2005-07-08",
+        "mm": 1.09
+      },
+      {
+        "date": "2005-07-09",
+        "mm": 6.7
+      },
+      {
+        "date": "2005-07-10",
+        "mm": 0.01
+      },
+      {
+        "date": "2005-07-11",
+        "mm": 0
+      },
+      {
+        "date": "2005-07-12",
+        "mm": 0
+      },
+      {
+        "date": "2005-07-13",
+        "mm": 0
+      },
+      {
+        "date": "2005-07-14",
+        "mm": 0
+      },
+      {
+        "date": "2005-07-15",
+        "mm": 0
+      },
+      {
+        "date": "2005-07-16",
+        "mm": 0
+      },
+      {
+        "date": "2005-07-17",
+        "mm": 0
+      },
+      {
+        "date": "2005-07-18",
+        "mm": 0
+      },
+      {
+        "date": "2005-07-19",
+        "mm": 0
+      },
+      {
+        "date": "2005-07-20",
+        "mm": 0
+      },
+      {
+        "date": "2005-07-21",
+        "mm": 0
+      }
+    ]
+  },
+  "label": {
+    "payout_due": null,
+    "expected_inspection": true,
+    "basis": "534 consecutive reported zero observations across 1146 calendar days, with 612 missing station days. Matched satellite dates total 379.19 mm, maximum 42.76 mm; complete-calendar satellite total 4460.59 mm. This does not establish farm loss or instrument failure. Policy terms are illustrative synthetic thresholds (150/60 mm), not calibrated historical insurance terms."
+  },
+  "provenance": {
+    "station_url": "https://noaa-ghcn-pds.s3.amazonaws.com/csv/by_station/BR037041370.csv",
+    "satellite_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=IMERG_PRECTOT&community=AG&longitude=-42.817&latitude=-5.05&start=20010101&end=20241231&format=JSON&time-standard=UTC"
+  }
+}
