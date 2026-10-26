@@ -1,0 +1,25 @@
+{
+  "claims": [
+    {
+      "claim_id": "CLM-LAG-2025-001",
+      "policy_id": "POL-LAG-2025-014",
+      "submitted_at": "2026-10-26T00:00:00Z",
+      "event_text": "Our group reports that July rains failed. Please check the rainfall record before settling the claim.",
+      "synthetic": true
+    },
+    {
+      "claim_id": "CLM-LAG-2025-002",
+      "policy_id": "POL-LAG-2025-015",
+      "submitted_at": "2026-10-26T00:00:00Z",
+      "event_text": "Our group reports that July rains failed. Please check the rainfall record before settling the claim.",
+      "synthetic": true
+    },
+    {
+      "claim_id": "CLM-LAG-2025-003",
+      "policy_id": "POL-LAG-2025-016",
+      "submitted_at": "2026-10-26T00:00:00Z",
+      "event_text": "Our group reports that July rains failed. Please check the rainfall record before settling the claim.",
+      "synthetic": true
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "policies": [
+    {
+      "crop": "maize",
+      "synthetic": true,
+      "farm_lat": 6.577,
+      "farm_lon": 3.321,
+      "ref_station_id": "NIM00065201",
+      "window_start": "2025-07-01",
+      "window_end": "2025-07-31",
+      "trigger_mm": 144.3,
+      "exit_mm": 61.8,
+      "borderline_band_mm": 5,
+      "min_coverage": 0.8,
+      "max_station_km": 20,
+      "power_table": "power_lagos_2025_daily",
+      "policy_id": "POL-LAG-2025-014",
+      "group_name": "Ikorodu Maize Cooperative (synthetic)",
+      "sum_insured_ngn": 2500000
+    },
+    {
+      "crop": "maize",
+      "synthetic": true,
+      "farm_lat": 6.577,
+      "farm_lon": 3.321,
+      "ref_station_id": "NIM00065201",
+      "window_start": "2025-07-01",
+      "window_end": "2025-07-31",
+      "trigger_mm": 144.3,
+      "exit_mm": 61.8,
+      "borderline_band_mm": 5,
+      "min_coverage": 0.8,
+      "max_station_km": 20,
+      "power_table": "power_lagos_2025_daily",
+      "policy_id": "POL-LAG-2025-015",
+      "group_name": "Ikeja Growers Association (synthetic)",
+      "sum_insured_ngn": 1800000
+    },
+    {
+      "crop": "maize",
+      "synthetic": true,
+      "farm_lat": 6.577,
+      "farm_lon": 3.321,
+      "ref_station_id": "NIM00065201",
+      "window_start": "2025-07-01",
+      "window_end": "2025-07-31",
+      "trigger_mm": 144.3,
+      "exit_mm": 61.8,
+      "borderline_band_mm": 5,
+      "min_coverage": 0.8,
+      "max_station_km": 20,
+      "power_table": "power_lagos_2025_daily",
+      "policy_id": "POL-LAG-2025-016",
+      "group_name": "Agege Farmers Group (synthetic)",
+      "sum_insured_ngn": 1200000
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "stations": [
+    {
+      "id": "NIM00065201",
+      "name": "MURTALA MUHAMMED",
+      "lat": 6.577,
+      "lon": 3.321,
+      "elevation_m": 41.1
+    }
+  ]
+}
