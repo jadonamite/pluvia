@@ -8,15 +8,16 @@ memory operations using cached rainfall and a deterministic model stand-in.
 
 ## What is proven today
 
-| Integration | Verified offline | Awaiting credentials |
+| Integration | Proven live | Still to prove |
 |---|---|---|
-| Zetaris | Registration generation, source-schema checks, adapter request/response tests and the DataAgent SQL executed against DuckDB snapshots | Authenticated registration, schema inspection and an end-to-end claim through the live Zetaris service |
+| Zetaris | Authenticated REST SQL against a self-hosted instance (Docker on an AWS EC2 virtual machine, 9 of 9 platform checks). The registrar created all 22 objects: the NOAA per-station CSV on public S3, the NASA POWER `IMERG_PRECTOT` REST tables and the register REST tables, each with its view. The views return the measured figures: gauge 10 days and 6.1 mm, satellite 31 of 31 days and 131.7 mm, 8,766 prior-year days. A Lagos claim ran its six DataAgent queries through Zetaris and returned `INSPECT` | The same claim with Nightshift live in the same run, kept as a committed trace |
 | Meterless H-MEM | Official conformance: 13/13; persistent recall across separate processes; conflict queue integrated with the inspection decision | Nothing for the local engine; it requires no provider credentials |
-| Nightshift | Adapter tests for route selection, returned serving-model evidence, retries and validation fallback; per-call traces in the sample loop | Authenticated model discovery and a real completion through the configured route |
-| NVIDIA | The Nightshift integration can request the configured Nemotron route | A response or Nightshift receipt proving which NVIDIA model actually served the claim |
+| Nightshift | On the build Mac: authenticated `GET /v1/models` listing 56 routes, and full claims completed through the configured route (175 seconds with no extra rounds), each call carrying a `meterless.compute_receipt.v1` | A committed trace from a pinned Nemotron route, with live Zetaris data in the same run |
+| NVIDIA | `nvidia/nemotron-3.5-bolt-e4b` served claim calls through Nightshift with a compute receipt per call. `meterless/auto` sent one of five calls in one run to a non-NVIDIA model, so the route is pinned | A committed trace in which every `model_response` names an `nvidia/` model |
 
 These are different kinds of proof. DuckDB execution does not establish that a
-Zetaris registration succeeded. `sample-rules` is deterministic application code;
+Zetaris registration succeeded; the live registration above does. The Nightshift and
+NVIDIA rows record observations on the build Mac whose traces are not yet committed. `sample-rules` is deterministic application code;
 it is not NVIDIA inference or a recorded Nemotron answer.
 
 ## Zetaris: one live query boundary
@@ -105,7 +106,11 @@ also registers prior years for contextual evidence requests.
 
 The registrar checks metadata, submits one statement at a time, caches sources
 and verifies NOAA columns before creating dependent views. Passing the local
-statement checks is not a live registration result.
+statement checks is not a live registration result; the live run is. Against a real
+instance it created 21 objects and skipped the existing container: Zetaris has no SQL
+listing of SchemaStore containers, so a duplicate `CREATE` that reports "already exists"
+counts as skipped. The REST endpoint returns `{"headers": [...], "data": [[...]]}` with
+every value as a string, and the adapter converts numbers and booleans back.
 
 ## Meterless engine: H-MEM in the claims workflow
 
@@ -166,16 +171,19 @@ name. Invalid model JSON receives one validation retry, then a traced
 deterministic fallback. The financial gate remains independent of model prose.
 
 Offline traces show the actual serving adapter as `sample-rules`. Live route and
-served-model logging are tested with mock responses; no credentialed Nightshift
-completion is claimed today.
+served-model logging are also tested with mock responses. On the build Mac,
+credentialed completions have run through Nightshift with a compute receipt per
+call; the committed demo traces still come from `sample-rules`.
 
 ## NVIDIA through Nightshift
 
 Select a Nemotron route in Nightshift and place the NVIDIA provider key only in
 Nightshift's Providers settings. Pluvia holds no NVIDIA key and makes no direct
-NVIDIA request. Nightshift owns that provider connection. The first live claim
-must retain its serving-model response or receipt before a Nemotron execution
-claim can be made.
+NVIDIA request. Nightshift owns that provider connection. Pin the route
+(`METERLESS_MODEL=nvidia/nemotron-3.5-bolt-e4b`): `meterless/auto` can route a call
+to another vendor. `nvidia/nemotron-3.5-lightning-30b-a3b` returned empty responses on
+this build. A Nemotron execution claim rests on the served model and receipt in a
+kept trace.
 
 ## Development tools and the combined use
 

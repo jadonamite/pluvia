@@ -135,31 +135,6 @@ enough to claim, and whether a full run finishes inside its own budget.
 
 ---
 
-# C. Evidence and reproducibility
-
-Items a judge trips over. Each one is small and each one is visible from the repository.
-
-## C4. Rebuild and re-test the container
-
-- **Owner:** code
-- **Why:** The image was verified before the configuration split. `Dockerfile` sets
-  `ENV SAMPLE_MODE=true`, which now forces both services onto cached evidence. That is still the
-  right default for a judge with no credentials, but it must be re-confirmed rather than assumed,
-  and the judge test is `docker build` followed by `docker run -p 8000:8000`.
-- **Do:**
-  ```sh
-  docker build -t pluvia .
-  docker run --rm -d --name pluvia-check -p 8000:8000 pluvia
-  curl http://localhost:8000/health
-  curl -X POST http://localhost:8000/run -H 'Content-Type: application/json' \
-    -d '{"input":{"claim_id":"CLM-LAG-2025-001"}}'
-  docker rm -f pluvia-check
-  ```
-- **Done when:** the container starts with no `-e` flags, health reports sample mode with its
-  reason, and a posted claim returns a complete decision.
-
----
-
 # D. Documents that must match the build
 
 These are the last things written, because each one describes a state that items above change.
@@ -167,13 +142,12 @@ These are the last things written, because each one describes a state that items
 ## D1. `SPONSORS.md`
 
 - **Owner:** code, after A1 and B1
-- **Why:** Its "What is proven today" table currently lists authenticated Zetaris registration and
-  a served Nemotron completion in the *awaiting credentials* column. Half of that is now false:
-  Nemotron has served real claims with receipts. The table is the most credible thing in the
-  repository precisely because it is accurate, so it must not go stale in either direction.
-- **Do:** move Nightshift and NVIDIA into the proven column with the receipt schema name, the
-  routed model and the per-call logging as evidence. Move Zetaris across once A1 is done. Record
-  that `meterless/auto` can route away from NVIDIA and that the route is pinned for this reason.
+- **Why:** The "What is proven today" table now records live Zetaris (registration, views,
+  a claim through six queries) and the Nightshift and NVIDIA observations from the build Mac.
+  Its "still to prove" column names the one gap: a committed trace with live data and a pinned
+  Nemotron route in the same run.
+- **Do:** once A1 and B1 are done, cite that trace's file name in the Zetaris, Nightshift and
+  NVIDIA rows and empty their "still to prove" cells.
 - **Done when:** every cell states what was actually observed, and nothing claims a credentialed
   execution that has not happened.
 
