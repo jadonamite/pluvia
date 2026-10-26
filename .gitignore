@@ -15,8 +15,10 @@ dist/
 build/
 *.egg-info/
 
-# runtime
-logs/
+# runtime output, but demo traces are judge evidence and are committed
+logs/*
+!logs/.gitkeep
+!logs/trace-demo-*.jsonl
 
 # not the product
 workbench/
