@@ -1,0 +1,11 @@
+.git
+.env
+.env.*
+!.env.example
+node_modules
+workbench
+logs
+.DS_Store
+.playwright-mcp
+.tastemaker
+output_examples
