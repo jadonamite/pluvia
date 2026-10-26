@@ -415,7 +415,7 @@
       "run_id": "r_84125957-2095-40e3-a645-0f71a6cb571c"
     }
   ],
-  "log_file": "logs/example-runs-final/r_84125957-2095-40e3-a645-0f71a6cb571c.jsonl",
+  "log_file": "logs/trace-demo-lagos-02.jsonl",
   "execution_time_seconds": 0.009,
   "output": {
     "decision": {

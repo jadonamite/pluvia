@@ -568,7 +568,7 @@
       "run_id": "r_26dd7529-75bf-44fd-9204-8e7997929e1c"
     }
   ],
-  "log_file": "logs/example-runs-final/r_26dd7529-75bf-44fd-9204-8e7997929e1c.jsonl",
+  "log_file": "logs/trace-demo-lagos-01.jsonl",
   "execution_time_seconds": 0.794,
   "output": {
     "decision": {

@@ -430,7 +430,7 @@
       "run_id": "r_f094c2d4-d0da-4d62-87a4-a092dcab42af"
     }
   ],
-  "log_file": "logs/example-runs-final/r_f094c2d4-d0da-4d62-87a4-a092dcab42af.jsonl",
+  "log_file": "logs/trace-demo-lagos-03.jsonl",
   "execution_time_seconds": 0.011,
   "output": {
     "decision": {
