@@ -179,9 +179,9 @@ claim can be made.
 
 ## Development tools and the combined use
 
-This continuation used Codex with Sol implementation and Luna review. No Cursor
-use is claimed for this work. The pre-existing H-MEM source and official runner
-are attributed; Pluvia's adapters, claim loop, probes and contract gate are the
+Cursor is optional under the binding rules and was not used for this work, so no
+Cursor credit is claimed. The pre-existing H-MEM source and official runner are
+attributed; Pluvia's adapters, claim loop, probes and contract gate are the
 application integration.
 
 The combined feature is a review that keeps evidence attached to money: Zetaris
