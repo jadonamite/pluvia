@@ -1,4 +1,5 @@
 import { readFile } from 'node:fs/promises';
+import { pathToFileURL } from 'node:url';
 import { buildRegistrations } from './register_zetaris.js';
 import { identifier, literal } from '../app/sql/identifiers.js';
 import { powerRegistrations } from '../app/sql/power.js';
@@ -309,7 +310,7 @@ async function main(): Promise<void> {
   );
 }
 
-if (import.meta.url === `file://${process.argv[1]}`) {
+if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   main().catch((error) => {
     console.error(`Dry-run verification failed: ${(error as Error).message}`);
     process.exitCode = 1;
