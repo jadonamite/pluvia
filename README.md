@@ -42,6 +42,12 @@ For July 2025 at Lagos station `NIM00065201`:
 
 Nine of the ten reported gauge days are exactly 0.0 mm with blank quality flags. The other 21 days are missing, not zero. A blank quality flag means a value passed the archive's checks; it does not establish that the record can settle this claim.
 
+Because the policy covers drought (rainfall below 144.3 mm), a naive rule summing what is present sees 6.1 mm and pays ₦2,500,000 in full for a drought that never occurred. Pluvia catches this unfit record and blocks the settlement, protecting the pool from wrongful payouts.
+
+Index basis risk is two-sided:
+- **Preventing wrongful payouts:** Unfit records with missing days treated as zero look like severe drought. Naive index settlement would drain insurance pools on non-events. Pluvia's probes detect incomplete coverage (P1), suspect zeros (P2), and divergence (P6) to prevent fraudulent or erroneous payouts.
+- **Guarding against wrongful refusals:** Conversely, a gauge measuring a storm 40 km away can suppress a payout owed to a farm experiencing localized drought. Pluvia protects farmers by barring any refusal without complete independent satellite evidence, forcing inspection whenever data conflicts, and requiring every proposed refusal to attach the strongest case for paying with mandatory human officer review.
+
 The example policies are calibrated from complete July windows in prior-year independent satellite data. The method and inputs are recorded in [data/register/calibration.json](data/register/calibration.json). Farmer groups, claims, policy terms and payout amounts are synthetic. Rainfall observations are real; [data/README.md](data/README.md) records their sources and units.
 
 Pluvia identifies a record unfit to settle a claim. It does not diagnose a broken instrument. Suspect zero runs cluster across countries in 2002–2005, so an archive ingest problem is a plausible explanation.
