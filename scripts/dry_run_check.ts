@@ -102,7 +102,7 @@ export function validateZetarisStatement(sql: string): void {
     'CREATE LIGHTNING FILESTORE TABLE',
     'CREATE LIGHTNING REST TABLE',
     'CACHE TABLE',
-    'CREATE SCHEMASTORE VIEW',
+    'CREATE SCHEMASTORE VIEW'
   ];
 
   if (!validPrefixes.some((prefix) => trimmed.startsWith(prefix))) {
@@ -143,9 +143,7 @@ export function validateStationPrefix(stationId: string, stationName?: string): 
       );
     }
     if (!stationId.startsWith('NI')) {
-      throw new Error(
-        `Nigerian station '${stationId}' must begin with country prefix 'NI'.`
-      );
+      throw new Error(`Nigerian station '${stationId}' must begin with country prefix 'NI'.`);
     }
   }
 }
@@ -156,13 +154,13 @@ export async function runDryRunValidation(): Promise<{
   stationCount: number;
   policyCount: number;
 }> {
-  const stationsData = JSON.parse(
-    await readFile('data/register/stations.json', 'utf8')
-  ) as { stations: Station[] };
+  const stationsData = JSON.parse(await readFile('data/register/stations.json', 'utf8')) as {
+    stations: Station[];
+  };
 
-  const policiesData = JSON.parse(
-    await readFile('data/register/policies.json', 'utf8')
-  ) as { policies: PolicyRecord[] };
+  const policiesData = JSON.parse(await readFile('data/register/policies.json', 'utf8')) as {
+    policies: PolicyRecord[];
+  };
 
   // 1. Validate stations and NI country prefixes.
   for (const station of stationsData.stations) {
@@ -201,7 +199,7 @@ export async function runDryRunValidation(): Promise<{
     for (const prior of [false, true]) {
       const powerItems = powerRegistrations(policy, {
         prior,
-        contactEmail: testContact,
+        contactEmail: testContact
       });
       for (const item of powerItems) {
         validateZetarisStatement(item.sql);
@@ -216,7 +214,7 @@ export async function runDryRunValidation(): Promise<{
     statementCount: registrations.length,
     endpointCount,
     stationCount: stationsData.stations.length,
-    policyCount: policiesData.policies.length,
+    policyCount: policiesData.policies.length
   };
 }
 
@@ -273,13 +271,15 @@ function assertRegressionCatches(): void {
   threw = false;
   try {
     validateZetarisStatement(
-      "CREATE SCHEMASTORE VIEW v WITH CONTAINER pluvia AS SELECT obs_date, v AS mm FROM POWER_REST.raw"
+      'CREATE SCHEMASTORE VIEW v WITH CONTAINER pluvia AS SELECT obs_date, v AS mm FROM POWER_REST.raw'
     );
   } catch {
     threw = true;
   }
   if (!threw) {
-    throw new Error('Regression: validateZetarisStatement failed to catch missing -999 fill mapping');
+    throw new Error(
+      'Regression: validateZetarisStatement failed to catch missing -999 fill mapping'
+    );
   }
 
   // Check that Nigerian station with NG prefix fails.
@@ -297,7 +297,15 @@ function assertRegressionCatches(): void {
 async function main(): Promise<void> {
   const result = await runDryRunValidation();
   console.log(
-    `Live paths dry-run verification passed: ${result.statementCount} statements, ${result.endpointCount} endpoints across ${result.stationCount} stations and ${result.policyCount} policies.`
+    'Live paths dry-run verification passed: ' +
+      `${result.statementCount}` +
+      ' statements, ' +
+      `${result.endpointCount}` +
+      ' endpoints across ' +
+      `${result.stationCount}` +
+      ' stations and ' +
+      `${result.policyCount}` +
+      ' policies.'
   );
 }
 

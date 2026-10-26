@@ -3,7 +3,7 @@ import {
   runDryRunValidation,
   validateEndpointUrl,
   validateStationPrefix,
-  validateZetarisStatement,
+  validateZetarisStatement
 } from '../scripts/dry_run_check.js';
 import { identifier, literal } from '../app/sql/identifiers.js';
 
@@ -53,9 +53,7 @@ describe('live paths dry-run verification without credentials', () => {
         'https://power.larc.nasa.gov/api/temporal/daily/point' +
         '?parameters=PRECTOTCORR&community=AG' +
         '&longitude=3.321&latitude=6.577&start=20250701&end=20250731&format=JSON&time-standard=UTC';
-      expect(() => validateEndpointUrl(nonIndependent)).toThrow(
-        /must be strictly 'IMERG_PRECTOT'/
-      );
+      expect(() => validateEndpointUrl(nonIndependent)).toThrow(/must be strictly 'IMERG_PRECTOT'/);
     });
 
     it('fails loudly if time-standard=UTC is missing', () => {
@@ -63,9 +61,7 @@ describe('live paths dry-run verification without credentials', () => {
         'https://power.larc.nasa.gov/api/temporal/daily/point' +
         '?parameters=IMERG_PRECTOT&community=AG' +
         '&longitude=3.321&latitude=6.577&start=20250701&end=20250731&format=JSON';
-      expect(() => validateEndpointUrl(missingUtc)).toThrow(
-        /must include 'time-standard=UTC'/
-      );
+      expect(() => validateEndpointUrl(missingUtc)).toThrow(/must include 'time-standard=UTC'/);
     });
   });
 
@@ -94,15 +90,11 @@ describe('live paths dry-run verification without credentials', () => {
 
   describe('NI country prefix verification', () => {
     it('accepts Nigerian stations with NI prefix', () => {
-      expect(() =>
-        validateStationPrefix('NIM00065201', 'MURTALA MUHAMMED')
-      ).not.toThrow();
+      expect(() => validateStationPrefix('NIM00065201', 'MURTALA MUHAMMED')).not.toThrow();
     });
 
     it('fails loudly on Nigerian station using NG prefix (Niger)', () => {
-      expect(() =>
-        validateStationPrefix('NGM00065201', 'LAGOS AIRPORT')
-      ).toThrow(/prefix 'NI'/);
+      expect(() => validateStationPrefix('NGM00065201', 'LAGOS AIRPORT')).toThrow(/prefix 'NI'/);
     });
   });
 });

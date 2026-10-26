@@ -25,8 +25,10 @@ describe('configuration mode selection', () => {
     try {
       expect(await runtime.orchestrator.health()).toMatchObject({
         sample_mode: true,
-        sample_mode_reason: config.sampleModeReason,
+        sample_mode_reason: config.sampleModeReason
       });
-    } finally { await runtime.close(); }
+    } finally {
+      await runtime.close();
+    }
   });
 });
