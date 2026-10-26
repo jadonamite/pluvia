@@ -1,101 +1,118 @@
 # Pluvia
 
-Pluvia adjudicates the rainfall record behind a crop-insurance claim before any money moves.
+Pluvia checks whether the rain data behind a crop-insurance payout is telling the truth,
+before any money moves.
 
-A weather-index policy pays out when rainfall over a growing window falls below a threshold,
-measured at one named gauge. No inspector visits. That number is the contract, and nothing in
-the contract tests the instrument that produced it.
+A weather-index policy pays out automatically when rainfall over a growing window falls below
+a threshold, measured at one named gauge. No inspector visits. That number is the contract,
+and nothing in the contract tests the instrument that produced it.
 
-Two things follow. A blocked gauge reporting zeros invents a drought and triggers a payout
-nobody was owed. A working gauge forty kilometres from the farm measures a storm the farm never
-got, and a real loss is refused with no route to argue. The second failure is the one that ends
-schemes, because they collapse from distrust after wrongful denials rather than from fraud.
+## The failure
 
-Pluvia investigates the record four independent ways, argues against its own conclusion on the
-farmer's behalf, and returns one of four decisions with the evidence attached.
+For July 2025 at the Lagos reference station `NIM00065201`:
 
-## How it decides
-
-Four investigations run independently. No stream's output feeds another, which is what makes
-four findings evidence rather than one conclusion restated.
-
-| Stream | Catches | Needs |
+| Source | Days with data | Window total |
 |---|---|---|
-| Integrity | The impossible and the structurally odd | The record alone |
-| Cross-source | The plausible lie | A learned model of this gauge's normal disagreement |
-| Spatial | The honest but irrelevant gauge | Satellite over the farm against satellite over the gauge |
-| Peer gauge | A broken instrument, with no satellite involved | A second independent ground station nearby |
+| Ground gauge | **10 of 31** | **6.1 mm** |
+| Independent satellite retrieval, same coordinates | **31 of 31** | **131.7 mm** |
 
-An adjudicator proposes a decision. A challenger is then required to contest every proposed
-refusal and to attempt the farmer's case; a refusal nothing contested is invalid. Each
-adjudication writes a standing determination about that gauge, so the next claim is decided
-consistently or departs from precedent with a stated reason.
+July is the middle of the rainy season. The station was not reporting, and the twenty-one
+absent days are *missing*, not zero. A payout rule that sums what is present sees 6.1 mm,
+declares a severe drought, and pays in full for a drought that never happened.
+
+Nine of the ten days the gauge did report read exactly 0.0 mm, and every one carries a blank
+quality flag, meaning it passed every check the archive performs. A blank quality flag means
+a value was not impossible, not that it was true. Zero rainfall is always physically
+plausible, so published quality control cannot reach this. That gap is why Pluvia exists.
+
+The reverse failure matters more. A gauge working perfectly, forty kilometres away, measures
+a storm the farm never received, and a real loss is refused with no route to argue. Index
+schemes collapse from distrust after wrongful refusals, not from fraud losses.
+
+## What it does
+
+Pluvia runs deterministic probes over both sources, has a model reason about what they mean,
+and then lets plain code make the call. The model proposes. The code disposes.
+
+| Probe | Catches |
+|---|---|
+| Station coverage | A gauge that barely reported during the window |
+| Missing treated as zero | Absent days silently summed as no-rain |
+| Quality and measurement flags | Values the archive itself marks as suspect or accumulated |
+| Record ends early | A record that runs out before the window closes |
+| Station distance | A gauge too far from the farm to be the sole index |
+| Source divergence | Two sources that disagree beyond tolerance |
+| Satellite fill values | Gaps in the satellite retrieval |
+| Borderline | A result too close to the trigger to call automatically |
 
 ### The four outcomes
 
-- **Pay** — the trigger was met and the record is sound.
-- **Pay anyway** — the trigger was not met, but the record is faulty in the direction that
-  suppressed the payout, or the gauge is sound and measuring the wrong place. This re-evaluates
-  the contractual trigger on a corrected record; it does not pay outside the contract.
-- **Hold for inspection** — the evidence conflicts. A person goes, carrying the specific
+- **Pay.** The trigger was met and the record is sound.
+- **Pay anyway.** The trigger was not met, but the record is faulty in the direction that
+  suppressed the payout, or the gauge is sound and measuring the wrong place. This
+  re-evaluates the contractual trigger on a corrected record. It does not pay outside the
+  contract.
+- **Send an inspector.** The evidence conflicts. A person goes, carrying the specific
   question to resolve.
-- **Do not pay, with recourse** — never final. It routes to a human with the strongest
-  counter-case already written.
+- **Do not pay.** Never final. It routes to a human with the counter-case attached.
 
-If the satellite source cannot be reached, Pluvia may approve or hold but may never refuse.
-Missing evidence must not cost a farmer a payout.
+Two guarantees hold whatever a model proposes. No refusal is reachable when the satellite
+source is unavailable, because missing evidence must not cost a farmer a payout. And no
+refusal is reachable on a station whose record is too incomplete to judge.
 
-## Why disagreement alone proves nothing
-
-A gauge measures one point. A satellite estimates an area average about five kilometres across.
-They disagree constantly and legitimately, so flagging disagreement flags every claim.
-
-Pluvia compares a claim's disagreement against **that station's own historical distribution of
-disagreement**, learned across its full overlapping record and held in memory. A sixty-millimetre
-gap is unremarkable at one gauge and a severe anomaly at another. The remembered profile is the
-detector; without it there is nothing to measure against.
-
-Published quality control does not cover this. It marks values that are impossible. A blocked
-gauge reporting 0.0 mm passes every such check, because zero is always physically plausible —
-and a plausible wrong number is the one that moves money.
-
-## Evidence
-
-Figures below were measured on 2026-10-26 against the live public archives, not assumed.
-
-| Station | What the record shows |
-|---|---|
-| Teresina, Piauí, Brazil | **534 consecutive days of exactly 0.0 mm** from June 2002, while the independent satellite recorded **379 mm** over the same days, including one day at 42.8 mm |
-| Kitale, Kenya | Effectively unbiased at **−0.26 mm** mean ten-day bias over 461 blocks. Its one long dry run is twenty days the satellite confirms |
-| Dodoma, Tanzania | A **175-day run of zeros the satellite corroborates** — 11.8 mm total, no day above 10 mm. A long dry spell that is genuine |
-
-The third case is the important one: a long run of zeros is not by itself a finding.
-
-Measured thresholds behind the method: gauge-to-satellite correlation runs 0.30–0.37 daily and
-0.58–0.80 over ten-day periods, so ten days is the smallest usable unit. A station's bias
-profile settles after roughly eight years of overlapping record. Anomaly is judged against each
-station's own 95th and 99th percentile absolute bias rather than a normal-curve threshold,
-because the distributions are heavy-tailed.
+Every adjudication is remembered: a precedent, a station reliability lesson, and a record of
+the conflict between the two sources. The next claim on the same station is decided
+consistently, and a conflict the memory cannot resolve confidently becomes an inspection.
 
 ## Data
 
-All inputs are free and public. No API key is required for either rainfall source.
+All rainfall inputs are free and public, and neither source needs an API key.
 
-- **Ground stations** — GHCN-Daily, tens of thousands of stations, carrying the measurement and
-  quality flags the integrity stream reads. Precipitation is recorded in tenths of a millimetre.
-- **Synoptic stations** — the global hourly surface database and its daily summaries, for the
-  peer-gauge comparison.
-- **Satellite** — the IMERG retrieval via NASA POWER. Deliberately **not** the bias-corrected
-  series, which is adjusted using the gauge observations under test and would make the
-  comparison circular.
-- **Policies and claims** are synthetic. No insurer publishes claims, and that is the only
-  fabricated part.
+- **Ground stations.** GHCN-Daily, carrying the measurement and quality flags the probes
+  read. Precipitation is recorded in tenths of a millimetre.
+- **Satellite.** The IMERG retrieval through NASA POWER. Deliberately **not** the
+  bias-corrected series, which is adjusted using gauge observations and would make a
+  gauge-against-satellite comparison partly circular. For the Lagos window above the two
+  differ materially: 131.7 mm independent against 109.5 mm corrected.
+- **Policies and claims are synthetic** and labelled as such throughout. No insurer
+  publishes claims, and that is the only invented part.
+
+Everything is read through Zetaris as the single query surface. No agent reads object storage
+or the satellite API directly in live mode.
+
+## Limitations
+
+Stated here rather than left for a reader to find.
+
+- **Pluvia catches an untrustworthy record, not a broken instrument.** The suspect runs of
+  zeros in this archive cluster between 2002 and 2005 across Brazil, Kenya, South Africa and
+  Tanzania. Gauges do not fail simultaneously on three continents, so the likely cause is an
+  archive ingest fault rather than blocked funnels. Either way the record cannot settle a
+  claim, which is the thing that matters.
+- **It needs two independent measurements of the same rain.** Where a contract uses the
+  satellite itself as the official index and no ground station is in range, there is nothing
+  to compare.
+- **Ground coverage is thin where the problem bites hardest.** Nigeria has ten stations
+  carrying rainfall in this archive, roughly 2,050 station-days across 52 years. That
+  sparseness is why index insurance moved to satellite triggers, and it is also why coverage
+  probes rather than long-run statistics are the primary detector here.
+- **Policies, claims and payout amounts are invented.** The rainfall data and its failures
+  are real.
+- Pluvia does not forecast weather, model crop yields, price policies or move money.
+
+## Documents
+
+- [`PRD.md`](PRD.md) — what it does and why, the probe rules, the evaluation method, and the
+  measured facts behind all of it.
+- [`Architecture.md`](Architecture.md) — how it is built: stack, repository layout, agent
+  contracts, the data-layer registrations, and the failure modes.
 
 ## Status
 
-Specification and technical plan are complete. Implementation has not started. This README
-describes what is being built and the measurements it rests on.
+Specification, product requirements and architecture are complete. The data layer is running
+and verified. Implementation has not started. This README describes what is being built and
+the measurements it rests on.
 
 ## Licence
 
-MIT.
+MIT. See [LICENSE](LICENSE).

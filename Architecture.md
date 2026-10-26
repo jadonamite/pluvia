@@ -2,8 +2,6 @@
 
 Companion to `PRD.md` (what and why) and `progress.md` (who and when). This document is the build contract: if the code disagrees with it, fix one of them on purpose.
 
----
-
 ## 1. System overview
 
 ```
@@ -37,7 +35,6 @@ IntakeAgent    PlannerAgent    DataAgent       AuditorAgent   AdjudicatorAgent  
 4. **Every run is bounded:** max rounds, per-call timeouts, a whole-run budget, and a `partial` result instead of a hang.
 5. **Sample mode runs the same code path** with different adapters.
 
----
 
 ## 2. Stack
 
@@ -52,7 +49,6 @@ IntakeAgent    PlannerAgent    DataAgent       AuditorAgent   AdjudicatorAgent  
 | UI | One `public/index.html`, vanilla JS, Chart.js from cdnjs | No build step |
 | Container | `node:20-slim` | Judges' fresh-clone path |
 
----
 
 ## 3. Repository layout
 
@@ -124,7 +120,6 @@ pluvia/
 └── README.md
 ```
 
----
 
 ## 4. Core types (`app/types.ts`)
 
@@ -168,7 +163,6 @@ export interface TraceEvent { ts: string; run_id: string; round: number; agent: 
 
 All LLM outputs are parsed with `zod` schemas. A parse failure triggers one retry with the validation error; a second failure falls back to the deterministic path and is traced as `status: "warn"`.
 
----
 
 ## 5. Probes (`app/probes/*`)
 
@@ -187,9 +181,8 @@ Pure functions over `DailySeries` + `Policy`. Each has a fixture test that **fai
 
 Thresholds live in `app/probes/config.ts` and are printed in the README. They are not hidden in prompts.
 
-**Units:** GHCN PRCP is converted with `mm = DATA_VALUE / 10` (confirm A4 before shipping). NASA POWER `PRECTOTCORR` is already mm/day.
+**Units:** GHCN PRCP is converted with `mm = DATA_VALUE / 10` (confirm A4 before shipping). NASA POWER `IMERG_PRECTOT` is already mm/day.
 
----
 
 ## 6. Agents and orchestrator
 
@@ -240,13 +233,12 @@ Implements PRD §5.4 exactly:
 
 A unit test exists for every rule, including "Adjudicator proposes PAY but probes fail → gate returns INSPECT".
 
----
 
 ## 7. Zetaris integration (`scripts/register_zetaris.sql`)
 
 Run **one statement at a time** (REST or SQL Editor). `scripts/register_zetaris.ts` does this with a 5 s pause between statements and stops on the first error. There is no `IF NOT EXISTS` for containers; the script checks for existing objects first.
 
-### 7.1 GHCN-Daily, per station (A1, verify at Gate 1)
+### 7.1 GHCN-Daily, per station (assumption A1, verify before building on it)
 
 ```sql
 CREATE LIGHTNING DATABASE GHCN_S3 DESCRIBE BY "NOAA GHCN-Daily per-station CSV";
@@ -280,7 +272,7 @@ WHERE ELEMENT = 'PRCP';
 
 The exact casting of `DATE` depends on what `inferSchema` produces. Run `DESCRIBE` first and adjust. No self-joins on the view; use window functions if needed (SQL Companion §4).
 
-### 7.2 Policy register (A3, verify at Gate 1)
+### 7.2 Policy register (assumption A3, verify before building on it)
 
 `data/register/policies.json` is served from the public repo as `{"policies":[{...}, ...]}`. A top-level **object** wrapping an array is the verified-safe shape; never use a bare array.
 
@@ -302,9 +294,9 @@ FROM PLUVIA_REGISTER.policies_raw LATERAL VIEW explode(policies) AS p;
 
 Same pattern for `claims.json`, and for `stations.json` (id, lat, lon, name) built from `ghcnd-stations.txt` by `scripts/fetch_raw.ts`.
 
-**Note:** the repo must be public (or a public gist used) before Zetaris can read the raw URL. If the repo stays private until submit day, host the register files in a separate public gist from Gate 1.
+**Note:** the register files must be reachable over public HTTP before Zetaris can read them. The repository is public, so its raw URLs serve this directly.
 
-### 7.3 NASA POWER, one REST table per location and season (A2, verify at Gate 1)
+### 7.3 NASA POWER, one REST table per location and season (assumption A2, verify before building on it)
 
 The endpoint is fixed at CREATE (REST HOWTO: dynamic parameters are not documented), so each policy location and window gets its own table. The DataAgent creates it on demand for a new policy and records the table name in `policy.power_table`.
 
@@ -312,7 +304,7 @@ The endpoint is fixed at CREATE (REST HOWTO: dynamic parameters are not document
 CREATE LIGHTNING DATABASE POWER_REST DESCRIBE BY "NASA POWER daily point precipitation";
 
 CREATE LIGHTNING REST TABLE power_lagos_2025 FROM POWER_REST REQUEST(
-  endpoint "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=PRECTOTCORR&community=AG&longitude=3.321&latitude=6.577&start=20250601&end=20250930&format=JSON",
+  endpoint "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=IMERG_PRECTOT&community=AG&longitude=3.321&latitude=6.577&start=20250601&end=20250930&format=JSON",
   method "get", response_type "json", http_encoding "URLENCODED"
 ) HEADER ( user-agent "Pluvia hackathon <contact-email>" ) BODY ();
 CACHE TABLE POWER_REST.power_lagos_2025;
@@ -322,7 +314,7 @@ SELECT to_date(d, 'yyyyMMdd') AS obs_date,
        CASE WHEN v = -999 THEN NULL ELSE v END AS mm
 FROM POWER_REST.power_lagos_2025
 LATERAL VIEW explode(
-  from_json(to_json(properties.parameter.PRECTOTCORR), 'map<string,double>')
+  from_json(to_json(properties.parameter.IMERG_PRECTOT), 'map<string,double>')
 ) AS d, v;
 ```
 
@@ -337,20 +329,17 @@ LATERAL VIEW explode(
 - Body: `{ queryId: <uuid>, sql, source: "SqlEditor", limit }`. Rows come back in `response.data`.
 - One statement per call. Every call is traced with `sql` and `elapsed_ms`.
 
----
 
 ## 8. Nightshift / Nemotron (`app/adapters/nightshift.ts`)
 
 - `baseURL = METERLESS_BASE_URL` (default `http://127.0.0.1:8088/v1`; inside Docker `http://host.docker.internal:8088/v1`; or the Web hotspot URL the Console shows).
 - Headers on every call: `Authorization: Bearer METERLESS_RUNTIME_TOKEN`, `meterless-app: pluvia`, `meterless-scope: user`.
 - **Startup check:** `GET /v1/models`. 200 with `meterless/*` ids → online; 401/403 → "unauthorized" (bad token); anything else → offline. `/healthz` alone proves nothing.
-- **One route:** `METERLESS_MODEL` (copy the exact id from `/v1/models`; prefer a route pinned to a Nemotron lane). Do not rely on `meterless/fast` vs `meterless/deep`; they are reported to collapse to `auto`.
-- `max_tokens ≥ 800` for reasoning calls (≥ 500 is the reported floor). 180 s timeout. 429 → retry at 2 s, 4 s, 8 s.
+- **One route only:** `METERLESS_MODEL`, copied verbatim from `/v1/models`, pinned to a Nemotron lane. The design must not depend on routing differences between named lanes.
+- `max_tokens` at 800 or above for reasoning calls. 180 s timeout. Back off on 429 at 2, 4 and 8 seconds.
 - **Model evidence:** log `response.model`, plus any `meterless` block or receipt id in the response. If the concrete Nemotron name is not returned, record it from Nightshift's run receipts and state that in the README.
-- Leave Nightshift's "Reasoning budget" slider at default (1.2.3 bug with Ultra).
 - The NVIDIA API key lives **only** in Nightshift → Setup → Providers. Never in this repo.
 
----
 
 ## 9. H-MEM (`app/memory/`)
 
@@ -374,7 +363,6 @@ Every memory operation is traced (`memory_op`), and the trust ledger is exported
 1. `scripts/hmem_conformance.sh` → `HMEM_IMPL=$(pwd)/app/memory/index.ts npx tsx <path>/conformance/runner.ts` passes. Output is pasted in the README.
 2. `tests/memory.session.test.ts`: claim A on a station → ≥ 1 extra round; fresh process, claim B on the same station → recall hits and 0 extra rounds.
 
----
 
 ## 10. Sample mode
 
@@ -387,7 +375,6 @@ Every memory operation is traced (`memory_op`), and the trust ledger is exported
 
 Probes, the PolicyGate, payout math and H-MEM run **for real** in sample mode. The README states plainly what is replayed and what is computed.
 
----
 
 ## 11. API and CLI
 
@@ -421,7 +408,6 @@ Other routes: `GET /claims` (inbox), `GET /runs/:id`, `GET /` (UI), `GET /health
 
 CLI: `tsx run.ts claim CLM-LAG-2025-07`, `tsx run.ts claim input_examples/02.json`, `tsx run.ts eval`, `tsx run.ts serve`.
 
----
 
 ## 12. UI (`public/index.html`)
 
@@ -436,19 +422,17 @@ CLI: `tsx run.ts claim CLM-LAG-2025-07`, `tsx run.ts claim input_examples/02.jso
    - **Officer actions:** Confirm / Override (writes H-MEM feedback).
 3. Works at phone width; light and dark themes. No secrets ever rendered (adapter status only says online/offline).
 
----
 
 ## 13. Evaluation (`eval/`)
 
 - `build_cases.ts` (seeded, deterministic):
-  1. Select clean station-windows (coverage ≥ 95%, |P6| small). Candidates are Ghana `GHM*` and Kenya `KE*` stations from the verified inventory; confirm at Gate 3.
+  1. Select clean station-windows (coverage ≥ 95%, |P6| small). Candidates are Ghana `GHM*` and Kenya `KE*` stations from the verified inventory; confirm by measurement.
   2. For each, compute the true decision.
   3. Generate labelled variants: drop N days; zero-fill missing; truncate the record end; shift ±3 days; swap in a distant station.
   4. Add real Nigerian cases with labels derived only from documented coverage.
 - `run_eval.ts`: runs the four deciders (naive station, satellite-only, LLM judge given totals, Pluvia) on every case. Writes `eval/results.md` and `eval/results.json`: wrong payouts, missed payouts, INSPECT rate, time.
 - The eval runs in sample mode (deterministic) and optionally live (records models). Never tune thresholds on the eval cases. Thresholds are fixed in `config.ts` before the eval is built.
 
----
 
 ## 14. Environment (`.env.example`, placeholders only)
 
@@ -473,18 +457,6 @@ LOG_LEVEL=info
 - No NVIDIA key in this project.
 - In Docker, replace `localhost` / `127.0.0.1` with `host.docker.internal`.
 
----
-
-## 15. Deployment topology for this team
-
-| Machine | Runs | Used for |
-|---|---|---|
-| **T: MacBook M1 Pro 16 GB** | Docker Desktop (Rosetta on, 8 GB / 4 CPUs) → Zetaris; Nightshift (Mac M1+ edition) with NVIDIA in Providers; Pluvia live | All Zetaris registration, live runs, snapshots, cassettes, live eval, demo recording |
-| **S: Windows laptop 8 GB, integrated GPU** | Node 20, Pluvia in `SAMPLE_MODE`; **try Nightshift Web hotspot** (A6) | All feature code, probes, gate, memory, UI, tests, eval builder, docs. Pushes to GitHub; T pulls and runs live |
-
-Same code path on both machines; only adapters differ.
-
----
 
 ## 16. Testing matrix
 
@@ -500,18 +472,16 @@ Same code path on both machines; only adapters differ.
 | Fresh-clone check | Clone, empty `.env`, Zetaris and Nightshift stopped, `SAMPLE_MODE=true`, 3 examples pass |
 | Secret scan | `grep -RInE "(sk-|nvapi-|api[_-]?key|secret|token|password)"` + `git ls-files` check |
 
----
 
-## 17. Risks and fallbacks
+## Failure modes and fallbacks
 
-| Risk | Detection | Fallback |
+| Failure | Detected by | Fallback |
 |---|---|---|
-| Zetaris not running on the Mac by Mon 09:00 UTC | Gate 1 | Zetaris on AWS Free plan (managed cluster guide) |
-| A1 per-station CSV fails | Gate 1 SQL | `by_year/2025.csv` recipe table, cached |
-| A2 POWER REST fails | Gate 1 SQL | POWER JSON snapshots in the public repo, registered via REST |
-| A3 raw GitHub JSON fails in Zetaris | Gate 1 SQL | Public gist, or another public HTTP host |
-| Nemotron route unavailable or empty replies | Gate 1 curl | Switch between Lightning and Ultra; `max_tokens ≥ 800`; slider at default |
-| Lanes collapse to one model | Trace `model` field | Already designed for one route |
-| Mac unavailable at a critical moment | — | Nightshift Web on Sam's laptop (if A6 holds); sample mode for everything else |
-| Too few clean stations for the eval | Gate 3 | Smaller eval, stated honestly |
-| Running out of time | Gates | Cut list in progress.md |
+| The data layer will not start locally | Its own verification script | Run the platform's managed cloud option |
+| Per-station CSV registration fails | Registration SQL returns an error | Use the verified per-year table, cached, filtered by station |
+| Satellite REST-table registration fails | Registration SQL returns an error | Register committed snapshots through the same REST pattern from a public URL; data still flows through the data layer and the README states the snapshot date |
+| The policy register cannot be read from its public URL | Registration SQL returns an error | Serve the register from another public host |
+| The model route is unavailable or returns empty content | `GET /v1/models`, then one probe call | Switch Nemotron lane; raise `max_tokens`; leave provider defaults untouched |
+| Too few clean station-windows for the evaluation | Coverage measurement | A smaller evaluation, stated honestly |
+| Any live service unavailable | Adapter health check | `SAMPLE_MODE=true` runs the real agent logic on cached data |
+

@@ -1,322 +1,392 @@
-# Pluvia — Product Requirements Document
+# Pluvia — Product Requirements
 
-**Event:** Open Agent Hackathon 2026 (GenAI.Works, HackOS)
-**Track:** 03 — Reasoning Architecture ("turn data, knowledge, memory, and reasoning into reliable decisions and actions")
-**Team:** 2 builders. **S** = Sam (Windows laptop), **T** = teammate (MacBook M1 Pro, 16 GB)
-**Submission deadline:** Tue 27 Oct 2026, 23:45 UTC (Wed 28 Oct, 00:45 Lagos). Hard.
-**Internal submit target:** Tue 27 Oct, 20:00 UTC (21:00 Lagos)
-**Name:** Pluvia (Latin for "rain"). Chosen by Sam, 25 Oct.
+**Event** Open Agent Hackathon 2026 (GenAI Works, HackOS)
+**Track** 03 — Reasoning Architecture: *turn data, knowledge, memory and reasoning into
+reliable decisions and actions*
+**Companion documents** `Architecture.md` for how it is built.
 
-Companion docs: `Architecture.md` (how it's built), `progress.md` (gates, owners, tasks).
+## 1. One line
 
----
+**Pluvia checks whether the rain data behind a crop-insurance payout is telling the truth,
+before any money moves.** It compares the ground weather station against an independent
+satellite retrieval, catches broken and missing records, and decides pay, pay anyway, send
+an inspector, or do not pay, with the evidence attached. It remembers each decision as a
+precedent, so the next claim on the same station is decided consistently.
 
-## 1. One-liner
+The station said drought. The station was broken.
 
-**Pluvia checks whether the rain data behind a crop-insurance payout is telling the truth, before any money moves.** It compares the ground weather station with satellite rainfall, catches broken or missing records, and decides **pay**, **don't pay**, or **send an inspector**, with the evidence attached. It remembers each decision as a precedent, so the next claim on the same station is decided the same way.
 
-Tagline: **"The station said drought. The station was broken."**
+## 2. The project from zero
 
----
+**The insurance.** A group of maize farmers near Lagos buys *index insurance*: if the rain
+gauge near the farm measures less than 150 mm between 1 July and 31 August, the policy pays
+automatically. There is no inspector and no paperwork, which is what makes it cheap enough
+for smallholders. The whole arrangement trusts one number: what the gauge says.
 
-## 1a. The project explained from zero (read this first)
+**What the real data shows.** For July 2025 at the Lagos reference station `NIM00065201`:
 
-**The insurance.** A group of maize farmers near Lagos buys *index insurance*: "If the rain gauge near your farm measures less than 150 mm of rain between 1 July and 31 August, we pay you automatically." There's no inspector and no paperwork, so it's cheap enough for small farmers. The whole system trusts one number: what the gauge says.
+| Source | Days with data | Window total |
+|---|---|---|
+| Ground gauge | **10 of 31** | **6.1 mm** |
+| Independent satellite retrieval, same coordinates | **31 of 31** | **131.7 mm** |
 
-**What we found in real data (25 Oct 2026).** For July 2025 at the Lagos station:
-- the official record has readings on only **10 of 31 days**, adding up to **6.1 mm**;
-- NASA's satellite estimate for the same spot has all **31 days**, totalling **109.5 mm**.
+July is the middle of the rainy season. The station was not reporting, and the twenty-one
+absent days are *missing*, not zero. A payout rule that sums what is present sees 6.1 mm,
+declares a severe drought, and pays in full for a drought that never happened.
 
-July is the rainy season. The station simply wasn't reporting, so the missing days aren't "zero rain", they're missing. A simple payout rule adds up what's there, sees 6.1 mm, and pays the full amount for a drought that never happened. Kano's station reported on only 5 days in all of 2024.
+Worse, nine of the ten days the gauge did report read exactly 0.0 mm, and every one of
+them carries a blank quality flag, meaning it passed every check the archive performs.
+**A blank quality flag means a value was not impossible, not that it was true.** Zero
+rainfall is always physically plausible, so published quality control cannot catch this.
+That gap is the reason this system exists.
 
-**A broken gauge looks exactly like a drought.** The opposite also happens: a real drought hidden by a wrong source, and a farmer who lost their crop gets nothing.
+**A broken gauge looks exactly like a drought.** The reverse also happens: a real loss is
+refused because the named gauge, working perfectly, measured a storm forty kilometres away
+that the farm never received.
 
-**What Pluvia does,** before any money moves:
+**What Pluvia does before money moves.**
+
 1. Reads the claim and finds the policy.
-2. Gathers the station readings and the satellite estimate through Zetaris.
-3. Runs checks: days actually recorded, missing days counted as zero, the two sources disagreeing, station distance, and records that end early.
-4. An AI reviewer (NVIDIA Nemotron) studies the failures and can ask for more evidence, such as "is 109.5 mm normal for Lagos in July?"
-5. A strict rule engine, plain code rather than AI, makes the final call: **PAY**, **DON'T PAY**, or **SEND AN INSPECTOR**.
-6. It shows the officer everything: a chart with the missing days visible, each check's result, and "a normal automatic policy would have paid ₦2,500,000 here".
-7. It remembers (Meterless H-MEM): "Lagos station unreliable for the 2025 rainy season". The next claim on that station is flagged immediately, and similar cases get the same decision.
+2. Gathers the station readings and the satellite retrieval through Zetaris.
+3. Runs deterministic probes: days actually recorded, missing days being treated as zero,
+   the two sources disagreeing, station distance, records ending early.
+4. An AI reviewer studies the findings and may request more evidence, such as whether
+   131.7 mm is normal for Lagos in July.
+5. A strict rule engine — plain code, not a model — makes the final call.
+6. It shows the officer everything: a chart with the missing days visible, each probe's
+   result, and what a naive station-only trigger would have paid.
+7. It remembers that the Lagos station was unreliable for the 2025 rainy season. The next
+   claim against that station is flagged immediately.
 
-**Real vs invented.** The rainfall data and its failures are real. The farmer groups, policies, claims and amounts are invented and labelled as synthetic.
+**Real against invented.** The rainfall data and its failures are real. The farmer groups,
+policies, claims and amounts are invented and labelled as synthetic throughout.
 
-**One sentence:** index insurance pays farmers automatically from rain gauges, but broken gauges look exactly like droughts. Pluvia checks the gauge against satellite data before money moves, decides pay / don't pay / send an inspector, shows the evidence, and remembers which stations can't be trusted.
 
----
+## 3. The problem
 
-## 2. The problem, in plain words
+### 3.1 How index insurance works
 
-### 2.1 How index ("parametric") crop insurance works
+Smallholder farmers increasingly buy cover that pays automatically when rainfall falls below
+a trigger, with no loss adjuster visiting the farm. This keeps premiums low enough to be
+affordable. The known weakness is **basis risk**: the index says something different from
+what happened on the farm.
 
-Smallholder farmers in Africa increasingly buy insurance that pays **automatically when rainfall falls below a trigger**. There is no loss adjuster visiting the farm. For example: *"If cumulative rainfall at the reference station from 1 July to 31 August is below 150 mm, pay ₦X per hectare."*
+### 3.2 The failure nobody surfaces
 
-This keeps premiums low enough for small farmers. The weakness is well known: the industry calls it **basis risk**, when the index says something different from what actually happened on the farm. Arbol, a parametric insurer, describes this as the main drawback of the model.
+Broken data looks like drought, and the industry's answer to basis risk is to redesign the
+index rather than to audit a single claim.
 
-### 2.2 The failure nobody surfaces: broken data looks like drought
+A World Climate Research Programme briefing on African weather data reports that station
+records in the main global dataset often run out over the most recent decade, and that some
+feeds record missing days as zero rainfall. Both were confirmed against the live archives.
 
-A World Climate Research Programme (WCRP) briefing on African weather data reports:
-- African station records in the main global dataset (GHCN) "often run out in past ten years";
-- some feeds record **missing days as zero rain**, which the author calls a potential "BIG PROBLEM".
-
-**We confirmed this live, on 25 Oct 2026, with real 2025 data:**
-
-| Source | Location | July 2025 | Days reported |
-|---|---|---|---|
-| NOAA GHCN-Daily ground station `NIM00065201` (Lagos / Ikeja area, 6.577°N 3.321°E) | Station | **6.1 mm** (sum of reported values, 61 in tenths of mm) | **10 of 31** |
-| NASA POWER satellite/model estimate, same coordinates | Grid point | **109.5 mm** | **31 of 31** |
-
-The Lagos station reported only 44 days of rain observations in all of 2025. The Kano station (`NIM00065046`) reported **5 days in all of 2024 and 2 in 2025**.
-
-A naive trigger that sums the station's July values would declare a **severe drought in Lagos during the rainy season** and pay out. The opposite error also happens: a real drought can be hidden if the satellite overestimates rain and nobody looks at the ground.
-
-### 2.3 Who is harmed
+### 3.3 Who is harmed
 
 | Person | Harm today |
 |---|---|
-| **Smallholder farmer** | Doesn't get paid in a real drought (index wrong), or the scheme collapses because it paid for droughts that never happened |
-| **Claims officer** at a microinsurer, cooperative, NGO or agri-lender running index insurance | Can't see *why* the index says what it says; no time to audit station records by hand; decisions inconsistent between officers |
-| **The insurer / reinsurer** | Pays false claims, loses trust in the product, raises premiums |
+| **Smallholder farmer** | Not paid during a real drought because the index was wrong, or the scheme collapses because it paid for droughts that never happened |
+| **Claims officer** at a microinsurer, cooperative, NGO or agricultural lender | Cannot see why the index says what it says, has no time to audit station records by hand, and decides inconsistently between officers |
+| **Insurer or reinsurer** | Pays false claims, loses confidence in the product, raises premiums |
 
-**Primary user for the demo:** a claims officer reviewing drought claims for Nigerian farmer groups.
+The error is two-sided, and **the farmer-facing direction is the one nobody builds for.**
+These schemes fail from distrust after wrongful refusals, not from fraud losses. Building
+only the insurer's side produces a tool that refuses claims with confidence.
 
----
+**Primary user for the demonstration:** a claims officer reviewing drought claims for
+Nigerian farmer groups.
 
-## 3. What Pluvia does (user flow)
 
-1. **Claim arrives.** The officer selects or submits a claim: farmer group, policy, location, season, event ("drought, July–August 2025"). Free text is accepted too: "Kano group says the rains failed in July."
-2. **IntakeAgent** (Nemotron) turns free text into a structured claim and matches it to a policy.
-3. **PlannerAgent** (Nemotron) reads the policy terms, recalls relevant **precedents** from H-MEM ("this station was unreliable last time"), and writes a plan: which sources, which windows, which checks.
-4. **DataAgent** (code) queries **Zetaris** for:
-   - the policy register;
-   - the reference ground station's daily rainfall (NOAA GHCN-Daily);
-   - satellite/model daily rainfall for the farm's coordinates (NASA POWER).
-5. **AuditorAgent** runs deterministic **probes** (§5.3) on both sources and asks Nemotron to explain the findings in plain words.
-6. **AdjudicatorAgent** (Nemotron) weighs the evidence and either:
-   - proposes a decision and the trusted index source, or
-   - **requests more evidence** (a neighbouring station, the same window in previous years, a shifted window), which sends the loop back to the DataAgent. At most 2 extra rounds.
-7. **PolicyGate** (code, not an LLM) applies the contract and the guardrails:
-   - computes the index and the payout;
-   - forces **INSPECT** if data quality is insufficient, if the sources conflict beyond tolerance with no resolution, or if the result is within the borderline band of the trigger.
-8. **ReporterAgent** produces the decision card and a plain-language decision letter:
-   - PAY / NO PAY / INSPECT, the payout amount, the index used;
-   - every probe finding with its evidence (for example, "21 of 31 July days missing at the station");
-   - **what a naive station-only trigger would have done**.
-9. **H-MEM** stores:
-   - a **precedent** (claim facts → decision → reason);
-   - a **station reliability lesson** ("NIM00065201, 2025 rainy season: coverage 32%, do not use alone");
-   - a **conflict record** between "station says 6.1 mm" and "satellite says 109.5 mm", resolved by H-MEM's built-in conflict resolution (auto-resolve only when confidence ≥ 0.70, otherwise queued for human review). That queue *is* the INSPECT outcome.
-10. **Next claim on the same station:** the Planner recalls the lesson. The first pass goes straight to the right evidence, with no repair round. This is the memory demo.
+## 4. What Pluvia does
 
----
+1. **Claim arrives.** The officer selects or submits a claim: group, policy, location,
+   season, event. Free text is accepted — "the Kano group says the rains failed in July".
+2. **Intake** turns free text into a structured claim and matches it to a policy.
+3. **Planner** reads the policy terms, recalls precedents from memory, and writes a plan:
+   which sources, which windows, which probes.
+4. **Data** queries Zetaris for the policy register, the reference station's daily rainfall,
+   and the satellite retrieval for the farm's coordinates.
+5. **Auditor** runs the deterministic probes in §6.3 and explains the findings in plain
+   language.
+6. **Adjudicator** weighs the evidence and either proposes a decision with the index source
+   it trusts, or requests more evidence, such as a neighbouring station, the same window in prior
+   years or a shifted window, which returns to the Data step. At most two extra rounds.
+7. **Before any refusal stands, the Adjudicator must state the strongest case for paying.**
+   A refusal that was never argued against is invalid. This is what keeps the
+   farmer-facing direction in the design rather than in the pitch.
+8. **PolicyGate**, code and not a model, applies the contract and the guardrails: computes
+   the index and the payout, and forces an inspection where data quality is insufficient,
+   where the sources conflict beyond tolerance with no resolution, or where the result sits
+   in the borderline band around the trigger.
+9. **Reporter** produces a decision card and a plain-language letter: the outcome, the
+   payout, the index used, every probe finding with its evidence, and what a naive
+   station-only trigger would have done.
+10. **Memory** stores a precedent, a station reliability lesson, and a conflict record
+    between the two sources. The engine's conflict resolution auto-resolves only at or
+    above 0.70 confidence and otherwise queues for human review. **That queue is the
+    inspection outcome.**
+11. **The next claim on the same station** recalls the lesson, goes straight to the right
+    evidence, and needs no repair round. This is the memory demonstration.
 
-## 4. Requirements
+### 4.1 The four outcomes
 
-### 4.1 Must have (submission is at risk without these)
+| Outcome | When |
+|---|---|
+| **Pay** | Trigger met and the record is sound |
+| **Pay anyway** | Trigger not met, but the record is faulty in the direction that suppressed the payout, or the gauge is sound and measuring the wrong place. This re-evaluates the contractual trigger on a corrected record; it does not pay outside the contract |
+| **Send an inspector** | Evidence conflicts, or quality is insufficient, or the result is borderline. A person goes, carrying the specific question to resolve |
+| **Do not pay** | Never final. Routes to a human with the counter-case attached |
+
+Two guarantees hold regardless of what any model proposes. **No refusal is reachable when
+the satellite source is unavailable.** Missing evidence must not cost a farmer a payout.
+And **no refusal is reachable on a station whose record is too incomplete to judge.**
+
+
+## 5. Requirements
+
+### 5.1 Must have
 
 | ID | Requirement | Evidence for judges |
 |---|---|---|
-| M1 | **Zetaris is the data layer.** Station rainfall, satellite rainfall and the policy register are all read through Zetaris over its REST API. No agent reads S3 or NASA directly in live mode | Trace lines with Zetaris SQL; README |
-| M2 | **Meterless Nightshift is the primary AI provider.** Every LLM call goes through the Nightshift Runtime with an NVIDIA Nemotron model | Trace lines with `model` per call; Nightshift receipts |
-| M3 | **H-MEM implemented in a working feature.** Precedents, station lessons and conflict records are written and recalled across sessions. The **official H-MEM conformance suite passes** against our build | Conformance output in README; session-2 trace |
-| M4 | A **real agent loop:** at least Planner, Auditor and Adjudicator with visible handoffs, an evidence-request branch and retries | JSONL traces |
-| M5 | **Traces:** JSONL in `logs/` and on stdout, with agent, action, Zetaris SQL, probe results, H-MEM reads/writes/conflicts, and the **model name per request** | `logs/*.jsonl` |
-| M6 | **`SAMPLE_MODE=true`** runs real agent logic on cached data with Zetaris, Nightshift and credentials all absent | Fresh-clone test |
-| M7 | **Programmatic entry point:** `POST /run` (JSON in, JSON out) plus a CLI | README |
-| M8 | **At least 3 sample inputs with their real outputs** (`input_examples/`, `output_examples/`) | Repo |
-| M9 | Public repo, README, `.env.example` with placeholders only, **no secrets** anywhere (repo, video, deck, logs) | Secret scan |
-| M10 | Demo video (1–4 min), slide deck (8 required points), sponsor technology explanation | Submission form |
-| M11 | **Honesty labels:** policies and claims are synthetic and say so; rainfall data is real and says so | README, UI footer |
+| M1 | **Zetaris is the data layer.** Station rainfall, satellite rainfall and the policy register are read through Zetaris. No agent reads object storage or the satellite API directly in live mode | Trace lines carrying the Zetaris SQL |
+| M2 | **Nightshift is the primary AI provider**, serving an NVIDIA Nemotron model on every call | Per-call model name in the trace |
+| M3 | **H-MEM in a working feature.** Precedents, station lessons and conflict records are written and recalled across sessions, and the official conformance suite passes against the build | Conformance output in the README, plus a second-session trace |
+| M4 | **A real agent loop** — planner, auditor and adjudicator with visible handoffs, an evidence-request branch, and retries | Trace files |
+| M5 | **Traces** as JSONL in `logs/` and on stdout, carrying agent, action, Zetaris SQL, probe results, memory reads and writes, and the model per request | `logs/` |
+| M6 | **`SAMPLE_MODE=true`** runs the real agent logic on cached data with Zetaris, Nightshift and all credentials absent | Fresh-clone test |
+| M7 | **Programmatic entry point** — `POST /run`, JSON in and JSON out, plus a command-line interface | README |
+| M8 | **At least three sample inputs with their real outputs** | `input_examples/`, `output_examples/` |
+| M9 | Public repository, README, `.env.example` with placeholders only, and no secrets anywhere — repository, video, deck or logs | Secret scan |
+| M10 | Demo video of one to four minutes, slide deck covering the eight required points, sponsor technology explanation | Submission form |
+| M11 | **Honesty labels.** Policies and claims are synthetic and say so; rainfall data is real and says so | README and interface footer |
 
-### 4.2 Should have (needed to score well)
+### 5.2 Should have
 
 | ID | Requirement |
 |---|---|
-| S1 | **Headline eval** (§6): wrong-payout rate of a naive station trigger vs satellite-only vs an LLM judge vs Pluvia, on a labelled case set |
-| S2 | **UI:** claim inbox; claim page with a daily rainfall chart (station vs satellite, missing days highlighted), probe findings, decision card, a "naive trigger would have…" box, trace timeline, memory panel |
-| S3 | **Memory demo across sessions:** the first claim on a station needs an evidence-request round; the second claim on the same station needs none |
-| S4 | **Nemotron visibly does the reasoning** (intake, planning, adjudication, explanations), with the model logged on every call, for the DGX Spark award |
-| S5 | Dockerfile; container reaches Zetaris and Nightshift on the host via `host.docker.internal` |
-| S6 | `metadata.json` at repo root describing each sponsor's use (community schema posted in #use-case-help; not official) |
+| S1 | **The headline evaluation** in §7: wrong-payout rate for a naive station trigger, satellite only, a model given raw totals, and Pluvia, across a labelled case set |
+| S2 | **Interface:** claim inbox; claim page with a daily rainfall chart showing station against satellite with missing days highlighted; probe findings; decision card; a panel showing what a naive trigger would have done; trace timeline; memory panel |
+| S3 | **Memory across sessions:** the first claim on a station needs an evidence-request round, the second needs none |
+| S4 | **Nemotron visibly carries the reasoning** — intake, planning, adjudication, explanation — with the model logged on every call |
+| S5 | A container image whose build reaches Zetaris and Nightshift on the host |
+| S6 | A sponsor-use description file at the repository root |
 
-### 4.3 Could have (only if ahead of schedule)
+### 5.3 Could have
 
-- A second engine: **World Model** holding farms, stations, policies and their distances as linked entities.
-- Ghana and Kenya stations, alongside Nigeria.
-- A "portfolio view": all claims for a season, with how many naive payouts Pluvia blocked or rescued.
-- Streaming progress to the UI.
+- A second engine holding farms, stations, policies and their distances as linked entities.
+- Ghana and Kenya stations alongside Nigeria.
+- A portfolio view: every claim for a season, and how many naive payouts were blocked or
+  rescued.
+- The **learned-bias detector** described in §6.4, which is a second tier rather than a
+  requirement and only works where records are dense.
 
-### 4.4 Out of scope
+### 5.4 Out of scope
 
-- Real farmer personal data. All policyholders are synthetic.
-- Real payments, mobile money or smart contracts.
-- Weather forecasting or crop-yield modelling.
+- Real policyholder data. Every policyholder is synthetic.
+- Real payments, mobile money or settlement.
+- Weather forecasting and crop-yield modelling.
 - Pricing or underwriting new policies.
-- Scout Intent, Markovian. One engine done properly beats four done badly.
+- Additional memory engines. One engine done properly beats four done badly.
 
----
 
-## 5. Domain model and rules
+## 6. Domain model and rules
 
-### 5.1 Policy (synthetic, labelled as such)
+### 6.1 Policy, synthetic and labelled as such
 
 | Field | Example |
 |---|---|
 | `policy_id` | `POL-LAG-2025-014` |
-| `group_name` | "Ikorodu Maize Cooperative (synthetic)" |
+| `group_name` | Ikorodu Maize Cooperative (synthetic) |
 | `crop` | maize |
 | `farm_lat`, `farm_lon` | 6.60, 3.35 |
 | `ref_station_id` | `NIM00065201` |
 | `window_start`, `window_end` | 2025-07-01, 2025-08-31 |
-| `trigger_mm` | cumulative rainfall below which the policy pays (e.g. 150) |
-| `exit_mm` | rainfall at or below which the **maximum** payout applies (e.g. 60) |
-| `sum_insured_ngn` | per group (e.g. 2,500,000) |
-| `borderline_band_mm` | ± band around the trigger that forces INSPECT (e.g. 15) |
-| `min_coverage` | minimum share of window days with valid data (e.g. 0.85) |
-| `max_station_km` | maximum farm–station distance for the station to be the sole index (e.g. 25) |
+| `trigger_mm` | cumulative rainfall below which the policy pays |
+| `exit_mm` | rainfall at or below which the maximum payout applies |
+| `sum_insured_ngn` | per group |
+| `borderline_band_mm` | band around the trigger that forces an inspection |
+| `min_coverage` | minimum share of window days carrying valid data |
+| `max_station_km` | maximum farm-to-station distance for the station to be the sole index |
 
-**Payout rule (linear, standard in index insurance):**
-- index ≥ `trigger_mm` → 0
-- index ≤ `exit_mm` → 100% of sum insured
-- in between → `(trigger_mm − index) / (trigger_mm − exit_mm) × sum_insured`
+**Payout rule**, linear and standard for index insurance: at or above `trigger_mm`, nothing;
+at or below `exit_mm`, the full sum insured; between the two, proportional.
 
-Trigger values are chosen per region from the **satellite climatology of previous years** (computed by a script, documented), not invented.
+Trigger values are computed per region from the satellite climatology of prior years by a
+documented script. They are not chosen by hand.
 
-### 5.2 Claim
+### 6.2 Claim
 
-`claim_id`, `policy_id`, `submitted_at`, `event_text` (free text), and optional `window_override`.
+`claim_id`, `policy_id`, `submitted_at`, `event_text` as free text, and an optional window
+override.
 
-### 5.3 Probes (deterministic, unit-tested)
+### 6.3 Probes — deterministic and unit-tested
 
 | ID | Probe | Rule | Why |
 |---|---|---|---|
-| **P1** | Station coverage | valid station days in window ÷ window days < `min_coverage` → **fail** | GHCN Nigerian stations report 2–64 days a year (verified) |
-| **P2** | Missing-as-zero | missing days silently treated as 0 by a naive SUM; also count reported zeros on days the satellite shows ≥ 5 mm → **fail** if material | WCRP warns some feeds record missing days as zero |
-| **P3** | Quality and measurement flags | rows with non-empty `Q_FLAG` excluded; `M_FLAG` and `S_FLAG` counts reported (meanings confirmed from the GHCN readme at Gate 1) | Flags mark failed checks and data sources |
-| **P4** | Record ends early | last valid station date < window end − 3 days → **fail** | Records "run out" |
-| **P5** | Station distance | haversine(farm, station) > `max_station_km` → **warn** (cannot be sole index) | Pluvia risk from distant stations |
-| **P6** | Source divergence | on days both sources have data, compare totals; relative difference > 40% or absolute > 50 mm → **fail** | Ground and satellite disagree |
-| **P7** | Satellite fill | NASA POWER days equal to −999 → excluded; > 3 in window → **warn** | POWER's documented fill value |
-| **P8** | Borderline | chosen index within ± `borderline_band_mm` of trigger → **INSPECT** | Too close to call automatically |
+| **P1** | Station coverage | valid station days ÷ window days below `min_coverage` fails | Nigerian stations in this archive report between two and sixty-four days a year |
+| **P2** | Missing treated as zero | count days a naive sum would read as zero, and reported zeros on days the satellite shows 5 mm or more | Documented in the feeds themselves |
+| **P3** | Quality and measurement flags | exclude rows with a non-empty quality flag; count and report the measurement and source flags | Flags mark failed checks and data provenance |
+| **P4** | Record ends early | last valid station date more than three days before the window end fails | Records run out |
+| **P5** | Station distance | farm-to-station distance above `max_station_km` warns and bars the station as sole index | Distant gauges measure different weather |
+| **P6** | Source divergence | on days both sources carry data, compare totals; a large relative or absolute gap fails | The two sources genuinely disagree |
+| **P7** | Satellite fill values | exclude the documented fill value; more than three in a window warns | The retrieval has gaps of its own |
+| **P8** | Borderline | an index within the borderline band of the trigger forces an inspection | Too close to call automatically |
 
-### 5.4 Decision rules (PolicyGate, code)
+**P2 carries a caveat that must survive into the submission.** The suspect runs of zeros
+cluster in 2002 to 2005 across Brazil, Kenya, South Africa and Tanzania. Gauges do not fail
+simultaneously on three continents, so the likely cause is an archive ingest fault — missing
+values written as zero at scale, rather than blocked funnels. **Do not claim to detect
+broken instruments.** What is demonstrably caught is a record unfit to settle a claim, which
+is the thing that matters and is the stronger claim anyway, because a systemic archive fault
+affects every policy written against that archive rather than one farm.
 
-The Adjudicator (LLM) **proposes**; the PolicyGate (code) **disposes**.
+### 6.4 Second-tier detector, where records allow it
 
-1. If the station passes P1–P4 and P6 → station is the index (it is the contract's reference).
-2. If the station fails P1/P2/P4 but the satellite passes P7 → satellite is the index, **only if** the Adjudicator cites the failed probes. The decision is labelled "station unreliable; satellite used".
-3. If both sources fail, or P6 fails with no resolving evidence after the allowed rounds → **INSPECT**.
-4. P8 borderline → **INSPECT**, regardless of source.
-5. H-MEM conflict between sources unresolved (confidence < 0.70) → **INSPECT**.
-6. Otherwise apply the payout rule → **PAY** (amount) or **NO PAY**.
+Where a station has a dense record, disagreement can be judged against *that station's own
+historical distribution of disagreement* rather than an absolute threshold. A point gauge
+and a gridded area average disagree constantly and legitimately, so an absolute threshold
+fires on nearly every claim.
 
-The LLM can't move money on its own. A probe failure can only be cleared by new evidence that passes the probes.
+Measured behaviour across four well-covered stations: gauge-to-satellite correlation runs
+0.30 to 0.37 daily and 0.58 to 0.80 over ten-day periods, so ten days is the smallest usable
+unit. A station's bias distribution settles after roughly eight years of overlapping record
+and fifty ten-day blocks. Thresholds are each station's own 95th and 99th percentile absolute
+bias rather than a normal-curve score, because the distributions are heavy-tailed.
 
----
+This is explicitly **not** the primary mechanism. It needs years of overlap that the target
+country does not have, where P1 and P2 catch the same failures with no history at all.
 
-## 6. Evaluation (honest, measurable)
+### 6.5 Decision rules — PolicyGate, in code
 
-**Problem:** no ground truth exists for "what really happened on the farm".
+The Adjudicator proposes. The PolicyGate disposes. No model can move money on its own, and a
+failed probe can only be cleared by new evidence that passes the probes.
 
-**Method: fault injection on real data, plus real Nigerian cases.**
+1. Station passes P1 to P4 and P6. The station is the index, because it is the contract's
+   reference.
+2. Station fails P1, P2 or P4 while the satellite passes P7. The satellite becomes the
+   index, but only where the Adjudicator cites the failed probes. Where this produces a
+   payout the station would have refused, the outcome is recorded as **pay anyway** and the
+   reason is stated.
+3. Both sources fail, or P6 fails with nothing resolving it after the permitted rounds:
+   inspection.
+4. P8 borderline: inspection, whichever source is used.
+5. A memory conflict left unresolved below 0.70 confidence: inspection.
+6. Otherwise apply the payout rule.
 
-1. **Clean reference series:** real station-windows with high coverage (≥ 95% days) and close satellite agreement. Candidate stations are in Ghana or Kenya, or any well-covered GHCN station. They are confirmed at Gate 3; if none qualify we say so.
-2. For each clean series, compute the true decision from the clean data. Then create labelled variants with **known injected faults**: drop N days, replace missing with zeros, truncate the end of the record, add a 3-day shift, and use a distant station.
-3. **Real Nigerian cases** (Lagos, Kano and others for 2024–2025), labelled **INSPECT** or "station unreliable" based only on documented coverage facts, never on our model's output.
-4. **Compare four deciders:**
-   - naive station trigger;
-   - satellite only;
-   - LLM judge given raw totals;
-   - Pluvia.
-5. **Metrics:**
-   - wrong payouts (paid when it shouldn't);
-   - missed payouts;
-   - INSPECT rate;
-   - mean time per claim.
 
-Target 20+ cases. **Report whatever we measure.** The eval script and case files ship in the repo, so judges can re-run it.
+## 7. Evaluation
 
----
+No ground truth exists for what really happened on the farm, so the method is fault
+injection on real data alongside real Nigerian cases.
 
-## 7. Success metrics
+1. **Clean reference series.** Real station-windows with high coverage and close satellite
+   agreement. Eight candidates are confirmed by measurement in §8.
+2. For each, compute the decision from the clean data, then produce labelled variants with
+   known injected faults: drop days, replace missing with zeros, truncate the record, shift
+   it by three days, substitute a distant station.
+3. **A true negative is included deliberately.** Dodoma `TZ000063862` carries a 175-day run
+   of zeros that the satellite independently corroborates at 11.8 mm total with no day above
+   10 mm. It is a genuine dry spell, and a detector that fires on it is wrong. Any evaluation
+   built only from faults measures the wrong thing.
+4. **Real Nigerian cases** for 2024 and 2025, labelled from documented coverage facts alone
+   and never from the system's own output.
+5. **Four deciders compared:** naive station trigger, satellite only, a model given raw
+   totals, and Pluvia.
+6. **Metrics:** wrong payouts, missed payouts, inspection rate, mean time per claim.
 
-| Metric | Target |
-|---|---|
-| The Lagos July 2025 case is caught (naive = PAY, Pluvia = not a blind PAY) | 100% repeatable, live and in sample mode |
-| Pluvia wrong-payout rate on the eval set | Lower than all three baselines, reported honestly |
-| Memory demo | Second claim on the same station: 0 evidence-request rounds vs ≥ 1 on the first |
-| Run time per claim | < 2 min live, < 20 s sample mode |
-| Fresh clone | Someone who hasn't touched the repo follows the README without asking anything |
+Target twenty or more cases. Report whatever is measured. The script and the case files ship
+in the repository so the result can be re-run.
 
----
 
-## 8. Judging rubric fit
+## 8. Verified facts
 
-| Criterion | Pts | How Pluvia earns it |
-|---|---|---|
-| Impact | 30 | Real farmers, real money, a documented industry problem (basis risk), a failure verified on real 2025 Nigerian data, built by a Lagos team |
-| Technical | 20 | Two real sources that disagree, federated in Zetaris; deterministic probes; a code-enforced decision gate; a bounded evidence-request loop; measured eval; traces |
-| Innovation | 15 | Treats data quality as part of the claim decision. Uses H-MEM's conflict resolution and human-review queue as the INSPECT mechanism |
-| Demo | 15 | One chart: 10 grey "missing" bars and a satellite line. "Naive trigger pays. Pluvia sends an inspector." |
-| Product & UX | 10 | A decision card a claims officer can act on, plus a plain-language letter |
-| Sponsor Tech | 10 | Zetaris joins S3 CSVs, a REST satellite API and the policy register in SQL; H-MEM holds precedents and conflicts; Nemotron reasons; everything goes through Nightshift |
+Measured against the live archives on 25 and 26 October 2026.
 
----
-
-## 9. Prior art and field
-
-| Prior art | What it does | How Pluvia differs |
-|---|---|---|
-| Parametric insurers (Arbol, ACRE Africa, Pula, IBISA) | Automate payouts from an index | Pluvia audits whether the **index data itself** is trustworthy for *this* claim, and explains it |
-| Generic "AI for crop insurance" platforms (for example Stack AI's enterprise pages) | Workflow automation | No source-vs-source data-quality adjudication found |
-| Hackathon field (1,044 teams checked 25 Oct) | — | No team mentions crop insurance claims. Closest: **RiverTruth** (why flood gauges and forecasts disagree, for flood forecasters): different user, different decision |
-
-Honest weakness: a judge may ask "is this a real insurer's workflow?" Answer: the decision structure (index, trigger, exit, payout, basis risk) is standard. The policies are synthetic and labelled. The rainfall data and its failures are real.
-
----
-
-## 10. Verified facts (25 Oct 2026) and remaining assumptions
-
-### Verified
+### 8.1 The data
 
 | Fact | How |
 |---|---|
-| Nigeria has 7 GHCN rainfall stations reporting into 2024–2025: `NIM00065046` (12.048, 8.525), `NIM00065101` (8.44, 4.494), `NIM00065123` (9.617, 6.533; last year 2024), `NIM00065134` (9.64, 8.869), `NIM00065167` (9.258, 12.43), `NIM00065201` (6.577, 3.321), `NIM00065250` (5.015, 6.95). Ghana: 16; Kenya: 10 | Filtered `ghcnd-inventory.txt` |
-| Per-station CSVs exist at `s3://noaa-ghcn-pds/csv/by_station/<ID>.csv`, **with** a header row `ID,DATE,ELEMENT,DATA_VALUE,M_FLAG,Q_FLAG,S_FLAG,OBS_TIME` | Fetched directly |
-| Nigerian stations have very sparse reporting (Kano 2024: 5 days; Lagos 2025: 44 days, July 2025: 10 days) | Counted |
-| NASA POWER daily point API: no key, JSON, values at `properties.parameter.PRECTOTCORR` keyed `YYYYMMDD`, units mm/day, fill −999, Lagos July 2025 = 109.5 mm over 31 days | Called the API |
-| Zetaris has a verified GHCN-Daily filestore recipe (public bucket, CSV, `CACHE TABLE` required) | Read `02_noaa_ghcn_create.sql` |
-| Zetaris REST tables: endpoint, query and headers are fixed at CREATE; dynamic-key JSON is decoded with `from_json(to_json(..),'map<..>')` + `explode` | Read REST HOWTO + SQL Companion |
-| H-MEM conflict resolution detects "divergent numeric values", auto-resolves at ≥ 0.70 confidence, else queues for human review; every resolution writes the trust ledger | Read `engines/hmem/docs/conflict-resolution.md` |
-| H-MEM conformance runner: `HMEM_IMPL=/abs/path/index.ts npx tsx conformance/runner.ts`; implementation must export an `HMEM` class | Read `conformance/runner.ts` |
+| Nigeria has **ten** stations carrying rainfall in this archive, of which eight are usable. The whole national record is roughly **2,050 station-days across 52 years**. Lagos `NIM00065201` is 5.3 per cent complete across its lifetime and 10.8 per cent since 2001; Makurdi holds nine days in total; Enugu holds one year | Filtered the inventory, then counted every station's rows |
+| Lagos July 2025: gauge **10 of 31 days, 6.1 mm**, with nine of the ten reported days reading exactly 0.0 and every one carrying a blank quality flag. Satellite **31 of 31 days, 131.7 mm**, no fill values | Both fetched directly |
+| Lagos reported 44 days in all of 2025. Kano `NIM00065046` reported 5 days in 2024 | Counted |
+| Precipitation in this archive is recorded in **tenths of a millimetre** | Archive readme |
+| Measurement flag `A` marks a multi-day accumulation; `B` and `D` mark twelve- and six-hour parts; companion fields carry the multi-day total and its day count. A blank quality flag means the value passed every check | Archive readme |
+| Station completeness must be measured over the **satellite-overlap era, not the lifetime**. One station measures 73 per cent complete across its full record and 10 per cent since 2001 | Measured both ways |
+| **Eight clean station-windows** for the evaluation, by satellite-era coverage: Maceió 65%, São Paulo 62%, Teresina 56%, Kitale 54%, Dar es Salaam 43%, Zanzibar 42%, Mombasa 42%, Mwanza 40% | Measured per station |
+| A definitive broken-gauge case: Teresina `BR037041370`, **534 consecutive days of exactly 0.0 mm** from June 2002 while the satellite recorded 379.2 mm, including one day at 42.8 mm | Measured |
+| A true-negative case: Dodoma `TZ000063862`, a 175-day run of zeros the satellite corroborates | Measured |
 
-### Not yet verified (each has a gate in progress.md)
+### 8.2 Two traps, already paid for
+
+| Trap | Detail |
+|---|---|
+| **Country codes** | The archive's `NG` is **Niger**. Nigeria is `NI`. Latitudes near 18°N give the mistake away |
+| **The satellite series** | The obvious precipitation field is **bias-corrected using gauge observations**, which makes any gauge-against-satellite comparison partly circular. The independent retrieval must be used instead, and it returns the fill value for every day unless the request also sets the UTC time standard. For the same Lagos window the two differ materially: 131.7 mm independent against 109.5 mm corrected |
+
+### 8.3 The platform, verified on the build machine
+
+| Fact | Detail |
+|---|---|
+| Zetaris | Running, **nine of nine verification checks pass**. Login and a full query path through interface, API, driver and engine all confirmed |
+| Services | The default set is exactly `init postgres driver api bootstrap ui`. A reverse proxy exists in the compose file but is profile-gated and does not start |
+| Ports | Interface 3000, API 8888 and 8889, driver 10000 and 4040. No conflict with the AI gateway's 8088 |
+| Images | Driver 8.45 GB, API 982 MB, interface 316 MB — about 9.75 GB on disk |
+| Configuration | The bundle ships its environment file already populated. Its own notes say nothing needs configuring, which contradicts the longer setup guide; the bundle is authoritative. The admin password should be checked against the complexity rule before the first start, because a rejection does not surface until several minutes in |
+| Container runtime | A runtime with native Rosetta support works and is the fast path. A second Docker runtime must not be installed alongside it, because they contend for the same socket |
+
+### 8.4 Open assumptions
+
+Each has a fallback and none blocks the build.
 
 | # | Assumption | Fallback |
 |---|---|---|
-| A1 | Zetaris registers a **per-station** CSV (`header "true"`) | The verified `by_year/2025.csv` table plus `CACHE TABLE` (slow first load) |
-| A2 | Zetaris registers NASA POWER as a REST table and decodes the date-keyed map | Same REST pattern against a snapshot JSON committed in our public repo (raw GitHub URL), still read through Zetaris |
-| A3 | Zetaris registers the policy register as a REST table from a public raw GitHub JSON URL | Cache it in Zetaris from a different public HTTP host |
-| A4 | GHCN PRCP unit is tenths of mm; `S` source flag = Global Summary of the Day; `M_FLAG` meanings | Read `readme.txt` before quoting units or flags anywhere |
-| A5 | Nightshift serves Nemotron 3.5 Lightning and/or Nemotron 3 Ultra for us; the response names the model | Read Nightshift receipts; reported working for other builders |
-| A6 | Nightshift **Web** edition works as a hotspot on Sam's Windows laptop (announced 25 Oct) | Mac runs all live LLM calls |
-| A7 | At least 5 well-covered clean station-windows exist for the eval (Ghana, Kenya or elsewhere) | Smaller eval, stated honestly |
+| A1 | Zetaris registers a per-station CSV with a header row | Use the verified per-year table and filter by station |
+| A2 | Zetaris registers the satellite API as a REST table and decodes its date-keyed response | Register committed snapshots through the same pattern from a public URL; data still flows through Zetaris and the README states the snapshot date |
+| A3 | Zetaris registers the policy register from a public raw URL | Cache it in Zetaris from a different public host |
+| A4 | The AI gateway serves the intended Nemotron models and names the model in the response | Read the gateway receipts; swap model |
 
----
 
-## 11. Known platform issues (from HackOS channels, 25 Oct)
+## 9. Success metrics
 
-- **Retired NVIDIA models:** Nemotron 3 Super 120B (free endpoint, returns 404) and Llama 3.3 Nemotron Super. Nemotron Super **VL** is not in Nightshift's list. **Working for others:** Nemotron 3.5 Lightning, Nemotron 3 Ultra. Current Nano id: `nvidia/nemotron-nano-3-30b-a3b`.
-- **Lane routing:** one builder reports that `meterless/deep`, `meterless/fast` and `meterless/fusion` all route to `meterless/auto` and a single lane. **Pluvia uses one model route and logs what actually served each call.** It must not depend on two lanes.
-- **Nightshift 1.2.3:** the "Reasoning budget" slider breaks Nemotron 3 Ultra calls. Leave it at default.
-- Use `max_tokens` ≥ 500, or reasoning models can return empty content.
-- Cursor is optional (official announcement, 22 Oct). The Help Cursor header still says required; that is stale.
+| Metric | Target |
+|---|---|
+| The Lagos July 2025 case is caught — naive trigger pays, Pluvia does not pay blindly | Repeatable, live and in sample mode |
+| Wrong-payout rate on the evaluation set | Below all three baselines, reported honestly |
+| The true negative at Dodoma raises no finding | No false positive |
+| Memory | Second claim on a station needs no evidence-request round where the first needed at least one |
+| Run time per claim | Under two minutes live, under twenty seconds in sample mode |
+| Fresh clone | Someone who has not touched the repository follows the README without asking a question |
 
----
 
-## 12. Pre-existing components (declare in the submission form)
+## 10. How it earns the rubric
 
-- Open-source libraries (npm). The Meterless H-MEM reference implementation (Apache 2.0) is vendored with attribution and extended.
-- Zetaris getting-started recipe patterns (GHCN filestore, REST + SchemaStore view), used and adapted.
-- **No pre-existing product code.** All Pluvia code is written during the build window.
+| Criterion | Points | How |
+|---|---|---|
+| Impact | 30 | Real farmers and real money, a documented industry problem, and a failure verified against real 2025 Nigerian data. Track 03's four nouns all carry weight, and the output is an action rather than an answer |
+| Technical | 20 | Two genuinely disagreeing sources federated in one query layer, deterministic probes, a code-enforced decision gate, a bounded evidence-request loop, a measured evaluation with a true negative, and full traces |
+| Innovation | 15 | Treats data quality as part of the claim decision, and uses the memory engine's own conflict resolution and human-review queue as the inspection mechanism |
+| Demo | 15 | One chart: ten grey missing bars against a satellite line. A naive trigger pays. Pluvia sends an inspector |
+| Product and UX | 10 | A decision card a claims officer can act on, and a plain-language letter |
+| Sponsor technology | 10 | Zetaris joins object-storage CSV, a REST satellite API and the policy register in one SQL surface; H-MEM holds precedents and conflicts; Nemotron reasons; every call goes through Nightshift |
+
+
+## 11. Prior art
+
+| Prior art | What it does | How Pluvia differs |
+|---|---|---|
+| Parametric insurers | Automate payouts from an index | Pluvia audits whether the index data itself can be trusted for this claim, and explains why |
+| Generic agricultural-insurance automation platforms | Workflow automation | No source-against-source data-quality adjudication found |
+| The research literature on basis risk | Measures and reduces it by redesigning the index | Pluvia decides an individual claim under the index that already exists. One review argues the index should be measured transparently by a neutral third party, which is an argument for this product's existence |
+
+**Honest weakness.** A judge may ask whether this is a real insurer's workflow. The decision structure of index,
+trigger, exit, payout and basis risk is standard. The policies are
+synthetic and labelled. The rainfall data and its failures are real.
+
+
+## 12. Pre-existing components
+
+To declare on the submission form:
+
+- Open-source libraries.
+- The Meterless H-MEM reference implementation, vendored with attribution and extended.
+- Zetaris getting-started recipe patterns, used and adapted.
+- **No pre-existing product code.** All Pluvia code is written inside the build window.
