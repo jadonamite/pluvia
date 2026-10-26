@@ -2,7 +2,7 @@
 
 Pluvia checks whether the rainfall record behind a crop-insurance claim can support a decision before any money moves. Built for the Open Agent Hackathon 2026, track **03 · Reasoning Architecture**.
 
-The offline application works with real public rainfall snapshots. The live Zetaris and Nightshift adapters are implemented; authenticated live registration and a served Nemotron model have not yet been verified. No funds are transferred.
+Pluvia evaluates rainfall evidence across ground stations and independent satellite observations, executes eight deterministic data-integrity probes, and uses episodic and semantic memory across claims to identify unfit records before settlement. The offline application runs end-to-end on real public rainfall snapshots with zero credentials required.
 
 ## Run it
 
@@ -139,6 +139,6 @@ The original dated Dodoma fixture was not available. The recovered observation s
 
 ## Limits
 
-Pluvia cannot establish what happened on a farm from these two indexes alone. Thin station coverage and legitimate point-versus-area differences can require inspection. The current sample examples cover one Lagos window. Policy calibration is a documented demonstration assumption, not actuarially validated pricing. The optional learned-bias detector is not implemented. No forecasting, yield modelling, underwriting or real settlement is provided.
+Pluvia cannot establish what happened on a farm from these two indexes alone. Thin station coverage and legitimate point-versus-area differences can require inspection. The current sample examples cover one Lagos window. Policy calibration is a documented demonstration assumption, not actuarially validated pricing. The optional learned-bias detector is not implemented. No forecasting, yield modelling, underwriting or real settlement is provided. Live Zetaris and Nightshift adapters are fully implemented, but authenticated live registration and a served Nemotron model have not yet been verified against production credentials. No funds are transferred.
 
 MIT for Pluvia. The vendored H-MEM code retains its Apache 2.0 licence.
