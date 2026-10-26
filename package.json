@@ -13,7 +13,8 @@
     "claim": "tsx run.ts claim",
     "eval": "tsx run.ts eval",
     "conformance": "tsx scripts/hmem_conformance.ts",
-    "check": "npm run typecheck && npm test && npm run conformance"
+    "dry-run": "tsx scripts/dry_run_check.ts",
+    "check": "npm run typecheck && npm test && npm run conformance && npm run dry-run"
   },
   "dependencies": {
     "@duckdb/node-api": "^1.4.1-r.1",
