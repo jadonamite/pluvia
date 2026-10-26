@@ -22,6 +22,12 @@ export async function readClaimArgument(value: string | undefined): Promise<{ in
   if (rounds !== undefined && (typeof rounds !== 'number' || !Number.isInteger(rounds) || rounds < 0 || rounds > 2)) throw new RuntimeError('invalid_input', 'max_extra_rounds must be an integer from 0 to 2.');
   return { input: parsed.data, ...(rounds !== undefined ? { options: { max_extra_rounds: rounds as number } } : {}) };
 }
+// Returns true when a claim file names cached historical evidence ({"case_file": ...}) rather than a claim.
+export async function isCaseFileInput(value: string | undefined): Promise<boolean> {
+  if (!value?.endsWith('.json')) return false;
+  try { const document = JSON.parse(await readFile(value, 'utf8')) as unknown; return !!document && typeof document === 'object' && !Array.isArray(document) && 'case_file' in document; }
+  catch { return false; }
+}
 export async function main(args = process.argv.slice(2), io: CliIO = defaultIO, factory: () => Promise<Runtime> = () => createRuntime({ stdout: true })): Promise<number> {
   const command = args[0] ?? 'serve';
   if (!['serve', 'claim', 'health', 'register', 'eval'].includes(command)) { io.error({ status: 'error', error: { type: 'invalid_command', message: 'Use serve, claim <claim-id|input.json>, health, register, or eval.', recoverable: true } }); return 1; }
@@ -29,6 +35,13 @@ export async function main(args = process.argv.slice(2), io: CliIO = defaultIO, 
   let serving = false;
   try {
     loadEnvironment();
+    if (command === 'claim' && await isCaseFileInput(args[1])) {
+      const sampleCasePath = './scripts/run_sample_case.js';
+      const { runSampleCase } = await import(sampleCasePath) as typeof import('./scripts/run_sample_case.js');
+      let result: Awaited<ReturnType<typeof runSampleCase>>;
+      try { result = await runSampleCase(args[1]!); } catch { throw new RuntimeError('invalid_case_file', 'The case file could not run. Check that case_file names cached evidence with synthetic policy terms and both rainfall sources.'); }
+      io.out(result); return result.status === 'error' ? 1 : 0;
+    }
     const claimRequest = command === 'claim' ? await readClaimArgument(args[1]) : undefined;
     runtime = await factory();
     if (command === 'health') { io.out(await runtime.orchestrator.health()); return 0; }

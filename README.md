@@ -22,20 +22,22 @@ SAMPLE_MODE=true npm run claim -- input_examples/lagos_03.json
 
 The first claim on a fresh station/window requests more evidence. A later claim recalls the lesson and avoids that extra round. Real outputs from the supplied inputs are in [output_examples](output_examples/). Run traces go to stdout and `logs/<run_id>.jsonl`; memory persists under `logs/memory/`. A browser review appears at `GET /runs/:id` during the current server session.
 
-Two historical sample inputs run through the same full agent loop with isolated memory:
+Three historical sample inputs name cached evidence with `case_file` and run through the same full agent loop with isolated memory. The same command runs them:
 
 ```sh
-npx tsx scripts/run_sample_case.ts input_examples/teresina_zero_run.json
-npx tsx scripts/run_sample_case.ts input_examples/dodoma_dry_spell.json
+npm run claim -- input_examples/kitale_basis_risk.json
+npm run claim -- input_examples/teresina_zero_run.json
+npm run claim -- input_examples/dodoma_dry_spell.json
 ```
 
 | Pair | Actual finding | Current verdict |
 |---|---|---|
 | `lagos_01` through `lagos_03` | Sparse station coverage, conflicting zeros and memory recall | `INSPECT` |
+| `kitale_basis_risk` | Gauge 147.3 mm against satellite 128.0 mm and a 139.2 mm trigger; the station-only trigger refuses, and P5 bars the distant station as sole index | `PAY_ANYWAY`, ₦14,088.05 |
 | `teresina_zero_run` | 534 reported zeros over 1,146 calendar days, with 612 missing days; 15 reported zeros conflict with satellite rain | `INSPECT` |
 | `dodoma_dry_spell` | No suspect-zero days; 56 absent calendar dates and fixed relative divergence still fail | `INSPECT` |
 
-These five pairs cover three evidence scenarios, not three verdict types. Dodoma's reported dry spell must not trigger suspect-zero detection, and does not. Its complete-window no-findings requirement remains unresolved. Teresina's matched satellite dates total 379.19 mm, with a maximum day of 42.76 mm; the complete calendar window totals 4,460.59 mm. Its historical policy terms are illustrative synthetic thresholds, not calibrated insurance terms. The checked-in outputs are actual runner responses, including the current limitations. To run another existing evaluation case, point `case_file` in an input JSON file to that case; this runner always uses cached evidence and `sample-rules`.
+These six pairs cover four evidence scenarios. Kitale's rainfall and satellite point are real; only the station's distance metadata is synthetic, so it demonstrates substitution rather than a measured distant farm loss, and P2 still finds four suspect zeros. Dodoma's reported dry spell must not trigger suspect-zero detection, and does not. Its complete-window no-findings requirement remains unresolved. Teresina's matched satellite dates total 379.19 mm, with a maximum day of 42.76 mm; the complete calendar window totals 4,460.59 mm. Its historical policy terms are illustrative synthetic thresholds, not calibrated insurance terms. The checked-in outputs are actual runner responses, including the current limitations. To run another existing evaluation case, point `case_file` in an input JSON file to that case; case-file inputs always use cached evidence and `sample-rules`, whatever credentials are set.
 
 The historical case runner includes its full trace in the response and removes its isolated temporary files after each run. Its returned `log_file` records that temporary location; use the embedded `trace` for review. The ordinary claims CLI and server retain their logs under `logs/`.
 

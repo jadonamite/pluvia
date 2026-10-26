@@ -36,6 +36,16 @@ describe('claim command input', () => {
     expect(factory).not.toHaveBeenCalled();
     expect(error.mock.calls[0]![0].error.type).toBe('invalid_command');
   });
+  it('runs case-file inputs through the claim command without a live runtime', async () => {
+    const factory = vi.fn();
+    const out = vi.fn(),
+      error = vi.fn();
+    expect(
+      await main(['claim', 'input_examples/kitale_basis_risk.json'], { out, error }, factory)
+    ).toBe(0);
+    expect(factory).not.toHaveBeenCalled();
+    expect(out.mock.calls[0]![0].output.decision.verdict).toBe('PAY_ANYWAY');
+  });
   it('closes the adapter after a failed claim and preserves structured output', async () => {
     const close = vi.fn();
     const result = { status: 'error', error: { type: 'run_error' } };
