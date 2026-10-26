@@ -53,11 +53,10 @@ export class NightshiftAdapter implements ModelAdapter {
       if (!res.ok) return 'offline';
 
       const body = (await res.json()) as { data?: { id?: string }[] };
+      // A pinned provider route is as valid as a meterless/* routing mode, so the
+      // configured id only has to appear in the authenticated listing.
       const isOnline =
-        Array.isArray(body.data) &&
-        body.data.some(
-          (m) => m.id === this.config.model && m.id.startsWith('meterless/')
-        );
+        Array.isArray(body.data) && body.data.some((m) => m.id === this.config.model);
       return isOnline ? 'online' : 'offline';
     } catch {
       return 'offline';
@@ -111,14 +110,16 @@ export class NightshiftAdapter implements ModelAdapter {
           }
 
           const metadata = raw as unknown as {
-            meterless?: unknown;
+            meterless?: { receipt_id?: string; routed_model?: string };
             receipt_id?: string;
           };
+          // Nightshift carries the receipt id inside its compute receipt, not at top level.
+          const receipt = metadata.receipt_id ?? metadata.meterless?.receipt_id;
           const result: ModelResponse = {
             content,
             model: raw.model,
             route: this.config.model,
-            ...(metadata.receipt_id ? { receipt: metadata.receipt_id } : {}),
+            ...(receipt ? { receipt } : {}),
             ...(metadata.meterless ? { meterless: metadata.meterless } : {}),
           };
 
