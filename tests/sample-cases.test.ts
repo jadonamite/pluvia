@@ -40,4 +40,17 @@ describe('historical sample pairs', () => {
     const saved = JSON.parse(readFileSync('output_examples/dodoma_dry_spell.json', 'utf8'));
     expect(saved.output.decision.probes).toEqual(probes);
   });
+
+  it('restores the Kitale payout the station-only trigger suppresses', async () => {
+    const result = await runSampleCase('input_examples/kitale_basis_risk.json');
+    expect(result.status).toBe('success');
+    const decision = result.output!.decision;
+    expect(decision.verdict).toBe('PAY_ANYWAY');
+    expect(decision.payout_ngn).toBe(14088.05);
+    expect(decision.index_source).toBe('power');
+    expect(decision.naive.station_only.verdict).toBe('NO_PAY');
+    const saved = JSON.parse(readFileSync('output_examples/kitale_basis_risk.json', 'utf8'));
+    expect(saved.output.decision.verdict).toBe('PAY_ANYWAY');
+    expect(saved.output.decision.probes).toEqual(decision.probes);
+  });
 });
