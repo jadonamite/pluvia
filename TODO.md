@@ -26,16 +26,16 @@ Measured, not estimated. Re-run `npm run check` to reproduce the first four line
 
 | | |
 |---|---|
-| Tests | 81 passing across 16 files |
+| Tests | 86 passing across 17 files |
 | TypeScript | `tsc --noEmit`, zero errors |
-| Meterless H-MEM | Official vendor conformance runner, 13 of 13 |
+| Meterless H-MEM | Official vendor conformance runner, 13 of 13; scorecard committed at `logs/hmem-conformance.txt` |
 | Offline dry run | 22 Zetaris statements and 2 NASA POWER endpoints validated |
 | Evaluation | 46 labelled cases; Pluvia 0 wrong payouts, 0 missed payouts |
 | Verdict spread | `NO_PAY` 14, `INSPECT` 26, `PAY` 5, `PAY_ANYWAY` 1 |
 | Naive station baseline | 5 wrong payouts, 1 missed payout on the same 46 cases |
 | Application code | about 6,000 lines of TypeScript across `app/`, `eval/`, `scripts/` |
-| Sample input/output pairs | 5 |
-| Zetaris platform | Running locally, 9 of 9 verification checks, **no API key yet** |
+| Sample input/output pairs | 6, run with one `npm run claim` command; Kitale returns `PAY_ANYWAY` |
+| Zetaris | **Live.** Own instance on AWS EC2, 9 of 9 checks; 22 objects registered; a claim ran through six Zetaris queries |
 | Nightshift | **Live.** `/v1/models` lists 56 routes; one full claim completed in 175 s |
 | NVIDIA Nemotron | **Serving.** `nvidia/nemotron-3.5-bolt-e4b`, with a compute receipt per call |
 
@@ -46,34 +46,22 @@ Measured, not estimated. Re-run `npm run check` to reproduce the first four line
 Nothing in this section can be done from a checkout. Each one is a hard dependency for
 something below it.
 
-## A1. Zetaris API key and live registration
+## A1. One claim with both services live
 
 - **Owner:** person
 - **Why:** Zetaris is a required sponsor component and absent sponsor integration is on the
-  disqualification list. The adapter, the registration SQL and the schema checks are all written
-  and tested offline, but nothing has ever authenticated. Until one statement executes against
-  the live service, the data layer is proven in code and unproven in fact.
-- **Do:**
-  1. Generate an API key in the Zetaris Cloud dashboard and note the organisation ID.
-  2. Fill `ZETARIS_API_KEY` and `ZETARIS_ORG_ID` in `.env`.
-  3. Set `CONTACT_EMAIL` to a real address. Registration refuses to run on the placeholder
-     because the address is sent as the user agent on NASA POWER requests.
-  4. `npx tsx --env-file=.env scripts/register_zetaris.ts --print` and read the statements.
-  5. Re-run without `--print` to register. It checks for existing objects, executes one
-     statement at a time, caches each source and verifies the NOAA columns before creating
-     dependent views. It stops on the first failure.
-  6. `npx tsx run.ts health`
-- **Done when:** health reports `"zetaris":"online"` and `"sample_data":false`, and one claim
-  submitted with both services live writes a trace to `logs/` that is kept.
-
-## A2. HackOS team
-
-- **Owner:** person
-- **Why:** Submission is impossible without a team, solo entries included, and composition locks
-  the moment the first submission is created. There is no technical workaround and no recovery
-  after the fact.
-- **Do:** Create the team on HackOS. Confirm sponsor credits appear on the task board afterwards.
-- **Done when:** a team exists and the submission form will accept an entry.
+  disqualification list. The data path is now proven live: a Zetaris instance in Docker on an
+  AWS EC2 virtual machine, reached through an SSH tunnel, authenticated and registered all 22
+  objects (21 created, the container already present). Its views return the measured Lagos
+  figures (gauge 10 days and 6.1 mm, satellite 31 of 31 days and 131.7 mm, 8,766 prior-year
+  days), and a claim with live data and `sample-rules` returned `INSPECT` through six Zetaris
+  queries. No claim has yet run with live data and a live model in the same process.
+- **Do:** on one machine with both credentials in `.env` (Zetaris key and organisation ID,
+  Nightshift token, pinned route), run `npx tsx run.ts health`, then
+  `npm run claim -- input_examples/lagos_01.json` on fresh memory. Copy the trace to a committed
+  `logs/trace-demo-*.jsonl` name.
+- **Done when:** health reports `"sample_data":false` and `"sample_model":false`, and that claim's
+  trace is kept in the repository.
 
 ## A3. Record the demo video
 
@@ -118,22 +106,20 @@ enough to claim, and whether a full run finishes inside its own budget.
 - **Done when:** a full claim trace shows every `model_response` line carrying
   `model: nvidia/...` and `model_identity: served_identifier`, with no other vendor present.
 
-## B2. Trim the Auditor and Adjudicator payloads
+## B2. Confirm a complete live run with two extra rounds
 
-- **Owner:** code
-- **Why:** These two calls take 22 to 54 seconds each because their payloads carry every probe's
-  full metric object plus the policy plus recalled memory. With the default two evidence rounds a
-  run needs about 479 seconds of model time against a 240 second budget, so it returns `partial`:
-  the decision is still made and written, but the reporter never finishes. With
-  `max_extra_rounds: 0` the same claim completes in 175 seconds. A judge running the documented
-  command should see a complete run, not a truncated one.
-- **Do:** send the probe `id`, `name`, `status` and `evidence` line rather than the whole metric
-  dictionary. Cap `max_tokens` per agent where the schema already caps the output; the Auditor
-  explanation is limited to 120 words and does not need 1,200 tokens. Do not raise the run
-  budget to hide the cost.
-- **Done when:** a live claim with the default two extra rounds returns `status: success`, and
-  the evaluation verdict spread is unchanged at `NO_PAY` 14, `INSPECT` 26, `PAY` 5,
-  `PAY_ANYWAY` 1.
+- **Owner:** person, after pulling
+- **Why:** A live claim with the default two evidence rounds used to need about 479 seconds of
+  model time against a 240 second budget and returned `partial`. The prompts are now compact:
+  probe findings as one line each, the contract terms, and extra evidence reduced to totals
+  (`app/agents/modelPayloads.ts`). On the cached Lagos claim the second Adjudicator prompt fell
+  from 379,361 to 3,033 characters, and the Auditor and Reporter request the 800-token floor. The
+  evaluation spread is unchanged. Only a live run shows whether the budget now holds.
+- **Do:** with Nightshift live and the route pinned (B1), run
+  `npm run claim -- input_examples/lagos_01.json` on a fresh memory directory and read the status.
+  Do not raise the run budget to hide the cost.
+- **Done when:** the live claim returns `status: success` with at least one evidence request in
+  the trace.
 
 ## B3. Measure the fourth evaluation decider
 
@@ -152,43 +138,6 @@ enough to claim, and whether a full run finishes inside its own budget.
 # C. Evidence and reproducibility
 
 Items a judge trips over. Each one is small and each one is visible from the repository.
-
-## C1. Add a sample pair that pays
-
-- **Owner:** code
-- **Why:** All five sample pairs return `INSPECT`. A judge who runs the documented commands never
-  sees Pluvia pay anyone, so the product's central argument — that it restores payouts a station
-  wrongly suppresses — is invisible from the command line. The Kitale case already exists as a
-  case file.
-- **Do:** add `input_examples/kitale_basis_risk.json` pointing at
-  `eval/cases/KE000063661-2021-08-15-basis-risk.json`, run it through
-  `scripts/run_sample_case.ts`, and commit the real output to `output_examples/`.
-- **Done when:** one committed sample pair shows verdict `PAY_ANYWAY` and payout
-  `14088.05`, and the README table lists it.
-
-## C2. Resolve the two input schemas in `input_examples/`
-
-- **Owner:** code
-- **Why:** `input_examples/lagos_01.json` is a claim reference and runs with
-  `npm run claim -- <file>`. `input_examples/teresina_zero_run.json` is `{"case_file": ...}` and
-  fails that same command with `invalid_input`; it needs
-  `npx tsx scripts/run_sample_case.ts <file>`. Both commands are documented, but the README shows
-  the first form nine lines above the second, so the obvious extrapolation breaks. A judge who
-  hits an error reads it as a broken build.
-- **Do:** either teach `readClaimArgument` in `run.ts` to accept a `case_file` input and delegate,
-  or move the case-file inputs into their own directory with their own heading.
-- **Done when:** every file in `input_examples/` runs with one documented command, or each
-  directory states its own command next to the files it holds.
-
-## C3. Commit the conformance scorecard
-
-- **Owner:** code
-- **Why:** `logs/hmem-conformance.txt` is deliberately not committed because it contains an
-  absolute machine path. The event asks for evidence in `logs/`, and the Meterless engine
-  scorecard is the single strongest piece of sponsor evidence in the project.
-- **Do:** write a path-stripped copy to a committed file, or make `scripts/hmem_conformance.ts`
-  emit the path relative to the repository root so the output is safe to commit.
-- **Done when:** the 13 of 13 scorecard is readable from the repository without running anything.
 
 ## C4. Rebuild and re-test the container
 
@@ -209,16 +158,6 @@ Items a judge trips over. Each one is small and each one is visible from the rep
 - **Done when:** the container starts with no `-e` flags, health reports sample mode with its
   reason, and a posted claim returns a complete decision.
 
-## C5. Update `.env.example` for the split mode
-
-- **Owner:** code
-- **Why:** It still implies `SAMPLE_MODE` is a single switch. Since commit `8b6c7bf` each service
-  chooses live or cached from its own credential, and leaving the flag unset is now the useful
-  default. Every setting a reader sees should be one the code actually reads, and its comment
-  should be true.
-- **Done when:** `.env.example` explains that the flag overrides both services and that omitting
-  it lets each decide, and lists `METERLESS_MODEL` with a real route as the example value.
-
 ---
 
 # D. Documents that must match the build
@@ -237,22 +176,6 @@ These are the last things written, because each one describes a state that items
   that `meterless/auto` can route away from NVIDIA and that the route is pinned for this reason.
 - **Done when:** every cell states what was actually observed, and nothing claims a credentialed
   execution that has not happened.
-
-## D2. `README.md`
-
-- **Owner:** code
-- **Why:** The run instructions predate the configuration split and the sample pair table will
-  change with C1 and C2.
-- **Done when:** a reader with no credentials can follow it top to bottom and reach a decided
-  claim, and every command in it has been executed as written.
-
-## D3. `Architecture.md`
-
-- **Owner:** code
-- **Why:** The adapter selection section describes a single sample flag. It now describes per
-  service selection, and the build contract says that if the code and this document disagree, one
-  of them is fixed on purpose.
-- **Done when:** the document matches `app/runtime.ts` and `app/config.ts`.
 
 ---
 

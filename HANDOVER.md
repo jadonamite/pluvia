@@ -24,12 +24,12 @@ Reproduce the first block with `npm run check`.
 
 | | |
 |---|---|
-| Tests | 81 across 16 files |
+| Tests | 86 across 17 files |
 | TypeScript | `tsc --noEmit` clean |
 | Meterless H-MEM | Official vendor conformance runner, 13 of 13 |
 | Offline dry run | 22 Zetaris statements, 2 NASA POWER endpoints |
 | Evaluation | 46 labelled cases, 0 wrong payouts, 0 missed payouts |
-| Zetaris | Platform running locally, 9 of 9 checks. **No API key yet**, so the data path runs on cached evidence |
+| Zetaris | **Live.** Docker on an AWS EC2 VM via SSH tunnel; 22 objects registered; views match the measured Lagos figures; a claim ran through six Zetaris queries |
 | Nightshift | **Live.** 56 routes listed; a full claim completed in 175 seconds |
 | NVIDIA Nemotron | **Serving**, with a `meterless.compute_receipt.v1` on every call |
 | Demo video, deck | Scripted and outlined in `workbench/submission/`, not yet produced |
@@ -48,12 +48,14 @@ use cached evidence and the health endpoint says so, including the reason.
 
 ```sh
 npm run claim -- input_examples/lagos_01.json
-npx tsx scripts/run_sample_case.ts input_examples/teresina_zero_run.json
+npm run claim -- input_examples/kitale_basis_risk.json
 npm run check             # typecheck, tests, vendor conformance, offline dry run
 npm run eval              # the 46-case evaluation
 ```
 
-Two input shapes exist and they take different commands. `TODO.md` item C2 covers merging them.
+Every file in `input_examples/` runs with `npm run claim`. Claim references run on whatever each
+service is configured for; `{"case_file": ...}` inputs always run on cached evidence with
+`sample-rules`. The Kitale pair is the one sample that pays (`PAY_ANYWAY`, ₦14,088.05).
 
 ## 4. The decisions, and why
 
@@ -155,6 +157,15 @@ and an evaluation built only from injected faults measures the wrong thing.
    200 and `/v1/models` lists 56 routes.
 7. **`nvidia/nemotron-3.5-lightning-30b-a3b` returns `_empty_response`.** Broken lane, not a
    configuration error.
+8. **Raw evidence rows in a prompt blow the run budget.** A prior-years request returned every
+   daily satellite row since 2001, and the second Adjudicator prompt reached 379,361 characters.
+   `app/agents/modelPayloads.ts` reduces extra evidence to yearly or per-station totals and probes
+   to one evidence line each; the same prompt is now 3,033 characters. The gate still reads the
+   full objects.
+9. **The live Zetaris REST result is `{"headers": [...], "data": [[...]]}` with every value as a
+   string**, and a rejected statement is HTTP 400 with `{"msg": ...}`. There is no SQL listing of
+   SchemaStore containers, and `SHOW TABLES FROM <db>` returns qualified names. The adapter and
+   registrar handle all four; a duplicate `CREATE` reports "already exists" and is skipped.
 
 ## 7. Where things live
 
