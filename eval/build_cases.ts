@@ -36,6 +36,18 @@ export async function buildCases(rawDirectory='workbench/raw',outputDirectory='e
   }
   if(!selected)excluded.push({station:candidate.id,reason:'No monthly window met95% coverage, fixed source-agreement bounds and eight complete prior calibration windows.'});
  }catch(error){excluded.push({station:candidate.id,reason:error instanceof Error?error.message:'Source unavailable'});}}
+ try {
+  const candidate=CANDIDATES.find(c=>c.id==='KE000063661')!;
+  const window={start:'2021-08-15',end:'2021-09-14'};
+  const raw=JSON.parse(await readFile(path.join(rawDirectory,`${candidate.id}_power.json`),'utf8'));
+  const daily=raw.properties.parameter.IMERG_PRECTOT;
+  const calibration=calibrate({daily,window,beforeYear:2021});
+  const station:DailySeries={source:'ghcn',id:candidate.id,lat:candidate.lat+1,lon:candidate.lon,window,days:stationRows(await readFile(path.join(rawDirectory,`${candidate.id}.csv`),'utf8')).filter(d=>d.date>=window.start&&d.date<=window.end),fetched_sql:[]};
+  const satellite:DailySeries={source:'power',id:'power_kitale_2021_daily',lat:candidate.lat,lon:candidate.lon,window,days:windowDates(window).map(date=>({date,mm:daily[date.replace(/-/g,'')]??null})),fetched_sql:[]};
+  const policy:Policy={policy_id:'POL-EVAL-KITALE-2021',group_name:'Kitale basis-risk demonstration (synthetic)',crop:'maize',synthetic:true,farm_lat:candidate.lat,farm_lon:candidate.lon,ref_station_id:candidate.id,window_start:window.start,window_end:window.end,trigger_mm:calibration.trigger_mm,exit_mm:calibration.exit_mm,sum_insured_ngn:100000,borderline_band_mm:5,min_coverage:.95,max_station_km:20,power_table:satellite.id};
+  cases.push({id:'KE000063661-2021-08-15-basis-risk',category:'measured_basis_risk',policy,station,satellite,label:{payout_due:true,expected_inspection:false,basis:'Measured Kitale rainfall: station 147.3 mm, independent satellite 128.0 mm. Prior-year calibrated synthetic trigger 139.2 mm. Satellite-supported payout truth is contractual, not verified farm loss. Distance metadata alone is injected: station latitude +1 degree, while farm and satellite retain the original requested point 1.016,35. This demonstrates distant-station substitution without claiming a measured distant farm.'},provenance:{station_url:`https://noaa-ghcn-pds.s3.amazonaws.com/csv/by_station/${candidate.id}.csv`,satellite_url:`https://power.larc.nasa.gov/api/temporal/daily/point?parameters=IMERG_PRECTOT&community=AG&longitude=35&latitude=1.016&start=20010101&end=20241231&format=JSON&time-standard=UTC`,fault:'Synthetic station distance metadata only; rainfall and satellite request point unchanged.'}});
+  await writeFile('eval/data/kitale-calibration.json',JSON.stringify(calibration,null,2)+'\n');
+ } catch(error) {excluded.push({station:'KE000063661 basis-risk',reason:error instanceof Error?error.message:'Kitale evidence unavailable'});}
  try{const register=JSON.parse(await readFile('data/register/policies.json','utf8')),template=register.policies[0] as Policy,raw=JSON.parse(await readFile('data/snapshots/power/lagos_prior.json','utf8')),source=stationRows(await readFile(path.join(rawDirectory,'NIM00065201.csv'),'utf8'));
  for(const year of [2024,2025]){const start=`${year}-07-01`,end=`${year}-07-31`,window={start,end},power=year===2025?JSON.parse(await readFile('data/snapshots/power/lagos_2025.json','utf8')):raw,daily=power.properties.parameter.IMERG_PRECTOT,calibration=calibrate({daily:raw.properties.parameter.IMERG_PRECTOT,window,beforeYear:year});
  const policy:Policy={...template,policy_id:`POL-EVAL-LAG-${year}`,window_start:start,window_end:end,trigger_mm:calibration.trigger_mm,exit_mm:calibration.exit_mm,power_table:`power_lagos_${year}_daily`};
@@ -51,6 +63,6 @@ export async function buildCases(rawDirectory='workbench/raw',outputDirectory='e
  for(const c of cases)await writeFile(path.join(outputDirectory,`${c.id}.json`),JSON.stringify(c,null,2)+'\n');
  const diskCases=(await readdir(outputDirectory)).filter(file=>file.endsWith('.json'));
  const preserved_case_files=diskCases.filter(file=>!cases.some(c=>file===`${c.id}.json`));
- await writeFile(reportFile,JSON.stringify({cases:diskCases.length,generated_cases:cases.length,preserved_case_files,excluded,selection:'Prescribed candidate stations only; at least95% calendar-month station coverage, complete satellite coverage; source gap <=40% and <=50mm; most recent qualifying month. Fault positions deterministic every third day. No gate output used for labels.'},null,2)+'\n');return {cases,excluded,case_count:diskCases.length};
+ await writeFile(reportFile,JSON.stringify({cases:diskCases.length,generated_cases:cases.length,preserved_case_files,excluded,selection:'Prescribed candidate stations only; at least95% station coverage for calendar-month selection; explicit non-calendar Kitale basis-risk window, complete satellite coverage; source gap <=40% and <=50mm; most recent qualifying month. Fault positions deterministic every third day. No gate output used for labels.'},null,2)+'\n');return {cases,excluded,case_count:diskCases.length};
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(process.argv[1]).href)buildCases().then(r=>console.log(JSON.stringify({cases:r.case_count,generated_cases:r.cases.length,excluded:r.excluded}))).catch(()=>{console.error('Evaluation case build failed');process.exitCode=1;});

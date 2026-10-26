@@ -9,23 +9,41 @@ import type {EvaluationCase} from '../eval/types.js';
 import {buildCases} from '../eval/build_cases.js';
 
 describe('evaluation provenance and sample execution',()=>{
- it('keeps the checked-in 45-case results aligned with independent labels and their denominators',()=>{
+ it('keeps the checked-in results aligned with independent labels and their denominators',()=>{
   const files=readdirSync('eval/cases').filter(file=>file.endsWith('.json'));
   const cases=files.map(file=>JSON.parse(readFileSync(path.join('eval/cases',file),'utf8')) as EvaluationCase);
   const results=JSON.parse(readFileSync('eval/results.json','utf8')) as {case_count:number;model_baseline:string;rows:{id:string;category:string;label:{payout_due:boolean|null};deciders:Record<string,unknown>;decider_elapsed_ms:Record<string,number>}[];metrics:Record<string,{cases:number;labelled_cases:number}|null>};
   const report=JSON.parse(readFileSync('eval/data/build-report.json','utf8')) as {cases:number;selection:string};
-  expect(files).toHaveLength(45);expect(report.cases).toBe(45);expect(results.case_count).toBe(45);expect(results.rows).toHaveLength(45);
-  expect(cases.filter(c=>c.label.payout_due!==null)).toHaveLength(42);
-  expect(results.metrics.pluvia).toMatchObject({cases:45,labelled_cases:42});
+  expect(files.length).toBeGreaterThan(0);
+  expect(report.cases).toBe(files.length);
+  expect(results.case_count).toBe(files.length);
+  expect(results.rows.map(row=>row.id).sort()).toEqual(cases.map(c=>c.id).sort());
+  const labelled=cases.filter(c=>typeof c.label.payout_due==='boolean');
+  expect(results.metrics.pluvia).toMatchObject({cases:files.length,labelled_cases:labelled.length});
+  for(const c of cases){
+   expect(c.label.basis.trim().length).toBeGreaterThan(0);
+   expect(typeof c.label.expected_inspection).toBe('boolean');
+   expect(c.label.payout_due===null||typeof c.label.payout_due==='boolean').toBe(true);
+  }
   expect(results.model_baseline).toMatch(/Unmeasured/);
   expect(results.rows.every(row=>row.deciders.raw_totals_model===null)).toBe(true);
   expect(results.rows.every(row=>['naive_station','satellite_only','pluvia'].every(name=>Number.isFinite(row.decider_elapsed_ms[name])))).toBe(true);
   expect(report.selection).toContain('No gate output used for labels');
   for(const clean of cases.filter(c=>c.category==='clean')){
    const variants=cases.filter(c=>c.id.startsWith(`${clean.id}-`));
-   expect(variants).toHaveLength(5);
+   expect(variants.map(c=>c.category).sort()).toEqual(['drop_days','zero_fill','truncate','shift','distant_station'].sort());
    expect(variants.every(variant=>variant.label.payout_due===clean.label.payout_due&&variant.label.expected_inspection)).toBe(true);
   }
+ });
+
+ it('retains measured non-calendar Kitale evidence and reports the restored payout honestly',()=>{
+  const result=JSON.parse(readFileSync('eval/results.json','utf8'));
+  const row=result.rows.find((r:{id:string})=>r.id==='KE000063661-2021-08-15-basis-risk');
+  expect(row.deciders.naive_station.verdict).toBe('NO_PAY');
+  expect(row.deciders.pluvia.verdict).toBe('PAY_ANYWAY');
+  expect(row.deciders.pluvia.payout_ngn).toBe(14088.05);
+  expect(row.deciders.pluvia.probes.find((p:{id:string})=>p.id==='P2').status).toBe('fail');
+  expect(row.label.basis).toContain('Distance metadata alone is injected');
  });
 
  it('excludes the evaluation year from Dodoma calibration and preserves the unresolved true-negative limitation',()=>{

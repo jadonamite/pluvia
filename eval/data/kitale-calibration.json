@@ -1,0 +1,59 @@
+{
+  "trigger_mm": 139.2,
+  "exit_mm": 59.7,
+  "median_mm": 198.85000000000002,
+  "annual_totals": [
+    {
+      "year": 2011,
+      "mm": 211.71,
+      "days": 31
+    },
+    {
+      "year": 2012,
+      "mm": 278.07,
+      "days": 31
+    },
+    {
+      "year": 2013,
+      "mm": 203.08,
+      "days": 31
+    },
+    {
+      "year": 2014,
+      "mm": 138.44,
+      "days": 31
+    },
+    {
+      "year": 2015,
+      "mm": 151.7,
+      "days": 31
+    },
+    {
+      "year": 2016,
+      "mm": 114.99,
+      "days": 31
+    },
+    {
+      "year": 2017,
+      "mm": 234.95,
+      "days": 31
+    },
+    {
+      "year": 2018,
+      "mm": 162.53,
+      "days": 31
+    },
+    {
+      "year": 2019,
+      "mm": 204.26,
+      "days": 31
+    },
+    {
+      "year": 2020,
+      "mm": 194.62,
+      "days": 31
+    }
+  ],
+  "minimum_complete_years": 8,
+  "method": "Synthetic contract: trigger = 70% and exit = 30% of the median total across complete prior-year windows; rounded to 0.1 mm. Independent IMERG_PRECTOT, UTC. No claim-year observations used."
+}

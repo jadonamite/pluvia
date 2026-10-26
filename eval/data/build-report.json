@@ -1,22 +1,24 @@
 {
-  "cases": 45,
+  "cases": 46,
+  "generated_cases": 46,
+  "preserved_case_files": [],
   "excluded": [
     {
       "station": "BR00E3-0070",
-      "reason": "No complete, agreeing monthly window with eight complete prior calibration windows found."
+      "reason": "No monthly window met95% coverage, fixed source-agreement bounds and eight complete prior calibration windows."
     },
     {
       "station": "TZM00063870",
-      "reason": "No complete, agreeing monthly window with eight complete prior calibration windows found."
+      "reason": "No monthly window met95% coverage, fixed source-agreement bounds and eight complete prior calibration windows."
     },
     {
       "station": "KE000063820",
-      "reason": "No complete, agreeing monthly window with eight complete prior calibration windows found."
+      "reason": "No monthly window met95% coverage, fixed source-agreement bounds and eight complete prior calibration windows."
     },
     {
       "station": "TZ000063756",
-      "reason": "No complete, agreeing monthly window with eight complete prior calibration windows found."
+      "reason": "No monthly window met95% coverage, fixed source-agreement bounds and eight complete prior calibration windows."
     }
   ],
-  "selection": "Prescribed candidate stations only; at least95% calendar-month station coverage, complete satellite coverage; source gap <=40% and <=50mm; most recent qualifying month. Fault positions deterministic every third day. No gate output used for labels."
+  "selection": "Prescribed candidate stations only; at least95% station coverage for calendar-month selection; explicit non-calendar Kitale basis-risk window, complete satellite coverage; source gap <=40% and <=50mm; most recent qualifying month. Fault positions deterministic every third day. No gate output used for labels."
 }
