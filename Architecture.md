@@ -33,7 +33,7 @@ IntakeAgent    PlannerAgent    DataAgent       AuditorAgent   AdjudicatorAgent  
 2. **Nightshift is the only LLM path.** One OpenAI-compatible client and one model route, with the served model logged on every call.
 3. **Code decides facts and money; LLMs decide wording, strategy and evidence requests.** The PolicyGate cannot be overruled by an agent.
 4. **Every run is bounded:** max rounds, per-call timeouts, a whole-run budget, and a `partial` result instead of a hang.
-5. **Sample mode runs the same code path** with different adapters.
+5. **Sample mode runs the same code path** with different adapters, chosen per service (§10).
 
 
 ## 2. Stack
@@ -81,9 +81,9 @@ pluvia/
 │   │   └── naive.ts                # baseline deciders (naive station, satellite-only)
 │   ├── adapters/
 │   │   ├── zetaris.ts              # live REST client
-│   │   ├── zetarisSample.ts        # DuckDB over data/snapshots (SAMPLE_MODE)
+│   │   ├── zetarisSample.ts        # DuckDB over data/snapshots (cached evidence)
 │   │   ├── nightshift.ts           # live Runtime client
-│   │   └── nightshiftSample.ts     # cassette replay + rule-based fallback (SAMPLE_MODE)
+│   │   └── nightshiftSample.ts     # deterministic rule-based stand-in, traced as sample-rules
 │   ├── memory/
 │   │   ├── hmem/                   # vendored H-MEM reference (Apache 2.0, attribution) + our extensions
 │   │   ├── index.ts                # exports HMEM class (conformance entry point)
@@ -334,10 +334,11 @@ LATERAL VIEW explode(
 
 - `baseURL = METERLESS_BASE_URL` (default `http://127.0.0.1:8088/v1`; inside Docker `http://host.docker.internal:8088/v1`; or the Web hotspot URL the Console shows).
 - Headers on every call: `Authorization: Bearer METERLESS_RUNTIME_TOKEN`, `meterless-app: pluvia`, `meterless-scope: user`.
-- **Startup check:** `GET /v1/models`. 200 with `meterless/*` ids → online; 401/403 → "unauthorized" (bad token); anything else → offline. `/healthz` alone proves nothing.
-- **One route only:** `METERLESS_MODEL`, copied verbatim from `/v1/models`, pinned to a Nemotron lane. The design must not depend on routing differences between named lanes.
-- `max_tokens` at 800 or above for reasoning calls. 180 s timeout. Back off on 429 at 2, 4 and 8 seconds.
-- **Model evidence:** log `response.model`, plus any `meterless` block or receipt id in the response. If the concrete Nemotron name is not returned, record it from Nightshift's run receipts and state that in the README.
+- **Startup check:** `GET /v1/models`. 200 and the configured `METERLESS_MODEL` id present in the listing → online; 401/403 → "unauthorized" (bad token); anything else → offline. A pinned provider route (`nvidia/...`) is as valid as a `meterless/*` routing mode. `/healthz` alone proves nothing.
+- **One route only:** `METERLESS_MODEL`, copied verbatim from `/v1/models`, pinned to a Nemotron route such as `nvidia/nemotron-3.5-bolt-e4b`. `meterless/auto` can route calls to other vendors, so it is not used for demonstration runs.
+- `max_tokens` at 800 or above for every call (the adapter enforces the floor; agents with short outputs request the floor). 180 s timeout. Back off on 429 at 2, 4 and 8 seconds.
+- **Prompt size:** agents receive compact payloads (`app/agents/modelPayloads.ts`): probe id, name, status and evidence line rather than metric objects; the policy's contract terms; and requested extra evidence reduced to totals (per prior year for the contractual calendar window, or per station). The PolicyGate keeps the full objects.
+- **Model evidence:** log `response.model`, plus the receipt id from the `meterless` compute receipt (`meterless.compute_receipt.v1`) when returned. If the concrete Nemotron name is not returned, record it from Nightshift's run receipts and state that in the README.
 - The NVIDIA API key lives **only** in Nightshift → Setup → Providers. Never in this repo.
 
 
@@ -366,14 +367,24 @@ Every memory operation is traced (`memory_op`), and the trust ledger is exported
 
 ## 10. Sample mode
 
-`SAMPLE_MODE=true` swaps two adapters; everything else is identical.
+Each service runs live or on cached evidence independently (`app/config.ts`, `app/runtime.ts`):
 
-| Live | Sample |
+| Setting | Data (Zetaris) | Model (Nightshift) |
+|---|---|---|
+| `SAMPLE_MODE` unset | live when `ZETARIS_API_KEY` is set, else cached | live when `METERLESS_RUNTIME_TOKEN` is set, else cached |
+| `SAMPLE_MODE=true` | cached | cached |
+| `SAMPLE_MODE=false` | live | live |
+
+Any other `SAMPLE_MODE` value is a configuration error. So the model path can be proven live while the data path is still cached, and one service failing does not take the other down. `GET /health` and the `serve` startup line report `sample_mode` (either service cached), `sample_data`, `sample_model` and `sample_mode_reason`. Nothing reports a live path while serving cached evidence. Registration refuses to run while any service is cached.
+
+| Live | Cached |
 |---|---|
-| `zetaris.ts` | `zetarisSample.ts`: loads `data/snapshots/ghcn/*.csv`, `data/snapshots/power/*.json` and `data/register/*.json` into DuckDB under **the same view names and columns** as the Zetaris views (`pluvia.ghcn_prcp`, `pluvia.power_<loc>_<yr>_daily`, `pluvia.policies`, `pluvia.claims`). The DataAgent's SQL runs unchanged |
-| `nightshift.ts` | `nightshiftSample.ts`: (1) **cassette** of recorded live responses keyed by prompt hash; (2) on a miss, a **deterministic rule-based stand-in** per agent (Planner: default plan; Adjudicator: request prior years once if P6 fails, then propose; Auditor explainer: template from probe evidence). Traced as `model: "sample-rules"` |
+| `zetaris.ts` | `zetarisSample.ts`: loads `data/snapshots/ghcn/*.csv`, `data/snapshots/power/*.json` and `data/register/*.json` into DuckDB under **the same view names and columns** as the Zetaris views (`pluvia.ghcn_prcp`, `pluvia.power_<loc>_<yr>_daily`, `pluvia.policies`, `pluvia.claims`, `pluvia.stations`). The DataAgent's SQL runs unchanged |
+| `nightshift.ts` | `nightshiftSample.ts`: a **deterministic rule-based stand-in** per agent (Planner: default plan; Adjudicator: request prior years once if P6 fails and nothing is recalled, then propose; Auditor explainer: template from probe evidence). Traced as `model: "sample-rules"`. It never replays or imitates a recorded Nemotron response |
 
-Probes, the PolicyGate, payout math and H-MEM run **for real** in sample mode. The README states plainly what is replayed and what is computed.
+Probes, the PolicyGate, payout math and H-MEM run **for real** with either adapter. The README states plainly what is cached and what is computed.
+
+Historical case files (`{"case_file": ...}` inputs in `input_examples/`) always run on cached evidence with `sample-rules`, whatever credentials are set, through `scripts/run_sample_case.ts`; the `claim` command delegates to it.
 
 
 ## 11. API and CLI
@@ -404,9 +415,9 @@ The numbers above are illustrative. Real outputs come from runs and are saved to
 
 Errors are structured: `{ "status": "error", "error": { "type", "message", "recoverable" } }`.
 
-Other routes: `GET /claims` (inbox), `GET /runs/:id`, `GET /` (UI), `GET /health` (adapter status: zetaris/nightshift online, sample mode on or off).
+Other routes: `GET /claims` (inbox), `GET /runs/:id`, `POST /runs/:id/feedback`, `GET /register/*.json`, `GET /` (UI), `GET /health` (adapter status for zetaris and nightshift, plus `sample_mode`, `sample_data`, `sample_model` and `sample_mode_reason`). A `POST /run` whose `options.sample_mode` differs from the server's overall mode is rejected; the mode is set by the environment.
 
-CLI: `tsx run.ts claim CLM-LAG-2025-07`, `tsx run.ts claim input_examples/02.json`, `tsx run.ts eval`, `tsx run.ts serve`.
+CLI: `tsx run.ts claim CLM-LAG-2025-001`, `tsx run.ts claim input_examples/lagos_01.json`, `tsx run.ts claim input_examples/kitale_basis_risk.json` (case file), `tsx run.ts health`, `tsx run.ts register`, `tsx run.ts eval`, `tsx run.ts serve`.
 
 
 ## 12. UI (`public/index.html`)
@@ -437,6 +448,8 @@ CLI: `tsx run.ts claim CLM-LAG-2025-07`, `tsx run.ts claim input_examples/02.jso
 ## 14. Environment (`.env.example`, placeholders only)
 
 ```
+# SAMPLE_MODE=                           # unset: each service decides from its own credential (§10)
+
 # Zetaris (data layer)
 ZETARIS_REST_URL=http://localhost:8888/api/v1.0
 ZETARIS_ORG_ID=1
@@ -445,13 +458,11 @@ ZETARIS_API_KEY=your-zetaris-api-key
 # Meterless Nightshift (primary AI provider) — from Nightshift Console
 METERLESS_BASE_URL=http://127.0.0.1:8088/v1
 METERLESS_RUNTIME_TOKEN=your-nightshift-runtime-token
-METERLESS_MODEL=meterless/auto          # replace with the exact Nemotron route id from GET /v1/models
+METERLESS_MODEL=nvidia/nemotron-3.5-bolt-e4b   # an exact route id from GET /v1/models
 
-# Behaviour
-SAMPLE_MODE=false
-CONTACT_EMAIL=your-email@example.com     # used in User-Agent for NASA/GitHub requests via Zetaris
+CONTACT_EMAIL=your-email@example.com     # User-Agent on NASA POWER requests; registration refuses the placeholder
 PORT=8000
-LOG_LEVEL=info
+REGISTER_BASE_URL=http://host.docker.internal:8000/register   # where Zetaris reads the synthetic register
 ```
 
 - No NVIDIA key in this project.
