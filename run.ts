@@ -61,7 +61,7 @@ export async function main(args = process.argv.slice(2), io: CliIO = defaultIO, 
     };
     process.once('SIGINT', shutdown); process.once('SIGTERM', shutdown);
     server.on('error', () => { io.error({ status: 'error', error: { type: 'server_start_failed', message: 'The server could not listen. Check PORT and whether another process is using it.', recoverable: true } }); void runtime!.close().catch(() => { process.exitCode = 1; }); process.exitCode = 1; });
-    io.out({ status: 'listening', host: '0.0.0.0', port: runtime.config.port, sample_mode: runtime.config.sampleMode });
+    io.out({ status: 'listening', host: '0.0.0.0', port: runtime.config.port, sample_mode: runtime.config.sampleMode, sample_mode_reason: runtime.config.sampleModeReason });
     return 0;
   } catch (error) {
     io.error({ status: 'error', error: { type: error instanceof RuntimeError ? error.type : 'runtime_error', message: error instanceof RuntimeError ? error.message : 'The command could not complete. Check configuration, local data files, and service availability.', recoverable: true } }); return 1;

@@ -9,10 +9,10 @@ Pluvia evaluates rainfall evidence across ground stations and independent satell
 Requires Node 20.19 or later. From a clean source checkout:
 
 ```sh
-npm ci && SAMPLE_MODE=true npm start
+npm ci && npm start
 ```
 
-Open [the claims desk](http://localhost:8000). No environment file, account or credential is needed in sample mode. The three supplied claims share one genuine Lagos weather window; they demonstrate memory across claims rather than three independent weather events.
+Open [the claims desk](http://localhost:8000). With neither Zetaris nor Nightshift credentials supplied, Pluvia selects sample mode automatically. Startup and `/health` report the mode and reason. `SAMPLE_MODE=true` and `SAMPLE_MODE=false` override the default. Supplying either service credential selects live mode unless explicitly overridden, so partial credentials cannot silently fall back to samples. No environment file or account is needed for the default run. The three supplied claims share one genuine Lagos weather window; they demonstrate memory across claims rather than three independent weather events.
 
 ```sh
 SAMPLE_MODE=true npm run claim -- input_examples/lagos_01.json

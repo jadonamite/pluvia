@@ -105,6 +105,7 @@ export async function createRuntime(options: RuntimeOptions = {}): Promise<Runti
     query,
     model,
     sampleMode: config.sampleMode,
+    sampleModeReason: config.sampleModeReason,
     logDirectory: options.logDirectory,
     stdout: options.stdout,
   });
