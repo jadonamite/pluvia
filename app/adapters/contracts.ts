@@ -65,7 +65,8 @@ export class AdapterError extends Error {
     public readonly type: string,
     message: string,
     public readonly recoverable: boolean,
-    public readonly status?: number
+    public readonly status?: number,
+    public readonly detail?: string
   ) {
     super(message);
     this.name = 'AdapterError';

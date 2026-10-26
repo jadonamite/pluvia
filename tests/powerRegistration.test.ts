@@ -61,12 +61,13 @@ describe('on-demand POWER registration', () => {
     const fetcher = async (_url: unknown, init?: RequestInit) => {
       const sql = JSON.parse(String(init!.body)).sql as string;
       statements.push(sql);
-      let rows: Record<string, string>[] = [];
-      if (sql === 'SHOW LIGHTNING DATABASES') rows = [{ name: 'POWER_REST' }];
-      if (sql === 'SHOW SCHEMASTORE CONTAINERS') rows = [{ name: 'pluvia' }];
-      if (sql === 'SHOW TABLES FROM POWER_REST') rows = [{ name: 'power_test_2025' }];
-      if (sql === 'SHOW TABLES FROM pluvia') rows = [{ name: 'power_test_2025_daily' }];
-      return Response.json({ response: { data: rows } });
+      if (sql === 'CREATE SCHEMASTORE CONTAINER pluvia')
+        return Response.json({ msg: 'A container named "pluvia" already exists.' }, { status: 400 });
+      let rows: string[][] = [];
+      if (sql === 'SHOW LIGHTNING DATABASES') rows = [['POWER_REST']];
+      if (sql === 'SHOW TABLES FROM POWER_REST') rows = [['POWER_REST.power_test_2025']];
+      if (sql === 'SHOW TABLES FROM pluvia') rows = [['pluvia.power_test_2025_daily']];
+      return Response.json({ headers: ['table_identifier'], data: rows, total: rows.length });
     };
     await new ZetarisAdapter(
       { url: 'http://test', orgId: '1', apiKey: 'private', contactEmail: 'test@example.com' },
@@ -74,7 +75,10 @@ describe('on-demand POWER registration', () => {
       fetcher as typeof fetch,
       async () => {}
     ).ensurePower(policy);
-    expect(statements.some((sql) => sql.startsWith('CREATE'))).toBe(false);
+    expect(
+      statements.filter((sql) => sql.startsWith('CREATE') && !sql.includes('SCHEMASTORE CONTAINER'))
+    ).toEqual([]);
+    expect(statements).not.toContain('SHOW SCHEMASTORE CONTAINERS');
     expect(statements).toContain('CACHE TABLE POWER_REST.power_test_2025');
   });
 });

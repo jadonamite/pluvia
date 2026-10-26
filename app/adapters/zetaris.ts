@@ -12,6 +12,24 @@ import {
 } from './contracts.js';
 import { combinedSignal, retry } from './retry.js';
 
+// The REST SQL endpoint returns {"headers": [...], "data": [[...], ...]} with every value as a
+// string. Rows become objects keyed by column, with numeric and boolean text converted back.
+function tabularRows(headers: unknown, data: unknown): Record<string, unknown>[] | undefined {
+  if (!Array.isArray(headers) || !Array.isArray(data) || !data.every(Array.isArray)) return undefined;
+  const value = (cell: unknown) => {
+    if (cell === 'true') return true;
+    if (cell === 'false') return false;
+    if (typeof cell === 'string' && /^-?(\d+\.?\d*|\.\d+)([eE][-+]?\d+)?$/.test(cell)) {
+      const number = Number(cell);
+      return Number.isFinite(number) ? number : cell;
+    }
+    return cell;
+  };
+  return (data as unknown[][]).map((row) =>
+    Object.fromEntries(headers.map((name, i) => [String(name), value(row[i] ?? null)]))
+  );
+}
+
 export class ZetarisAdapter implements QueryAdapter {
   constructor(
     private config: AppConfig['zetaris'],
@@ -53,6 +71,21 @@ export class ZetarisAdapter implements QueryAdapter {
         }
       );
       if (!response.ok) {
+        // A rejected statement comes back as HTTP 400 with {"msg": ...}; keep the message as
+        // detail (for "already exists" checks) but never in the error text or trace.
+        const rejected =
+          response.status === 400
+            ? ((await response.json().catch(() => null)) as { msg?: unknown } | null)
+            : null;
+        if (typeof rejected?.msg === 'string') {
+          throw new AdapterError(
+            'zetaris_sql',
+            'Zetaris rejected the SQL statement. Check the registration schema.',
+            false,
+            400,
+            rejected.msg.slice(0, 500)
+          );
+        }
         throw new AdapterError(
           'zetaris_http',
           `Zetaris request failed (HTTP ${response.status}).`,
@@ -64,18 +97,22 @@ export class ZetarisAdapter implements QueryAdapter {
       const body = (await response.json()) as {
         response?: { data?: unknown };
         data?: unknown;
+        headers?: unknown;
         error?: unknown;
         status?: string;
+        msg?: unknown;
       };
-      if (body.error || body.status === 'error') {
+      if (body.error || body.status === 'error' || (typeof body.msg === 'string' && body.data === undefined)) {
         throw new AdapterError(
           'zetaris_sql',
           'Zetaris rejected the SQL statement. Check the registration schema.',
-          false
+          false,
+          undefined,
+          typeof body.msg === 'string' ? body.msg.slice(0, 500) : undefined
         );
       }
 
-      const rows = body.response?.data ?? body.data;
+      const rows = tabularRows(body.headers, body.data) ?? body.response?.data ?? body.data;
       if (
         !Array.isArray(rows) ||
         rows.some((row) => !row || typeof row !== 'object' || Array.isArray(row))

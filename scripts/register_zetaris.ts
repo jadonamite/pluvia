@@ -35,7 +35,6 @@ export function buildRegistrations(
     })),
     {
       container: 'pluvia',
-      metadata_sql: 'SHOW SCHEMASTORE CONTAINERS',
       sql: 'CREATE SCHEMASTORE CONTAINER pluvia'
     }
   ];

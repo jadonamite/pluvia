@@ -5,7 +5,9 @@ export interface Registration {
   container: string;
   name?: string;
   sql: string;
-  metadata_sql: string;
+  // Omitted where Zetaris has no listing (SchemaStore containers); a duplicate CREATE then
+  // reports that the object already exists and is counted as skipped.
+  metadata_sql?: string;
   always?: boolean;
   verify_columns?: string[];
 }
@@ -20,12 +22,17 @@ export async function registerStatements(
 
   for (const item of items) {
     const expected = (item.name ?? item.container).toLowerCase();
+    // SHOW TABLES FROM <db> lists qualified names such as GHCN_S3.station_x.
     const exists = async () => {
+      if (!item.metadata_sql) return false;
       const rows = await adapter.query(item.metadata_sql, {
         signal: options.signal,
       });
       return rows.some((row) =>
-        Object.values(row).some((val) => String(val).toLowerCase() === expected)
+        Object.values(row).some((val) => {
+          const name = String(val).toLowerCase();
+          return name === expected || name.endsWith(`.${expected}`);
+        })
       );
     };
 
@@ -38,7 +45,10 @@ export async function registerStatements(
         await adapter.query(item.sql, { signal: options.signal });
         created++;
       } catch (error) {
-        if (!/^\s*CREATE\b/i.test(item.sql) || !(await exists())) {
+        const duplicate = /already exists/i.test(
+          (error as { detail?: unknown }).detail?.toString() ?? ''
+        );
+        if (!/^\s*CREATE\b/i.test(item.sql) || !(duplicate || (await exists()))) {
           throw error;
         }
         skipped++;

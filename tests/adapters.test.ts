@@ -22,6 +22,28 @@ describe('live adapter contracts', () => {
     expect(JSON.parse(String(requests[0]!.body)).source).toBe('SqlEditor');
     expect(trace.mock.calls[0]![0].sql).toBe('SELECT mm');
   });
+  it('reads the live tabular result shape and its string values', async () => {
+    const f = (async () =>
+      Response.json({
+        headers: ['station_id', 'obs_date', 'mm', 'm_flag', 'synthetic', 'farm_lat'],
+        data: [['NIM00065201', '2025-07-01', '0.0', null, 'true', '6.577']],
+        total: 1,
+        timeUsed: 12
+      })) as unknown as typeof fetch;
+    expect(await new ZetarisAdapter(zetaris, undefined, f).query('SELECT *')).toEqual([
+      { station_id: 'NIM00065201', obs_date: '2025-07-01', mm: 0, m_flag: null, synthetic: true, farm_lat: 6.577 }
+    ]);
+  });
+  it('keeps a rejected statement message as detail, out of the error text', async () => {
+    const f = (async () =>
+      Response.json({ msg: 'A container named "pluvia" already exists.' }, { status: 400 })) as unknown as typeof fetch;
+    const error = (await new ZetarisAdapter(zetaris, undefined, f)
+      .query('CREATE SCHEMASTORE CONTAINER pluvia')
+      .catch((e: unknown) => e)) as { type: string; message: string; detail?: string };
+    expect(error.type).toBe('zetaris_sql');
+    expect(error.message).not.toContain('pluvia');
+    expect(error.detail).toContain('already exists');
+  });
   it('retries transient SQL failures but not authorization, without leaking bodies', async () => {
     let count = 0;
     const wait = vi.fn(async (_ms: number) => {}),
