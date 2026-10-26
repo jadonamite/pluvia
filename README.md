@@ -37,6 +37,8 @@ npx tsx scripts/run_sample_case.ts input_examples/dodoma_dry_spell.json
 
 These five pairs cover three evidence scenarios, not three verdict types. Dodoma's reported dry spell must not trigger suspect-zero detection, and does not. Its complete-window no-findings requirement remains unresolved. Teresina's matched satellite dates total 379.19 mm, with a maximum day of 42.76 mm; the complete calendar window totals 4,460.59 mm. Its historical policy terms are illustrative synthetic thresholds, not calibrated insurance terms. The checked-in outputs are actual runner responses, including the current limitations. To run another existing evaluation case, point `case_file` in an input JSON file to that case; this runner always uses cached evidence and `sample-rules`.
 
+The historical case runner includes its full trace in the response and removes its isolated temporary files after each run. Its returned `log_file` records that temporary location; use the embedded `trace` for review. The ordinary claims CLI and server retain their logs under `logs/`.
+
 With Docker:
 
 ```sh
@@ -130,6 +132,8 @@ curl -X POST http://localhost:8000/run \
 6. Run `npx tsx run.ts health`, then submit a claim. Keep the first live trace and record the live demo immediately.
 
 Zetaris REST SQL is the sole live rainfall and policy data path. Agents never call NOAA or NASA directly. NOAA's public S3 archive needs no extra object store. NASA requests use independent `IMERG_PRECTOT` with `time-standard=UTC`; the gauge-corrected series is not an independent comparison. Nigeria's archive prefix is `NI`; `NG` is Niger.
+
+[SPONSORS.md](SPONSORS.md) records the actual registrations, H-MEM scorecard, model logging and which integrations are proven offline or await credentials.
 
 For Pluvia in Docker, point Zetaris and Nightshift URLs to `host.docker.internal`, not the application container's own localhost. `.env` and runtime logs are excluded from the image build context. Never put an NVIDIA key in this project.
 
