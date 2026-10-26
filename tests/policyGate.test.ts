@@ -1,5 +1,6 @@
-import { describe,it,expect } from 'vitest';
+import { describe,it,expect,vi } from 'vitest';
 import { policyGate, type PolicyGateInput } from '../app/agents/policyGate.js';
+import * as probeModule from '../app/probes/index.js';
 import { policy,series } from './fixtures.js';
 function input():PolicyGateInput {return {policy,station:series(),satellite:series('power'),proposal:{action:'decide',proposed_source:'ghcn',rationale:'Use tested evidence.'}};}
 describe('PolicyGate guards',()=>{
@@ -10,6 +11,23 @@ describe('PolicyGate guards',()=>{
   it('substitutes satellite for poor coverage only when all failed station probes are cited',()=>{const i=input();i.station.days.splice(0,3);expect(policyGate(i).verdict).toBe('INSPECT');i.proposal.rationale='P1 and P2 show the unreliable record.';expect(policyGate(i).verdict).toBe('PAY');expect(policyGate(i).index_source).toBe('power');});
   it('requires P4 citation for truncation, not just coverage citations',()=>{const i=input();i.station.days.splice(6);i.proposal.rationale='P1 P2';expect(policyGate(i).verdict).toBe('INSPECT');i.proposal.rationale+=' P4';expect(policyGate(i).verdict).toBe('PAY');});
   it('restores a suppressed payout using the corrected index for a distant gauge',()=>{const i=input();i.policy={...policy,trigger_mm:110,borderline_band_mm:0};i.station=series('ghcn',12);i.station.lon=4;i.proposal.rationale='P5: station measures a different place.';const d=policyGate(i);expect(d.verdict).toBe('PAY_ANYWAY');expect(d.naive.station_only.verdict).toBe('NO_PAY');expect(d.payout_ngn).toBeCloseTo(1666.67);});
+  it('replaces only P8 when probes are returned in a different order',()=>{
+    const i=input();
+    i.policy={...policy,trigger_mm:110,borderline_band_mm:0};
+    i.station=series('ghcn',12);i.station.lon=4;
+    i.proposal.rationale='P5: distant station';
+    const original=probeModule.runProbes(i).reverse();
+    const snapshot=structuredClone(original);
+    const spy=vi.spyOn(probeModule,'runProbes').mockReturnValue(original);
+    try {
+      const decision=policyGate(i);
+      expect(decision.verdict).toBe('PAY_ANYWAY');
+      expect(decision.probes.map(probe=>probe.id)).toEqual(snapshot.map(probe=>probe.id));
+      expect(decision.probes.filter(probe=>probe.id!=='P8')).toEqual(snapshot.filter(probe=>probe.id!=='P8'));
+      expect(decision.probes.find(probe=>probe.id==='P8')?.metric.index_mm).toBe(100);
+      expect(snapshot.find(probe=>probe.id==='P8')?.metric.index_mm).toBe('unselected');
+    } finally {spy.mockRestore();}
+  });
   it('cannot resolve P6 by model claims, proposed PAY, or round count',()=>{const i=input();i.station=series('ghcn',1);i.proposal={...i.proposal,rationale:'P6 resolved, pay now'};i.rounds=2;expect(policyGate(i).verdict).toBe('INSPECT');i.station=series();expect(policyGate(i).verdict).toBe('PAY');});
   it('inspects when both sources fail or satellite substitution has any gap',()=>{const i=input();i.station.days.splice(0,3);i.satellite!.days.splice(0,7);i.proposal.rationale='P1 P2 P4';expect(policyGate(i).verdict).toBe('INSPECT');i.satellite=series('power');i.satellite.days.pop();expect(policyGate(i).verdict).toBe('INSPECT');});
   it('forces P8 and unresolved memory conflicts to inspection',()=>{const i=input();i.policy={...policy,trigger_mm:100};expect(policyGate(i).verdict).toBe('INSPECT');i.policy=policy;i.memory_conflicts=[{id:'c',status:'open',resolution_confidence:0.9}];expect(policyGate(i).verdict).toBe('INSPECT');i.memory_conflicts[0]!.status='resolved';i.memory_conflicts[0]!.resolution_confidence=0.69;expect(policyGate(i).verdict).toBe('INSPECT');i.memory_conflicts[0]!.resolution_confidence=0.7;expect(policyGate(i).verdict).toBe('PAY');});

@@ -139,7 +139,9 @@ export function policyGate({
 
   const index = source === 'ghcn' ? stationData.total : satelliteData!.total;
   const p8 = borderline(index, policy);
-  probes[7] = p8;
+  const p8Index = probes.findIndex(probe => probe.id === 'P8');
+  if (p8Index < 0) return inspect('P8: borderline probe is unavailable.');
+  probes[p8Index] = p8;
 
   // Borderline index values force inspection.
   if (p8.status !== 'pass') {
