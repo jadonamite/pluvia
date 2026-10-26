@@ -13,7 +13,7 @@ satellite retrieval, catches broken and missing records, and decides pay, pay an
 an inspector, or do not pay, with the evidence attached. It remembers each decision as a
 precedent, so the next claim on the same station is decided consistently.
 
-The station said drought. The station was broken.
+The station said drought. Its record was unfit to settle the claim.
 
 
 ## 2. The project from zero
@@ -40,7 +40,7 @@ them carries a blank quality flag, meaning it passed every check the archive per
 rainfall is always physically plausible, so published quality control cannot catch this.
 That gap is the reason this system exists.
 
-**A broken gauge looks exactly like a drought.** The reverse also happens: a real loss is
+**An unfit rainfall record can look exactly like a drought.** The reverse also happens: a real loss is
 refused because the named gauge, working perfectly, measured a storm forty kilometres away
 that the farm never received.
 
@@ -312,7 +312,7 @@ Measured against the live archives on 25 and 26 October 2026.
 | Measurement flag `A` marks a multi-day accumulation; `B` and `D` mark twelve- and six-hour parts; companion fields carry the multi-day total and its day count. A blank quality flag means the value passed every check | Archive readme |
 | Station completeness must be measured over the **satellite-overlap era, not the lifetime**. One station measures 73 per cent complete across its full record and 10 per cent since 2001 | Measured both ways |
 | **Eight clean station-windows** for the evaluation, by satellite-era coverage: Maceió 65%, São Paulo 62%, Teresina 56%, Kitale 54%, Dar es Salaam 43%, Zanzibar 42%, Mombasa 42%, Mwanza 40% | Measured per station |
-| A definitive broken-gauge case: Teresina `BR037041370`, **534 consecutive days of exactly 0.0 mm** from June 2002 while the satellite recorded 379.2 mm, including one day at 42.8 mm | Measured |
+| A definitive unfit-record case: Teresina `BR037041370`, **534 consecutive days of exactly 0.0 mm** from June 2002 while the satellite recorded 379.2 mm, including one day at 42.8 mm | Measured |
 | A true-negative case: Dodoma `TZ000063862`, a 175-day run of zeros the satellite corroborates | Measured |
 
 ### 8.2 Two traps, already paid for

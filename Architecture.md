@@ -1,6 +1,6 @@
 # Pluvia — Architecture
 
-Companion to `PRD.md` (what and why) and `progress.md` (who and when). This document is the build contract: if the code disagrees with it, fix one of them on purpose.
+Companion to `PRD.md` (what and why). This document is the build contract: if the code disagrees with it, fix one of them on purpose.
 
 ## 1. System overview
 
@@ -147,7 +147,7 @@ export interface ProbeResult { id: `P${1|2|3|4|5|6|7|8}`; name: string;
   status: "pass" | "warn" | "fail"; metric: Record<string, number | string>;
   evidence: string; }                                  // one human-readable line, numbers included
 
-export type Verdict = "PAY" | "NO_PAY" | "INSPECT";
+export type Verdict = "PAY" | "PAY_ANYWAY" | "NO_PAY" | "INSPECT";
 
 export interface Decision { verdict: Verdict; payout_ngn: number; index_source: "ghcn" | "power" | "none";
   index_mm: number | null; reasons: string[]; probes: ProbeResult[];
@@ -223,7 +223,7 @@ return Reporter(decision)
 
 ### 6.3 PolicyGate (code, the only path to money)
 
-Implements PRD §5.4 exactly:
+Implements PRD §6.5:
 1. Station passes P1, P2, P4, P6 → `index_source = ghcn`.
 2. Station fails P1/P2/P4, satellite passes P7, and the Adjudicator's rationale cites those probe ids → `index_source = power`, reason "station unreliable".
 3. Both fail, or P6 fail unresolved → `INSPECT`.
@@ -304,7 +304,7 @@ The endpoint is fixed at CREATE (REST HOWTO: dynamic parameters are not document
 CREATE LIGHTNING DATABASE POWER_REST DESCRIBE BY "NASA POWER daily point precipitation";
 
 CREATE LIGHTNING REST TABLE power_lagos_2025 FROM POWER_REST REQUEST(
-  endpoint "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=IMERG_PRECTOT&community=AG&longitude=3.321&latitude=6.577&start=20250601&end=20250930&format=JSON",
+  endpoint "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=IMERG_PRECTOT&community=AG&longitude=3.321&latitude=6.577&start=20250601&end=20250930&format=JSON&time-standard=UTC",
   method "get", response_type "json", http_encoding "URLENCODED"
 ) HEADER ( user-agent "Pluvia hackathon <contact-email>" ) BODY ();
 CACHE TABLE POWER_REST.power_lagos_2025;
@@ -352,7 +352,7 @@ LATERAL VIEW explode(
 | Function | Writes / reads | Example content |
 |---|---|---|
 | `recall({station, region, crop})` | `query()` top-k, filtered by tags `station:<id>`, `region:<r>` | "NIM00065201 Jul–Aug 2025: station coverage 32%; naive trigger would pay; satellite used; INSPECT issued" |
-| `writePrecedent(claim, decision)` | `add()` type `procedural`, layer `working`, tags, provenance `{run_id, claim_id, probes}` | "Claim POL-LAG-2025-014: INSPECT because P1 fail (10/62 days) and P6 fail (6.1 vs 109.5 mm)" |
+| `writePrecedent(claim, decision)` | `add()` type `procedural`, layer `working`, tags, provenance `{run_id, claim_id, probes}` | "Claim POL-LAG-2025-014: INSPECT because P1 fail (10/62 days) and P6 fail (6.1 vs 131.7 mm)" |
 | `writeStationLesson(station, probes)` | `add()` type `factual`, confidence from coverage | "Station NIM00065201 unreliable for 2025 rainy season (coverage 32%)" |
 | `recordConflict(stationClaim, satelliteClaim)` | `add()` both as factual memories → H-MEM `conflicts` scan detects divergent numeric values → resolution | Auto-resolve if confidence ≥ 0.70 (e.g. station fails P1 badly → keep satellite); else stays open → PolicyGate rule 5 → INSPECT |
 | `feedback(id, outcome)` | `feedback()` when the officer confirms or overrides in the UI | Officer override → `user_correction` (high source reliability in H-MEM) |
@@ -426,7 +426,7 @@ CLI: `tsx run.ts claim CLM-LAG-2025-07`, `tsx run.ts claim input_examples/02.jso
 ## 13. Evaluation (`eval/`)
 
 - `build_cases.ts` (seeded, deterministic):
-  1. Select clean station-windows (coverage ≥ 95%, |P6| small). Candidates are Ghana `GHM*` and Kenya `KE*` stations from the verified inventory; confirm by measurement.
+  1. Select clean station-windows (coverage ≥ 95%, |P6| small). Candidates are the eight measured station-windows listed in PRD §8; retain the deliberately corroborated Dodoma dry spell.
   2. For each, compute the true decision.
   3. Generate labelled variants: drop N days; zero-fill missing; truncate the record end; shift ±3 days; swap in a distant station.
   4. Add real Nigerian cases with labels derived only from documented coverage.
@@ -485,3 +485,19 @@ LOG_LEVEL=info
 | Too few clean station-windows for the evaluation | Coverage measurement | A smaller evaluation, stated honestly |
 | Any live service unavailable | Adapter health check | `SAMPLE_MODE=true` runs the real agent logic on cached data |
 
+
+## Implementation clarifications
+
+- A claim window that differs from the contracted policy window forces inspection. A
+  shifted window may supply context; it cannot change the period used to compute money.
+- Source identifiers and satellite coordinates are returned by the registered views and
+  validated before use. DataAgent does not infer provenance from a policy's table name.
+- `PAY_ANYWAY` is a distinct machine-readable outcome. `NO_PAY` always carries
+  `human_review_required: true` and a counter-case for paying.
+- A source conflict remains open until new evidence passes the deterministic probes.
+  Prior-year context cannot erase a failed current-window comparison.
+- The untouched H-MEM reference calls procedural records `general`; Pluvia marks
+  precedents with a `procedural` tag rather than changing the vendor's type system.
+- Local development may serve the synthetic JSON register through `/register` using
+  `REGISTER_BASE_URL`. Zetaris still reads it over HTTP, and live agents still use only
+  Zetaris SQL. Containers reach that route through `host.docker.internal`.

@@ -1,118 +1,136 @@
 # Pluvia
 
-Pluvia checks whether the rain data behind a crop-insurance payout is telling the truth,
-before any money moves.
+Pluvia checks whether the rainfall record behind a crop-insurance claim can support a decision before any money moves. Built for the Open Agent Hackathon 2026, track **03 · Reasoning Architecture**.
 
-A weather-index policy pays out automatically when rainfall over a growing window falls below
-a threshold, measured at one named gauge. No inspector visits. That number is the contract,
-and nothing in the contract tests the instrument that produced it.
+The offline application works with real public rainfall snapshots. The live Zetaris and Nightshift adapters are implemented; authenticated live registration and a served Nemotron model have not yet been verified. No funds are transferred.
 
-## The failure
+## Run it
 
-For July 2025 at the Lagos reference station `NIM00065201`:
+Requires Node 20.19 or later. From a clean source checkout:
+
+```sh
+npm ci && SAMPLE_MODE=true npm start
+```
+
+Open [the claims desk](http://localhost:8000). No environment file, account or credential is needed in sample mode. The three supplied claims share one genuine Lagos weather window; they demonstrate memory across claims rather than three independent weather events.
+
+```sh
+SAMPLE_MODE=true npm run claim -- input_examples/lagos_01.json
+SAMPLE_MODE=true npm run claim -- input_examples/lagos_02.json
+SAMPLE_MODE=true npm run claim -- input_examples/lagos_03.json
+```
+
+The first claim on a fresh station/window requests more evidence. A later claim recalls the lesson and avoids that extra round. Real outputs from the supplied inputs are in [output_examples](output_examples/). Run traces go to stdout and `logs/<run_id>.jsonl`; memory persists under `logs/memory/`. A browser review appears at `GET /runs/:id` during the current server session.
+
+With Docker:
+
+```sh
+ docker build -t pluvia .
+ docker run --rm -p 8000:8000 -e SAMPLE_MODE=true pluvia
+```
+
+Mount a writable volume at `/app/logs` to retain memory after the container exits. The container uses Node 20.
+
+## The record that motivated it
+
+For July 2025 at Lagos station `NIM00065201`:
 
 | Source | Days with data | Window total |
-|---|---|---|
-| Ground gauge | **10 of 31** | **6.1 mm** |
-| Independent satellite retrieval, same coordinates | **31 of 31** | **131.7 mm** |
+|---|---:|---:|
+| Ground gauge | 10 of 31 | 6.1 mm |
+| Independent satellite retrieval | 31 of 31 | 131.7 mm |
 
-July is the middle of the rainy season. The station was not reporting, and the twenty-one
-absent days are *missing*, not zero. A payout rule that sums what is present sees 6.1 mm,
-declares a severe drought, and pays in full for a drought that never happened.
+Nine of the ten reported gauge days are exactly 0.0 mm with blank quality flags. The other 21 days are missing, not zero. A blank quality flag means a value passed the archive's checks; it does not establish that the record can settle this claim.
 
-Nine of the ten days the gauge did report read exactly 0.0 mm, and every one carries a blank
-quality flag, meaning it passed every check the archive performs. A blank quality flag means
-a value was not impossible, not that it was true. Zero rainfall is always physically
-plausible, so published quality control cannot reach this. That gap is why Pluvia exists.
+The example policies are calibrated from complete July windows in prior-year independent satellite data. The method and inputs are recorded in [data/register/calibration.json](data/register/calibration.json). Farmer groups, claims, policy terms and payout amounts are synthetic. Rainfall observations are real; [data/README.md](data/README.md) records their sources and units.
 
-The reverse failure matters more. A gauge working perfectly, forty kilometres away, measures
-a storm the farm never received, and a real loss is refused with no route to argue. Index
-schemes collapse from distrust after wrongful refusals, not from fraud losses.
+Pluvia identifies a record unfit to settle a claim. It does not diagnose a broken instrument. Suspect zero runs cluster across countries in 2002–2005, so an archive ingest problem is a plausible explanation.
 
-## What it does
+## Code makes the decision
 
-Pluvia runs deterministic probes over both sources, has a model reason about what they mean,
-and then lets plain code make the call. The model proposes. The code disposes.
+A model plans the review, explains probe findings and requests evidence. PolicyGate recomputes the probes from the rainfall series and applies the contract. Model wording cannot clear a failed probe or set a payout.
 
-| Probe | Catches |
+| Outcome | Meaning |
 |---|---|
-| Station coverage | A gauge that barely reported during the window |
-| Missing treated as zero | Absent days silently summed as no-rain |
-| Quality and measurement flags | Values the archive itself marks as suspect or accumulated |
-| Record ends early | A record that runs out before the window closes |
-| Station distance | A gauge too far from the farm to be the sole index |
-| Source divergence | Two sources that disagree beyond tolerance |
-| Satellite fill values | Gaps in the satellite retrieval |
-| Borderline | A result too close to the trigger to call automatically |
+| Pay (`PAY`) | The accepted index triggers a contractual payout. |
+| Pay anyway (`PAY_ANYWAY`) | An accepted corrected index restores a payout suppressed by the station-only trigger. |
+| Send an inspector (`INSPECT`) | Evidence is incomplete, conflicting, borderline or still requested. The output carries the question to resolve. |
+| Do not pay (`NO_PAY`) | A proposed refusal requiring human review and the strongest case for paying. It is never final. |
 
-### The four outcomes
+No refusal is reachable when independent satellite evidence is unavailable, or when station coverage is insufficient. A changed claim window cannot manufacture a payout: a window differing from the contract forces inspection. Distant stations cannot serve as the sole index. Officer feedback changes memory reliability, never the gate decision or payout.
 
-- **Pay.** The trigger was met and the record is sound.
-- **Pay anyway.** The trigger was not met, but the record is faulty in the direction that
-  suppressed the payout, or the gauge is sound and measuring the wrong place. This
-  re-evaluates the contractual trigger on a corrected record. It does not pay outside the
-  contract.
-- **Send an inspector.** The evidence conflicts. A person goes, carrying the specific
-  question to resolve.
-- **Do not pay.** Never final. It routes to a human with the counter-case attached.
+The payout is linear: full cover at or below the exit, zero at or above the trigger, proportional between them. All amounts come from deterministic code. There is no payment integration.
 
-Two guarantees hold whatever a model proposes. No refusal is reachable when the satellite
-source is unavailable, because missing evidence must not cost a farmer a payout. And no
-refusal is reachable on a station whose record is too incomplete to judge.
+## Agents, evidence and memory
 
-Every adjudication is remembered: a precedent, a station reliability lesson, and a record of
-the conflict between the two sources. The next claim on the same station is decided
-consistently, and a conflict the memory cannot resolve confidently becomes an inspection.
+Intake matches free text to a known policy. Planner recalls H-MEM and chooses checks. DataAgent executes SQL through Zetaris in live mode. Auditor runs eight pure probes and asks the model for an explanation. Adjudicator may request prior years, neighbouring observations or a shifted window, with at most two extra rounds. Extra context cannot erase a failed contractual-window probe. Reporter writes prose around a code-generated decision card and letter.
 
-## Data
+Each run has a four-minute budget. SQL and model calls have timeouts and bounded retries. A run interrupted after evidence arrives returns a partial inspection result. Invalid model JSON gets one validation retry, then a traced deterministic fallback.
 
-All rainfall inputs are free and public, and neither source needs an API key.
+H-MEM stores precedents, station lessons and conflicts. Its own conflict service resolves only at confidence 0.70 or higher; unresolved conflicts feed PolicyGate's inspection outcome. The vendor reference is unmodified and attributed in [app/memory/README.md](app/memory/README.md). Recall never overrides fresh probe findings.
 
-- **Ground stations.** GHCN-Daily, carrying the measurement and quality flags the probes
-  read. Precipitation is recorded in tenths of a millimetre.
-- **Satellite.** The IMERG retrieval through NASA POWER. Deliberately **not** the
-  bias-corrected series, which is adjusted using gauge observations and would make a
-  gauge-against-satellite comparison partly circular. For the Lagos window above the two
-  differ materially: 131.7 mm independent against 109.5 mm corrected.
-- **Policies and claims are synthetic** and labelled as such throughout. No insurer
-  publishes claims, and that is the only invented part.
+Sample mode uses DuckDB to execute the same DataAgent SQL over cached observations. Model steps use a deterministic adapter named **`sample-rules`**, not a live model or a replayed Nemotron response. Probes, the payout rule, PolicyGate, H-MEM and the agent loop execute for real. Every model attempt records its route; successful responses record the returned serving model. Failed calls are labelled unavailable rather than assigned an invented serving model.
 
-Everything is read through Zetaris as the single query surface. No agent reads object storage
-or the satellite API directly in live mode.
+## Probe thresholds
 
-## Limitations
+Thresholds are fixed in [app/probes/config.ts](app/probes/config.ts), outside prompts.
 
-Stated here rather than left for a reader to find.
+| Probe | Rule |
+|---|---|
+| P1 coverage | Valid unique station days divided by window days must meet the policy's minimum. |
+| P2 missing as zero | Fails at 3 missing days, or 2 reported zeros with satellite rainfall at least 5 mm. |
+| P3 flags | Excludes non-empty quality flags; reports measurement and source flags. |
+| P4 early record end | Fails when the last valid station date is more than 3 days before the window ends. |
+| P5 distance | Warns above the policy's distance limit and bars a sole-station index. |
+| P6 divergence | On valid overlapping days, fails above 40% relative difference or 50 mm absolute difference. |
+| P7 satellite gaps | Excludes fill value −999; warns above 3 missing days and fails above 6. A refusal requires a complete usable satellite window. |
+| P8 borderline | An index within the policy's trigger band, including the boundary, forces inspection. |
 
-- **Pluvia catches an untrustworthy record, not a broken instrument.** The suspect runs of
-  zeros in this archive cluster between 2002 and 2005 across Brazil, Kenya, South Africa and
-  Tanzania. Gauges do not fail simultaneously on three continents, so the likely cause is an
-  archive ingest fault rather than blocked funnels. Either way the record cannot settle a
-  claim, which is the thing that matters.
-- **It needs two independent measurements of the same rain.** Where a contract uses the
-  satellite itself as the official index and no ground station is in range, there is nothing
-  to compare.
-- **Ground coverage is thin where the problem bites hardest.** Nigeria has ten stations
-  carrying rainfall in this archive, roughly 2,050 station-days across 52 years. That
-  sparseness is why index insurance moved to satellite triggers, and it is also why coverage
-  probes rather than long-run statistics are the primary detector here.
-- **Policies, claims and payout amounts are invented.** The rainfall data and its failures
-  are real.
-- Pluvia does not forecast weather, model crop yields, price policies or move money.
+GHCN precipitation is divided by ten exactly once. Missing, duplicate, malformed, non-finite and quality-flagged observations cannot count as valid station days.
 
-## Documents
+## API
 
-- [`PRD.md`](PRD.md) — what it does and why, the probe rules, the evaluation method, and the
-  measured facts behind all of it.
-- [`Architecture.md`](Architecture.md) — how it is built: stack, repository layout, agent
-  contracts, the data-layer registrations, and the failure modes.
+```sh
+curl http://localhost:8000/health
+curl -X POST http://localhost:8000/run \
+  -H 'Content-Type: application/json' \
+  -d '{"input":{"claim_id":"CLM-LAG-2025-001"}}'
+```
 
-## Status
+`POST /run` also accepts `event_text` and an optional `policy_id`. Ambiguous intake asks for a policy rather than guessing. `options.max_extra_rounds` is an integer from 0 to 2. `GET /claims` returns the inbox and policies; `GET /runs/:id` returns a review from the current server session. `POST /runs/:id/feedback` accepts `{"kind":"helpful"}` or `{"kind":"wrong"}`. Responses contain structured errors and never expose credentials.
 
-Specification, product requirements and architecture are complete. The data layer is running
-and verified. Implementation has not started. This README describes what is being built and
-the measurements it rests on.
+## Live setup
 
-## Licence
+1. Run Zetaris and install Nightshift using the providers' instructions. Add the NVIDIA key **only in Nightshift's Providers tab**.
+2. Copy `.env.example` to `.env`. Supply the Zetaris API key, organisation ID, Nightshift runtime token, contact email and the exact `meterless/*` Nemotron route listed by Nightshift's `GET /v1/models`. A routing name alone does not prove which model served a call; retain the returned model or Nightshift receipt.
+3. Start Pluvia with `SAMPLE_MODE=false`. The local synthetic register is available at `/register/policies.json`, `/register/claims.json` and `/register/stations.json`.
+4. Set `REGISTER_BASE_URL` to an HTTP address Zetaris can reach. For the local container installation, use `http://host.docker.internal:8000/register`. A published repository can use its public raw-file URL instead.
+5. Run `npx tsx --env-file=.env scripts/register_zetaris.ts --print` to inspect SQL, then run without `--print` to register. It checks existing objects, executes one statement at a time, caches sources and validates the NOAA schema before creating dependent views. It stops on the first failure.
+6. Run `npx tsx run.ts health`, then submit a claim. Keep the first live trace and record the live demo immediately.
 
-MIT. See [LICENSE](LICENSE).
+Zetaris REST SQL is the sole live rainfall and policy data path. Agents never call NOAA or NASA directly. NOAA's public S3 archive needs no extra object store. NASA requests use independent `IMERG_PRECTOT` with `time-standard=UTC`; the gauge-corrected series is not an independent comparison. Nigeria's archive prefix is `NI`; `NG` is Niger.
+
+For Pluvia in Docker, point Zetaris and Nightshift URLs to `host.docker.internal`, not the application container's own localhost. `.env` and runtime logs are excluded from the image build context. Never put an NVIDIA key in this project.
+
+## Verification and evaluation
+
+```sh
+npm run check
+SAMPLE_MODE=true npm run eval
+```
+
+`check` runs strict TypeScript validation, application tests and the official H-MEM conformance runner. The packaged upstream conformance result is **13/13 checks passed**; the current scorecard is saved to `logs/hmem-conformance.txt`. Tests cover payout boundaries, probe failures and repairs, guarded refusals, malformed rows, contract-window changes, source identity, retry/fallback traces, the real cached Lagos run and memory across fresh runtimes with network access forbidden.
+
+The evaluation runner compares the naive station trigger, satellite only, a raw-totals model and the full Pluvia loop. Clean reference cases and injected faults come from the PRD's prescribed station candidates. Labels preserve the clean contractual payout; sparse real Nigerian cases do not claim known farm-level payout truth. Inspections are reported as abstentions. The raw-totals model baseline remains **unmeasured** until live Nightshift calls are available. See [eval/results.md](eval/results.md), the case files and source manifest for the latest reproducible measurements. No claim of superiority over all baselines is supported yet.
+
+The original dated Dodoma fixture was not available. The recovered observation slice corroborates reported zeros but includes missing calendar dates, which correctly trigger coverage findings. The fixed relative-divergence rule can also flag a small satellite total against zero. The brief's complete-window “no finding” acceptance check remains unresolved; the evaluation reports this rather than tuning thresholds to make the case pass.
+
+## Repository
+
+`app/` contains the loop, probes, gate, adapters and memory integration. `public/` is the claims desk. `data/` holds the synthetic register and genuine small snapshots. `scripts/` contains registration, source retrieval, climatology and official conformance tooling. `eval/` contains labelled cases and repeatable results. `input_examples/` and `output_examples/` pair runnable inputs with actual outputs. [PRD.md](PRD.md) and [Architecture.md](Architecture.md) describe the product contract and stack.
+
+## Limits
+
+Pluvia cannot establish what happened on a farm from these two indexes alone. Thin station coverage and legitimate point-versus-area differences can require inspection. The current sample examples cover one Lagos window. Policy calibration is a documented demonstration assumption, not actuarially validated pricing. The optional learned-bias detector is not implemented. No forecasting, yield modelling, underwriting or real settlement is provided.
+
+MIT for Pluvia. The vendored H-MEM code retains its Apache 2.0 licence.
