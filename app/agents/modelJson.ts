@@ -3,7 +3,7 @@ import type { ModelAdapter } from '../adapters/contracts.js';
 
 // Pulls the first balanced JSON object out of a reply that carries prose or a fence
 // around it. Reasoning models narrate before answering; the contract still holds.
-function extractJson(text: string): string {
+export function extractJson(text: string): string {
   const stripped = text
     .trim()
     .replace(/^```(?:json)?\s*/, '')

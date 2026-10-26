@@ -6,17 +6,25 @@ import { stationOnly, satelliteOnly } from '../app/domain/naive.js';
 import { normalizeSeries, policyWindow } from '../app/domain/series.js';
 import { NightshiftSampleAdapter } from '../app/adapters/nightshiftSample.js';
 import { evaluateClaim } from './claim_decider.js';
+import { extractJson } from '../app/agents/modelJson.js';
 import type { EvaluationCase } from './types.js';
 export async function runEvaluation(
-  runtimeOrModel?: ModelAdapter | { config: { sampleMode: boolean }; model: ModelAdapter },
+  runtimeOrModel?:
+    | ModelAdapter
+    | { config: { sampleMode: boolean; sample?: { nightshift: boolean } }; model: ModelAdapter },
   directory = 'eval/cases'
 ) {
+  // The model baseline needs only Nightshift live; the cases themselves are always cached evidence.
   const model =
     runtimeOrModel && 'config' in runtimeOrModel
-      ? runtimeOrModel.config.sampleMode
+      ? (runtimeOrModel.config.sample?.nightshift ?? runtimeOrModel.config.sampleMode)
         ? undefined
         : runtimeOrModel.model
       : runtimeOrModel;
+  // Pluvia's own loop stays on sample-rules so its verdicts reproduce; set EVAL_PLUVIA_LIVE=true
+  // to drive every case through the live model as well (about three minutes per case).
+  const pluviaModel = process.env.EVAL_PLUVIA_LIVE === 'true' ? model : undefined;
+  let baselineFailures = 0;
   const files = (await readdir(directory)).filter((f) => f.endsWith('.json')).sort(),
     rows: Record<string, unknown>[] = [],
     totals: Record<
@@ -47,7 +55,7 @@ export async function runEvaluation(
     const station = time('naive_station', () => stationOnly(c.station, c.policy)),
       satellite = time('satellite_only', () => satelliteOnly(c.satellite, c.policy));
     const pluviaStart = performance.now();
-    const decision = await evaluateClaim(c, model ?? new NightshiftSampleAdapter());
+    const decision = await evaluateClaim(c, pluviaModel ?? new NightshiftSampleAdapter());
     timings.pluvia = performance.now() - pluviaStart;
     let rawModel: { verdict: string; payout_ngn: number; model: string } | null = null;
     if (model) {
@@ -55,6 +63,11 @@ export async function runEvaluation(
       try {
         const response = await model.complete({
           agent: 'RawTotalsBaseline',
+          system:
+            'Given only the station and satellite rainfall totals and the policy, choose which total ' +
+            'to settle the claim on. The reply is one JSON object whose only key is "source", ' +
+            'with the value "ghcn" or "power". Add no commentary.',
+          max_tokens: 800,
           prompt: JSON.stringify({
             station_mm: normalizeSeries(c.station, policyWindow(c.policy)).total,
             satellite_mm: c.satellite
@@ -66,11 +79,12 @@ export async function runEvaluation(
         });
         const parsed = z
           .object({ source: z.enum(['ghcn', 'power']) })
-          .parse(JSON.parse(response.content));
+          .parse(JSON.parse(extractJson(response.content)));
         const baseline = parsed.source === 'ghcn' ? station : satellite;
         rawModel = { ...baseline, model: response.model };
       } catch {
         rawModel = null;
+        baselineFailures++;
       }
       timings.raw_totals_model = performance.now() - started;
     }
@@ -142,11 +156,11 @@ export async function runEvaluation(
   } catch {}
   const result = {
     case_count: rows.length,
-    pluvia_mode: model
+    pluvia_mode: pluviaModel
       ? 'Full agent loop with supplied model adapter on local fault-injected evidence.'
       : 'Full agent loop with sample-rules model stand-in on local fault-injected evidence; no live Nemotron claim.',
     model_baseline: model
-      ? 'Actual adapter responses; per-case returned model is recorded.'
+      ? `Measured with live model responses; per-case returned model is recorded. ${baselineFailures} of ${rows.length} baseline calls returned no usable answer and are excluded.`
       : 'Unmeasured: Nightshift is not configured for this run. No model score is claimed.',
     label_method:
       'Fault-injected cases retain the clean contract decision; inspections are abstentions, not correct payouts. Real sparse cases have unknown payout truth.',
@@ -174,8 +188,8 @@ export async function runEvaluation(
     `${labelled}` +
     ' cases with known contractual payout labels; sparse Nigerian and incomplete Dodoma records ' +
     'have unknown payout truth. The full bounded Orchestrator uses DuckDB, probes, PolicyGate ' +
-    'and isolated H-MEM for each case. Model steps use sample-rules when Nightshift is ' +
-    'unavailable.\n\n| Decider | Cases run | Wrong payouts | Missed payouts | Inspections ' +
+    'and isolated H-MEM for each case. Its model steps use sample-rules unless EVAL_PLUVIA_LIVE=true; ' +
+    'the raw-totals baseline uses the live model whenever Nightshift is configured.\n\n| Decider | Cases run | Wrong payouts | Missed payouts | Inspections ' +
     '|\n|---|---:|---:|---:|---:|\n' +
     `${Object.entries(totals)
       .map(([name, m]) =>

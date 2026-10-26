@@ -2,7 +2,7 @@
 
 46 cases. Unmeasured: Nightshift is not configured for this run. No model score is claimed.
 
-Inspections are abstentions. Payout error rates use 43 cases with known contractual payout labels; sparse Nigerian and incomplete Dodoma records have unknown payout truth. The full bounded Orchestrator uses DuckDB, probes, PolicyGate and isolated H-MEM for each case. Model steps use sample-rules when Nightshift is unavailable.
+Inspections are abstentions. Payout error rates use 43 cases with known contractual payout labels; sparse Nigerian and incomplete Dodoma records have unknown payout truth. The full bounded Orchestrator uses DuckDB, probes, PolicyGate and isolated H-MEM for each case. Its model steps use sample-rules unless EVAL_PLUVIA_LIVE=true; the raw-totals baseline uses the live model whenever Nightshift is configured.
 
 | Decider | Cases run | Wrong payouts | Missed payouts | Inspections |
 |---|---:|---:|---:|---:|
