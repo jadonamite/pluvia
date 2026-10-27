@@ -4,7 +4,15 @@ export interface AppConfig {
   sample: { zetaris: boolean; nightshift: boolean };
   port: number;
   contactEmail: string;
-  zetaris: { url: string; orgId: string; apiKey: string; contactEmail?: string };
+  zetaris: {
+    url: string;
+    orgId: string;
+    apiKey: string;
+    loginUrl?: string;
+    username?: string;
+    password?: string;
+    contactEmail?: string;
+  };
   nightshift: { url: string; runtimeToken: string; model: string };
 }
 
@@ -15,7 +23,10 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
     throw new Error('SAMPLE_MODE must be true or false');
   }
   const explicit = env.SAMPLE_MODE === undefined ? undefined : env.SAMPLE_MODE === 'true';
-  const zetarisKey = Boolean(env.ZETARIS_API_KEY?.trim());
+  // A local Zetaris issues short-lived sign-in tokens, so an account counts as a credential too.
+  const zetarisKey =
+    Boolean(env.ZETARIS_API_KEY?.trim()) ||
+    Boolean(env.ZETARIS_USERNAME?.trim() && env.ZETARIS_PASSWORD);
   const nightshiftToken = Boolean(env.METERLESS_RUNTIME_TOKEN?.trim());
   const sample = {
     zetaris: explicit ?? !zetarisKey,
@@ -48,6 +59,9 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
       url: (env.ZETARIS_REST_URL ?? 'http://localhost:8888/api/v1.0').replace(/\/$/, ''),
       orgId: env.ZETARIS_ORG_ID ?? '1',
       apiKey: env.ZETARIS_API_KEY ?? '',
+      loginUrl: env.ZETARIS_LOGIN_URL ?? 'http://localhost:3000/api/auth/login',
+      username: env.ZETARIS_USERNAME ?? '',
+      password: env.ZETARIS_PASSWORD ?? '',
       contactEmail: env.CONTACT_EMAIL ?? '',
     },
     nightshift: {
