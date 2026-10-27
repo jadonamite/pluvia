@@ -3,6 +3,7 @@ import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { ZetarisSampleAdapter } from '../app/adapters/zetarisSample.js';
+import { lagosData } from './lagosData.js';
 import { PluviaMemory } from '../app/memory/pluviaMemory.js';
 import { CaseAgent, type Message } from '../app/agent/caseAgent.js';
 import { CaseStore } from '../app/agent/cases.js';
@@ -22,7 +23,7 @@ const PLAN: [string, Record<string, unknown>] = ['set_plan', { steps: [{ text: '
 function agentWith(chat: ReturnType<typeof scripted>) {
   const dir = mkdtempSync(path.join(tmpdir(), 'pluvia-agent-'));
   return new CaseAgent({
-    query: new ZetarisSampleAdapter(),
+    query: new ZetarisSampleAdapter({ dataDirectory: lagosData() }),
     memory: new PluviaMemory(path.join(dir, 'memory')),
     store: new CaseStore(path.join(dir, 'cases')),
     replayDirectory: path.join(dir, 'replays'),

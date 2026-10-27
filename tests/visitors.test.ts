@@ -3,6 +3,7 @@ import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { ZetarisSampleAdapter } from '../app/adapters/zetarisSample.js';
+import { lagosData } from './lagosData.js';
 import { PluviaMemory } from '../app/memory/pluviaMemory.js';
 import { CaseAgent } from '../app/agent/caseAgent.js';
 import { CaseStore } from '../app/agent/cases.js';
@@ -12,8 +13,8 @@ import type { Orchestrator } from '../app/orchestrator.js';
 
 function app(perVisitor: boolean) {
   const dir = mkdtempSync(path.join(tmpdir(), 'pluvia-visitors-'));
-  const query = new ZetarisSampleAdapter();
-  const agent = new CaseAgent({ query, memory: new PluviaMemory(path.join(dir, 'memory')), store: new CaseStore(path.join(dir, 'cases')), replayDirectory: 'data/replays', live: false });
+  const query = new ZetarisSampleAdapter({ dataDirectory: lagosData() });
+  const agent = new CaseAgent({ query, memory: new PluviaMemory(path.join(dir, 'memory')), store: new CaseStore(path.join(dir, 'cases')), replayDirectory: path.join(lagosData(), 'replays'), live: false });
   const watcher = new Watcher({ query, directory: dir, perVisitor });
   return createApp({} as Orchestrator, true, agent, watcher);
 }

@@ -3,6 +3,7 @@ import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { ZetarisSampleAdapter } from '../app/adapters/zetarisSample.js';
+import { lagosData } from './lagosData.js';
 import { Watcher, type WatchState } from '../app/agent/watcher.js';
 import { createApp } from '../app/server.js';
 import type { Orchestrator } from '../app/orchestrator.js';
@@ -11,7 +12,7 @@ import { CaseStore } from '../app/agent/cases.js';
 import { PluviaMemory } from '../app/memory/pluviaMemory.js';
 
 function watcher(directory = mkdtempSync(path.join(tmpdir(), 'pluvia-watch-'))) {
-  return new Watcher({ query: new ZetarisSampleAdapter(), directory, stations: [{ id: 'NIM00065201', name: 'MURTALA MUHAMMED' }] });
+  return new Watcher({ query: new ZetarisSampleAdapter({ dataDirectory: lagosData() }), directory, stations: [{ id: 'NIM00065201', name: 'MURTALA MUHAMMED' }] });
 }
 
 describe('the station watcher', () => {
@@ -54,7 +55,7 @@ describe('the station watcher', () => {
     const live = watcher();
     const days: WatchState[] = [];
     for (let i = 0; i < 5; i++) days.push(structuredClone(await live.advance()));
-    const replay = new Watcher({ query: new ZetarisSampleAdapter(), directory: mkdtempSync(path.join(tmpdir(), 'pluvia-watch-')), recorded: days });
+    const replay = new Watcher({ query: new ZetarisSampleAdapter({ dataDirectory: lagosData() }), directory: mkdtempSync(path.join(tmpdir(), 'pluvia-watch-')), recorded: days });
     expect(replay.view().recorded).toBe(true);
     expect((await replay.advance()).today).toBe('2025-07-01');
     expect((await replay.advance(3)).cases[0]?.opened_on).toBe('2025-07-04');
@@ -76,7 +77,7 @@ describe('the station watcher', () => {
     const w = watcher(dir);
     await w.advance(4);
     const agent = new CaseAgent({
-      query: new ZetarisSampleAdapter(),
+      query: new ZetarisSampleAdapter({ dataDirectory: lagosData() }),
       memory: new PluviaMemory(path.join(dir, 'memory')),
       store: new CaseStore(path.join(dir, 'cases')),
       replayDirectory: path.join(dir, 'replays'),
@@ -92,7 +93,7 @@ describe('the station watcher', () => {
   it('runs on to the filing day and picks each claim up once', async () => {
     const picked: string[][] = [];
     const filings = ['CLM-LAG-2025-001', 'CLM-LAG-2025-002', 'CLM-LAG-2025-003'].map(claim_id => ({ claim_id, filed_on: '2025-08-01' }));
-    const w = new Watcher({ query: new ZetarisSampleAdapter(), directory: mkdtempSync(path.join(tmpdir(), 'pluvia-watch-')), filings, onFiled: async ids => { picked.push(ids); } });
+    const w = new Watcher({ query: new ZetarisSampleAdapter({ dataDirectory: lagosData() }), directory: mkdtempSync(path.join(tmpdir(), 'pluvia-watch-')), filings, onFiled: async ids => { picked.push(ids); } });
     await w.advance(31);
     expect(w.view().today).toBe('2025-07-31');
     expect(picked).toEqual([]);

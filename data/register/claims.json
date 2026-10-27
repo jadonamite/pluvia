@@ -23,6 +23,38 @@
       "event_text": "Our group reports that July rains failed. Please check the rainfall record before settling the claim.",
       "synthetic": true,
       "filed_on": "2025-08-01"
+    },
+    {
+      "claim_id": "CLM-KIT-2025-001",
+      "policy_id": "POL-KIT-2025-001",
+      "submitted_at": "2026-10-27T00:00:00Z",
+      "event_text": "Our group reports that the season's rains failed. Please check the rainfall record before settling the claim.",
+      "synthetic": true,
+      "filed_on": "2025-08-07"
+    },
+    {
+      "claim_id": "CLM-DOD-2025-001",
+      "policy_id": "POL-DOD-2025-001",
+      "submitted_at": "2026-10-27T00:00:00Z",
+      "event_text": "Our group reports that the season's rains failed. Please check the rainfall record before settling the claim.",
+      "synthetic": true,
+      "filed_on": "2025-05-01"
+    },
+    {
+      "claim_id": "CLM-TER-2025-001",
+      "policy_id": "POL-TER-2025-001",
+      "submitted_at": "2026-10-27T00:00:00Z",
+      "event_text": "Our group reports that the season's rains failed. Please check the rainfall record before settling the claim.",
+      "synthetic": true,
+      "filed_on": "2025-05-06"
+    },
+    {
+      "claim_id": "CLM-MAC-2025-001",
+      "policy_id": "POL-MAC-2025-001",
+      "submitted_at": "2026-10-27T00:00:00Z",
+      "event_text": "Our group reports that the season's rains failed. Please check the rainfall record before settling the claim.",
+      "synthetic": true,
+      "filed_on": "2025-05-31"
     }
   ]
 }

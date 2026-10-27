@@ -3,6 +3,7 @@ import { mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { ZetarisSampleAdapter } from '../app/adapters/zetarisSample.js';
+import { lagosData } from './lagosData.js';
 import { PluviaMemory } from '../app/memory/pluviaMemory.js';
 import { CaseAgent, type Message } from '../app/agent/caseAgent.js';
 import { CaseStore } from '../app/agent/cases.js';
@@ -25,7 +26,7 @@ function scripted(steps: Step[], seen: Message[][]) {
 function setup(steps: Step[]) {
   const dir = mkdtempSync(path.join(tmpdir(), 'pluvia-watch-agent-'));
   const seen: Message[][] = [];
-  const query = new ZetarisSampleAdapter();
+  const query = new ZetarisSampleAdapter({ dataDirectory: lagosData() });
   let watcher!: Watcher;
   const agent = new CaseAgent({
     query,
@@ -123,7 +124,7 @@ describe('the agent on a watch case', () => {
 
   it('falls back to the watcher notice when the model fails', async () => {
     const dir = mkdtempSync(path.join(tmpdir(), 'pluvia-watch-agent-'));
-    const query = new ZetarisSampleAdapter();
+    const query = new ZetarisSampleAdapter({ dataDirectory: lagosData() });
     const agent = new CaseAgent({
       query,
       memory: new PluviaMemory(path.join(dir, 'memory')),
@@ -151,7 +152,7 @@ describe('the agent on a watch case', () => {
     await watcher.advance(7);
     const recorded = await settle(agent, id);
     const dir = mkdtempSync(path.join(tmpdir(), 'pluvia-watch-agent-'));
-    const replay = new CaseAgent({ query: new ZetarisSampleAdapter(), memory: new PluviaMemory(path.join(dir, 'm')), store: new CaseStore(path.join(dir, 'c')), replayDirectory: dir, live: false, recordedInvestigations: [recorded] });
+    const replay = new CaseAgent({ query: new ZetarisSampleAdapter({ dataDirectory: lagosData() }), memory: new PluviaMemory(path.join(dir, 'm')), store: new CaseStore(path.join(dir, 'c')), replayDirectory: dir, live: false, recordedInvestigations: [recorded] });
     expect(replay.investigation(id, '2025-07-03')?.events).toHaveLength(0);
     const day4 = replay.investigation(id, '2025-07-04')!;
     expect(day4.events.some(e => e.kind === 'watcher')).toBe(false);

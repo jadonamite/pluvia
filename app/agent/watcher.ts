@@ -78,6 +78,8 @@ export class Watcher {
   private data: DataAgent;
   private shared: WatchState;
   private visitors = new Map<string, { state: WatchState; used: number }>();
+  // Each station's season, read once per calendar run; each day still looks only at what had arrived.
+  private seasons = new Map<string, { station: DailySeries; satellite: DailySeries | null }>();
   private file: string;
   // The calendar's last day: the end of every cover window and every filing day.
   private lastDay?: string;
@@ -113,6 +115,7 @@ export class Watcher {
   }
 
   reset(visitor?: string): WatchState {
+    if (!this.deps.perVisitor) this.seasons.clear();
     return this.put(visitor, empty());
   }
 
@@ -170,7 +173,9 @@ export class Watcher {
 
   private async check(state: WatchState, station: Station, today: string) {
     const policy = { ...station.policies[0]!, window_start: station.start, window_end: station.end };
-    station.series ??= await this.data.fetch(policy);
+    const key = `${station.id}:${station.start}:${station.end}`;
+    if (!this.seasons.has(key)) this.seasons.set(key, await this.data.fetch(policy));
+    station.series ??= this.seasons.get(key)!;
     const gauge = upTo(station.series.station, today);
     const satellite = station.series.satellite ? upTo(station.series.satellite, today) : null;
     const reading = gauge.days.find(d => d.date === today);

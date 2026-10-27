@@ -1,0 +1,63 @@
+{
+  "station_id": "TZ000063862",
+  "window": [
+    "04-01",
+    "04-30"
+  ],
+  "trigger_mm": 52.7,
+  "exit_mm": 22.6,
+  "median_mm": 75.28,
+  "annual_totals": [
+    {
+      "year": 2015,
+      "mm": 118.68,
+      "days": 30
+    },
+    {
+      "year": 2016,
+      "mm": 229.61,
+      "days": 30
+    },
+    {
+      "year": 2017,
+      "mm": 36.78,
+      "days": 30
+    },
+    {
+      "year": 2018,
+      "mm": 82.33,
+      "days": 30
+    },
+    {
+      "year": 2019,
+      "mm": 83.91,
+      "days": 30
+    },
+    {
+      "year": 2020,
+      "mm": 113.55,
+      "days": 30
+    },
+    {
+      "year": 2021,
+      "mm": 60.47,
+      "days": 30
+    },
+    {
+      "year": 2022,
+      "mm": 49.12,
+      "days": 30
+    },
+    {
+      "year": 2023,
+      "mm": 44.85,
+      "days": 30
+    },
+    {
+      "year": 2024,
+      "mm": 68.23,
+      "days": 30
+    }
+  ],
+  "method": "Synthetic contract: trigger = 70% and exit = 30% of the median total across complete prior-year windows; rounded to 0.1 mm. Independent IMERG_PRECTOT, UTC. No claim-year observations used."
+}

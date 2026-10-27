@@ -388,6 +388,7 @@
       cal.append(cell);
     }
     const done = today && today >= (state.watch?.last_day || end);
+    $('calendar-title').textContent = `${longDate(start)} to ${longDate(lastShown)} ${start.slice(0, 4)}, day by day`;
     $('calendar-today').textContent = today ? `Checked through ${longDate(today)}` : 'Not started';
     $('watch-next').disabled = state.playing || done; $('watch-run').disabled = state.playing || done; $('watch-reset').disabled = state.playing || !today;
     $('watch-mode').textContent = state.watch?.recorded ? 'The calendar is simulated. The readings are real, and this season was recorded from a live run through Zetaris.' : 'The calendar is simulated. The readings are the real record for this station.';
@@ -403,7 +404,7 @@
   }
   function renderWatchCase(station, item, policies) {
     const root = $('watch-case'); root.replaceChildren(el('p', 'Watch case', 'label'));
-    if (!item) { root.append(el('p', state.watch?.today ? 'No watch case. The gauge has reported normally so far.' : 'Step through July to watch the gauge. A case opens after three silent days, or when the gauge and the satellite drift apart.', 'muted')); return; }
+    if (!item) { root.append(el('p', state.watch?.today ? 'No watch case. The gauge has reported normally so far.' : 'Step through the season to watch the gauge. A case opens after three silent days, or when the gauge and the satellite drift apart.', 'muted')); return; }
     root.append(el('p', `Opened ${longDate(item.opened_on)}, before any claim`, 'lead strong'));
     const findings = el('div', null, 'list flush');
     for (const f of item.findings) {

@@ -6,6 +6,34 @@
       "lat": 6.577,
       "lon": 3.321,
       "elevation_m": 41.1
+    },
+    {
+      "id": "KE000063661",
+      "name": "KITALE",
+      "lat": 1.016,
+      "lon": 35.0,
+      "elevation_m": 1875.0
+    },
+    {
+      "id": "TZ000063862",
+      "name": "DODOMA",
+      "lat": -6.167,
+      "lon": 35.767,
+      "elevation_m": 1120.0
+    },
+    {
+      "id": "BR037041370",
+      "name": "TERESINA",
+      "lat": -5.05,
+      "lon": -42.817,
+      "elevation_m": 67.0
+    },
+    {
+      "id": "BR038983570",
+      "name": "MACEIO",
+      "lat": -9.517,
+      "lon": -35.783,
+      "elevation_m": 118.0
     }
   ]
 }
