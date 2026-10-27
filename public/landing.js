@@ -157,7 +157,11 @@
 
   // 2. the drone keeps descending over the farmland and turns toward the station
   tl.fromTo('.f2 .plate', { scale: 2, rotate: 3, yPercent: 4 }, { scale: 1, rotate: 0, yPercent: 0, duration: 5.6, ease: 'power2.out', immediateRender: false }, 11.6);
-  say('.w2', 13.2, 15.6);
+  say('.w2', 13.2, 15.8);
+  // the field markings draw themselves onto the land
+  tl.fromTo('.marks .mk', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, stagger: 0.5, immediateRender: false }, 13.4)
+    .fromTo('.marks .mk-ring, .marks .mk-lead', { strokeDashoffset: 1, strokeDasharray: '1 1' }, { strokeDashoffset: 0, duration: 1.4, stagger: 0.12, ease: 'power2.out', immediateRender: false }, 13.4)
+    .fromTo('.marks .mk-link', { autoAlpha: 0 }, { autoAlpha: 0.7, duration: 0.8, immediateRender: false }, 14.6);
   tl.fromTo('.f2 .plate', { scale: 1, autoAlpha: 1 }, { scale: 0.9, autoAlpha: 0, duration: 2, immediateRender: false }, 17.2);
   show('.f3', 16.8, 1.8);
   hide('.f2', 18.8, 0.3);
@@ -185,6 +189,11 @@
   let drawSources = () => {};
   tl.fromTo(sources, { p: 0 }, { p: 1, duration: 8.5, onUpdate: () => drawSources() }, 38);
   say('.w5', 38, 45.5);
+  // the month in two numbers: the gauge first, the satellite once it forms
+  tl.fromTo('.readout', { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 1.2, ease: 'power2.out', immediateRender: false }, 40.2);
+  tl.fromTo('.ro-sat', { autoAlpha: 0.3 }, { autoAlpha: 1, duration: 1, immediateRender: false }, 43.6);
+  tl.fromTo('.ro-gauge', { autoAlpha: 1 }, { autoAlpha: 0.55, duration: 1, immediateRender: false }, 43.6);
+  hide('.readout', 46.4, 0.8);
   tl.fromTo('.f5 .plate', { scale: 1 }, { scale: 1.9, duration: 3, ease: 'power1.in', immediateRender: false }, 46.5);
   show('.f6', 47.2, 1.6);
   hide('.f5', 48.4, 1);
@@ -196,9 +205,10 @@
     const scatter = gauge.map(() => ({ x: Math.random(), y: Math.random() * 1.4 - 0.6, d: Math.random() * 0.25, bx: Math.random() - 0.5, by: Math.random() - 0.5 }));
     drawSources = () => {
       const { ctx, width, height } = view;
-      const span = Math.min(height * 0.62, width * 0.88);
-      const cx = width / 2;
-      const gy = height * 0.6, sy = height * 0.5;
+      const span = Math.min(height * (width >= 900 ? 0.62 : 0.5), width * 0.88);
+      const wide = width >= 900;
+      const cx = width * (wide ? 0.44 : 0.5);
+      const gy = height * (wide ? 0.6 : 0.5), sy = height * (wide ? 0.5 : 0.42);
       ctx.clearRect(0, 0, width, height);
       // a dark pocket in the cloud behind the shape so the dots read
       const hold = Math.max(ease(clamp01(sources.p / 0.32)), 0);
@@ -244,7 +254,7 @@
   tl.fromTo('.f7 .plate', { scale: 1.35, yPercent: 10 }, { scale: 1.05, yPercent: 0, duration: 15 }, 59);
   say('.w7', 60.5, 72);
   const outcomes = $$('.outcome');
-  const notes = $$('.outcome div');
+  const notes = $$('.card-body');
   tl.fromTo(outcomes, { rotateY: 90, autoAlpha: 0 }, { rotateY: 0, autoAlpha: 1, duration: 1.4, stagger: 0.35, ease: 'power2.out', immediateRender: false }, 61);
   outcomes.forEach((_, i) => {
     const at = 63.4 + i * 2.2;
@@ -260,8 +270,7 @@
   // 8. back on the dry field: the rain sweeps in and the maize turns green
   tl.fromTo('.f8 .plate', { scale: 1.2 }, { scale: 1, duration: 3, ease: 'power2.out' }, 75);
   tl.fromTo('.f8 .after', { maskPosition: '20% 0', webkitMaskPosition: '20% 0' }, { maskPosition: '80% 0', webkitMaskPosition: '80% 0', duration: 7, ease: 'power1.inOut' }, 77);
-  say('.w8a', 78, 82.5);
-  say('.w8b', 83.2, 87);
+  say('.w8', 79, 86.5);
   const rainCanvas = $('.f8 canvas');
   let rainView = fitCanvas(rainCanvas);
   const drops = Array.from({ length: 280 }, () => ({ x: Math.random(), y: Math.random(), l: 10 + Math.random() * 28, v: 0.6 + Math.random() * 0.8 }));
@@ -287,16 +296,11 @@
   tl.fromTo(rain, { p: 0 }, { p: 1, duration: 10, onUpdate: drawRain }, 76);
   gsap.ticker.add(() => { if (rain.p > 0 && rain.p < 1) { rain.t += 0.012; drawRain(); } });
   window.addEventListener('resize', () => { rainView = fitCanvas(rainCanvas); });
-  // lifting off the green field into the clouds
-  tl.fromTo('.f8 .plate', { yPercent: 0, scale: 1 }, { yPercent: 18, scale: 1.12, duration: 3, ease: 'power1.in', immediateRender: false }, 87.2);
-  flyThrough('.fly-c', 87.5, 4);
-  show('.f9', 89.2);
-  hide('.f8', 89.6);
-
-  // 9. above the clouds again
-  tl.fromTo('.f9 .plate', { scale: 1.25 }, { scale: 1, duration: 5, ease: 'power2.out' }, 89.2);
-  tl.fromTo('.marquee', { xPercent: 8 }, { xPercent: -42, duration: 10.8 }, 89.2);
-  tl.fromTo('.close-card', { autoAlpha: 0, y: 60 }, { autoAlpha: 1, y: 0, duration: 2.5, ease: 'power2.out', immediateRender: false }, 93);
+  // 9. the camera lifts its gaze to the sky over the green field, and the last line arrives
+  show('.f9', 88, 1);
+  hide('.f8', 89);
+  tl.fromTo('.f9 .plate', { scale: 1, yPercent: 0 }, { scale: 1.16, yPercent: 7, duration: 10, ease: 'power1.inOut', immediateRender: false }, 89);
+  tl.fromTo('.finale', { autoAlpha: 0, y: 40 }, { autoAlpha: 1, y: 0, duration: 3, ease: 'power2.out', immediateRender: false }, 90.5);
 
   window.addEventListener('load', () => ScrollTrigger.refresh());
 })();
