@@ -220,6 +220,16 @@ export class CaseAgent {
       };
       return this.deps.store.save(copy);
     }
+    return this.begin(ctx, visitor);
+  }
+
+  // Starts a live case on a claim and policy that are not in the register, such as an evaluation case.
+  async startEvaluation(claim: Claim, policy: Policy): Promise<Case> {
+    return this.begin({ claim, policy, proposals: 0 });
+  }
+
+  private async begin(ctx: Context, visitor?: string): Promise<Case> {
+    const claimId = ctx.claim!.claim_id;
     const item: Case = {
       id: `case_${randomUUID().slice(0, 8)}`,
       claim_id: claimId,
@@ -432,7 +442,7 @@ export class CaseAgent {
     return this.deps.store.save(item);
   }
 
-  private async callModel(messages: Message[], tools: unknown[]): Promise<{ message: Message; model: string }> {
+  private async callModel(messages: Message[], tools: unknown[]): Promise<{ message: Message; model: string; usage?: { prompt_tokens?: number; completion_tokens?: number } }> {
     if (this.deps.chat) return this.deps.chat(messages);
     const route = this.deps.model!;
     let last = '';
@@ -444,9 +454,9 @@ export class CaseAgent {
           body: JSON.stringify({ model, messages, tools, tool_choice: 'auto', max_tokens: 1500, temperature: 0.2 }),
           signal: AbortSignal.timeout(180_000),
         });
-        const body = (await response.json().catch(() => ({}))) as { choices?: { message?: Message }[]; model?: string; error?: { message?: string } };
+        const body = (await response.json().catch(() => ({}))) as { choices?: { message?: Message }[]; model?: string; usage?: { prompt_tokens?: number; completion_tokens?: number }; error?: { message?: string } };
         const message = body.choices?.[0]?.message;
-        if (response.ok && message) return { message, model: body.model ?? model };
+        if (response.ok && message) return { message, model: body.model ?? model, usage: body.usage };
         last = body.error?.message ?? `HTTP ${response.status}`;
       } catch (error) {
         last = String(error);
@@ -462,8 +472,9 @@ export class CaseAgent {
       for (let step = 0; step < budget; step++) {
         for (const text of item.inbox?.splice(0) ?? []) messages.push({ role: 'user', content: item.kind === 'watch' ? watcherNote(text, item.station!.today) : officerNote(text, false) });
         if (item.kind === 'watch') ctx.today = item.station!.today;
-        const { message, model } = await this.callModel(messages, item.kind === 'watch' ? TOOLS.filter(t => WATCH_TOOLS.has(t.function.name)) : CLAIM_TOOLS);
+        const { message, model, usage } = await this.callModel(messages, item.kind === 'watch' ? TOOLS.filter(t => WATCH_TOOLS.has(t.function.name)) : CLAIM_TOOLS);
         if (!item.models.includes(model)) item.models.push(model);
+        if (usage) item.usage = { prompt_tokens: (item.usage?.prompt_tokens ?? 0) + (usage.prompt_tokens ?? 0), completion_tokens: (item.usage?.completion_tokens ?? 0) + (usage.completion_tokens ?? 0) };
         const assistant: Message = { role: 'assistant', content: message.content ?? null, tool_calls: message.tool_calls };
         messages.push(assistant);
         segment.messages = messages;

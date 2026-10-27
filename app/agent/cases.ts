@@ -74,6 +74,8 @@ export interface Case {
   // On a watch case: the station, the watch case it works and the watcher's current day.
   station?: { id: string; name: string; policy_ids: string[]; watch_id: string; today: string; fallback_notice: string };
   lessons?: Lesson[];
+  // Tokens the model reported across every step, when the route reports them.
+  usage?: { prompt_tokens: number; completion_tokens: number };
   claim_id: string;
   policy_id: string;
   state: CaseState;

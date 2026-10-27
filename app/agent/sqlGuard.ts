@@ -1,7 +1,7 @@
 // Checks a query the agent wrote before it reaches Zetaris: one read-only statement over the
 // registered Pluvia views, with a row cap.
 
-export const ALLOWED_VIEWS = /^(ghcn_prcp|stations|policies|claims|power_[a-z0-9_]+)$/;
+export const ALLOWED_VIEWS = /^(ghcn_prcp|stations|policies|claims|power_[a-z0-9_]+|eval_gauge_[a-z0-9_]+)$/;
 const FORBIDDEN =
   /\b(create|insert|update|delete|drop|alter|call|merge|truncate|grant|revoke|refresh|cache|uncache|set|use|load|msck|add|replace|exec|execute|copy|optimize|vacuum)\b/i;
 export const ROW_CAP = 2000;

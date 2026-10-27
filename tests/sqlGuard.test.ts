@@ -32,6 +32,8 @@ describe('SQL guard', () => {
     ['WITH x AS (SELECT 1) INSERT INTO pluvia.claims SELECT * FROM x', 'INSERT'],
     ['SELECT * FROM GHCN_S3.station_nim00065201', 'not an allowed table'],
     ['SELECT * FROM pluvia.secrets', 'not an allowed table'],
+    ['SELECT * FROM pluvia.eval_gauges', 'not an allowed table'],
+    ['SELECT * FROM pluvia.eval_gauge_', 'not an allowed table'],
     ['SELECT * FROM other.catalog.table', 'not an allowed table'],
     ['SELECT 7', 'Query a pluvia view'],
     ['SET spark.sql.x = 1', 'Only SELECT'],
@@ -41,6 +43,8 @@ describe('SQL guard', () => {
   });
 
   it('reads FROM inside EXTRACT as part of the function', () => {
+    expect(guardSql("SELECT COUNT(*) FROM pluvia.eval_gauge_br037041370_2023_01_01_satellite_dry_days WHERE station_id = 'BR037041370'").ok).toBe(true);
+    expect(guardSql('SELECT * FROM pluvia.power_maceio_2025_daily').ok).toBe(true);
     expect(guardSql('SELECT EXTRACT(YEAR FROM obs_date) AS y, SUM(mm) FROM pluvia.power_lagos_2025_prior_daily WHERE EXTRACT(MONTH FROM obs_date) = 7 GROUP BY EXTRACT(YEAR FROM obs_date)').ok).toBe(true);
     expect(refused('SELECT EXTRACT(YEAR FROM obs_date) FROM GHCN_S3.raw')).toContain('not an allowed table');
   });

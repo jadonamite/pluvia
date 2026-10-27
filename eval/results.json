@@ -1,5 +1,5 @@
 {
-  "case_count": 46,
+  "case_count": 62,
   "pluvia_mode": "Full agent loop with sample-rules model stand-in on local fault-injected evidence; no live Nemotron claim.",
   "model_baseline": "Unmeasured: Nightshift is not configured for this run. No model score is claimed.",
   "label_method": "Fault-injected cases retain the clean contract decision; inspections are abstentions, not correct payouts. Real sparse cases have unknown payout truth.",
@@ -2200,56 +2200,56 @@
   },
   "metrics": {
     "naive_station": {
-      "cases": 46,
-      "labelled_cases": 43,
-      "positive_labels": 7,
-      "negative_labels": 36,
-      "true_positive_payouts": 6,
-      "true_negative_refusals": 31,
+      "cases": 62,
+      "labelled_cases": 59,
+      "positive_labels": 11,
+      "negative_labels": 48,
+      "true_positive_payouts": 8,
+      "true_negative_refusals": 43,
       "labelled_inspections": 0,
       "wrong_payouts": 5,
-      "missed_payouts": 1,
+      "missed_payouts": 3,
       "inspections": 0,
-      "latency_ms": 3.5990399999998317,
-      "wrong_payout_rate": 0.11627906976744186,
-      "missed_payout_rate": 0.023255813953488372,
+      "latency_ms": 5.406335000000809,
+      "wrong_payout_rate": 0.0847457627118644,
+      "missed_payout_rate": 0.05084745762711865,
       "inspection_rate": 0,
-      "mean_time_ms": 0.07823999999999634
+      "mean_time_ms": 0.08719895161291627
     },
     "satellite_only": {
-      "cases": 46,
-      "labelled_cases": 43,
-      "positive_labels": 7,
-      "negative_labels": 36,
-      "true_positive_payouts": 7,
-      "true_negative_refusals": 36,
+      "cases": 62,
+      "labelled_cases": 59,
+      "positive_labels": 11,
+      "negative_labels": 48,
+      "true_positive_payouts": 11,
+      "true_negative_refusals": 38,
       "labelled_inspections": 0,
-      "wrong_payouts": 0,
+      "wrong_payouts": 10,
       "missed_payouts": 0,
       "inspections": 0,
-      "latency_ms": 4.827207999999956,
-      "wrong_payout_rate": 0,
+      "latency_ms": 7.020832999999698,
+      "wrong_payout_rate": 0.1694915254237288,
       "missed_payout_rate": 0,
       "inspection_rate": 0,
-      "mean_time_ms": 0.10493930434782514
+      "mean_time_ms": 0.11323924193547899
     },
     "raw_totals_model": null,
     "pluvia": {
-      "cases": 46,
-      "labelled_cases": 43,
-      "positive_labels": 7,
-      "negative_labels": 36,
+      "cases": 62,
+      "labelled_cases": 59,
+      "positive_labels": 11,
+      "negative_labels": 48,
       "true_positive_payouts": 6,
       "true_negative_refusals": 14,
-      "labelled_inspections": 23,
+      "labelled_inspections": 39,
       "wrong_payouts": 0,
       "missed_payouts": 0,
-      "inspections": 26,
-      "latency_ms": 1324.8932479999992,
+      "inspections": 42,
+      "latency_ms": 2180.767213,
       "wrong_payout_rate": 0,
       "missed_payout_rate": 0,
-      "inspection_rate": 0.5652173913043478,
-      "mean_time_ms": 28.802027130434766
+      "inspection_rate": 0.6774193548387096,
+      "mean_time_ms": 35.173664725806454
     }
   },
   "rows": [
@@ -2414,9 +2414,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.50324999999998,
-        "satellite_only": 0.1381669999999815,
-        "pluvia": 46.65450000000001
+        "naive_station": 0.457958000000076,
+        "satellite_only": 0.14895899999999074,
+        "pluvia": 69.72412500000007
       }
     },
     {
@@ -2582,9 +2582,345 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.07745800000003555,
-        "satellite_only": 0.09941700000001674,
-        "pluvia": 30.228958000000034
+        "naive_station": 0.10329200000001038,
+        "satellite_only": 0.107291000000032,
+        "pluvia": 35.761750000000006
+      }
+    },
+    {
+      "id": "BR037041370-2023-01-01-satellite_dry_days",
+      "category": "satellite_dry_days",
+      "label": {
+        "payout_due": false,
+        "expected_inspection": false,
+        "basis": "Known satellite_dry_days fault injected into the satellite of BR037041370-2023-01-01; the gauge record is complete and unchanged, so the gauge settlement or an inspection is correct. At least95% real NOAA coverage and complete independent POWER record; clean contractual station total 203.00 mm. Trigger/exit calibrated from prior complete years using scripts/climatology.ts."
+      },
+      "deciders": {
+        "naive_station": {
+          "verdict": "NO_PAY",
+          "payout_ngn": 0,
+          "index_mm": 203
+        },
+        "satellite_only": {
+          "verdict": "PAY",
+          "payout_ngn": 67494.33,
+          "index_mm": 94.77000000000001
+        },
+        "raw_totals_model": null,
+        "pluvia": {
+          "verdict": "INSPECT",
+          "payout_ngn": 0,
+          "index_source": "none",
+          "index_mm": null,
+          "reasons": [
+            "Memory conflict remains unresolved or below 0.70 confidence.",
+            "P6: On 30 overlapping days station totals 203.0 mm and satellite 94.8 mm; gap 108.2 mm (114.2%)."
+          ],
+          "probes": [
+            {
+              "id": "P1",
+              "name": "Station coverage",
+              "status": "pass",
+              "metric": {
+                "valid_days": 30,
+                "window_days": 31,
+                "coverage": 0.967741935483871,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "30 of 31 station days valid (96.8%); minimum 95.0%."
+            },
+            {
+              "id": "P2",
+              "name": "Missing treated as zero",
+              "status": "pass",
+              "metric": {
+                "missing_days": 1,
+                "suspect_zero_days": 0,
+                "naive_sum_mm": 203
+              },
+              "evidence": "1 missing station days would contribute zero to a naive sum; 0 reported zeros coincide with satellite rain of at least 5 mm. This identifies an unreliable record, not an instrument fault."
+            },
+            {
+              "id": "P3",
+              "name": "Quality and measurement flags",
+              "status": "pass",
+              "metric": {
+                "quality_flagged": 0,
+                "s_flag:S": 30
+              },
+              "evidence": "0 quality-flagged rows excluded. Measurement/source counts: {\"quality_flagged\":0,\"s_flag:S\":30}. A is multi-day accumulation; B/D are partial-day measurements; a blank quality flag does not establish accuracy."
+            },
+            {
+              "id": "P4",
+              "name": "Record ends early",
+              "status": "pass",
+              "metric": {
+                "last_valid_date": "2023-01-31",
+                "gap_days": 0
+              },
+              "evidence": "Last valid station date: 2023-01-31; 0 days before the window end."
+            },
+            {
+              "id": "P5",
+              "name": "Station distance",
+              "status": "pass",
+              "metric": {
+                "distance_km": 0,
+                "max_station_km": 20
+              },
+              "evidence": "Station is 0.0 km from the farm; sole-index limit is 20 km."
+            },
+            {
+              "id": "P6",
+              "name": "Source divergence",
+              "status": "fail",
+              "metric": {
+                "overlap_days": 30,
+                "station_mm": 203,
+                "satellite_mm": 94.76,
+                "absolute_gap_mm": 108.24,
+                "relative_gap": 1.142254115660616
+              },
+              "evidence": "On 30 overlapping days station totals 203.0 mm and satellite 94.8 mm; gap 108.2 mm (114.2%)."
+            },
+            {
+              "id": "P7",
+              "name": "Satellite fill values",
+              "status": "pass",
+              "metric": {
+                "missing_or_fill_days": 0,
+                "valid_days": 31,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "0 satellite days missing, invalid, duplicated or filled; -999 fill values are excluded."
+            },
+            {
+              "id": "P8",
+              "name": "Borderline index",
+              "status": "warn",
+              "metric": {
+                "index_mm": "unselected",
+                "gap_mm": "unknown",
+                "band_mm": 5
+              },
+              "evidence": "No usable index selected."
+            }
+          ],
+          "naive": {
+            "station_only": {
+              "verdict": "NO_PAY",
+              "payout_ngn": 0,
+              "index_mm": 203
+            },
+            "satellite_only": {
+              "verdict": "PAY",
+              "payout_ngn": 67494.33,
+              "index_mm": 94.77000000000001
+            }
+          },
+          "memory": {
+            "recalled": [],
+            "written": [
+              "mem-3",
+              "mem-4"
+            ],
+            "conflicts": [
+              "r_d2512083-f925-4ede-9293-c43e66a2fe4f:conflict-1"
+            ]
+          },
+          "rounds": 1,
+          "human_review_required": true,
+          "inspection_question": "Establish rainfall at the insured farm (-5.05, -42.817) from 2023-01-01 through 2023-01-31. Reconcile missing or suspect station dates and any disagreement with the independent satellite record before settlement.",
+          "run_status": "success",
+          "model_names": [
+            "sample-rules"
+          ],
+          "agent_names": [
+            "DataAgent",
+            "PlannerAgent",
+            "AuditorAgent",
+            "AdjudicatorAgent",
+            "Memory",
+            "PolicyGate",
+            "ReporterAgent"
+          ],
+          "evidence_requests": 1
+        }
+      },
+      "decider_elapsed_ms": {
+        "naive_station": 0.09408299999995506,
+        "satellite_only": 0.10587499999996908,
+        "pluvia": 38.95074999999997
+      }
+    },
+    {
+      "id": "BR037041370-2023-01-01-satellite_outlier",
+      "category": "satellite_outlier",
+      "label": {
+        "payout_due": false,
+        "expected_inspection": false,
+        "basis": "Known satellite_outlier fault injected into the satellite of BR037041370-2023-01-01; the gauge record is complete and unchanged, so the gauge settlement or an inspection is correct. At least95% real NOAA coverage and complete independent POWER record; clean contractual station total 203.00 mm. Trigger/exit calibrated from prior complete years using scripts/climatology.ts."
+      },
+      "deciders": {
+        "naive_station": {
+          "verdict": "NO_PAY",
+          "payout_ngn": 0,
+          "index_mm": 203
+        },
+        "satellite_only": {
+          "verdict": "PAY",
+          "payout_ngn": 100000,
+          "index_mm": 17.939999999999998
+        },
+        "raw_totals_model": null,
+        "pluvia": {
+          "verdict": "INSPECT",
+          "payout_ngn": 0,
+          "index_source": "none",
+          "index_mm": null,
+          "reasons": [
+            "Memory conflict remains unresolved or below 0.70 confidence.",
+            "P6: On 30 overlapping days station totals 203.0 mm and satellite 17.9 mm; gap 185.1 mm (1031.5%)."
+          ],
+          "probes": [
+            {
+              "id": "P1",
+              "name": "Station coverage",
+              "status": "pass",
+              "metric": {
+                "valid_days": 30,
+                "window_days": 31,
+                "coverage": 0.967741935483871,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "30 of 31 station days valid (96.8%); minimum 95.0%."
+            },
+            {
+              "id": "P2",
+              "name": "Missing treated as zero",
+              "status": "pass",
+              "metric": {
+                "missing_days": 1,
+                "suspect_zero_days": 0,
+                "naive_sum_mm": 203
+              },
+              "evidence": "1 missing station days would contribute zero to a naive sum; 0 reported zeros coincide with satellite rain of at least 5 mm. This identifies an unreliable record, not an instrument fault."
+            },
+            {
+              "id": "P3",
+              "name": "Quality and measurement flags",
+              "status": "pass",
+              "metric": {
+                "quality_flagged": 0,
+                "s_flag:S": 30
+              },
+              "evidence": "0 quality-flagged rows excluded. Measurement/source counts: {\"quality_flagged\":0,\"s_flag:S\":30}. A is multi-day accumulation; B/D are partial-day measurements; a blank quality flag does not establish accuracy."
+            },
+            {
+              "id": "P4",
+              "name": "Record ends early",
+              "status": "pass",
+              "metric": {
+                "last_valid_date": "2023-01-31",
+                "gap_days": 0
+              },
+              "evidence": "Last valid station date: 2023-01-31; 0 days before the window end."
+            },
+            {
+              "id": "P5",
+              "name": "Station distance",
+              "status": "pass",
+              "metric": {
+                "distance_km": 0,
+                "max_station_km": 20
+              },
+              "evidence": "Station is 0.0 km from the farm; sole-index limit is 20 km."
+            },
+            {
+              "id": "P6",
+              "name": "Source divergence",
+              "status": "fail",
+              "metric": {
+                "overlap_days": 30,
+                "station_mm": 203,
+                "satellite_mm": 17.939999999999998,
+                "absolute_gap_mm": 185.06,
+                "relative_gap": 10.315496098104795
+              },
+              "evidence": "On 30 overlapping days station totals 203.0 mm and satellite 17.9 mm; gap 185.1 mm (1031.5%)."
+            },
+            {
+              "id": "P7",
+              "name": "Satellite fill values",
+              "status": "pass",
+              "metric": {
+                "missing_or_fill_days": 0,
+                "valid_days": 31,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "0 satellite days missing, invalid, duplicated or filled; -999 fill values are excluded."
+            },
+            {
+              "id": "P8",
+              "name": "Borderline index",
+              "status": "warn",
+              "metric": {
+                "index_mm": "unselected",
+                "gap_mm": "unknown",
+                "band_mm": 5
+              },
+              "evidence": "No usable index selected."
+            }
+          ],
+          "naive": {
+            "station_only": {
+              "verdict": "NO_PAY",
+              "payout_ngn": 0,
+              "index_mm": 203
+            },
+            "satellite_only": {
+              "verdict": "PAY",
+              "payout_ngn": 100000,
+              "index_mm": 17.939999999999998
+            }
+          },
+          "memory": {
+            "recalled": [],
+            "written": [
+              "mem-3",
+              "mem-4"
+            ],
+            "conflicts": [
+              "r_663fb08a-6b87-43d1-ab7f-37cdfa168035:conflict-1"
+            ]
+          },
+          "rounds": 1,
+          "human_review_required": true,
+          "inspection_question": "Establish rainfall at the insured farm (-5.05, -42.817) from 2023-01-01 through 2023-01-31. Reconcile missing or suspect station dates and any disagreement with the independent satellite record before settlement.",
+          "run_status": "success",
+          "model_names": [
+            "sample-rules"
+          ],
+          "agent_names": [
+            "DataAgent",
+            "PlannerAgent",
+            "AuditorAgent",
+            "AdjudicatorAgent",
+            "Memory",
+            "PolicyGate",
+            "ReporterAgent"
+          ],
+          "evidence_requests": 1
+        }
+      },
+      "decider_elapsed_ms": {
+        "naive_station": 0.07341699999994944,
+        "satellite_only": 0.09845899999993435,
+        "pluvia": 33.49741700000004
       }
     },
     {
@@ -2750,9 +3086,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.10612500000002001,
-        "satellite_only": 0.11083300000001373,
-        "pluvia": 29.00812499999995
+        "naive_station": 0.07470800000010058,
+        "satellite_only": 0.10195899999996527,
+        "pluvia": 32.7527080000001
       }
     },
     {
@@ -2919,9 +3255,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.058625000000006366,
-        "satellite_only": 0.09695900000002666,
-        "pluvia": 29.719709000000023
+        "naive_station": 0.06745900000009897,
+        "satellite_only": 0.09895899999992253,
+        "pluvia": 32.101792000000046
       }
     },
     {
@@ -3085,9 +3421,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.0730829999999969,
-        "satellite_only": 0.10308299999996962,
-        "pluvia": 30.530709
+        "naive_station": 0.07266700000002402,
+        "satellite_only": 0.106708000000026,
+        "pluvia": 46.17879099999993
       }
     },
     {
@@ -3250,9 +3586,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.08075000000002319,
-        "satellite_only": 0.09758299999998599,
-        "pluvia": 27.51333299999999
+        "naive_station": 0.13833299999998871,
+        "satellite_only": 0.10462500000005548,
+        "pluvia": 33.45408299999997
       }
     },
     {
@@ -3415,9 +3751,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.07550000000003365,
-        "satellite_only": 0.09541600000000017,
-        "pluvia": 28.044749999999965
+        "naive_station": 0.09050000000002001,
+        "satellite_only": 0.10770800000000236,
+        "pluvia": 33.63037500000007
       }
     },
     {
@@ -3580,9 +3916,345 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.04837500000002137,
-        "satellite_only": 0.09354199999995672,
-        "pluvia": 24.947959000000026
+        "naive_station": 0.06245799999999235,
+        "satellite_only": 0.10249999999996362,
+        "pluvia": 31.864708999999948
+      }
+    },
+    {
+      "id": "BR037041370-2024-01-01-satellite_dry_days",
+      "category": "satellite_dry_days",
+      "label": {
+        "payout_due": true,
+        "expected_inspection": false,
+        "basis": "Known satellite_dry_days fault injected into the satellite of BR037041370-2024-01-01; the gauge record is complete and unchanged, so the gauge settlement or an inspection is correct. At least95% real NOAA coverage and complete independent POWER record; clean contractual station total 109.30 mm. Trigger/exit calibrated from prior complete years using scripts/climatology.ts."
+      },
+      "deciders": {
+        "naive_station": {
+          "verdict": "PAY",
+          "payout_ngn": 48143.85,
+          "index_mm": 109.3
+        },
+        "satellite_only": {
+          "verdict": "PAY",
+          "payout_ngn": 90812.06,
+          "index_mm": 72.52000000000001
+        },
+        "raw_totals_model": null,
+        "pluvia": {
+          "verdict": "INSPECT",
+          "payout_ngn": 0,
+          "index_source": "none",
+          "index_mm": null,
+          "reasons": [
+            "Memory conflict remains unresolved or below 0.70 confidence.",
+            "P6: On 31 overlapping days station totals 109.3 mm and satellite 72.5 mm; gap 36.8 mm (50.7%)."
+          ],
+          "probes": [
+            {
+              "id": "P1",
+              "name": "Station coverage",
+              "status": "pass",
+              "metric": {
+                "valid_days": 31,
+                "window_days": 31,
+                "coverage": 1,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "31 of 31 station days valid (100.0%); minimum 95.0%."
+            },
+            {
+              "id": "P2",
+              "name": "Missing treated as zero",
+              "status": "pass",
+              "metric": {
+                "missing_days": 0,
+                "suspect_zero_days": 0,
+                "naive_sum_mm": 109.3
+              },
+              "evidence": "0 missing station days would contribute zero to a naive sum; 0 reported zeros coincide with satellite rain of at least 5 mm. This identifies an unreliable record, not an instrument fault."
+            },
+            {
+              "id": "P3",
+              "name": "Quality and measurement flags",
+              "status": "pass",
+              "metric": {
+                "quality_flagged": 0,
+                "s_flag:S": 31
+              },
+              "evidence": "0 quality-flagged rows excluded. Measurement/source counts: {\"quality_flagged\":0,\"s_flag:S\":31}. A is multi-day accumulation; B/D are partial-day measurements; a blank quality flag does not establish accuracy."
+            },
+            {
+              "id": "P4",
+              "name": "Record ends early",
+              "status": "pass",
+              "metric": {
+                "last_valid_date": "2024-01-31",
+                "gap_days": 0
+              },
+              "evidence": "Last valid station date: 2024-01-31; 0 days before the window end."
+            },
+            {
+              "id": "P5",
+              "name": "Station distance",
+              "status": "pass",
+              "metric": {
+                "distance_km": 0,
+                "max_station_km": 20
+              },
+              "evidence": "Station is 0.0 km from the farm; sole-index limit is 20 km."
+            },
+            {
+              "id": "P6",
+              "name": "Source divergence",
+              "status": "fail",
+              "metric": {
+                "overlap_days": 31,
+                "station_mm": 109.3,
+                "satellite_mm": 72.52000000000001,
+                "absolute_gap_mm": 36.77999999999999,
+                "relative_gap": 0.507170435741864
+              },
+              "evidence": "On 31 overlapping days station totals 109.3 mm and satellite 72.5 mm; gap 36.8 mm (50.7%)."
+            },
+            {
+              "id": "P7",
+              "name": "Satellite fill values",
+              "status": "pass",
+              "metric": {
+                "missing_or_fill_days": 0,
+                "valid_days": 31,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "0 satellite days missing, invalid, duplicated or filled; -999 fill values are excluded."
+            },
+            {
+              "id": "P8",
+              "name": "Borderline index",
+              "status": "warn",
+              "metric": {
+                "index_mm": "unselected",
+                "gap_mm": "unknown",
+                "band_mm": 5
+              },
+              "evidence": "No usable index selected."
+            }
+          ],
+          "naive": {
+            "station_only": {
+              "verdict": "PAY",
+              "payout_ngn": 48143.85,
+              "index_mm": 109.3
+            },
+            "satellite_only": {
+              "verdict": "PAY",
+              "payout_ngn": 90812.06,
+              "index_mm": 72.52000000000001
+            }
+          },
+          "memory": {
+            "recalled": [],
+            "written": [
+              "mem-3",
+              "mem-4"
+            ],
+            "conflicts": [
+              "r_a4d17a70-c482-446a-ae6d-a03687e15b7f:conflict-1"
+            ]
+          },
+          "rounds": 1,
+          "human_review_required": true,
+          "inspection_question": "Establish rainfall at the insured farm (-5.05, -42.817) from 2024-01-01 through 2024-01-31. Reconcile missing or suspect station dates and any disagreement with the independent satellite record before settlement.",
+          "run_status": "success",
+          "model_names": [
+            "sample-rules"
+          ],
+          "agent_names": [
+            "DataAgent",
+            "PlannerAgent",
+            "AuditorAgent",
+            "AdjudicatorAgent",
+            "Memory",
+            "PolicyGate",
+            "ReporterAgent"
+          ],
+          "evidence_requests": 1
+        }
+      },
+      "decider_elapsed_ms": {
+        "naive_station": 0.07425000000000637,
+        "satellite_only": 0.11899999999991451,
+        "pluvia": 37.28779199999997
+      }
+    },
+    {
+      "id": "BR037041370-2024-01-01-satellite_outlier",
+      "category": "satellite_outlier",
+      "label": {
+        "payout_due": true,
+        "expected_inspection": false,
+        "basis": "Known satellite_outlier fault injected into the satellite of BR037041370-2024-01-01; the gauge record is complete and unchanged, so the gauge settlement or an inspection is correct. At least95% real NOAA coverage and complete independent POWER record; clean contractual station total 109.30 mm. Trigger/exit calibrated from prior complete years using scripts/climatology.ts."
+      },
+      "deciders": {
+        "naive_station": {
+          "verdict": "PAY",
+          "payout_ngn": 48143.85,
+          "index_mm": 109.3
+        },
+        "satellite_only": {
+          "verdict": "PAY",
+          "payout_ngn": 100000,
+          "index_mm": 13.409999999999998
+        },
+        "raw_totals_model": null,
+        "pluvia": {
+          "verdict": "INSPECT",
+          "payout_ngn": 0,
+          "index_source": "none",
+          "index_mm": null,
+          "reasons": [
+            "Memory conflict remains unresolved or below 0.70 confidence.",
+            "P6: On 31 overlapping days station totals 109.3 mm and satellite 13.4 mm; gap 95.9 mm (715.1%)."
+          ],
+          "probes": [
+            {
+              "id": "P1",
+              "name": "Station coverage",
+              "status": "pass",
+              "metric": {
+                "valid_days": 31,
+                "window_days": 31,
+                "coverage": 1,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "31 of 31 station days valid (100.0%); minimum 95.0%."
+            },
+            {
+              "id": "P2",
+              "name": "Missing treated as zero",
+              "status": "pass",
+              "metric": {
+                "missing_days": 0,
+                "suspect_zero_days": 0,
+                "naive_sum_mm": 109.3
+              },
+              "evidence": "0 missing station days would contribute zero to a naive sum; 0 reported zeros coincide with satellite rain of at least 5 mm. This identifies an unreliable record, not an instrument fault."
+            },
+            {
+              "id": "P3",
+              "name": "Quality and measurement flags",
+              "status": "pass",
+              "metric": {
+                "quality_flagged": 0,
+                "s_flag:S": 31
+              },
+              "evidence": "0 quality-flagged rows excluded. Measurement/source counts: {\"quality_flagged\":0,\"s_flag:S\":31}. A is multi-day accumulation; B/D are partial-day measurements; a blank quality flag does not establish accuracy."
+            },
+            {
+              "id": "P4",
+              "name": "Record ends early",
+              "status": "pass",
+              "metric": {
+                "last_valid_date": "2024-01-31",
+                "gap_days": 0
+              },
+              "evidence": "Last valid station date: 2024-01-31; 0 days before the window end."
+            },
+            {
+              "id": "P5",
+              "name": "Station distance",
+              "status": "pass",
+              "metric": {
+                "distance_km": 0,
+                "max_station_km": 20
+              },
+              "evidence": "Station is 0.0 km from the farm; sole-index limit is 20 km."
+            },
+            {
+              "id": "P6",
+              "name": "Source divergence",
+              "status": "fail",
+              "metric": {
+                "overlap_days": 31,
+                "station_mm": 109.3,
+                "satellite_mm": 13.409999999999998,
+                "absolute_gap_mm": 95.89,
+                "relative_gap": 7.150633855331843
+              },
+              "evidence": "On 31 overlapping days station totals 109.3 mm and satellite 13.4 mm; gap 95.9 mm (715.1%)."
+            },
+            {
+              "id": "P7",
+              "name": "Satellite fill values",
+              "status": "pass",
+              "metric": {
+                "missing_or_fill_days": 0,
+                "valid_days": 31,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "0 satellite days missing, invalid, duplicated or filled; -999 fill values are excluded."
+            },
+            {
+              "id": "P8",
+              "name": "Borderline index",
+              "status": "warn",
+              "metric": {
+                "index_mm": "unselected",
+                "gap_mm": "unknown",
+                "band_mm": 5
+              },
+              "evidence": "No usable index selected."
+            }
+          ],
+          "naive": {
+            "station_only": {
+              "verdict": "PAY",
+              "payout_ngn": 48143.85,
+              "index_mm": 109.3
+            },
+            "satellite_only": {
+              "verdict": "PAY",
+              "payout_ngn": 100000,
+              "index_mm": 13.409999999999998
+            }
+          },
+          "memory": {
+            "recalled": [],
+            "written": [
+              "mem-3",
+              "mem-4"
+            ],
+            "conflicts": [
+              "r_e6e81660-e38f-49b3-9243-ae9898cdd871:conflict-1"
+            ]
+          },
+          "rounds": 1,
+          "human_review_required": true,
+          "inspection_question": "Establish rainfall at the insured farm (-5.05, -42.817) from 2024-01-01 through 2024-01-31. Reconcile missing or suspect station dates and any disagreement with the independent satellite record before settlement.",
+          "run_status": "success",
+          "model_names": [
+            "sample-rules"
+          ],
+          "agent_names": [
+            "DataAgent",
+            "PlannerAgent",
+            "AuditorAgent",
+            "AdjudicatorAgent",
+            "Memory",
+            "PolicyGate",
+            "ReporterAgent"
+          ],
+          "evidence_requests": 1
+        }
+      },
+      "decider_elapsed_ms": {
+        "naive_station": 0.08091699999999946,
+        "satellite_only": 0.12179200000002766,
+        "pluvia": 44.17808400000001
       }
     },
     {
@@ -3745,9 +4417,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.06670800000000554,
-        "satellite_only": 0.09045800000001236,
-        "pluvia": 26.880207999999925
+        "naive_station": 0.289792000000034,
+        "satellite_only": 0.12858400000004622,
+        "pluvia": 35.152917000000116
       }
     },
     {
@@ -3910,9 +4582,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.06258300000001782,
-        "satellite_only": 0.1013749999999618,
-        "pluvia": 26.287000000000035
+        "naive_station": 0.0708750000001146,
+        "satellite_only": 0.1017500000000382,
+        "pluvia": 38.01037500000007
       }
     },
     {
@@ -4056,7 +4728,7 @@
               "mem-4"
             ],
             "conflicts": [
-              "r_840ca0c6-3730-4b6a-92d7-703c81014556:conflict-1"
+              "r_9fcf0a91-5a13-4b39-b794-9bbb05115c11:conflict-1"
             ]
           },
           "rounds": 1,
@@ -4079,9 +4751,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.06466699999998582,
-        "satellite_only": 0.09808299999997416,
-        "pluvia": 29.444999999999936
+        "naive_station": 0.06841699999995399,
+        "satellite_only": 0.0917500000000473,
+        "pluvia": 36.37129200000004
       }
     },
     {
@@ -4243,9 +4915,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.0739170000000513,
-        "satellite_only": 0.10379199999999855,
-        "pluvia": 24.461124999999925
+        "naive_station": 0.08275000000003274,
+        "satellite_only": 0.09558399999991707,
+        "pluvia": 33.18374999999992
       }
     },
     {
@@ -4409,9 +5081,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.05583400000000438,
-        "satellite_only": 0.08299999999996999,
-        "pluvia": 25.489915999999994
+        "naive_station": 0.06020799999987503,
+        "satellite_only": 0.08191699999997581,
+        "pluvia": 32.25849999999991
       }
     },
     {
@@ -4577,9 +5249,342 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.05133299999999963,
-        "satellite_only": 0.0831670000000031,
-        "pluvia": 24.070208999999977
+        "naive_station": 0.05208300000003874,
+        "satellite_only": 0.08916599999997743,
+        "pluvia": 31.685624999999845
+      }
+    },
+    {
+      "id": "BR038983570-2023-02-01-satellite_dry_days",
+      "category": "satellite_dry_days",
+      "label": {
+        "payout_due": false,
+        "expected_inspection": false,
+        "basis": "Known satellite_dry_days fault injected into the satellite of BR038983570-2023-02-01; the gauge record is complete and unchanged, so the gauge settlement or an inspection is correct. At least95% real NOAA coverage and complete independent POWER record; clean contractual station total 29.80 mm. Trigger/exit calibrated from prior complete years using scripts/climatology.ts."
+      },
+      "deciders": {
+        "naive_station": {
+          "verdict": "NO_PAY",
+          "payout_ngn": 0,
+          "index_mm": 29.8
+        },
+        "satellite_only": {
+          "verdict": "PAY",
+          "payout_ngn": 10555.56,
+          "index_mm": 23.68
+        },
+        "raw_totals_model": null,
+        "pluvia": {
+          "verdict": "INSPECT",
+          "payout_ngn": 0,
+          "index_source": "none",
+          "index_mm": null,
+          "reasons": [
+            "P8: the index lies within the trigger inspection band."
+          ],
+          "probes": [
+            {
+              "id": "P1",
+              "name": "Station coverage",
+              "status": "pass",
+              "metric": {
+                "valid_days": 27,
+                "window_days": 28,
+                "coverage": 0.9642857142857143,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "27 of 28 station days valid (96.4%); minimum 95.0%."
+            },
+            {
+              "id": "P2",
+              "name": "Missing treated as zero",
+              "status": "pass",
+              "metric": {
+                "missing_days": 1,
+                "suspect_zero_days": 0,
+                "naive_sum_mm": 29.8
+              },
+              "evidence": "1 missing station days would contribute zero to a naive sum; 0 reported zeros coincide with satellite rain of at least 5 mm. This identifies an unreliable record, not an instrument fault."
+            },
+            {
+              "id": "P3",
+              "name": "Quality and measurement flags",
+              "status": "pass",
+              "metric": {
+                "quality_flagged": 0,
+                "s_flag:S": 27
+              },
+              "evidence": "0 quality-flagged rows excluded. Measurement/source counts: {\"quality_flagged\":0,\"s_flag:S\":27}. A is multi-day accumulation; B/D are partial-day measurements; a blank quality flag does not establish accuracy."
+            },
+            {
+              "id": "P4",
+              "name": "Record ends early",
+              "status": "pass",
+              "metric": {
+                "last_valid_date": "2023-02-28",
+                "gap_days": 0
+              },
+              "evidence": "Last valid station date: 2023-02-28; 0 days before the window end."
+            },
+            {
+              "id": "P5",
+              "name": "Station distance",
+              "status": "pass",
+              "metric": {
+                "distance_km": 0,
+                "max_station_km": 20
+              },
+              "evidence": "Station is 0.0 km from the farm; sole-index limit is 20 km."
+            },
+            {
+              "id": "P6",
+              "name": "Source divergence",
+              "status": "pass",
+              "metric": {
+                "overlap_days": 27,
+                "station_mm": 29.8,
+                "satellite_mm": 23.68,
+                "absolute_gap_mm": 6.120000000000001,
+                "relative_gap": 0.258445945945946
+              },
+              "evidence": "On 27 overlapping days station totals 29.8 mm and satellite 23.7 mm; gap 6.1 mm (25.8%)."
+            },
+            {
+              "id": "P7",
+              "name": "Satellite fill values",
+              "status": "pass",
+              "metric": {
+                "missing_or_fill_days": 0,
+                "valid_days": 28,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "0 satellite days missing, invalid, duplicated or filled; -999 fill values are excluded."
+            },
+            {
+              "id": "P8",
+              "name": "Borderline index",
+              "status": "fail",
+              "metric": {
+                "index_mm": 29.8,
+                "gap_mm": 4.600000000000001,
+                "band_mm": 5
+              },
+              "evidence": "Index 29.8 mm is 4.6 mm from trigger; inspection band is ±5 mm."
+            }
+          ],
+          "naive": {
+            "station_only": {
+              "verdict": "NO_PAY",
+              "payout_ngn": 0,
+              "index_mm": 29.8
+            },
+            "satellite_only": {
+              "verdict": "PAY",
+              "payout_ngn": 10555.56,
+              "index_mm": 23.68
+            }
+          },
+          "memory": {
+            "recalled": [],
+            "written": [
+              "mem-1",
+              "mem-2"
+            ],
+            "conflicts": []
+          },
+          "rounds": 0,
+          "human_review_required": true,
+          "inspection_question": "Establish rainfall at the insured farm (-9.517, -35.783) from 2023-02-01 through 2023-02-28. Reconcile missing or suspect station dates and any disagreement with the independent satellite record before settlement.",
+          "run_status": "success",
+          "model_names": [
+            "sample-rules"
+          ],
+          "agent_names": [
+            "DataAgent",
+            "PlannerAgent",
+            "AuditorAgent",
+            "AdjudicatorAgent",
+            "PolicyGate",
+            "Memory",
+            "ReporterAgent"
+          ],
+          "evidence_requests": 0
+        }
+      },
+      "decider_elapsed_ms": {
+        "naive_station": 0.06429200000002311,
+        "satellite_only": 0.09116599999993014,
+        "pluvia": 31.97808299999997
+      }
+    },
+    {
+      "id": "BR038983570-2023-02-01-satellite_outlier",
+      "category": "satellite_outlier",
+      "label": {
+        "payout_due": false,
+        "expected_inspection": false,
+        "basis": "Known satellite_outlier fault injected into the satellite of BR038983570-2023-02-01; the gauge record is complete and unchanged, so the gauge settlement or an inspection is correct. At least95% real NOAA coverage and complete independent POWER record; clean contractual station total 29.80 mm. Trigger/exit calibrated from prior complete years using scripts/climatology.ts."
+      },
+      "deciders": {
+        "naive_station": {
+          "verdict": "NO_PAY",
+          "payout_ngn": 0,
+          "index_mm": 29.8
+        },
+        "satellite_only": {
+          "verdict": "PAY",
+          "payout_ngn": 100000,
+          "index_mm": 3.1599999999999997
+        },
+        "raw_totals_model": null,
+        "pluvia": {
+          "verdict": "INSPECT",
+          "payout_ngn": 0,
+          "index_source": "none",
+          "index_mm": null,
+          "reasons": [
+            "Memory conflict remains unresolved or below 0.70 confidence.",
+            "P6: On 27 overlapping days station totals 29.8 mm and satellite 3.2 mm; gap 26.6 mm (843.0%)."
+          ],
+          "probes": [
+            {
+              "id": "P1",
+              "name": "Station coverage",
+              "status": "pass",
+              "metric": {
+                "valid_days": 27,
+                "window_days": 28,
+                "coverage": 0.9642857142857143,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "27 of 28 station days valid (96.4%); minimum 95.0%."
+            },
+            {
+              "id": "P2",
+              "name": "Missing treated as zero",
+              "status": "pass",
+              "metric": {
+                "missing_days": 1,
+                "suspect_zero_days": 0,
+                "naive_sum_mm": 29.8
+              },
+              "evidence": "1 missing station days would contribute zero to a naive sum; 0 reported zeros coincide with satellite rain of at least 5 mm. This identifies an unreliable record, not an instrument fault."
+            },
+            {
+              "id": "P3",
+              "name": "Quality and measurement flags",
+              "status": "pass",
+              "metric": {
+                "quality_flagged": 0,
+                "s_flag:S": 27
+              },
+              "evidence": "0 quality-flagged rows excluded. Measurement/source counts: {\"quality_flagged\":0,\"s_flag:S\":27}. A is multi-day accumulation; B/D are partial-day measurements; a blank quality flag does not establish accuracy."
+            },
+            {
+              "id": "P4",
+              "name": "Record ends early",
+              "status": "pass",
+              "metric": {
+                "last_valid_date": "2023-02-28",
+                "gap_days": 0
+              },
+              "evidence": "Last valid station date: 2023-02-28; 0 days before the window end."
+            },
+            {
+              "id": "P5",
+              "name": "Station distance",
+              "status": "pass",
+              "metric": {
+                "distance_km": 0,
+                "max_station_km": 20
+              },
+              "evidence": "Station is 0.0 km from the farm; sole-index limit is 20 km."
+            },
+            {
+              "id": "P6",
+              "name": "Source divergence",
+              "status": "fail",
+              "metric": {
+                "overlap_days": 27,
+                "station_mm": 29.8,
+                "satellite_mm": 3.1599999999999997,
+                "absolute_gap_mm": 26.64,
+                "relative_gap": 8.430379746835444
+              },
+              "evidence": "On 27 overlapping days station totals 29.8 mm and satellite 3.2 mm; gap 26.6 mm (843.0%)."
+            },
+            {
+              "id": "P7",
+              "name": "Satellite fill values",
+              "status": "pass",
+              "metric": {
+                "missing_or_fill_days": 0,
+                "valid_days": 28,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "0 satellite days missing, invalid, duplicated or filled; -999 fill values are excluded."
+            },
+            {
+              "id": "P8",
+              "name": "Borderline index",
+              "status": "warn",
+              "metric": {
+                "index_mm": "unselected",
+                "gap_mm": "unknown",
+                "band_mm": 5
+              },
+              "evidence": "No usable index selected."
+            }
+          ],
+          "naive": {
+            "station_only": {
+              "verdict": "NO_PAY",
+              "payout_ngn": 0,
+              "index_mm": 29.8
+            },
+            "satellite_only": {
+              "verdict": "PAY",
+              "payout_ngn": 100000,
+              "index_mm": 3.1599999999999997
+            }
+          },
+          "memory": {
+            "recalled": [],
+            "written": [
+              "mem-3",
+              "mem-4"
+            ],
+            "conflicts": [
+              "r_2d39d38c-8369-4228-92fb-e917c4fe439c:conflict-1"
+            ]
+          },
+          "rounds": 1,
+          "human_review_required": true,
+          "inspection_question": "Establish rainfall at the insured farm (-9.517, -35.783) from 2023-02-01 through 2023-02-28. Reconcile missing or suspect station dates and any disagreement with the independent satellite record before settlement.",
+          "run_status": "success",
+          "model_names": [
+            "sample-rules"
+          ],
+          "agent_names": [
+            "DataAgent",
+            "PlannerAgent",
+            "AuditorAgent",
+            "AdjudicatorAgent",
+            "Memory",
+            "PolicyGate",
+            "ReporterAgent"
+          ],
+          "evidence_requests": 1
+        }
+      },
+      "decider_elapsed_ms": {
+        "naive_station": 0.06333399999994072,
+        "satellite_only": 0.10249999999996362,
+        "pluvia": 33.015166000000136
       }
     },
     {
@@ -4745,9 +5750,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.0625,
-        "satellite_only": 0.08520799999996598,
-        "pluvia": 24.213750000000005
+        "naive_station": 0.0699170000000322,
+        "satellite_only": 0.17866699999990487,
+        "pluvia": 31.16187500000001
       }
     },
     {
@@ -4914,9 +5919,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.0498330000000351,
-        "satellite_only": 0.08554100000003473,
-        "pluvia": 24.010999999999967
+        "naive_station": 0.05741699999998673,
+        "satellite_only": 0.10858299999995324,
+        "pluvia": 31.183750000000146
       }
     },
     {
@@ -5059,7 +6064,7 @@
               "mem-4"
             ],
             "conflicts": [
-              "r_843416de-2d84-4493-8681-f92df6892e40:conflict-1"
+              "r_a75f8edd-f860-49e4-8e6d-50c6292ee67d:conflict-1"
             ]
           },
           "rounds": 1,
@@ -5082,9 +6087,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.0600409999999556,
-        "satellite_only": 0.08658300000001873,
-        "pluvia": 28.665333000000032
+        "naive_station": 0.06612500000005639,
+        "satellite_only": 0.0933749999999236,
+        "pluvia": 33.13554199999999
       }
     },
     {
@@ -5247,9 +6252,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.06037500000002183,
-        "satellite_only": 0.07983400000000529,
-        "pluvia": 23.833416000000057
+        "naive_station": 0.058208000000149696,
+        "satellite_only": 0.08754199999998491,
+        "pluvia": 30.5747080000001
       }
     },
     {
@@ -5413,9 +6418,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.055874999999900865,
-        "satellite_only": 0.08837499999992815,
-        "pluvia": 24.308417000000077
+        "naive_station": 0.11179200000015044,
+        "satellite_only": 0.1047080000000733,
+        "pluvia": 33.84199999999987
       }
     },
     {
@@ -5560,7 +6565,7 @@
               "mem-4"
             ],
             "conflicts": [
-              "r_64bed97e-e189-491b-a5d1-782ea40635fa:conflict-1"
+              "r_c2fb0d44-33a5-4455-8000-026fc87f65d4:conflict-1"
             ]
           },
           "rounds": 1,
@@ -5583,9 +6588,345 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.05062499999996817,
-        "satellite_only": 0.09179200000005494,
-        "pluvia": 26.017625000000066
+        "naive_station": 0.0912500000001728,
+        "satellite_only": 0.19291599999996834,
+        "pluvia": 35.29670800000008
+      }
+    },
+    {
+      "id": "BR038983570-2024-05-01-satellite_dry_days",
+      "category": "satellite_dry_days",
+      "label": {
+        "payout_due": false,
+        "expected_inspection": false,
+        "basis": "Known satellite_dry_days fault injected into the satellite of BR038983570-2024-05-01; the gauge record is complete and unchanged, so the gauge settlement or an inspection is correct. At least95% real NOAA coverage and complete independent POWER record; clean contractual station total 200.10 mm. Trigger/exit calibrated from prior complete years using scripts/climatology.ts."
+      },
+      "deciders": {
+        "naive_station": {
+          "verdict": "NO_PAY",
+          "payout_ngn": 0,
+          "index_mm": 200.1
+        },
+        "satellite_only": {
+          "verdict": "PAY",
+          "payout_ngn": 65050.68,
+          "index_mm": 65.09
+        },
+        "raw_totals_model": null,
+        "pluvia": {
+          "verdict": "INSPECT",
+          "payout_ngn": 0,
+          "index_source": "none",
+          "index_mm": null,
+          "reasons": [
+            "Memory conflict remains unresolved or below 0.70 confidence.",
+            "P6: On 30 overlapping days station totals 200.1 mm and satellite 65.1 mm; gap 135.0 mm (207.4%)."
+          ],
+          "probes": [
+            {
+              "id": "P1",
+              "name": "Station coverage",
+              "status": "pass",
+              "metric": {
+                "valid_days": 30,
+                "window_days": 31,
+                "coverage": 0.967741935483871,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "30 of 31 station days valid (96.8%); minimum 95.0%."
+            },
+            {
+              "id": "P2",
+              "name": "Missing treated as zero",
+              "status": "pass",
+              "metric": {
+                "missing_days": 1,
+                "suspect_zero_days": 1,
+                "naive_sum_mm": 200.1
+              },
+              "evidence": "1 missing station days would contribute zero to a naive sum; 1 reported zeros coincide with satellite rain of at least 5 mm. This identifies an unreliable record, not an instrument fault."
+            },
+            {
+              "id": "P3",
+              "name": "Quality and measurement flags",
+              "status": "pass",
+              "metric": {
+                "quality_flagged": 0,
+                "s_flag:S": 30
+              },
+              "evidence": "0 quality-flagged rows excluded. Measurement/source counts: {\"quality_flagged\":0,\"s_flag:S\":30}. A is multi-day accumulation; B/D are partial-day measurements; a blank quality flag does not establish accuracy."
+            },
+            {
+              "id": "P4",
+              "name": "Record ends early",
+              "status": "pass",
+              "metric": {
+                "last_valid_date": "2024-05-31",
+                "gap_days": 0
+              },
+              "evidence": "Last valid station date: 2024-05-31; 0 days before the window end."
+            },
+            {
+              "id": "P5",
+              "name": "Station distance",
+              "status": "pass",
+              "metric": {
+                "distance_km": 0,
+                "max_station_km": 20
+              },
+              "evidence": "Station is 0.0 km from the farm; sole-index limit is 20 km."
+            },
+            {
+              "id": "P6",
+              "name": "Source divergence",
+              "status": "fail",
+              "metric": {
+                "overlap_days": 30,
+                "station_mm": 200.1,
+                "satellite_mm": 65.09,
+                "absolute_gap_mm": 135.01,
+                "relative_gap": 2.074204946996466
+              },
+              "evidence": "On 30 overlapping days station totals 200.1 mm and satellite 65.1 mm; gap 135.0 mm (207.4%)."
+            },
+            {
+              "id": "P7",
+              "name": "Satellite fill values",
+              "status": "pass",
+              "metric": {
+                "missing_or_fill_days": 0,
+                "valid_days": 31,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "0 satellite days missing, invalid, duplicated or filled; -999 fill values are excluded."
+            },
+            {
+              "id": "P8",
+              "name": "Borderline index",
+              "status": "warn",
+              "metric": {
+                "index_mm": "unselected",
+                "gap_mm": "unknown",
+                "band_mm": 5
+              },
+              "evidence": "No usable index selected."
+            }
+          ],
+          "naive": {
+            "station_only": {
+              "verdict": "NO_PAY",
+              "payout_ngn": 0,
+              "index_mm": 200.1
+            },
+            "satellite_only": {
+              "verdict": "PAY",
+              "payout_ngn": 65050.68,
+              "index_mm": 65.09
+            }
+          },
+          "memory": {
+            "recalled": [],
+            "written": [
+              "mem-3",
+              "mem-4"
+            ],
+            "conflicts": [
+              "r_87c6c536-cb5c-4573-9491-d8d33df9bf4a:conflict-1"
+            ]
+          },
+          "rounds": 1,
+          "human_review_required": true,
+          "inspection_question": "Establish rainfall at the insured farm (-9.517, -35.783) from 2024-05-01 through 2024-05-31. Reconcile missing or suspect station dates and any disagreement with the independent satellite record before settlement.",
+          "run_status": "success",
+          "model_names": [
+            "sample-rules"
+          ],
+          "agent_names": [
+            "DataAgent",
+            "PlannerAgent",
+            "AuditorAgent",
+            "AdjudicatorAgent",
+            "Memory",
+            "PolicyGate",
+            "ReporterAgent"
+          ],
+          "evidence_requests": 1
+        }
+      },
+      "decider_elapsed_ms": {
+        "naive_station": 0.0673749999998563,
+        "satellite_only": 0.0913749999999709,
+        "pluvia": 33.512292000000116
+      }
+    },
+    {
+      "id": "BR038983570-2024-05-01-satellite_outlier",
+      "category": "satellite_outlier",
+      "label": {
+        "payout_due": false,
+        "expected_inspection": false,
+        "basis": "Known satellite_outlier fault injected into the satellite of BR038983570-2024-05-01; the gauge record is complete and unchanged, so the gauge settlement or an inspection is correct. At least95% real NOAA coverage and complete independent POWER record; clean contractual station total 200.10 mm. Trigger/exit calibrated from prior complete years using scripts/climatology.ts."
+      },
+      "deciders": {
+        "naive_station": {
+          "verdict": "NO_PAY",
+          "payout_ngn": 0,
+          "index_mm": 200.1
+        },
+        "satellite_only": {
+          "verdict": "PAY",
+          "payout_ngn": 100000,
+          "index_mm": 22.020000000000003
+        },
+        "raw_totals_model": null,
+        "pluvia": {
+          "verdict": "INSPECT",
+          "payout_ngn": 0,
+          "index_source": "none",
+          "index_mm": null,
+          "reasons": [
+            "Memory conflict remains unresolved or below 0.70 confidence.",
+            "P6: On 30 overlapping days station totals 200.1 mm and satellite 22.0 mm; gap 178.1 mm (808.7%)."
+          ],
+          "probes": [
+            {
+              "id": "P1",
+              "name": "Station coverage",
+              "status": "pass",
+              "metric": {
+                "valid_days": 30,
+                "window_days": 31,
+                "coverage": 0.967741935483871,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "30 of 31 station days valid (96.8%); minimum 95.0%."
+            },
+            {
+              "id": "P2",
+              "name": "Missing treated as zero",
+              "status": "pass",
+              "metric": {
+                "missing_days": 1,
+                "suspect_zero_days": 0,
+                "naive_sum_mm": 200.1
+              },
+              "evidence": "1 missing station days would contribute zero to a naive sum; 0 reported zeros coincide with satellite rain of at least 5 mm. This identifies an unreliable record, not an instrument fault."
+            },
+            {
+              "id": "P3",
+              "name": "Quality and measurement flags",
+              "status": "pass",
+              "metric": {
+                "quality_flagged": 0,
+                "s_flag:S": 30
+              },
+              "evidence": "0 quality-flagged rows excluded. Measurement/source counts: {\"quality_flagged\":0,\"s_flag:S\":30}. A is multi-day accumulation; B/D are partial-day measurements; a blank quality flag does not establish accuracy."
+            },
+            {
+              "id": "P4",
+              "name": "Record ends early",
+              "status": "pass",
+              "metric": {
+                "last_valid_date": "2024-05-31",
+                "gap_days": 0
+              },
+              "evidence": "Last valid station date: 2024-05-31; 0 days before the window end."
+            },
+            {
+              "id": "P5",
+              "name": "Station distance",
+              "status": "pass",
+              "metric": {
+                "distance_km": 0,
+                "max_station_km": 20
+              },
+              "evidence": "Station is 0.0 km from the farm; sole-index limit is 20 km."
+            },
+            {
+              "id": "P6",
+              "name": "Source divergence",
+              "status": "fail",
+              "metric": {
+                "overlap_days": 30,
+                "station_mm": 200.1,
+                "satellite_mm": 22.020000000000003,
+                "absolute_gap_mm": 178.07999999999998,
+                "relative_gap": 8.087193460490461
+              },
+              "evidence": "On 30 overlapping days station totals 200.1 mm and satellite 22.0 mm; gap 178.1 mm (808.7%)."
+            },
+            {
+              "id": "P7",
+              "name": "Satellite fill values",
+              "status": "pass",
+              "metric": {
+                "missing_or_fill_days": 0,
+                "valid_days": 31,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "0 satellite days missing, invalid, duplicated or filled; -999 fill values are excluded."
+            },
+            {
+              "id": "P8",
+              "name": "Borderline index",
+              "status": "warn",
+              "metric": {
+                "index_mm": "unselected",
+                "gap_mm": "unknown",
+                "band_mm": 5
+              },
+              "evidence": "No usable index selected."
+            }
+          ],
+          "naive": {
+            "station_only": {
+              "verdict": "NO_PAY",
+              "payout_ngn": 0,
+              "index_mm": 200.1
+            },
+            "satellite_only": {
+              "verdict": "PAY",
+              "payout_ngn": 100000,
+              "index_mm": 22.020000000000003
+            }
+          },
+          "memory": {
+            "recalled": [],
+            "written": [
+              "mem-3",
+              "mem-4"
+            ],
+            "conflicts": [
+              "r_c9d5b6ed-644b-4fef-877d-e138072972f2:conflict-1"
+            ]
+          },
+          "rounds": 1,
+          "human_review_required": true,
+          "inspection_question": "Establish rainfall at the insured farm (-9.517, -35.783) from 2024-05-01 through 2024-05-31. Reconcile missing or suspect station dates and any disagreement with the independent satellite record before settlement.",
+          "run_status": "success",
+          "model_names": [
+            "sample-rules"
+          ],
+          "agent_names": [
+            "DataAgent",
+            "PlannerAgent",
+            "AuditorAgent",
+            "AdjudicatorAgent",
+            "Memory",
+            "PolicyGate",
+            "ReporterAgent"
+          ],
+          "evidence_requests": 1
+        }
+      },
+      "decider_elapsed_ms": {
+        "naive_station": 0.058250000000043656,
+        "satellite_only": 0.0906249999998181,
+        "pluvia": 32.96508399999993
       }
     },
     {
@@ -5751,9 +7092,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.06979099999989558,
-        "satellite_only": 0.08958299999994779,
-        "pluvia": 24.763500000000022
+        "naive_station": 0.060124999999970896,
+        "satellite_only": 0.08787499999993997,
+        "pluvia": 31.368166999999858
       }
     },
     {
@@ -5920,9 +7261,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.054708000000005086,
-        "satellite_only": 0.09045800000001236,
-        "pluvia": 24.421458999999913
+        "naive_station": 0.058667000000014013,
+        "satellite_only": 0.09245799999985138,
+        "pluvia": 30.55879200000004
       }
     },
     {
@@ -6065,7 +7406,7 @@
               "mem-4"
             ],
             "conflicts": [
-              "r_488fd347-6404-42fb-aa96-f00828aac475:conflict-1"
+              "r_919ae230-e1f2-4d64-aee6-0a293203cfa3:conflict-1"
             ]
           },
           "rounds": 1,
@@ -6088,9 +7429,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.05754100000001472,
-        "satellite_only": 0.08779200000003584,
-        "pluvia": 25.82412499999998
+        "naive_station": 0.0727079999999205,
+        "satellite_only": 0.08908399999995709,
+        "pluvia": 32.69100000000003
       }
     },
     {
@@ -6253,9 +7594,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.05579199999999673,
-        "satellite_only": 0.09620799999993324,
-        "pluvia": 25.32133299999998
+        "naive_station": 0.0656250000001819,
+        "satellite_only": 0.0906249999998181,
+        "pluvia": 27.935500000000047
       }
     },
     {
@@ -6419,9 +7760,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.06037499999990814,
-        "satellite_only": 0.08541700000000674,
-        "pluvia": 25.548708000000033
+        "naive_station": 0.0745839999999589,
+        "satellite_only": 0.08787500000016735,
+        "pluvia": 34.151625000000195
       }
     },
     {
@@ -6566,7 +7907,7 @@
               "mem-4"
             ],
             "conflicts": [
-              "r_4d391406-6574-4bb2-bb7b-180bb9f1419c:conflict-1"
+              "r_20a7b9be-5809-4fcb-bdf8-a0625a3059a8:conflict-1"
             ]
           },
           "rounds": 1,
@@ -6589,9 +7930,345 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.0681250000000091,
-        "satellite_only": 0.09016700000006495,
-        "pluvia": 28.900292000000036
+        "naive_station": 0.05254200000013043,
+        "satellite_only": 0.09237500000017462,
+        "pluvia": 33.3989160000001
+      }
+    },
+    {
+      "id": "KE000063661-2019-06-01-satellite_dry_days",
+      "category": "satellite_dry_days",
+      "label": {
+        "payout_due": false,
+        "expected_inspection": false,
+        "basis": "Known satellite_dry_days fault injected into the satellite of KE000063661-2019-06-01; the gauge record is complete and unchanged, so the gauge settlement or an inspection is correct. At least95% real NOAA coverage and complete independent POWER record; clean contractual station total 188.10 mm. Trigger/exit calibrated from prior complete years using scripts/climatology.ts."
+      },
+      "deciders": {
+        "naive_station": {
+          "verdict": "NO_PAY",
+          "payout_ngn": 0,
+          "index_mm": 188.10000000000002
+        },
+        "satellite_only": {
+          "verdict": "NO_PAY",
+          "payout_ngn": 0,
+          "index_mm": 93.66
+        },
+        "raw_totals_model": null,
+        "pluvia": {
+          "verdict": "INSPECT",
+          "payout_ngn": 0,
+          "index_source": "none",
+          "index_mm": null,
+          "reasons": [
+            "Memory conflict remains unresolved or below 0.70 confidence.",
+            "P6: On 29 overlapping days station totals 188.1 mm and satellite 93.7 mm; gap 94.4 mm (100.8%)."
+          ],
+          "probes": [
+            {
+              "id": "P1",
+              "name": "Station coverage",
+              "status": "pass",
+              "metric": {
+                "valid_days": 29,
+                "window_days": 30,
+                "coverage": 0.9666666666666667,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "29 of 30 station days valid (96.7%); minimum 95.0%."
+            },
+            {
+              "id": "P2",
+              "name": "Missing treated as zero",
+              "status": "pass",
+              "metric": {
+                "missing_days": 1,
+                "suspect_zero_days": 0,
+                "naive_sum_mm": 188.10000000000002
+              },
+              "evidence": "1 missing station days would contribute zero to a naive sum; 0 reported zeros coincide with satellite rain of at least 5 mm. This identifies an unreliable record, not an instrument fault."
+            },
+            {
+              "id": "P3",
+              "name": "Quality and measurement flags",
+              "status": "pass",
+              "metric": {
+                "quality_flagged": 0,
+                "s_flag:S": 29
+              },
+              "evidence": "0 quality-flagged rows excluded. Measurement/source counts: {\"quality_flagged\":0,\"s_flag:S\":29}. A is multi-day accumulation; B/D are partial-day measurements; a blank quality flag does not establish accuracy."
+            },
+            {
+              "id": "P4",
+              "name": "Record ends early",
+              "status": "pass",
+              "metric": {
+                "last_valid_date": "2019-06-30",
+                "gap_days": 0
+              },
+              "evidence": "Last valid station date: 2019-06-30; 0 days before the window end."
+            },
+            {
+              "id": "P5",
+              "name": "Station distance",
+              "status": "pass",
+              "metric": {
+                "distance_km": 0,
+                "max_station_km": 20
+              },
+              "evidence": "Station is 0.0 km from the farm; sole-index limit is 20 km."
+            },
+            {
+              "id": "P6",
+              "name": "Source divergence",
+              "status": "fail",
+              "metric": {
+                "overlap_days": 29,
+                "station_mm": 188.10000000000002,
+                "satellite_mm": 93.66,
+                "absolute_gap_mm": 94.44000000000003,
+                "relative_gap": 1.0083279948750803
+              },
+              "evidence": "On 29 overlapping days station totals 188.1 mm and satellite 93.7 mm; gap 94.4 mm (100.8%)."
+            },
+            {
+              "id": "P7",
+              "name": "Satellite fill values",
+              "status": "pass",
+              "metric": {
+                "missing_or_fill_days": 0,
+                "valid_days": 30,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "0 satellite days missing, invalid, duplicated or filled; -999 fill values are excluded."
+            },
+            {
+              "id": "P8",
+              "name": "Borderline index",
+              "status": "warn",
+              "metric": {
+                "index_mm": "unselected",
+                "gap_mm": "unknown",
+                "band_mm": 5
+              },
+              "evidence": "No usable index selected."
+            }
+          ],
+          "naive": {
+            "station_only": {
+              "verdict": "NO_PAY",
+              "payout_ngn": 0,
+              "index_mm": 188.10000000000002
+            },
+            "satellite_only": {
+              "verdict": "NO_PAY",
+              "payout_ngn": 0,
+              "index_mm": 93.66
+            }
+          },
+          "memory": {
+            "recalled": [],
+            "written": [
+              "mem-3",
+              "mem-4"
+            ],
+            "conflicts": [
+              "r_912272c0-7cca-4cda-a794-d7d4f8a132c2:conflict-1"
+            ]
+          },
+          "rounds": 1,
+          "human_review_required": true,
+          "inspection_question": "Establish rainfall at the insured farm (1.016, 35) from 2019-06-01 through 2019-06-30. Reconcile missing or suspect station dates and any disagreement with the independent satellite record before settlement.",
+          "run_status": "success",
+          "model_names": [
+            "sample-rules"
+          ],
+          "agent_names": [
+            "DataAgent",
+            "PlannerAgent",
+            "AuditorAgent",
+            "AdjudicatorAgent",
+            "Memory",
+            "PolicyGate",
+            "ReporterAgent"
+          ],
+          "evidence_requests": 1
+        }
+      },
+      "decider_elapsed_ms": {
+        "naive_station": 0.06120899999996254,
+        "satellite_only": 0.09120800000005147,
+        "pluvia": 34.65320900000006
+      }
+    },
+    {
+      "id": "KE000063661-2019-06-01-satellite_outlier",
+      "category": "satellite_outlier",
+      "label": {
+        "payout_due": false,
+        "expected_inspection": false,
+        "basis": "Known satellite_outlier fault injected into the satellite of KE000063661-2019-06-01; the gauge record is complete and unchanged, so the gauge settlement or an inspection is correct. At least95% real NOAA coverage and complete independent POWER record; clean contractual station total 188.10 mm. Trigger/exit calibrated from prior complete years using scripts/climatology.ts."
+      },
+      "deciders": {
+        "naive_station": {
+          "verdict": "NO_PAY",
+          "payout_ngn": 0,
+          "index_mm": 188.10000000000002
+        },
+        "satellite_only": {
+          "verdict": "PAY",
+          "payout_ngn": 100000,
+          "index_mm": 17.28
+        },
+        "raw_totals_model": null,
+        "pluvia": {
+          "verdict": "INSPECT",
+          "payout_ngn": 0,
+          "index_source": "none",
+          "index_mm": null,
+          "reasons": [
+            "Memory conflict remains unresolved or below 0.70 confidence.",
+            "P6: On 29 overlapping days station totals 188.1 mm and satellite 17.3 mm; gap 170.8 mm (988.5%)."
+          ],
+          "probes": [
+            {
+              "id": "P1",
+              "name": "Station coverage",
+              "status": "pass",
+              "metric": {
+                "valid_days": 29,
+                "window_days": 30,
+                "coverage": 0.9666666666666667,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "29 of 30 station days valid (96.7%); minimum 95.0%."
+            },
+            {
+              "id": "P2",
+              "name": "Missing treated as zero",
+              "status": "pass",
+              "metric": {
+                "missing_days": 1,
+                "suspect_zero_days": 0,
+                "naive_sum_mm": 188.10000000000002
+              },
+              "evidence": "1 missing station days would contribute zero to a naive sum; 0 reported zeros coincide with satellite rain of at least 5 mm. This identifies an unreliable record, not an instrument fault."
+            },
+            {
+              "id": "P3",
+              "name": "Quality and measurement flags",
+              "status": "pass",
+              "metric": {
+                "quality_flagged": 0,
+                "s_flag:S": 29
+              },
+              "evidence": "0 quality-flagged rows excluded. Measurement/source counts: {\"quality_flagged\":0,\"s_flag:S\":29}. A is multi-day accumulation; B/D are partial-day measurements; a blank quality flag does not establish accuracy."
+            },
+            {
+              "id": "P4",
+              "name": "Record ends early",
+              "status": "pass",
+              "metric": {
+                "last_valid_date": "2019-06-30",
+                "gap_days": 0
+              },
+              "evidence": "Last valid station date: 2019-06-30; 0 days before the window end."
+            },
+            {
+              "id": "P5",
+              "name": "Station distance",
+              "status": "pass",
+              "metric": {
+                "distance_km": 0,
+                "max_station_km": 20
+              },
+              "evidence": "Station is 0.0 km from the farm; sole-index limit is 20 km."
+            },
+            {
+              "id": "P6",
+              "name": "Source divergence",
+              "status": "fail",
+              "metric": {
+                "overlap_days": 29,
+                "station_mm": 188.10000000000002,
+                "satellite_mm": 17.28,
+                "absolute_gap_mm": 170.82000000000002,
+                "relative_gap": 9.885416666666668
+              },
+              "evidence": "On 29 overlapping days station totals 188.1 mm and satellite 17.3 mm; gap 170.8 mm (988.5%)."
+            },
+            {
+              "id": "P7",
+              "name": "Satellite fill values",
+              "status": "pass",
+              "metric": {
+                "missing_or_fill_days": 0,
+                "valid_days": 30,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "0 satellite days missing, invalid, duplicated or filled; -999 fill values are excluded."
+            },
+            {
+              "id": "P8",
+              "name": "Borderline index",
+              "status": "warn",
+              "metric": {
+                "index_mm": "unselected",
+                "gap_mm": "unknown",
+                "band_mm": 5
+              },
+              "evidence": "No usable index selected."
+            }
+          ],
+          "naive": {
+            "station_only": {
+              "verdict": "NO_PAY",
+              "payout_ngn": 0,
+              "index_mm": 188.10000000000002
+            },
+            "satellite_only": {
+              "verdict": "PAY",
+              "payout_ngn": 100000,
+              "index_mm": 17.28
+            }
+          },
+          "memory": {
+            "recalled": [],
+            "written": [
+              "mem-3",
+              "mem-4"
+            ],
+            "conflicts": [
+              "r_9cdc5b4a-1e55-4d1e-9039-972949d53670:conflict-1"
+            ]
+          },
+          "rounds": 1,
+          "human_review_required": true,
+          "inspection_question": "Establish rainfall at the insured farm (1.016, 35) from 2019-06-01 through 2019-06-30. Reconcile missing or suspect station dates and any disagreement with the independent satellite record before settlement.",
+          "run_status": "success",
+          "model_names": [
+            "sample-rules"
+          ],
+          "agent_names": [
+            "DataAgent",
+            "PlannerAgent",
+            "AuditorAgent",
+            "AdjudicatorAgent",
+            "Memory",
+            "PolicyGate",
+            "ReporterAgent"
+          ],
+          "evidence_requests": 1
+        }
+      },
+      "decider_elapsed_ms": {
+        "naive_station": 0.06450000000018008,
+        "satellite_only": 0.09295799999995324,
+        "pluvia": 40.89512500000001
       }
     },
     {
@@ -6757,9 +8434,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.06387500000005275,
-        "satellite_only": 0.09187500000007276,
-        "pluvia": 30.327040999999895
+        "naive_station": 0.12333400000011352,
+        "satellite_only": 0.13058399999999892,
+        "pluvia": 47.327666000000136
       }
     },
     {
@@ -6926,9 +8603,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.06079099999999471,
-        "satellite_only": 0.08887500000003001,
-        "pluvia": 27.637208999999984
+        "naive_station": 0.07879200000002129,
+        "satellite_only": 0.09387500000002547,
+        "pluvia": 37.138332999999875
       }
     },
     {
@@ -7092,9 +8769,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.06175000000007458,
-        "satellite_only": 0.0873749999999518,
-        "pluvia": 26.41929099999993
+        "naive_station": 0.07141599999999926,
+        "satellite_only": 0.08545800000001691,
+        "pluvia": 29.914874999999938
       }
     },
     {
@@ -7257,9 +8934,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.059957999999824096,
-        "satellite_only": 0.08712500000001455,
-        "pluvia": 30.33595800000012
+        "naive_station": 0.0705000000000382,
+        "satellite_only": 0.08600000000001273,
+        "pluvia": 30.36591700000008
       }
     },
     {
@@ -7423,9 +9100,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.07225000000016735,
-        "satellite_only": 0.08950000000004366,
-        "pluvia": 28.7769159999998
+        "naive_station": 0.07062500000006366,
+        "satellite_only": 0.09016700000006495,
+        "pluvia": 30.708499999999958
       }
     },
     {
@@ -7591,9 +9268,345 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.056166999999959444,
-        "satellite_only": 0.08912499999996726,
-        "pluvia": 30.634207999999944
+        "naive_station": 0.0761250000000473,
+        "satellite_only": 0.09258299999987685,
+        "pluvia": 33.17562500000008
+      }
+    },
+    {
+      "id": "KE000063661-2019-09-01-satellite_dry_days",
+      "category": "satellite_dry_days",
+      "label": {
+        "payout_due": false,
+        "expected_inspection": false,
+        "basis": "Known satellite_dry_days fault injected into the satellite of KE000063661-2019-09-01; the gauge record is complete and unchanged, so the gauge settlement or an inspection is correct. At least95% real NOAA coverage and complete independent POWER record; clean contractual station total 152.10 mm. Trigger/exit calibrated from prior complete years using scripts/climatology.ts."
+      },
+      "deciders": {
+        "naive_station": {
+          "verdict": "NO_PAY",
+          "payout_ngn": 0,
+          "index_mm": 152.09999999999997
+        },
+        "satellite_only": {
+          "verdict": "NO_PAY",
+          "payout_ngn": 0,
+          "index_mm": 92.19999999999999
+        },
+        "raw_totals_model": null,
+        "pluvia": {
+          "verdict": "INSPECT",
+          "payout_ngn": 0,
+          "index_source": "none",
+          "index_mm": null,
+          "reasons": [
+            "Memory conflict remains unresolved or below 0.70 confidence.",
+            "P6: On 30 overlapping days station totals 152.1 mm and satellite 92.2 mm; gap 59.9 mm (65.0%)."
+          ],
+          "probes": [
+            {
+              "id": "P1",
+              "name": "Station coverage",
+              "status": "pass",
+              "metric": {
+                "valid_days": 30,
+                "window_days": 30,
+                "coverage": 1,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "30 of 30 station days valid (100.0%); minimum 95.0%."
+            },
+            {
+              "id": "P2",
+              "name": "Missing treated as zero",
+              "status": "pass",
+              "metric": {
+                "missing_days": 0,
+                "suspect_zero_days": 1,
+                "naive_sum_mm": 152.09999999999997
+              },
+              "evidence": "0 missing station days would contribute zero to a naive sum; 1 reported zeros coincide with satellite rain of at least 5 mm. This identifies an unreliable record, not an instrument fault."
+            },
+            {
+              "id": "P3",
+              "name": "Quality and measurement flags",
+              "status": "pass",
+              "metric": {
+                "quality_flagged": 0,
+                "s_flag:S": 30
+              },
+              "evidence": "0 quality-flagged rows excluded. Measurement/source counts: {\"quality_flagged\":0,\"s_flag:S\":30}. A is multi-day accumulation; B/D are partial-day measurements; a blank quality flag does not establish accuracy."
+            },
+            {
+              "id": "P4",
+              "name": "Record ends early",
+              "status": "pass",
+              "metric": {
+                "last_valid_date": "2019-09-30",
+                "gap_days": 0
+              },
+              "evidence": "Last valid station date: 2019-09-30; 0 days before the window end."
+            },
+            {
+              "id": "P5",
+              "name": "Station distance",
+              "status": "pass",
+              "metric": {
+                "distance_km": 0,
+                "max_station_km": 20
+              },
+              "evidence": "Station is 0.0 km from the farm; sole-index limit is 20 km."
+            },
+            {
+              "id": "P6",
+              "name": "Source divergence",
+              "status": "fail",
+              "metric": {
+                "overlap_days": 30,
+                "station_mm": 152.09999999999997,
+                "satellite_mm": 92.19999999999999,
+                "absolute_gap_mm": 59.89999999999998,
+                "relative_gap": 0.6496746203904553
+              },
+              "evidence": "On 30 overlapping days station totals 152.1 mm and satellite 92.2 mm; gap 59.9 mm (65.0%)."
+            },
+            {
+              "id": "P7",
+              "name": "Satellite fill values",
+              "status": "pass",
+              "metric": {
+                "missing_or_fill_days": 0,
+                "valid_days": 30,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "0 satellite days missing, invalid, duplicated or filled; -999 fill values are excluded."
+            },
+            {
+              "id": "P8",
+              "name": "Borderline index",
+              "status": "warn",
+              "metric": {
+                "index_mm": "unselected",
+                "gap_mm": "unknown",
+                "band_mm": 5
+              },
+              "evidence": "No usable index selected."
+            }
+          ],
+          "naive": {
+            "station_only": {
+              "verdict": "NO_PAY",
+              "payout_ngn": 0,
+              "index_mm": 152.09999999999997
+            },
+            "satellite_only": {
+              "verdict": "NO_PAY",
+              "payout_ngn": 0,
+              "index_mm": 92.19999999999999
+            }
+          },
+          "memory": {
+            "recalled": [],
+            "written": [
+              "mem-3",
+              "mem-4"
+            ],
+            "conflicts": [
+              "r_feda7557-0543-4da4-b1fa-7909e48ecd1a:conflict-1"
+            ]
+          },
+          "rounds": 1,
+          "human_review_required": true,
+          "inspection_question": "Establish rainfall at the insured farm (1.016, 35) from 2019-09-01 through 2019-09-30. Reconcile missing or suspect station dates and any disagreement with the independent satellite record before settlement.",
+          "run_status": "success",
+          "model_names": [
+            "sample-rules"
+          ],
+          "agent_names": [
+            "DataAgent",
+            "PlannerAgent",
+            "AuditorAgent",
+            "AdjudicatorAgent",
+            "Memory",
+            "PolicyGate",
+            "ReporterAgent"
+          ],
+          "evidence_requests": 1
+        }
+      },
+      "decider_elapsed_ms": {
+        "naive_station": 0.08087499999987813,
+        "satellite_only": 0.09233300000005329,
+        "pluvia": 32.85429199999999
+      }
+    },
+    {
+      "id": "KE000063661-2019-09-01-satellite_outlier",
+      "category": "satellite_outlier",
+      "label": {
+        "payout_due": false,
+        "expected_inspection": false,
+        "basis": "Known satellite_outlier fault injected into the satellite of KE000063661-2019-09-01; the gauge record is complete and unchanged, so the gauge settlement or an inspection is correct. At least95% real NOAA coverage and complete independent POWER record; clean contractual station total 152.10 mm. Trigger/exit calibrated from prior complete years using scripts/climatology.ts."
+      },
+      "deciders": {
+        "naive_station": {
+          "verdict": "NO_PAY",
+          "payout_ngn": 0,
+          "index_mm": 152.09999999999997
+        },
+        "satellite_only": {
+          "verdict": "PAY",
+          "payout_ngn": 100000,
+          "index_mm": 14.979999999999999
+        },
+        "raw_totals_model": null,
+        "pluvia": {
+          "verdict": "INSPECT",
+          "payout_ngn": 0,
+          "index_source": "none",
+          "index_mm": null,
+          "reasons": [
+            "Memory conflict remains unresolved or below 0.70 confidence.",
+            "P6: On 30 overlapping days station totals 152.1 mm and satellite 15.0 mm; gap 137.1 mm (915.4%)."
+          ],
+          "probes": [
+            {
+              "id": "P1",
+              "name": "Station coverage",
+              "status": "pass",
+              "metric": {
+                "valid_days": 30,
+                "window_days": 30,
+                "coverage": 1,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "30 of 30 station days valid (100.0%); minimum 95.0%."
+            },
+            {
+              "id": "P2",
+              "name": "Missing treated as zero",
+              "status": "pass",
+              "metric": {
+                "missing_days": 0,
+                "suspect_zero_days": 0,
+                "naive_sum_mm": 152.09999999999997
+              },
+              "evidence": "0 missing station days would contribute zero to a naive sum; 0 reported zeros coincide with satellite rain of at least 5 mm. This identifies an unreliable record, not an instrument fault."
+            },
+            {
+              "id": "P3",
+              "name": "Quality and measurement flags",
+              "status": "pass",
+              "metric": {
+                "quality_flagged": 0,
+                "s_flag:S": 30
+              },
+              "evidence": "0 quality-flagged rows excluded. Measurement/source counts: {\"quality_flagged\":0,\"s_flag:S\":30}. A is multi-day accumulation; B/D are partial-day measurements; a blank quality flag does not establish accuracy."
+            },
+            {
+              "id": "P4",
+              "name": "Record ends early",
+              "status": "pass",
+              "metric": {
+                "last_valid_date": "2019-09-30",
+                "gap_days": 0
+              },
+              "evidence": "Last valid station date: 2019-09-30; 0 days before the window end."
+            },
+            {
+              "id": "P5",
+              "name": "Station distance",
+              "status": "pass",
+              "metric": {
+                "distance_km": 0,
+                "max_station_km": 20
+              },
+              "evidence": "Station is 0.0 km from the farm; sole-index limit is 20 km."
+            },
+            {
+              "id": "P6",
+              "name": "Source divergence",
+              "status": "fail",
+              "metric": {
+                "overlap_days": 30,
+                "station_mm": 152.09999999999997,
+                "satellite_mm": 14.979999999999999,
+                "absolute_gap_mm": 137.11999999999998,
+                "relative_gap": 9.153538050734312
+              },
+              "evidence": "On 30 overlapping days station totals 152.1 mm and satellite 15.0 mm; gap 137.1 mm (915.4%)."
+            },
+            {
+              "id": "P7",
+              "name": "Satellite fill values",
+              "status": "pass",
+              "metric": {
+                "missing_or_fill_days": 0,
+                "valid_days": 30,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "0 satellite days missing, invalid, duplicated or filled; -999 fill values are excluded."
+            },
+            {
+              "id": "P8",
+              "name": "Borderline index",
+              "status": "warn",
+              "metric": {
+                "index_mm": "unselected",
+                "gap_mm": "unknown",
+                "band_mm": 5
+              },
+              "evidence": "No usable index selected."
+            }
+          ],
+          "naive": {
+            "station_only": {
+              "verdict": "NO_PAY",
+              "payout_ngn": 0,
+              "index_mm": 152.09999999999997
+            },
+            "satellite_only": {
+              "verdict": "PAY",
+              "payout_ngn": 100000,
+              "index_mm": 14.979999999999999
+            }
+          },
+          "memory": {
+            "recalled": [],
+            "written": [
+              "mem-3",
+              "mem-4"
+            ],
+            "conflicts": [
+              "r_b993d9e3-0786-4dd9-8b13-87346ab52f25:conflict-1"
+            ]
+          },
+          "rounds": 1,
+          "human_review_required": true,
+          "inspection_question": "Establish rainfall at the insured farm (1.016, 35) from 2019-09-01 through 2019-09-30. Reconcile missing or suspect station dates and any disagreement with the independent satellite record before settlement.",
+          "run_status": "success",
+          "model_names": [
+            "sample-rules"
+          ],
+          "agent_names": [
+            "DataAgent",
+            "PlannerAgent",
+            "AuditorAgent",
+            "AdjudicatorAgent",
+            "Memory",
+            "PolicyGate",
+            "ReporterAgent"
+          ],
+          "evidence_requests": 1
+        }
+      },
+      "decider_elapsed_ms": {
+        "naive_station": 0.11087500000030559,
+        "satellite_only": 0.12362500000017462,
+        "pluvia": 33.02316699999983
       }
     },
     {
@@ -7759,9 +9772,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.06649999999990541,
-        "satellite_only": 0.09050000000002001,
-        "pluvia": 28.57529199999999
+        "naive_station": 0.07600000000002183,
+        "satellite_only": 0.13812499999994543,
+        "pluvia": 30.506667000000107
       }
     },
     {
@@ -7928,9 +9941,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.05670899999995527,
-        "satellite_only": 0.0885840000000826,
-        "pluvia": 28.06729100000007
+        "naive_station": 0.08137499999975262,
+        "satellite_only": 0.08970799999997325,
+        "pluvia": 29.262250000000222
       }
     },
     {
@@ -8074,7 +10087,7 @@
               "mem-4"
             ],
             "conflicts": [
-              "r_ffe63b99-83b3-446e-baa5-63ea97f3698c:conflict-1"
+              "r_0dd739e3-0c5f-4566-a3ec-4b2484f6dc47:conflict-1"
             ]
           },
           "rounds": 1,
@@ -8097,9 +10110,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.05837500000006912,
-        "satellite_only": 0.08620799999994233,
-        "pluvia": 30.16141700000003
+        "naive_station": 0.060957999999573076,
+        "satellite_only": 0.09108299999979863,
+        "pluvia": 32.469084000000294
       }
     },
     {
@@ -8262,9 +10275,348 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.07120899999995345,
-        "satellite_only": 0.08895800000004783,
-        "pluvia": 27.746041000000105
+        "naive_station": 0.067290999999841,
+        "satellite_only": 0.0965000000001055,
+        "pluvia": 30.281167000000096
+      }
+    },
+    {
+      "id": "KE000063661-2021-08-15-basis-risk-satellite_dry_days",
+      "category": "satellite_dry_days",
+      "label": {
+        "payout_due": true,
+        "expected_inspection": false,
+        "basis": "Known satellite_dry_days fault injected into the satellite of KE000063661-2021-08-15-basis-risk; the gauge record is complete and unchanged, so the gauge settlement or an inspection is correct. Measured Kitale rainfall: station 147.3 mm, independent satellite 128.0 mm. Prior-year calibrated synthetic trigger 139.2 mm. Satellite-supported payout truth is contractual, not verified farm loss. Distance metadata alone is injected: station latitude +1 degree, while farm and satellite retain the original requested point 1.016,35. This demonstrates distant-station substitution without claiming a measured distant farm."
+      },
+      "deciders": {
+        "naive_station": {
+          "verdict": "NO_PAY",
+          "payout_ngn": 0,
+          "index_mm": 147.29999999999998
+        },
+        "satellite_only": {
+          "verdict": "PAY",
+          "payout_ngn": 85572.33,
+          "index_mm": 71.17
+        },
+        "raw_totals_model": null,
+        "pluvia": {
+          "verdict": "INSPECT",
+          "payout_ngn": 0,
+          "index_source": "none",
+          "index_mm": null,
+          "reasons": [
+            "Memory conflict remains unresolved or below 0.70 confidence.",
+            "P2: 1 missing station days would contribute zero to a naive sum; 3 reported zeros coincide with satellite rain of at least 5 mm. This identifies an unreliable record, not an instrument fault.",
+            "P5: Station is 111.2 km from the farm; sole-index limit is 20 km.",
+            "P6: On 30 overlapping days station totals 147.3 mm and satellite 71.2 mm; gap 76.1 mm (107.0%)."
+          ],
+          "probes": [
+            {
+              "id": "P1",
+              "name": "Station coverage",
+              "status": "pass",
+              "metric": {
+                "valid_days": 30,
+                "window_days": 31,
+                "coverage": 0.967741935483871,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "30 of 31 station days valid (96.8%); minimum 95.0%."
+            },
+            {
+              "id": "P2",
+              "name": "Missing treated as zero",
+              "status": "fail",
+              "metric": {
+                "missing_days": 1,
+                "suspect_zero_days": 3,
+                "naive_sum_mm": 147.29999999999998
+              },
+              "evidence": "1 missing station days would contribute zero to a naive sum; 3 reported zeros coincide with satellite rain of at least 5 mm. This identifies an unreliable record, not an instrument fault."
+            },
+            {
+              "id": "P3",
+              "name": "Quality and measurement flags",
+              "status": "pass",
+              "metric": {
+                "quality_flagged": 0,
+                "s_flag:S": 30
+              },
+              "evidence": "0 quality-flagged rows excluded. Measurement/source counts: {\"quality_flagged\":0,\"s_flag:S\":30}. A is multi-day accumulation; B/D are partial-day measurements; a blank quality flag does not establish accuracy."
+            },
+            {
+              "id": "P4",
+              "name": "Record ends early",
+              "status": "pass",
+              "metric": {
+                "last_valid_date": "2021-09-14",
+                "gap_days": 0
+              },
+              "evidence": "Last valid station date: 2021-09-14; 0 days before the window end."
+            },
+            {
+              "id": "P5",
+              "name": "Station distance",
+              "status": "warn",
+              "metric": {
+                "distance_km": 111.19492664455873,
+                "max_station_km": 20
+              },
+              "evidence": "Station is 111.2 km from the farm; sole-index limit is 20 km."
+            },
+            {
+              "id": "P6",
+              "name": "Source divergence",
+              "status": "fail",
+              "metric": {
+                "overlap_days": 30,
+                "station_mm": 147.29999999999998,
+                "satellite_mm": 71.17,
+                "absolute_gap_mm": 76.12999999999998,
+                "relative_gap": 1.0696922860755933
+              },
+              "evidence": "On 30 overlapping days station totals 147.3 mm and satellite 71.2 mm; gap 76.1 mm (107.0%)."
+            },
+            {
+              "id": "P7",
+              "name": "Satellite fill values",
+              "status": "pass",
+              "metric": {
+                "missing_or_fill_days": 0,
+                "valid_days": 31,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "0 satellite days missing, invalid, duplicated or filled; -999 fill values are excluded."
+            },
+            {
+              "id": "P8",
+              "name": "Borderline index",
+              "status": "warn",
+              "metric": {
+                "index_mm": "unselected",
+                "gap_mm": "unknown",
+                "band_mm": 5
+              },
+              "evidence": "No usable index selected."
+            }
+          ],
+          "naive": {
+            "station_only": {
+              "verdict": "NO_PAY",
+              "payout_ngn": 0,
+              "index_mm": 147.29999999999998
+            },
+            "satellite_only": {
+              "verdict": "PAY",
+              "payout_ngn": 85572.33,
+              "index_mm": 71.17
+            }
+          },
+          "memory": {
+            "recalled": [],
+            "written": [
+              "mem-3",
+              "mem-4"
+            ],
+            "conflicts": [
+              "r_ab263a5f-618a-4801-a600-8fbebfbb724b:conflict-1"
+            ]
+          },
+          "rounds": 1,
+          "human_review_required": true,
+          "inspection_question": "Establish rainfall at the insured farm (1.016, 35) from 2021-08-15 through 2021-09-14. Reconcile missing or suspect station dates and any disagreement with the independent satellite record before settlement.",
+          "run_status": "success",
+          "model_names": [
+            "sample-rules"
+          ],
+          "agent_names": [
+            "DataAgent",
+            "PlannerAgent",
+            "AuditorAgent",
+            "AdjudicatorAgent",
+            "Memory",
+            "PolicyGate",
+            "ReporterAgent"
+          ],
+          "evidence_requests": 1
+        }
+      },
+      "decider_elapsed_ms": {
+        "naive_station": 0.07766700000001947,
+        "satellite_only": 0.10412500000029468,
+        "pluvia": 32.94908299999997
+      }
+    },
+    {
+      "id": "KE000063661-2021-08-15-basis-risk-satellite_outlier",
+      "category": "satellite_outlier",
+      "label": {
+        "payout_due": true,
+        "expected_inspection": false,
+        "basis": "Known satellite_outlier fault injected into the satellite of KE000063661-2021-08-15-basis-risk; the gauge record is complete and unchanged, so the gauge settlement or an inspection is correct. Measured Kitale rainfall: station 147.3 mm, independent satellite 128.0 mm. Prior-year calibrated synthetic trigger 139.2 mm. Satellite-supported payout truth is contractual, not verified farm loss. Distance metadata alone is injected: station latitude +1 degree, while farm and satellite retain the original requested point 1.016,35. This demonstrates distant-station substitution without claiming a measured distant farm."
+      },
+      "deciders": {
+        "naive_station": {
+          "verdict": "NO_PAY",
+          "payout_ngn": 0,
+          "index_mm": 147.29999999999998
+        },
+        "satellite_only": {
+          "verdict": "PAY",
+          "payout_ngn": 100000,
+          "index_mm": 12.82
+        },
+        "raw_totals_model": null,
+        "pluvia": {
+          "verdict": "INSPECT",
+          "payout_ngn": 0,
+          "index_source": "none",
+          "index_mm": null,
+          "reasons": [
+            "Memory conflict remains unresolved or below 0.70 confidence.",
+            "P5: Station is 111.2 km from the farm; sole-index limit is 20 km.",
+            "P6: On 30 overlapping days station totals 147.3 mm and satellite 12.4 mm; gap 134.9 mm (1086.0%)."
+          ],
+          "probes": [
+            {
+              "id": "P1",
+              "name": "Station coverage",
+              "status": "pass",
+              "metric": {
+                "valid_days": 30,
+                "window_days": 31,
+                "coverage": 0.967741935483871,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "30 of 31 station days valid (96.8%); minimum 95.0%."
+            },
+            {
+              "id": "P2",
+              "name": "Missing treated as zero",
+              "status": "pass",
+              "metric": {
+                "missing_days": 1,
+                "suspect_zero_days": 0,
+                "naive_sum_mm": 147.29999999999998
+              },
+              "evidence": "1 missing station days would contribute zero to a naive sum; 0 reported zeros coincide with satellite rain of at least 5 mm. This identifies an unreliable record, not an instrument fault."
+            },
+            {
+              "id": "P3",
+              "name": "Quality and measurement flags",
+              "status": "pass",
+              "metric": {
+                "quality_flagged": 0,
+                "s_flag:S": 30
+              },
+              "evidence": "0 quality-flagged rows excluded. Measurement/source counts: {\"quality_flagged\":0,\"s_flag:S\":30}. A is multi-day accumulation; B/D are partial-day measurements; a blank quality flag does not establish accuracy."
+            },
+            {
+              "id": "P4",
+              "name": "Record ends early",
+              "status": "pass",
+              "metric": {
+                "last_valid_date": "2021-09-14",
+                "gap_days": 0
+              },
+              "evidence": "Last valid station date: 2021-09-14; 0 days before the window end."
+            },
+            {
+              "id": "P5",
+              "name": "Station distance",
+              "status": "warn",
+              "metric": {
+                "distance_km": 111.19492664455873,
+                "max_station_km": 20
+              },
+              "evidence": "Station is 111.2 km from the farm; sole-index limit is 20 km."
+            },
+            {
+              "id": "P6",
+              "name": "Source divergence",
+              "status": "fail",
+              "metric": {
+                "overlap_days": 30,
+                "station_mm": 147.29999999999998,
+                "satellite_mm": 12.420000000000002,
+                "absolute_gap_mm": 134.88,
+                "relative_gap": 10.85990338164251
+              },
+              "evidence": "On 30 overlapping days station totals 147.3 mm and satellite 12.4 mm; gap 134.9 mm (1086.0%)."
+            },
+            {
+              "id": "P7",
+              "name": "Satellite fill values",
+              "status": "pass",
+              "metric": {
+                "missing_or_fill_days": 0,
+                "valid_days": 31,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "0 satellite days missing, invalid, duplicated or filled; -999 fill values are excluded."
+            },
+            {
+              "id": "P8",
+              "name": "Borderline index",
+              "status": "warn",
+              "metric": {
+                "index_mm": "unselected",
+                "gap_mm": "unknown",
+                "band_mm": 5
+              },
+              "evidence": "No usable index selected."
+            }
+          ],
+          "naive": {
+            "station_only": {
+              "verdict": "NO_PAY",
+              "payout_ngn": 0,
+              "index_mm": 147.29999999999998
+            },
+            "satellite_only": {
+              "verdict": "PAY",
+              "payout_ngn": 100000,
+              "index_mm": 12.82
+            }
+          },
+          "memory": {
+            "recalled": [],
+            "written": [
+              "mem-3",
+              "mem-4"
+            ],
+            "conflicts": [
+              "r_4e173271-7d57-44e6-beca-17309a0b0450:conflict-1"
+            ]
+          },
+          "rounds": 1,
+          "human_review_required": true,
+          "inspection_question": "Establish rainfall at the insured farm (1.016, 35) from 2021-08-15 through 2021-09-14. Reconcile missing or suspect station dates and any disagreement with the independent satellite record before settlement.",
+          "run_status": "success",
+          "model_names": [
+            "sample-rules"
+          ],
+          "agent_names": [
+            "DataAgent",
+            "PlannerAgent",
+            "AuditorAgent",
+            "AdjudicatorAgent",
+            "Memory",
+            "PolicyGate",
+            "ReporterAgent"
+          ],
+          "evidence_requests": 1
+        }
+      },
+      "decider_elapsed_ms": {
+        "naive_station": 0.07162500000004002,
+        "satellite_only": 0.11700000000018917,
+        "pluvia": 35.60612499999979
       }
     },
     {
@@ -8427,9 +10779,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.0658330000001115,
-        "satellite_only": 0.09016599999995378,
-        "pluvia": 28.942582999999786
+        "naive_station": 0.13533300000017334,
+        "satellite_only": 0.13862499999959255,
+        "pluvia": 32.72233300000016
       }
     },
     {
@@ -8596,9 +10948,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.07654200000001765,
-        "satellite_only": 0.09324999999989814,
-        "pluvia": 25.67749999999978
+        "naive_station": 0.08629199999995762,
+        "satellite_only": 0.12112500000012005,
+        "pluvia": 29.70116599999983
       }
     },
     {
@@ -8743,7 +11095,7 @@
               "mem-4"
             ],
             "conflicts": [
-              "r_779f81b7-ff68-4d4a-9639-49d4086b7e1f:conflict-1"
+              "r_a88a4cf2-0115-4505-ac25-4e587b01deb9:conflict-1"
             ]
           },
           "rounds": 1,
@@ -8766,9 +11118,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.06454199999984667,
-        "satellite_only": 0.09229200000004312,
-        "pluvia": 27.701874999999973
+        "naive_station": 0.04491600000028484,
+        "satellite_only": 0.08812500000021828,
+        "pluvia": 29.78333399999974
       }
     },
     {
@@ -8914,7 +11266,7 @@
               "mem-4"
             ],
             "conflicts": [
-              "r_044c36d3-9e40-493a-83f1-6ee0221b6e0c:conflict-1"
+              "r_379b1c42-1194-4ae9-a7ef-d6f3adf70414:conflict-1"
             ]
           },
           "rounds": 1,
@@ -8937,9 +11289,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.3082080000001497,
-        "satellite_only": 0.6706659999999829,
-        "pluvia": 100.23983300000009
+        "naive_station": 0.30587500000001455,
+        "satellite_only": 0.6846250000003238,
+        "pluvia": 106.4760839999999
       }
     },
     {
@@ -9103,9 +11455,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.070667000000185,
-        "satellite_only": 0.0907919999999649,
-        "pluvia": 24.612124999999878
+        "naive_station": 0.07137499999998909,
+        "satellite_only": 0.10287500000004002,
+        "pluvia": 29.905624999999873
       }
     },
     {
@@ -9250,7 +11602,7 @@
               "mem-4"
             ],
             "conflicts": [
-              "r_377631af-d314-4c31-ad35-01b6476c5135:conflict-1"
+              "r_b3286c53-994d-47de-95f2-82c5da5fd76b:conflict-1"
             ]
           },
           "rounds": 1,
@@ -9273,9 +11625,346 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.061749999999847205,
-        "satellite_only": 0.09237499999994725,
-        "pluvia": 25.31383300000016
+        "naive_station": 0.05470800000011877,
+        "satellite_only": 0.14604199999985212,
+        "pluvia": 31.450166999999965
+      }
+    },
+    {
+      "id": "TZ000063894-2021-04-01-satellite_dry_days",
+      "category": "satellite_dry_days",
+      "label": {
+        "payout_due": false,
+        "expected_inspection": false,
+        "basis": "Known satellite_dry_days fault injected into the satellite of TZ000063894-2021-04-01; the gauge record is complete and unchanged, so the gauge settlement or an inspection is correct. At least95% real NOAA coverage and complete independent POWER record; clean contractual station total 367.20 mm. Trigger/exit calibrated from prior complete years using scripts/climatology.ts."
+      },
+      "deciders": {
+        "naive_station": {
+          "verdict": "NO_PAY",
+          "payout_ngn": 0,
+          "index_mm": 367.20000000000005
+        },
+        "satellite_only": {
+          "verdict": "PAY",
+          "payout_ngn": 24732.07,
+          "index_mm": 182.29999999999998
+        },
+        "raw_totals_model": null,
+        "pluvia": {
+          "verdict": "INSPECT",
+          "payout_ngn": 0,
+          "index_source": "none",
+          "index_mm": null,
+          "reasons": [
+            "Memory conflict remains unresolved or below 0.70 confidence.",
+            "P2: 1 missing station days would contribute zero to a naive sum; 2 reported zeros coincide with satellite rain of at least 5 mm. This identifies an unreliable record, not an instrument fault.",
+            "P6: On 29 overlapping days station totals 367.2 mm and satellite 182.3 mm; gap 184.9 mm (101.5%)."
+          ],
+          "probes": [
+            {
+              "id": "P1",
+              "name": "Station coverage",
+              "status": "pass",
+              "metric": {
+                "valid_days": 29,
+                "window_days": 30,
+                "coverage": 0.9666666666666667,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "29 of 30 station days valid (96.7%); minimum 95.0%."
+            },
+            {
+              "id": "P2",
+              "name": "Missing treated as zero",
+              "status": "fail",
+              "metric": {
+                "missing_days": 1,
+                "suspect_zero_days": 2,
+                "naive_sum_mm": 367.20000000000005
+              },
+              "evidence": "1 missing station days would contribute zero to a naive sum; 2 reported zeros coincide with satellite rain of at least 5 mm. This identifies an unreliable record, not an instrument fault."
+            },
+            {
+              "id": "P3",
+              "name": "Quality and measurement flags",
+              "status": "pass",
+              "metric": {
+                "quality_flagged": 0,
+                "s_flag:S": 29
+              },
+              "evidence": "0 quality-flagged rows excluded. Measurement/source counts: {\"quality_flagged\":0,\"s_flag:S\":29}. A is multi-day accumulation; B/D are partial-day measurements; a blank quality flag does not establish accuracy."
+            },
+            {
+              "id": "P4",
+              "name": "Record ends early",
+              "status": "pass",
+              "metric": {
+                "last_valid_date": "2021-04-30",
+                "gap_days": 0
+              },
+              "evidence": "Last valid station date: 2021-04-30; 0 days before the window end."
+            },
+            {
+              "id": "P5",
+              "name": "Station distance",
+              "status": "pass",
+              "metric": {
+                "distance_km": 0,
+                "max_station_km": 20
+              },
+              "evidence": "Station is 0.0 km from the farm; sole-index limit is 20 km."
+            },
+            {
+              "id": "P6",
+              "name": "Source divergence",
+              "status": "fail",
+              "metric": {
+                "overlap_days": 29,
+                "station_mm": 367.20000000000005,
+                "satellite_mm": 182.26999999999998,
+                "absolute_gap_mm": 184.93000000000006,
+                "relative_gap": 1.014593734569595
+              },
+              "evidence": "On 29 overlapping days station totals 367.2 mm and satellite 182.3 mm; gap 184.9 mm (101.5%)."
+            },
+            {
+              "id": "P7",
+              "name": "Satellite fill values",
+              "status": "pass",
+              "metric": {
+                "missing_or_fill_days": 0,
+                "valid_days": 30,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "0 satellite days missing, invalid, duplicated or filled; -999 fill values are excluded."
+            },
+            {
+              "id": "P8",
+              "name": "Borderline index",
+              "status": "warn",
+              "metric": {
+                "index_mm": "unselected",
+                "gap_mm": "unknown",
+                "band_mm": 5
+              },
+              "evidence": "No usable index selected."
+            }
+          ],
+          "naive": {
+            "station_only": {
+              "verdict": "NO_PAY",
+              "payout_ngn": 0,
+              "index_mm": 367.20000000000005
+            },
+            "satellite_only": {
+              "verdict": "PAY",
+              "payout_ngn": 24732.07,
+              "index_mm": 182.29999999999998
+            }
+          },
+          "memory": {
+            "recalled": [],
+            "written": [
+              "mem-3",
+              "mem-4"
+            ],
+            "conflicts": [
+              "r_0f8d3054-5eb8-459b-a234-a3fa74efc23a:conflict-1"
+            ]
+          },
+          "rounds": 1,
+          "human_review_required": true,
+          "inspection_question": "Establish rainfall at the insured farm (-6.867, 39.2) from 2021-04-01 through 2021-04-30. Reconcile missing or suspect station dates and any disagreement with the independent satellite record before settlement.",
+          "run_status": "success",
+          "model_names": [
+            "sample-rules"
+          ],
+          "agent_names": [
+            "DataAgent",
+            "PlannerAgent",
+            "AuditorAgent",
+            "AdjudicatorAgent",
+            "Memory",
+            "PolicyGate",
+            "ReporterAgent"
+          ],
+          "evidence_requests": 1
+        }
+      },
+      "decider_elapsed_ms": {
+        "naive_station": 0.05820799999992232,
+        "satellite_only": 0.0884169999999358,
+        "pluvia": 34.02729199999976
+      }
+    },
+    {
+      "id": "TZ000063894-2021-04-01-satellite_outlier",
+      "category": "satellite_outlier",
+      "label": {
+        "payout_due": false,
+        "expected_inspection": false,
+        "basis": "Known satellite_outlier fault injected into the satellite of TZ000063894-2021-04-01; the gauge record is complete and unchanged, so the gauge settlement or an inspection is correct. At least95% real NOAA coverage and complete independent POWER record; clean contractual station total 367.20 mm. Trigger/exit calibrated from prior complete years using scripts/climatology.ts."
+      },
+      "deciders": {
+        "naive_station": {
+          "verdict": "NO_PAY",
+          "payout_ngn": 0,
+          "index_mm": 367.20000000000005
+        },
+        "satellite_only": {
+          "verdict": "PAY",
+          "payout_ngn": 100000,
+          "index_mm": 35.300000000000004
+        },
+        "raw_totals_model": null,
+        "pluvia": {
+          "verdict": "INSPECT",
+          "payout_ngn": 0,
+          "index_source": "none",
+          "index_mm": null,
+          "reasons": [
+            "Memory conflict remains unresolved or below 0.70 confidence.",
+            "P6: On 29 overlapping days station totals 367.2 mm and satellite 35.3 mm; gap 331.9 mm (940.2%)."
+          ],
+          "probes": [
+            {
+              "id": "P1",
+              "name": "Station coverage",
+              "status": "pass",
+              "metric": {
+                "valid_days": 29,
+                "window_days": 30,
+                "coverage": 0.9666666666666667,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "29 of 30 station days valid (96.7%); minimum 95.0%."
+            },
+            {
+              "id": "P2",
+              "name": "Missing treated as zero",
+              "status": "pass",
+              "metric": {
+                "missing_days": 1,
+                "suspect_zero_days": 0,
+                "naive_sum_mm": 367.20000000000005
+              },
+              "evidence": "1 missing station days would contribute zero to a naive sum; 0 reported zeros coincide with satellite rain of at least 5 mm. This identifies an unreliable record, not an instrument fault."
+            },
+            {
+              "id": "P3",
+              "name": "Quality and measurement flags",
+              "status": "pass",
+              "metric": {
+                "quality_flagged": 0,
+                "s_flag:S": 29
+              },
+              "evidence": "0 quality-flagged rows excluded. Measurement/source counts: {\"quality_flagged\":0,\"s_flag:S\":29}. A is multi-day accumulation; B/D are partial-day measurements; a blank quality flag does not establish accuracy."
+            },
+            {
+              "id": "P4",
+              "name": "Record ends early",
+              "status": "pass",
+              "metric": {
+                "last_valid_date": "2021-04-30",
+                "gap_days": 0
+              },
+              "evidence": "Last valid station date: 2021-04-30; 0 days before the window end."
+            },
+            {
+              "id": "P5",
+              "name": "Station distance",
+              "status": "pass",
+              "metric": {
+                "distance_km": 0,
+                "max_station_km": 20
+              },
+              "evidence": "Station is 0.0 km from the farm; sole-index limit is 20 km."
+            },
+            {
+              "id": "P6",
+              "name": "Source divergence",
+              "status": "fail",
+              "metric": {
+                "overlap_days": 29,
+                "station_mm": 367.20000000000005,
+                "satellite_mm": 35.300000000000004,
+                "absolute_gap_mm": 331.90000000000003,
+                "relative_gap": 9.402266288951841
+              },
+              "evidence": "On 29 overlapping days station totals 367.2 mm and satellite 35.3 mm; gap 331.9 mm (940.2%)."
+            },
+            {
+              "id": "P7",
+              "name": "Satellite fill values",
+              "status": "pass",
+              "metric": {
+                "missing_or_fill_days": 0,
+                "valid_days": 30,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "0 satellite days missing, invalid, duplicated or filled; -999 fill values are excluded."
+            },
+            {
+              "id": "P8",
+              "name": "Borderline index",
+              "status": "warn",
+              "metric": {
+                "index_mm": "unselected",
+                "gap_mm": "unknown",
+                "band_mm": 5
+              },
+              "evidence": "No usable index selected."
+            }
+          ],
+          "naive": {
+            "station_only": {
+              "verdict": "NO_PAY",
+              "payout_ngn": 0,
+              "index_mm": 367.20000000000005
+            },
+            "satellite_only": {
+              "verdict": "PAY",
+              "payout_ngn": 100000,
+              "index_mm": 35.300000000000004
+            }
+          },
+          "memory": {
+            "recalled": [],
+            "written": [
+              "mem-3",
+              "mem-4"
+            ],
+            "conflicts": [
+              "r_29434ec6-2c22-484d-bfdc-d7c4907ddaa5:conflict-1"
+            ]
+          },
+          "rounds": 1,
+          "human_review_required": true,
+          "inspection_question": "Establish rainfall at the insured farm (-6.867, 39.2) from 2021-04-01 through 2021-04-30. Reconcile missing or suspect station dates and any disagreement with the independent satellite record before settlement.",
+          "run_status": "success",
+          "model_names": [
+            "sample-rules"
+          ],
+          "agent_names": [
+            "DataAgent",
+            "PlannerAgent",
+            "AuditorAgent",
+            "AdjudicatorAgent",
+            "Memory",
+            "PolicyGate",
+            "ReporterAgent"
+          ],
+          "evidence_requests": 1
+        }
+      },
+      "decider_elapsed_ms": {
+        "naive_station": 0.05774999999994179,
+        "satellite_only": 0.08704100000022663,
+        "pluvia": 30.863999999999578
       }
     },
     {
@@ -9441,9 +12130,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.05554200000005949,
-        "satellite_only": 0.08699999999998909,
-        "pluvia": 23.79925000000003
+        "naive_station": 0.0599170000000413,
+        "satellite_only": 0.08695799999986775,
+        "pluvia": 31.89233400000012
       }
     },
     {
@@ -9589,7 +12278,7 @@
               "mem-4"
             ],
             "conflicts": [
-              "r_4d23c5bc-52a7-47f5-a7ba-4da7d0389310:conflict-1"
+              "r_960e3cda-b422-439b-8dd4-d168281ed755:conflict-1"
             ]
           },
           "rounds": 1,
@@ -9612,9 +12301,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.04841699999997218,
-        "satellite_only": 0.08562500000016371,
-        "pluvia": 24.483083999999963
+        "naive_station": 0.06224999999994907,
+        "satellite_only": 0.09054199999991397,
+        "pluvia": 29.26299999999992
       }
     },
     {
@@ -9778,9 +12467,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.05754099999990103,
-        "satellite_only": 0.09104200000001583,
-        "pluvia": 23.224332999999888
+        "naive_station": 0.06316599999991013,
+        "satellite_only": 0.09004099999992832,
+        "pluvia": 31.021083999999973
       }
     },
     {
@@ -9944,9 +12633,9 @@
         }
       },
       "decider_elapsed_ms": {
-        "naive_station": 0.05862499999989268,
-        "satellite_only": 0.09404199999994489,
-        "pluvia": 23.107708999999886
+        "naive_station": 0.056999999999789,
+        "satellite_only": 0.08674999999993815,
+        "pluvia": 29.715666000000056
       }
     }
   ]

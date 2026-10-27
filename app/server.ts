@@ -9,6 +9,7 @@ import { z } from 'zod';
 import type { Orchestrator } from './orchestrator.js';
 import type { CaseAgent } from './agent/caseAgent.js';
 import type { Watcher } from './agent/watcher.js';
+import type { DailySeries } from './types.js';
 
 const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 export const inputSchema = z.object({
@@ -155,6 +156,18 @@ export function createApp(orchestrator: Orchestrator, sampleMode: boolean, agent
       return c.json(watchView(visitor));
     });
   }
+  // An evaluation case's own gauge and satellite series, for Zetaris to register as views.
+  app.get('/register/eval/:id/:series', async c => {
+    const id = c.req.param('id'), series = c.req.param('series');
+    if (!/^[A-Za-z0-9-]+$/.test(id) || !['gauge.json', 'satellite.json'].includes(series)) return c.json(error('not_found', 'Register not found.'), 404);
+    const item = JSON.parse(await readFile(`eval/cases/${id}.json`, 'utf8').catch(() => 'null')) as { station: DailySeries; satellite: DailySeries | null } | null;
+    if (!item) return c.json(error('not_found', 'Register not found.'), 404);
+    if (series === 'gauge.json') {
+      return c.json({ days: item.station.days.map(d => ({ station_id: item.station.id, obs_date: d.date, mm: d.mm, m_flag: d.m_flag ?? '', q_flag: d.q_flag ?? '', s_flag: d.s_flag ?? '' })) });
+    }
+    const sat = item.satellite;
+    return c.json({ days: (sat?.days ?? []).filter(d => d.mm !== null && d.mm !== undefined).map(d => ({ obs_date: d.date, mm: d.mm, source_id: sat!.id, latitude: sat!.lat, longitude: sat!.lon })) });
+  });
   app.get('/register/:name', async c => {
     const name = c.req.param('name');
     if (!['policies.json', 'claims.json', 'stations.json'].includes(name)) return c.json(error('not_found', 'Register not found.'), 404);

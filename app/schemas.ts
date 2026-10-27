@@ -28,6 +28,7 @@ export const policySchema = z.object({
   min_coverage: z.number().finite(),
   max_station_km: z.number().finite(),
   power_table: z.string().regex(/^[A-Za-z_][A-Za-z0-9_]*$/),
+  gauge_view: z.string().regex(/^eval_gauge_[a-z0-9_]+$/).optional(),
 });
 
 // Schema for submitted insurance claims.

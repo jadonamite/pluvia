@@ -20,6 +20,8 @@ export interface Policy {
   min_coverage: number;
   max_station_km: number;
   power_table: string;
+  // The gauge view to read instead of ghcn_prcp: an evaluation case's own series.
+  gauge_view?: string;
 }
 
 export interface Claim {

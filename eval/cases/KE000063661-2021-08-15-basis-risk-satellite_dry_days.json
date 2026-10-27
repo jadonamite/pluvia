@@ -1,0 +1,392 @@
+{
+  "id": "KE000063661-2021-08-15-basis-risk-satellite_dry_days",
+  "category": "satellite_dry_days",
+  "policy": {
+    "policy_id": "POL-EVAL-KITALE-2021",
+    "group_name": "Kitale basis-risk demonstration (synthetic)",
+    "crop": "maize",
+    "synthetic": true,
+    "farm_lat": 1.016,
+    "farm_lon": 35,
+    "ref_station_id": "KE000063661",
+    "window_start": "2021-08-15",
+    "window_end": "2021-09-14",
+    "trigger_mm": 139.2,
+    "exit_mm": 59.7,
+    "sum_insured_ngn": 100000,
+    "borderline_band_mm": 5,
+    "min_coverage": 0.95,
+    "max_station_km": 20,
+    "power_table": "power_kitale_2021_daily"
+  },
+  "station": {
+    "source": "ghcn",
+    "id": "KE000063661",
+    "lat": 2.016,
+    "lon": 35,
+    "window": {
+      "start": "2021-08-15",
+      "end": "2021-09-14"
+    },
+    "days": [
+      {
+        "date": "2021-08-15",
+        "mm": 7.9,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-08-16",
+        "mm": 5.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-08-17",
+        "mm": 0.3,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-08-18",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-08-20",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-08-21",
+        "mm": 6.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-08-22",
+        "mm": 7.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-08-23",
+        "mm": 6.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-08-24",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-08-25",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-08-26",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-08-27",
+        "mm": 14,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-08-28",
+        "mm": 1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-08-29",
+        "mm": 3,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-08-30",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-08-31",
+        "mm": 18,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-09-01",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-09-02",
+        "mm": 2,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-09-03",
+        "mm": 1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-09-04",
+        "mm": 7.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-09-05",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-09-06",
+        "mm": 2,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-09-07",
+        "mm": 6.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-09-08",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-09-09",
+        "mm": 23.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-09-10",
+        "mm": 10.9,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-09-11",
+        "mm": 21.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-09-12",
+        "mm": 0,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-09-13",
+        "mm": 5.1,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      },
+      {
+        "date": "2021-09-14",
+        "mm": 0.3,
+        "m_flag": "",
+        "q_flag": "",
+        "s_flag": "S"
+      }
+    ],
+    "fetched_sql": []
+  },
+  "satellite": {
+    "source": "power",
+    "id": "power_kitale_2021_daily",
+    "lat": 1.016,
+    "lon": 35,
+    "window": {
+      "start": "2021-08-15",
+      "end": "2021-09-14"
+    },
+    "days": [
+      {
+        "date": "2021-08-15",
+        "mm": 0
+      },
+      {
+        "date": "2021-08-16",
+        "mm": 15.99
+      },
+      {
+        "date": "2021-08-17",
+        "mm": 0.09
+      },
+      {
+        "date": "2021-08-18",
+        "mm": 0
+      },
+      {
+        "date": "2021-08-19",
+        "mm": 0
+      },
+      {
+        "date": "2021-08-20",
+        "mm": 0.92
+      },
+      {
+        "date": "2021-08-21",
+        "mm": 1.97
+      },
+      {
+        "date": "2021-08-22",
+        "mm": 0.6
+      },
+      {
+        "date": "2021-08-23",
+        "mm": 0.38
+      },
+      {
+        "date": "2021-08-24",
+        "mm": 0
+      },
+      {
+        "date": "2021-08-25",
+        "mm": 0
+      },
+      {
+        "date": "2021-08-26",
+        "mm": 0
+      },
+      {
+        "date": "2021-08-27",
+        "mm": 1.12
+      },
+      {
+        "date": "2021-08-28",
+        "mm": 0
+      },
+      {
+        "date": "2021-08-29",
+        "mm": 0.15
+      },
+      {
+        "date": "2021-08-30",
+        "mm": 12.78
+      },
+      {
+        "date": "2021-08-31",
+        "mm": 0
+      },
+      {
+        "date": "2021-09-01",
+        "mm": 3.68
+      },
+      {
+        "date": "2021-09-02",
+        "mm": 0
+      },
+      {
+        "date": "2021-09-03",
+        "mm": 2.29
+      },
+      {
+        "date": "2021-09-04",
+        "mm": 0
+      },
+      {
+        "date": "2021-09-05",
+        "mm": 10.2
+      },
+      {
+        "date": "2021-09-06",
+        "mm": 0
+      },
+      {
+        "date": "2021-09-07",
+        "mm": 0.01
+      },
+      {
+        "date": "2021-09-08",
+        "mm": 17.07
+      },
+      {
+        "date": "2021-09-09",
+        "mm": 0
+      },
+      {
+        "date": "2021-09-10",
+        "mm": 0.22
+      },
+      {
+        "date": "2021-09-11",
+        "mm": 3.2
+      },
+      {
+        "date": "2021-09-12",
+        "mm": 0.4
+      },
+      {
+        "date": "2021-09-13",
+        "mm": 0.1
+      },
+      {
+        "date": "2021-09-14",
+        "mm": 0
+      }
+    ],
+    "fetched_sql": []
+  },
+  "label": {
+    "payout_due": true,
+    "expected_inspection": false,
+    "basis": "Known satellite_dry_days fault injected into the satellite of KE000063661-2021-08-15-basis-risk; the gauge record is complete and unchanged, so the gauge settlement or an inspection is correct. Measured Kitale rainfall: station 147.3 mm, independent satellite 128.0 mm. Prior-year calibrated synthetic trigger 139.2 mm. Satellite-supported payout truth is contractual, not verified farm loss. Distance metadata alone is injected: station latitude +1 degree, while farm and satellite retain the original requested point 1.016,35. This demonstrates distant-station substitution without claiming a measured distant farm."
+  },
+  "provenance": {
+    "station_url": "https://noaa-ghcn-pds.s3.amazonaws.com/csv/by_station/KE000063661.csv",
+    "satellite_url": "https://power.larc.nasa.gov/api/temporal/daily/point?parameters=IMERG_PRECTOT&community=AG&longitude=35&latitude=1.016&start=20010101&end=20241231&format=JSON&time-standard=UTC",
+    "fault": "satellite_dry_days"
+  }
+}

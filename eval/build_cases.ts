@@ -63,7 +63,29 @@ export function faultVariants(clean: EvaluationCase): EvaluationCase[] {
     c.label.basis = `Known ${category} fault injected into ${clean.id}; the original clean-window contractual amount is unchanged. ${clean.label.basis}`;
     results.push(c);
   }
-  return results;
+  return [...results, ...satelliteVariants(clean)];
+}
+
+// Faults in the satellite while the gauge record stays complete: false dry days, and a total pushed
+// far below the place's own range. Settling on the gauge, or escalating, is right; trusting the
+// satellite by habit is not.
+export function satelliteVariants(clean: EvaluationCase): EvaluationCase[] {
+  if (!clean.satellite) return [];
+  return (['satellite_dry_days', 'satellite_outlier'] as const).map((category) => {
+    const c = structuredClone(clean);
+    c.id = `${clean.id}-${category}`;
+    c.category = category;
+    c.label.expected_inspection = false;
+    c.provenance.fault = category;
+    let rainy = 0;
+    c.satellite!.days = c.satellite!.days.map((d) => {
+      if (d.mm === null || d.mm === undefined) return d;
+      if (category === 'satellite_outlier') return { ...d, mm: Math.round(d.mm * 0.1 * 100) / 100 };
+      return d.mm >= 1 && rainy++ % 2 === 0 ? { ...d, mm: 0 } : d;
+    });
+    c.label.basis = `Known ${category} fault injected into the satellite of ${clean.id}; the gauge record is complete and unchanged, so the gauge settlement or an inspection is correct. ${clean.label.basis}`;
+    return c;
+  });
 }
 export async function buildCases(
   rawDirectory = 'workbench/raw',

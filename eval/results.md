@@ -1,17 +1,17 @@
 # Evaluation results
 
-46 cases. Unmeasured: Nightshift is not configured for this run. No model score is claimed.
+62 cases. Unmeasured: Nightshift is not configured for this run. No model score is claimed.
 
-Inspections are abstentions. Payout error rates use 43 cases with known contractual payout labels; sparse Nigerian and incomplete Dodoma records have unknown payout truth. The full bounded Orchestrator uses DuckDB, probes, PolicyGate and isolated H-MEM for each case. Its model steps use sample-rules unless EVAL_PLUVIA_LIVE=true; the raw-totals baseline uses the live model whenever Nightshift is configured.
+Inspections are abstentions. Payout error rates use 59 cases with known contractual payout labels; sparse Nigerian and incomplete Dodoma records have unknown payout truth. The full bounded Orchestrator uses DuckDB, probes, PolicyGate and isolated H-MEM for each case. Its model steps use sample-rules unless EVAL_PLUVIA_LIVE=true; the raw-totals baseline uses the live model whenever Nightshift is configured.
 
 | Decider | Cases run | Wrong payouts | Missed payouts | Inspections |
 |---|---:|---:|---:|---:|
-| naive_station | 46 | 5 | 1 | 0 |
-| satellite_only | 46 | 0 | 0 | 0 |
+| naive_station | 62 | 5 | 3 | 0 |
+| satellite_only | 62 | 10 | 0 | 0 |
 | raw_totals_model | unmeasured | unmeasured | unmeasured | unmeasured |
-| pluvia | 46 | 0 | 0 | 26 |
+| pluvia | 62 | 0 | 0 | 42 |
 
-Pluvia verdict counts: {"NO_PAY":14,"INSPECT":26,"PAY":5,"PAY_ANYWAY":1}. These measurements do not establish a production inspection rate or what every human officer would decide.
+Pluvia verdict counts: {"NO_PAY":14,"INSPECT":42,"PAY":5,"PAY_ANYWAY":1}. These measurements do not establish a production inspection rate or what every human officer would decide.
 
 ## Measured Kitale window
 

@@ -1,0 +1,278 @@
+{
+  "measured_at": "2026-10-27T20:00:20.814892Z",
+  "note": "Satellite-fault cases run against the pipeline before any agent run.",
+  "rows": [
+    {
+      "id": "BR037041370-2023-01-01-satellite_dry_days",
+      "category": "satellite_dry_days",
+      "payout_due": false,
+      "naive_station": {
+        "verdict": "NO_PAY",
+        "payout_ngn": 0
+      },
+      "satellite_only": {
+        "verdict": "PAY",
+        "payout_ngn": 67494.33
+      },
+      "pluvia": {
+        "verdict": "INSPECT",
+        "payout_ngn": 0
+      }
+    },
+    {
+      "id": "BR037041370-2023-01-01-satellite_outlier",
+      "category": "satellite_outlier",
+      "payout_due": false,
+      "naive_station": {
+        "verdict": "NO_PAY",
+        "payout_ngn": 0
+      },
+      "satellite_only": {
+        "verdict": "PAY",
+        "payout_ngn": 100000
+      },
+      "pluvia": {
+        "verdict": "INSPECT",
+        "payout_ngn": 0
+      }
+    },
+    {
+      "id": "BR037041370-2024-01-01-satellite_dry_days",
+      "category": "satellite_dry_days",
+      "payout_due": true,
+      "naive_station": {
+        "verdict": "PAY",
+        "payout_ngn": 48143.85
+      },
+      "satellite_only": {
+        "verdict": "PAY",
+        "payout_ngn": 90812.06
+      },
+      "pluvia": {
+        "verdict": "INSPECT",
+        "payout_ngn": 0
+      }
+    },
+    {
+      "id": "BR037041370-2024-01-01-satellite_outlier",
+      "category": "satellite_outlier",
+      "payout_due": true,
+      "naive_station": {
+        "verdict": "PAY",
+        "payout_ngn": 48143.85
+      },
+      "satellite_only": {
+        "verdict": "PAY",
+        "payout_ngn": 100000
+      },
+      "pluvia": {
+        "verdict": "INSPECT",
+        "payout_ngn": 0
+      }
+    },
+    {
+      "id": "BR038983570-2023-02-01-satellite_dry_days",
+      "category": "satellite_dry_days",
+      "payout_due": false,
+      "naive_station": {
+        "verdict": "NO_PAY",
+        "payout_ngn": 0
+      },
+      "satellite_only": {
+        "verdict": "PAY",
+        "payout_ngn": 10555.56
+      },
+      "pluvia": {
+        "verdict": "INSPECT",
+        "payout_ngn": 0
+      }
+    },
+    {
+      "id": "BR038983570-2023-02-01-satellite_outlier",
+      "category": "satellite_outlier",
+      "payout_due": false,
+      "naive_station": {
+        "verdict": "NO_PAY",
+        "payout_ngn": 0
+      },
+      "satellite_only": {
+        "verdict": "PAY",
+        "payout_ngn": 100000
+      },
+      "pluvia": {
+        "verdict": "INSPECT",
+        "payout_ngn": 0
+      }
+    },
+    {
+      "id": "BR038983570-2024-05-01-satellite_dry_days",
+      "category": "satellite_dry_days",
+      "payout_due": false,
+      "naive_station": {
+        "verdict": "NO_PAY",
+        "payout_ngn": 0
+      },
+      "satellite_only": {
+        "verdict": "PAY",
+        "payout_ngn": 65050.68
+      },
+      "pluvia": {
+        "verdict": "INSPECT",
+        "payout_ngn": 0
+      }
+    },
+    {
+      "id": "BR038983570-2024-05-01-satellite_outlier",
+      "category": "satellite_outlier",
+      "payout_due": false,
+      "naive_station": {
+        "verdict": "NO_PAY",
+        "payout_ngn": 0
+      },
+      "satellite_only": {
+        "verdict": "PAY",
+        "payout_ngn": 100000
+      },
+      "pluvia": {
+        "verdict": "INSPECT",
+        "payout_ngn": 0
+      }
+    },
+    {
+      "id": "KE000063661-2019-06-01-satellite_dry_days",
+      "category": "satellite_dry_days",
+      "payout_due": false,
+      "naive_station": {
+        "verdict": "NO_PAY",
+        "payout_ngn": 0
+      },
+      "satellite_only": {
+        "verdict": "NO_PAY",
+        "payout_ngn": 0
+      },
+      "pluvia": {
+        "verdict": "INSPECT",
+        "payout_ngn": 0
+      }
+    },
+    {
+      "id": "KE000063661-2019-06-01-satellite_outlier",
+      "category": "satellite_outlier",
+      "payout_due": false,
+      "naive_station": {
+        "verdict": "NO_PAY",
+        "payout_ngn": 0
+      },
+      "satellite_only": {
+        "verdict": "PAY",
+        "payout_ngn": 100000
+      },
+      "pluvia": {
+        "verdict": "INSPECT",
+        "payout_ngn": 0
+      }
+    },
+    {
+      "id": "KE000063661-2019-09-01-satellite_dry_days",
+      "category": "satellite_dry_days",
+      "payout_due": false,
+      "naive_station": {
+        "verdict": "NO_PAY",
+        "payout_ngn": 0
+      },
+      "satellite_only": {
+        "verdict": "NO_PAY",
+        "payout_ngn": 0
+      },
+      "pluvia": {
+        "verdict": "INSPECT",
+        "payout_ngn": 0
+      }
+    },
+    {
+      "id": "KE000063661-2019-09-01-satellite_outlier",
+      "category": "satellite_outlier",
+      "payout_due": false,
+      "naive_station": {
+        "verdict": "NO_PAY",
+        "payout_ngn": 0
+      },
+      "satellite_only": {
+        "verdict": "PAY",
+        "payout_ngn": 100000
+      },
+      "pluvia": {
+        "verdict": "INSPECT",
+        "payout_ngn": 0
+      }
+    },
+    {
+      "id": "KE000063661-2021-08-15-basis-risk-satellite_dry_days",
+      "category": "satellite_dry_days",
+      "payout_due": true,
+      "naive_station": {
+        "verdict": "NO_PAY",
+        "payout_ngn": 0
+      },
+      "satellite_only": {
+        "verdict": "PAY",
+        "payout_ngn": 85572.33
+      },
+      "pluvia": {
+        "verdict": "INSPECT",
+        "payout_ngn": 0
+      }
+    },
+    {
+      "id": "KE000063661-2021-08-15-basis-risk-satellite_outlier",
+      "category": "satellite_outlier",
+      "payout_due": true,
+      "naive_station": {
+        "verdict": "NO_PAY",
+        "payout_ngn": 0
+      },
+      "satellite_only": {
+        "verdict": "PAY",
+        "payout_ngn": 100000
+      },
+      "pluvia": {
+        "verdict": "INSPECT",
+        "payout_ngn": 0
+      }
+    },
+    {
+      "id": "TZ000063894-2021-04-01-satellite_dry_days",
+      "category": "satellite_dry_days",
+      "payout_due": false,
+      "naive_station": {
+        "verdict": "NO_PAY",
+        "payout_ngn": 0
+      },
+      "satellite_only": {
+        "verdict": "PAY",
+        "payout_ngn": 24732.07
+      },
+      "pluvia": {
+        "verdict": "INSPECT",
+        "payout_ngn": 0
+      }
+    },
+    {
+      "id": "TZ000063894-2021-04-01-satellite_outlier",
+      "category": "satellite_outlier",
+      "payout_due": false,
+      "naive_station": {
+        "verdict": "NO_PAY",
+        "payout_ngn": 0
+      },
+      "satellite_only": {
+        "verdict": "PAY",
+        "payout_ngn": 100000
+      },
+      "pluvia": {
+        "verdict": "INSPECT",
+        "payout_ngn": 0
+      }
+    }
+  ]
+}

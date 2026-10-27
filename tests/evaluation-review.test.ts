@@ -63,12 +63,14 @@ describe('evaluation provenance and sample execution', () => {
     for (const clean of cases.filter((c) => c.category === 'clean')) {
       const variants = cases.filter((c) => c.id.startsWith(`${clean.id}-`));
       expect(variants.map((c) => c.category).sort()).toEqual(
-        ['drop_days', 'zero_fill', 'truncate', 'shift', 'distant_station'].sort()
+        ['drop_days', 'zero_fill', 'truncate', 'shift', 'distant_station', 'satellite_dry_days', 'satellite_outlier'].sort()
       );
+      // Gauge faults expect an inspection; satellite faults leave the gauge settlement correct.
       expect(
         variants.every(
           (variant) =>
-            variant.label.payout_due === clean.label.payout_due && variant.label.expected_inspection
+            variant.label.payout_due === clean.label.payout_due &&
+            variant.label.expected_inspection === !variant.category.startsWith('satellite_')
         )
       ).toBe(true);
     }

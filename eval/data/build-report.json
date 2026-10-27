@@ -1,5 +1,5 @@
 {
-  "cases": 46,
+  "cases": 62,
   "generated_cases": 46,
   "preserved_case_files": [],
   "excluded": [
@@ -20,5 +20,14 @@
       "reason": "No monthly window met95% coverage, fixed source-agreement bounds and eight complete prior calibration windows."
     }
   ],
-  "selection": "Prescribed candidate stations only; at least95% station coverage for calendar-month selection; explicit non-calendar Kitale basis-risk window, complete satellite coverage; source gap <=40% and <=50mm; most recent qualifying month. Fault positions deterministic every third day. No gate output used for labels."
+  "selection": "Prescribed candidate stations only; at least95% station coverage for calendar-month selection; explicit non-calendar Kitale basis-risk window, complete satellite coverage; source gap <=40% and <=50mm; most recent qualifying month. Fault positions deterministic every third day. No gate output used for labels.",
+  "satellite_fault_cases": {
+    "count": 16,
+    "derived_from": "each clean and measured case in eval/cases",
+    "faults": [
+      "satellite_dry_days: every second satellite day of 1 mm or more set to 0",
+      "satellite_outlier: every satellite day scaled to 10%"
+    ],
+    "gauge": "unchanged"
+  }
 }

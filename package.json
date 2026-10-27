@@ -16,7 +16,8 @@
     "dry-run": "tsx scripts/dry_run_check.ts",
     "check": "npm run typecheck && npm test && npm run conformance && npm run dry-run",
     "record-replay": "tsx scripts/record_replay.ts",
-    "record-watch": "tsx scripts/record_watch.ts"
+    "record-watch": "tsx scripts/record_watch.ts",
+    "eval-agent": "tsx --env-file=.env eval/run_agent_eval.ts"
   },
   "dependencies": {
     "@duckdb/node-api": "^1.4.1-r.1",

@@ -9,6 +9,8 @@ export interface EvaluationCase {
     | 'truncate'
     | 'shift'
     | 'distant_station'
+    | 'satellite_dry_days'
+    | 'satellite_outlier'
     | 'real_sparse'
     | 'true_negative';
   policy: Policy;

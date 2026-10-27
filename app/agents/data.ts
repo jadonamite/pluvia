@@ -48,7 +48,7 @@ export class DataAgent {
 
     const stationSql =
       `SELECT station_id, obs_date, mm, m_flag, q_flag, s_flag ` +
-      `FROM pluvia.ghcn_prcp WHERE station_id = ${literal(policy.ref_station_id)} ` +
+      `FROM pluvia.${identifier(policy.gauge_view ?? 'ghcn_prcp')} WHERE station_id = ${literal(policy.ref_station_id)} ` +
       `AND obs_date BETWEEN ${literal(window.start)} AND ${literal(window.end)} ` +
       `ORDER BY obs_date`;
 
@@ -149,7 +149,7 @@ export class DataAgent {
         new Date(dateTime(date) + delta * 86400000).toISOString().slice(0, 10);
       return this.query.query(
         `SELECT station_id, obs_date, mm, m_flag, q_flag, s_flag ` +
-          `FROM pluvia.ghcn_prcp WHERE station_id = ${literal(policy.ref_station_id)} ` +
+          `FROM pluvia.${identifier(policy.gauge_view ?? 'ghcn_prcp')} WHERE station_id = ${literal(policy.ref_station_id)} ` +
           `AND obs_date BETWEEN ${literal(shifted(policy.window_start, -3))} ` +
           `AND ${literal(shifted(policy.window_end, 3))} ORDER BY obs_date`,
         { signal }

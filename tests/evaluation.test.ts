@@ -17,7 +17,13 @@ describe('evaluation labels and dated negative evidence', () => {
       provenance: { station_url: 'test', satellite_url: 'test' }
     };
     const variants = faultVariants(clean);
-    expect(variants).toHaveLength(6);
+    expect(variants).toHaveLength(8);
+    for (const category of ['satellite_dry_days', 'satellite_outlier']) {
+      const v = variants.find((x) => x.category === category)!;
+      expect(v.station.days).toEqual(clean.station.days);
+      expect(v.satellite!.days).not.toEqual(clean.satellite!.days);
+      expect(v.label.expected_inspection).toBe(false);
+    }
     expect(variants.every((v) => v.label.payout_due)).toBe(true);
     expect(clean.station.days).toHaveLength(10);
     expect(variants.find((v) => v.category === 'drop_days')!.station.days.length).toBeLessThan(10);
