@@ -6,7 +6,9 @@ Pluvia evaluates rainfall evidence across ground stations and independent satell
 
 ## Run it
 
-Requires Node 20.19 or later. From a clean source checkout:
+Try it without installing anything at [pluvia.namite.xyz](https://pluvia.namite.xyz), with the claims desk at [pluvia.namite.xyz/desk](https://pluvia.namite.xyz/desk).
+
+To run it yourself, Node 20.19 or later is required. From a clean source checkout:
 
 ```sh
 npm ci && npm start
