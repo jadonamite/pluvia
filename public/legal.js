@@ -7,6 +7,6 @@ window.PLUVIA_LEGAL = {
     'The server processes claim IDs, rainfall evidence, review traces and officer assessments. Reviews and feedback may be retained in local run logs and H-MEM memory so later claims can recall precedents. Do not send real policyholder information to this demonstration.',
     'Neither page has analytics or session replay. Fonts, charts and animation code are served by Pluvia itself, so no third party receives your IP address. The claims desk keeps its appearance and notice preferences in session storage in your browser tab.'],
   cookies: ['Cookie policy',
-    'Pluvia does not set cookies or run advertising and analytics tools. The claims desk uses browser session storage only for the appearance setting and the dismissal of its information notice. Closing the tab clears these preferences. The front page stores nothing.',
+    'Pluvia runs no advertising or analytics tools. On the hosted copy the claims desk sets one cookie, pluvia_visitor: a random number with no link to you, so that your simulated station calendar and the cases you open are kept apart from other visitors\' for six hours. The server holds that calendar in memory and forgets it after six hours without use. The desk also uses browser session storage for the appearance setting and the dismissal of its information notice; closing the tab clears these. The front page stores nothing.',
     'In the claims desk, the selected claim and saved run appear in the URL so the review can be reopened. Server-side review logs and memory are separate from browser storage.'],
 };
