@@ -2,6 +2,9 @@ import { Hono } from 'hono';
 import { bodyLimit } from 'hono/body-limit';
 import { serveStatic } from '@hono/node-server/serve-static';
 import { readFile } from 'node:fs/promises';
+import { randomUUID } from 'node:crypto';
+import { getCookie, setCookie } from 'hono/cookie';
+import type { Context } from 'hono';
 import { z } from 'zod';
 import type { Orchestrator } from './orchestrator.js';
 import type { CaseAgent } from './agent/caseAgent.js';
@@ -25,6 +28,16 @@ const error = (type: string, message: string, recoverable = true) => ({ status: 
 
 export function createApp(orchestrator: Orchestrator, sampleMode: boolean, agent?: CaseAgent, watcher?: Watcher) {
   const app = new Hono();
+  // In sample mode each visitor gets their own calendar and cases, keyed by a random cookie.
+  const perVisitor = Boolean(watcher?.perVisitor);
+  const visitorOf = (c: Context): string | undefined => {
+    if (!perVisitor) return undefined;
+    const known = getCookie(c, 'pluvia_visitor');
+    if (known && /^[0-9a-f-]{36}$/.test(known)) return known;
+    const id = randomUUID();
+    setCookie(c, 'pluvia_visitor', id, { path: '/', httpOnly: true, sameSite: 'Lax', maxAge: 6 * 3600 });
+    return id;
+  };
   app.onError((_err, c) => c.json(error('service_error', 'The request could not be completed. Check the service status and the run trace.'), 503));
   app.get('/health', async c => c.json(await orchestrator.health()));
   app.get('/claims', async c => {
@@ -53,26 +66,29 @@ export function createApp(orchestrator: Orchestrator, sampleMode: boolean, agent
     return c.json({ status: 'success', memory_ids: run.memory.written, message: 'Memory feedback recorded. The PolicyGate decision is unchanged.' });
   });
   if (agent) {
-    const view = (id: string) => {
+    const view = (id: string, visitor?: string) => {
       const item = agent.store.get(id);
-      return item && { ...item, segments: undefined, running: agent.isRunning(id) };
+      if (!item || (perVisitor && item.visitor !== visitor && item.kind !== 'watch')) return undefined;
+      return { ...item, segments: undefined, running: agent.isRunning(id) };
     };
     const small = bodyLimit({ maxSize: 12000, onError: c => c.json(error('invalid_input', 'The request is too large.'), 413) });
     app.get('/cases', c => {
       const claim = c.req.query('claim');
-      const items = agent.store.list().filter(item => !claim || item.claim_id === claim);
-      return c.json({ cases: items.map(item => view(item.id)) });
+      const visitor = visitorOf(c);
+      const items = agent.store.list().filter(item => (!claim || item.claim_id === claim) && (!perVisitor || item.visitor === visitor));
+      return c.json({ cases: items.map(item => view(item.id, visitor)) });
     });
     app.get('/cases/:id', c => {
-      const item = view(c.req.param('id'));
+      const item = view(c.req.param('id'), visitorOf(c));
       return item ? c.json(item) : c.json(error('case_not_found', 'This case does not exist.'), 404);
     });
     app.post('/cases', small, async c => {
       const parsed = z.object({ claim_id: z.string().min(1).max(120) }).strict().safeParse(await c.req.json().catch(() => null));
       if (!parsed.success) return c.json(error('invalid_input', 'Name the claim to open a case for.'), 400);
       try {
-        const item = await agent.start(parsed.data.claim_id);
-        return c.json(view(item.id), 202);
+        const visitor = visitorOf(c);
+        const item = await agent.start(parsed.data.claim_id, visitor);
+        return c.json(view(item.id, visitor), 202);
       } catch (e) {
         return c.json(error('case_not_started', (e as Error).message), 422);
       }
@@ -81,8 +97,10 @@ export function createApp(orchestrator: Orchestrator, sampleMode: boolean, agent
       const parsed = z.object({ approve: z.boolean(), note: z.string().max(2000).optional() }).strict().safeParse(await c.req.json().catch(() => null));
       if (!parsed.success) return c.json(error('invalid_input', 'Approve or decline, with an optional note.'), 400);
       try {
+        const visitor = visitorOf(c);
+        if (!view(c.req.param('id'), visitor)) return c.json(error('case_not_found', 'This case does not exist.'), 404);
         const item = await agent.signoff(c.req.param('id'), parsed.data.approve, parsed.data.note);
-        return c.json(view(item.id));
+        return c.json(view(item.id, visitor));
       } catch (e) {
         return c.json(error('signoff_refused', (e as Error).message), 409);
       }
@@ -91,8 +109,10 @@ export function createApp(orchestrator: Orchestrator, sampleMode: boolean, agent
       const parsed = z.object({ text: z.string().trim().min(2).max(2000) }).strict().safeParse(await c.req.json().catch(() => null));
       if (!parsed.success) return c.json(error('invalid_input', 'Write a question or an instruction for the agent.'), 400);
       try {
+        const visitor = visitorOf(c);
+        if (!view(c.req.param('id'), visitor)) return c.json(error('case_not_found', 'This case does not exist.'), 404);
         const item = await agent.message(c.req.param('id'), parsed.data.text);
-        return c.json(view(item.id), 202);
+        return c.json(view(item.id, visitor), 202);
       } catch (e) {
         return c.json(error('message_refused', (e as Error).message), 409);
       }
@@ -101,24 +121,38 @@ export function createApp(orchestrator: Orchestrator, sampleMode: boolean, agent
       const parsed = z.object({ report: z.string().min(10).max(8000) }).strict().safeParse(await c.req.json().catch(() => null));
       if (!parsed.success) return c.json(error('invalid_input', 'Paste the inspector’s report, at least a sentence.'), 400);
       try {
+        const visitor = visitorOf(c);
+        if (!view(c.req.param('id'), visitor)) return c.json(error('case_not_found', 'This case does not exist.'), 404);
         const item = await agent.inspectionReport(c.req.param('id'), parsed.data.report);
-        return c.json(view(item.id), 202);
+        return c.json(view(item.id, visitor), 202);
       } catch (e) {
         return c.json(error('report_refused', (e as Error).message), 409);
       }
     });
   }
   if (watcher) {
-    app.get('/watch', c => c.json(watcher.view()));
+    // The calendar, with the agent's investigation of each watch case as it stood that day.
+    const watchView = (visitor?: string) => {
+      const state = watcher.view(visitor);
+      const investigations: Record<string, unknown> = {};
+      for (const item of state.cases) {
+        const found = item.agent_case_id && agent?.investigation(item.agent_case_id, state.today);
+        if (found) investigations[item.id] = { ...found, segments: undefined, running: agent!.isRunning(found.id) };
+      }
+      return { ...state, investigations };
+    };
+    app.get('/watch', c => c.json(watchView(visitorOf(c))));
     app.post('/watch/advance', bodyLimit({ maxSize: 200 }), async c => {
-      const parsed = z.object({ days: z.number().int().min(1).max(31).optional() }).strict().safeParse(await c.req.json().catch(() => ({})));
-      if (!parsed.success) return c.json(error('invalid_input', 'Move the calendar forward 1 to 31 days.'), 400);
-      await watcher.advance(parsed.data.days ?? 1);
-      return c.json(watcher.view());
+      const parsed = z.object({ days: z.number().int().min(1).max(62).optional() }).strict().safeParse(await c.req.json().catch(() => ({})));
+      if (!parsed.success) return c.json(error('invalid_input', 'Move the calendar forward 1 to 62 days.'), 400);
+      const visitor = visitorOf(c);
+      await watcher.advance(parsed.data.days ?? 1, visitor);
+      return c.json(watchView(visitor));
     });
     app.post('/watch/reset', c => {
-      watcher.reset();
-      return c.json(watcher.view());
+      const visitor = visitorOf(c);
+      watcher.reset(visitor);
+      return c.json(watchView(visitor));
     });
   }
   app.get('/register/:name', async c => {

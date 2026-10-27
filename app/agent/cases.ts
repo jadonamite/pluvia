@@ -13,12 +13,14 @@ export type CaseState =
 
 export interface CaseEvent {
   at: string;
-  kind: 'start' | 'thought' | 'tool' | 'decision' | 'action' | 'person' | 'note' | 'plan' | 'officer' | 'reply';
+  kind: 'start' | 'thought' | 'tool' | 'decision' | 'action' | 'person' | 'note' | 'plan' | 'officer' | 'reply' | 'watcher';
   tool?: string;
   input?: unknown;
   output?: unknown;
   summary: string;
   model?: string;
+  // The watcher's calendar day when this happened, on a watch case.
+  day?: string;
 }
 
 export interface OutboxMessage {
@@ -26,6 +28,16 @@ export interface OutboxMessage {
   body: string;
   status: 'sent' | 'held';
   at: string;
+  day?: string;
+}
+
+// A station lesson the agent recorded, with the figures the code reran.
+export interface Lesson {
+  text: string;
+  figures: { label: string; claimed: number; reproduced?: number; match: boolean }[];
+  at: string;
+  day?: string;
+  memory_id?: string;
 }
 
 export interface PlanStep {
@@ -42,17 +54,26 @@ export interface Plan {
 
 // One recorded stretch of agent work, replayable without the live services.
 export interface Segment {
-  trigger: 'start' | 'inspection_report' | 'message';
+  trigger: 'start' | 'inspection_report' | 'message' | 'watch';
   input?: string;
   messages: unknown[];
   // Event range this stretch produced, and the case as it stood when the stretch ended.
   from_event: number;
   to_event?: number;
+  // The watcher's calendar day this stretch began, on a watch case.
+  day?: string;
   snapshot?: Pick<Case, 'state' | 'decision' | 'proposal' | 'inspection' | 'signoff' | 'payment' | 'outbox' | 'summary' | 'plan'>;
 }
 
 export interface Case {
   id: string;
+  // A claim case, or the agent's investigation of a watch case before any claim.
+  kind?: 'claim' | 'watch';
+  // In sample mode, the visitor whose calendar opened this case.
+  visitor?: string;
+  // On a watch case: the station, the watch case it works and the watcher's current day.
+  station?: { id: string; name: string; policy_ids: string[]; watch_id: string; today: string; fallback_notice: string };
+  lessons?: Lesson[];
   claim_id: string;
   policy_id: string;
   state: CaseState;
@@ -80,9 +101,11 @@ export interface Case {
   evidence?: { station: DailySeries; satellite: DailySeries | null };
 }
 
-// Keeps cases in memory and writes each one to a JSON file whenever it changes.
+// Keeps cases in memory and writes each one to a JSON file whenever it changes. Cases opened by a
+// sample-mode visitor stay in memory only, up to a cap.
 export class CaseStore {
   private cases = new Map<string, Case>();
+  private static VISITOR_CASES = 2000;
 
   constructor(private directory: string) {
     mkdirSync(directory, { recursive: true });
@@ -99,6 +122,11 @@ export class CaseStore {
   save(item: Case): Case {
     item.updated_at = new Date().toISOString();
     this.cases.set(item.id, item);
+    if (item.visitor) {
+      const visitors = [...this.cases.values()].filter(c => c.visitor);
+      for (const old of visitors.slice(0, Math.max(0, visitors.length - CaseStore.VISITOR_CASES))) this.cases.delete(old.id);
+      return item;
+    }
     writeFileSync(path.join(this.directory, `${item.id}.json`), JSON.stringify(item, null, 2));
     return item;
   }

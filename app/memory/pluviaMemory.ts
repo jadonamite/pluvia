@@ -29,8 +29,10 @@ export class PluviaMemory {
       `${policy.ref_station_id} ${policy.crop} rainfall record station lesson`,
       { topN: 100, threshold: 0 }
     );
+    // Lessons the agent established come first.
     const memories = result.memories
       .filter(m => m.memory.tags.includes(tag) && m.memory.tags.includes(season))
+      .sort((a, b) => Number(b.memory.tags.includes('agent_lesson')) - Number(a.memory.tags.includes('agent_lesson')))
       .slice(0, 5)
       .map(m => ({ id: m.memory.id, content: m.memory.content }));
 
@@ -104,6 +106,21 @@ export class PluviaMemory {
       status: 'ok',
       memory_id: record.id,
     });
+    return record.id;
+  }
+
+  // Writes a lesson the agent established about a station, with the figures the code reproduced.
+  writeAgentLesson(caseId: string, policy: Policy, text: string, refs: string[]): string {
+    const record = this.engine.add({
+      content: `Station ${policy.ref_station_id} rainfall record lesson from the agent: ${text}`,
+      type: 'factual',
+      layer: 'working',
+      tags: [...this.tags(policy), 'station_lesson', 'agent_lesson'],
+      confidence: 0.9,
+      source: 'agent_reproduced_figures',
+      provenance: { origin: 'plan_completion', learnedAt: Date.now(), label: 'Agent lesson', refs: [caseId, ...refs] },
+    });
+    this.trace({ agent: 'Memory', action: 'write_agent_lesson', memory_op: 'write', status: 'ok', memory_id: record.id });
     return record.id;
   }
 

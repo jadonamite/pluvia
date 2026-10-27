@@ -8,13 +8,14 @@ import { runProbes } from '../probes/index.js';
 import type { Claim, DailySeries, Decision, Policy } from '../types.js';
 import { CaseStore, readReplay, type Case, type CaseEvent, type PlanStep, type Segment } from './cases.js';
 import { guardSql } from './sqlGuard.js';
-import type { WatchCase } from './watcher.js';
 
 // Payouts above this need a person; so does every refusal and every inspection close-out.
 export const SIGNOFF_ABOVE_NGN = 1_000_000;
 const STEP_BUDGET = 24;
 const RESUME_BUDGET = 10;
 const MESSAGE_BUDGET = 10;
+const WATCH_BUDGET = 18;
+const WAKE_BUDGET = 6;
 const PLAN_STEPS = 10;
 // Turns spent only on the plan don't use up the step budget, up to this many.
 const PLAN_TURNS = 20;
@@ -63,7 +64,13 @@ const TOOLS = [
   fn('request_signoff', 'Ask a claims officer to approve before the payout or refusal takes effect.', { summary: text }, ['summary']),
   fn('escalate', 'Hand the case to a person with one precise question.', { question: text }, ['question']),
   fn('finish_case', 'End your work on this case with a two-sentence summary.', { summary: text }, ['summary']),
+  fn('record_lesson', 'Record what you established about this station in memory, for the claims that follow. Cite each figure with the exact SQL that produces it; the code reruns them and records the lesson only if every one reproduces.', {
+    lesson: text,
+    figures: { type: 'array', items: { type: 'object', properties: { label: text, sql: text, value: { type: 'number' } }, required: ['label', 'sql', 'value'] } },
+  }, ['lesson', 'figures']),
 ];
+const WATCH_TOOLS = new Set(['set_plan', 'mark_step', 'list_tables', 'describe_table', 'sql_query', 'run_checks', 'recall_station', 'record_lesson', 'notify_operator', 'finish_case']);
+const CLAIM_TOOLS = TOOLS.filter(t => t.function.name !== 'record_lesson');
 
 const SYSTEM = `You are Pluvia's claims agent for weather-index crop insurance. Your goal is to settle each claim correctly or hand it to a person with one precise question.
 
@@ -76,7 +83,20 @@ How you work:
 - After the gate answers, act on it: open an inspection naming the dates, request sign-off where it says one is needed, write to the farmer group, and tell the station operator about a failing gauge.
 - Payouts above NGN ${SIGNOFF_ABOVE_NGN.toLocaleString('en')}, every refusal and every inspection close-out need a claims officer's sign-off.
 - The claims officer can write to you at any point. Answer with reply_to_officer after checking with your tools, act on any instruction, then carry on. If they ask for something the data cannot show, say so plainly.
+- If the brief carries watch_cases, the station was already investigated before this claim: make your first plan step build on that watch case's findings and lessons, and check only what the claim still needs.
 - End with finish_case. Write plainly and briefly; a claims officer reads every step.`;
+
+const WATCH_SYSTEM = `You are Pluvia's claims agent, working a watch case. The station watcher checks each insured rain gauge once a day and has flagged this one. No claim exists yet. Your goal is to establish what is wrong with the gauge and what it means for the insured farmer groups, so that any claim that follows starts from what you found.
+
+How you work:
+- Before anything else, write your plan with set_plan. Mark each step with mark_step as you start and finish it, in the same turn as the tool calls that do the work. Rewrite the plan with a reason if the evidence changes your course.
+- Today is the watcher's current day, given in the brief. Readings after today have not arrived: never query past it. run_checks covers the cover window up to today.
+- Discover the views and write your own SQL. Do every sum and count in SQL.
+- Record what you established with record_lesson, citing each figure with the exact SQL that produces it; the code reruns them.
+- Tell the station operator with notify_operator, naming the dates and readings.
+- You do not settle claims, write to farmers or ask for sign-off.
+- When the watcher sends a new finding, check it, record any new lesson, tell the operator if it matters, and finish again.
+- End with finish_case. Write plainly and briefly.`;
 
 const now = () => new Date().toISOString();
 const round = (n: number) => Math.round(n * 100) / 100;
@@ -102,10 +122,22 @@ function firstRowNumbers(rows: Record<string, unknown>[]): number[] {
 }
 
 interface Context {
-  claim: Claim;
+  claim?: Claim;
   policy: Policy;
   series?: { station: DailySeries; satellite: DailySeries | null };
   proposals: number;
+  // On a watch case: the watcher's current day; nothing after it has arrived.
+  today?: string;
+}
+
+export interface WatchBrief {
+  id: string;
+  station_id: string;
+  station_name: string;
+  policy_ids: string[];
+  opened_on: string;
+  findings: unknown[];
+  agent_case_id?: string;
 }
 
 export class CaseAgent {
@@ -121,7 +153,9 @@ export class CaseAgent {
       replayDirectory: string;
       live: boolean;
       // What the station watcher found before the claim arrived.
-      watch?: (stationId: string) => WatchCase[];
+      watch?: (stationId: string, visitor?: string) => WatchBrief[];
+      // Watch case investigations recorded with the season, played back in sample mode.
+      recordedInvestigations?: Case[];
       // Replaces the Nightshift call, for tests.
       chat?: (messages: Message[]) => Promise<{ message: Message; model: string }>;
     }
@@ -131,6 +165,10 @@ export class CaseAgent {
 
   get store() {
     return this.deps.store;
+  }
+
+  get live() {
+    return this.deps.live;
   }
 
   isRunning(id: string) {
@@ -146,13 +184,13 @@ export class CaseAgent {
   }
 
   private log(item: Case, event: Omit<CaseEvent, 'at'>) {
-    item.events.push({ at: now(), ...event });
+    item.events.push({ at: now(), ...event, ...(item.station ? { day: item.station.today } : {}) });
     this.deps.store.save(item);
   }
 
   // Starts a case. Live, the agent works in the background and the case fills in as it goes;
   // otherwise a recorded live investigation of the same claim is replayed.
-  async start(claimId: string): Promise<Case> {
+  async start(claimId: string, visitor?: string): Promise<Case> {
     const ctx = await this.context(claimId);
     if (!this.deps.live) {
       const recorded = readReplay(this.deps.replayDirectory, claimId);
@@ -164,6 +202,7 @@ export class CaseAgent {
         policy_id: recorded.policy_id,
         created_at: now(),
         updated_at: now(),
+        visitor,
         replay: {
           recorded_at: recorded.created_at,
           source_case: recorded.id,
@@ -193,14 +232,18 @@ export class CaseAgent {
       events: [],
       segments: [],
       outbox: [],
+      visitor,
     };
-    const watch = this.deps.watch?.(ctx.policy.ref_station_id) ?? [];
+    const watch = (this.deps.watch?.(ctx.policy.ref_station_id, visitor) ?? []).map(w => {
+      const investigated = w.agent_case_id ? this.deps.store.get(w.agent_case_id) : undefined;
+      return investigated ? { ...w, investigation: { summary: investigated.summary, lessons: investigated.lessons?.map(l => l.text) ?? [] } } : w;
+    });
     if (watch.length) item.watch = watch.map(w => ({ id: w.id, station_id: w.station_id, station_name: w.station_name, opened_on: w.opened_on }));
     this.log(item, { kind: 'start', summary: `Opened the case for ${ctx.policy.group_name.replace(/ \(synthetic\)$/, '')}.` });
     const segment: Segment = { trigger: 'start', messages: [], from_event: 0 };
     item.segments.push(segment);
     const briefing = {
-      claim: { claim_id: ctx.claim.claim_id, statement: ctx.claim.event_text },
+      claim: { claim_id: ctx.claim!.claim_id, statement: ctx.claim!.event_text },
       policy: policyTerms(ctx.policy),
       sum_insured_ngn: ctx.policy.sum_insured_ngn,
       farm: { lat: ctx.policy.farm_lat, lon: ctx.policy.farm_lon },
@@ -239,10 +282,10 @@ export class CaseAgent {
   }
 
   // The officer asks or instructs. Mid-run, the agent reads it before its next step; at rest, it wakes to answer and carries on.
-  async message(id: string, text: string): Promise<Case> {
+  async message(id: string, text: string, from: 'officer' | 'watcher' = 'officer'): Promise<Case> {
     const item = this.mustGet(id);
     if (!this.deps.live && item.replay) return this.replayMessage(item);
-    this.log(item, { kind: 'officer', summary: text });
+    this.log(item, { kind: from, summary: text });
     if (this.running.has(id)) {
       item.inbox = [...(item.inbox ?? []), text];
       return this.deps.store.save(item);
@@ -251,14 +294,89 @@ export class CaseAgent {
       this.log(item, { kind: 'note', summary: 'The agent needs the live services to answer. Run Pluvia live to continue.' });
       return item;
     }
-    const ctx = await this.context(item.claim_id);
-    if (item.state === 'failed') item.state = 'investigating';
-    const segment: Segment = { trigger: 'message', input: text, messages: [], from_event: item.events.length - 1 };
+    const ctx = item.kind === 'watch' ? await this.watchContext(item) : await this.context(item.claim_id);
+    if (item.state === 'failed' || item.kind === 'watch') item.state = 'investigating';
+    const segment: Segment = { trigger: 'message', input: text, messages: [], from_event: item.events.length - 1, day: item.station?.today };
     const prior = item.segments.at(-1)?.messages as Message[] | undefined;
     item.segments.push(segment);
-    const messages: Message[] = [...(prior ?? [{ role: 'system', content: SYSTEM }]), { role: 'user', content: officerNote(text, true) }];
-    void this.loop(item, ctx, messages, segment, MESSAGE_BUDGET);
+    const system = item.kind === 'watch' ? WATCH_SYSTEM : SYSTEM;
+    const note = from === 'watcher' ? watcherNote(text, item.station!.today) : officerNote(text, true);
+    const messages: Message[] = [...(prior ?? [{ role: 'system', content: system }]), { role: 'user', content: note }];
+    void this.loop(item, ctx, messages, segment, from === 'watcher' ? WAKE_BUDGET : MESSAGE_BUDGET);
     return item;
+  }
+
+  // The watcher opened a watch case: the agent investigates the station before any claim exists.
+  async startWatch(input: { watch: WatchBrief; today: string; fallbackNotice: string; findings: unknown[] }): Promise<Case> {
+    const policies = (await this.data.policies()).filter(p => input.watch.policy_ids.includes(p.policy_id));
+    const policy = policies[0];
+    if (!policy) throw new Error('No insured policy depends on this station.');
+    const item: Case = {
+      id: `case_${randomUUID().slice(0, 8)}`,
+      kind: 'watch',
+      claim_id: input.watch.id,
+      policy_id: policy.policy_id,
+      station: { id: input.watch.station_id, name: input.watch.station_name, policy_ids: input.watch.policy_ids, watch_id: input.watch.id, today: input.today, fallback_notice: input.fallbackNotice },
+      state: 'investigating',
+      created_at: now(),
+      updated_at: now(),
+      models: [],
+      steps_used: 0,
+      events: [],
+      segments: [],
+      outbox: [],
+      lessons: [],
+    };
+    this.log(item, { kind: 'start', summary: `The watcher opened a watch case on ${input.watch.station_name}. Investigating before any claim.` });
+    if (!this.deps.live) return this.deps.store.save(item);
+    const segment: Segment = { trigger: 'watch', messages: [], from_event: 0, day: input.today };
+    item.segments.push(segment);
+    const briefing = {
+      today: input.today,
+      station: { id: input.watch.station_id, name: input.watch.station_name },
+      insured: policies.map(p => ({ policy_id: p.policy_id, group: p.group_name, cover_window: [p.window_start, p.window_end], sum_insured_ngn: p.sum_insured_ngn, trigger_mm: p.trigger_mm, exit_mm: p.exit_mm, satellite_view: `pluvia.${p.power_table}` })),
+      watcher_findings: input.findings,
+    };
+    const messages: Message[] = [
+      { role: 'system', content: WATCH_SYSTEM },
+      { role: 'user', content: `The watcher flagged this station. Investigate it.\n${JSON.stringify(briefing)}` },
+    ];
+    void this.loop(item, await this.watchContext(item), messages, segment, WATCH_BUDGET);
+    return item;
+  }
+
+  // The agent's investigation of a watch case as it stood on the watcher's day: live from the store,
+  // or in sample mode from the recorded season, cut to that day.
+  investigation(id: string, today: string | null): Case | undefined {
+    const live = this.deps.store.get(id);
+    if (live) return live;
+    const recorded = this.deps.recordedInvestigations?.find(c => c.id === id);
+    if (!recorded || !today) return undefined;
+    const events = recorded.events.filter(e => !e.day || e.day <= today);
+    const done = events.length === recorded.events.length;
+    return {
+      ...recorded,
+      segments: [],
+      events,
+      outbox: recorded.outbox.filter(m => !m.day || m.day <= today),
+      lessons: recorded.lessons?.filter(l => !l.day || l.day <= today),
+      state: done ? recorded.state : 'closed',
+      summary: done ? recorded.summary : undefined,
+      replay: { recorded_at: recorded.created_at, source_case: recorded.id },
+    };
+  }
+
+  // A new finding on a later day wakes the watch case.
+  async wakeWatch(id: string, note: string, today: string): Promise<Case> {
+    const item = this.mustGet(id);
+    if (item.station) item.station.today = today;
+    return this.message(id, note, 'watcher');
+  }
+
+  private async watchContext(item: Case): Promise<Context> {
+    const policy = (await this.data.policies()).find(p => p.policy_id === item.policy_id);
+    if (!policy) throw new Error('The policy for this station is not in the register.');
+    return { policy, proposals: 0, today: item.station!.today };
   }
 
   // A replay answers with the next question the officer put to the live agent, and what followed.
@@ -314,7 +432,7 @@ export class CaseAgent {
     return this.deps.store.save(item);
   }
 
-  private async callModel(messages: Message[]): Promise<{ message: Message; model: string }> {
+  private async callModel(messages: Message[], tools: unknown[]): Promise<{ message: Message; model: string }> {
     if (this.deps.chat) return this.deps.chat(messages);
     const route = this.deps.model!;
     let last = '';
@@ -323,7 +441,7 @@ export class CaseAgent {
         const response = await fetch(`${route.url}/chat/completions`, {
           method: 'POST',
           headers: { Authorization: `Bearer ${route.token}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ model, messages, tools: TOOLS, tool_choice: 'auto', max_tokens: 1500, temperature: 0.2 }),
+          body: JSON.stringify({ model, messages, tools, tool_choice: 'auto', max_tokens: 1500, temperature: 0.2 }),
           signal: AbortSignal.timeout(180_000),
         });
         const body = (await response.json().catch(() => ({}))) as { choices?: { message?: Message }[]; model?: string; error?: { message?: string } };
@@ -342,8 +460,9 @@ export class CaseAgent {
     let planTurns = 0;
     try {
       for (let step = 0; step < budget; step++) {
-        for (const text of item.inbox?.splice(0) ?? []) messages.push({ role: 'user', content: officerNote(text, false) });
-        const { message, model } = await this.callModel(messages);
+        for (const text of item.inbox?.splice(0) ?? []) messages.push({ role: 'user', content: item.kind === 'watch' ? watcherNote(text, item.station!.today) : officerNote(text, false) });
+        if (item.kind === 'watch') ctx.today = item.station!.today;
+        const { message, model } = await this.callModel(messages, item.kind === 'watch' ? TOOLS.filter(t => WATCH_TOOLS.has(t.function.name)) : CLAIM_TOOLS);
         if (!item.models.includes(model)) item.models.push(model);
         const assistant: Message = { role: 'assistant', content: message.content ?? null, tool_calls: message.tool_calls };
         messages.push(assistant);
@@ -379,6 +498,10 @@ export class CaseAgent {
       item.state = 'failed';
       this.log(item, { kind: 'note', summary: `The investigation stopped: ${String((error as Error).message ?? error)}` });
     } finally {
+      if (item.kind === 'watch' && item.state === 'failed' && !item.outbox.some(m => m.to === 'station_operator')) {
+        item.outbox.push({ to: 'station_operator', body: item.station!.fallback_notice, status: 'sent', at: now(), day: item.station!.today });
+        this.log(item, { kind: 'note', summary: 'The watcher sent its standard notice to the station operator.' });
+      }
       segment.to_event = item.events.length;
       const { state, decision, proposal, inspection, signoff, payment, outbox, summary, plan } = item;
       segment.snapshot = structuredClone({ state, decision, proposal, inspection, signoff, payment, outbox, summary, plan });
@@ -389,6 +512,12 @@ export class CaseAgent {
 
   private async series(ctx: Context, item?: Case) {
     ctx.series ??= await this.data.fetch(ctx.policy);
+    if (ctx.today) {
+      const upTo = (s: DailySeries): DailySeries => ({ ...s, days: s.days.filter(d => d.date <= ctx.today!) });
+      const series = { station: upTo(ctx.series.station), satellite: ctx.series.satellite ? upTo(ctx.series.satellite) : null };
+      if (item) item.evidence = series;
+      return series;
+    }
     if (item && !item.evidence) item.evidence = ctx.series;
     return ctx.series;
   }
@@ -398,6 +527,12 @@ export class CaseAgent {
       this.log(item, { kind, tool: name, input, output, summary });
       return output;
     };
+    if (item.kind === 'watch' && !WATCH_TOOLS.has(name)) {
+      return record('Refused: not part of a watch case.', args, { error: 'A watch case cannot settle, write to farmers or ask for sign-off.' });
+    }
+    if (item.kind !== 'watch' && name === 'record_lesson') {
+      return record('Refused: lessons are recorded on watch cases.', args, { error: 'Unknown tool.' });
+    }
     if (!item.plan && !['set_plan', 'reply_to_officer'].includes(name)) {
       return record('Refused: no plan yet.', args, { error: 'Write your plan with set_plan before anything else.' });
     }
@@ -448,6 +583,8 @@ export class CaseAgent {
       case 'sql_query': {
         const guarded = guardSql(String(args.sql ?? ''));
         if (!guarded.ok) return record(`Refused a query: ${guarded.reason}`, args, { error: guarded.reason });
+        const late = ctx.today && afterDay(guarded.sql, ctx.today);
+        if (late) return record(`Refused a query: it reaches ${late}, after today.`, args, { error: `Today is ${ctx.today}. Readings after it have not arrived.` });
         try {
           const rows = await this.deps.query.query(guarded.sql, { limit: 2000 });
           const summary = summarise(rows);
@@ -459,7 +596,7 @@ export class CaseAgent {
       }
       case 'run_checks': {
         const { station, satellite } = await this.series(ctx, item);
-        const probes = runProbes({ policy: ctx.policy, station, satellite });
+        const probes = runProbes({ policy: ctx.today ? { ...ctx.policy, window_end: ctx.today } : ctx.policy, station, satellite });
         const failed = probes.filter(p => p.status !== 'pass').map(p => p.id);
         return record(`Ran the eight record checks; ${failed.length ? `${failed.join(', ')} did not pass` : 'all passed'}.`, {}, { checks: probeSummaries(probes) });
       }
@@ -482,8 +619,21 @@ export class CaseAgent {
         item.outbox.push({ to: 'farmer_group', body: String(args.body ?? ''), status: held ? 'held' : 'sent', at: now() });
         return record(held ? 'Wrote to the farmer group; held until sign-off.' : 'Wrote to the farmer group.', args, { ok: true }, 'action');
       }
+      case 'record_lesson': {
+        const figures = Array.isArray(args.figures) ? (args.figures as { label?: string; sql?: string; value?: number }[]) : [];
+        const checked = await this.checkFigures(figures);
+        const lesson = String(args.lesson ?? '').trim();
+        if (!lesson || !checked.length) return record('Refused a lesson without figures.', args, { error: 'Write the lesson and cite at least one figure with its SQL.' });
+        const failed = checked.filter(c => !c.match);
+        if (failed.length) {
+          return record(`Refused a lesson: ${failed.length} of ${checked.length} figures did not reproduce.`, args, { error: `These did not reproduce: ${failed.map(f => `${f.label} (you said ${f.claimed}; your query returned ${f.reproduced ?? (f.reason || 'nothing')})`).join('; ')}.`, figures: checked });
+        }
+        const memoryId = this.deps.memory.writeAgentLesson(item.id, ctx.policy, lesson, checked.map(c => `${c.label}=${c.reproduced}`));
+        item.lessons = [...(item.lessons ?? []), { text: lesson, figures: checked, at: now(), day: ctx.today, memory_id: memoryId }];
+        return record(`Recorded a lesson; all ${checked.length} figures reproduced.`, args, { ok: true, figures: checked }, 'action');
+      }
       case 'notify_operator': {
-        item.outbox.push({ to: 'station_operator', body: String(args.body ?? ''), status: 'sent', at: now() });
+        item.outbox.push({ to: 'station_operator', body: String(args.body ?? ''), status: 'sent', at: now(), ...(ctx.today ? { day: ctx.today } : {}) });
         return record('Told the station operator about the gauge.', args, { ok: true }, 'action');
       }
       case 'request_signoff': {
@@ -501,13 +651,18 @@ export class CaseAgent {
         return record('Handed the case to a person.', args, { ok: true }, 'action');
       }
       case 'finish_case': {
+        if (item.kind === 'watch') {
+          item.summary = String(args.summary ?? '');
+          item.state = 'closed';
+          return record('Finished its work on the watch case.', args, { ok: true, state: item.state }, 'action');
+        }
         const ready = ['inspection_open', 'awaiting_signoff', 'settled', 'escalated', 'closed'].includes(item.state);
         if (!ready) return record('Refused to finish: the case is not carried through yet.', args, { error: 'Act on the gate decision first: open an inspection, request sign-off, or settle.' });
         const first = item.summary === undefined;
         item.summary = String(args.summary ?? '');
         if (item.decision && first) {
           try {
-            this.deps.memory.writePrecedent(item.id, ctx.claim, ctx.policy, item.decision);
+            this.deps.memory.writePrecedent(item.id, ctx.claim!, ctx.policy, item.decision);
             this.deps.memory.writeStationLesson(item.id, ctx.policy, item.decision.probes);
           } catch {
             // Memory is best effort; the case record holds everything.
@@ -542,22 +697,10 @@ export class CaseAgent {
     }
   }
 
-  private async propose(item: Case, ctx: Context, args: Record<string, unknown>, record: (s: string, i: unknown, o: unknown, k?: CaseEvent['kind']) => unknown) {
-    if (item.payment?.status === 'released') return record('Refused: the payment was already released.', args, { error: 'This case is settled and paid. Escalate if you believe the settlement was wrong.' });
-    if (++ctx.proposals > 3) return record('Refused a fourth proposal.', args, { error: 'Three proposals are the limit. Escalate the case.' });
-    // A new proposal replaces whatever was waiting for sign-off.
-    if (item.signoff?.status === 'pending') {
-      item.signoff = undefined;
-      item.state = 'investigating';
-    }
-    const verdict = String(args.verdict ?? 'INSPECT');
-    const source = args.source === 'power' ? 'power' : 'ghcn';
-    const rationale = String(args.rationale ?? '');
-
-    // Rerun every figure the agent cited and compare.
-    const figures = Array.isArray(args.figures) ? (args.figures as { label?: string; sql?: string; value?: number }[]).slice(0, 8) : [];
+  // Reruns every figure the agent cited and compares to 0.1.
+  private async checkFigures(figures: { label?: string; sql?: string; value?: number }[]) {
     const checked = [] as { label: string; claimed: number; reproduced?: number; match: boolean; reason?: string }[];
-    for (const figure of figures) {
+    for (const figure of figures.slice(0, 8)) {
       const guarded = guardSql(String(figure.sql ?? ''));
       const claimed = Number(figure.value);
       if (!guarded.ok) {
@@ -573,6 +716,23 @@ export class CaseAgent {
         checked.push({ label: String(figure.label), claimed, match: false, reason: String((error as Error).message) });
       }
     }
+    return checked;
+  }
+
+  private async propose(item: Case, ctx: Context, args: Record<string, unknown>, record: (s: string, i: unknown, o: unknown, k?: CaseEvent['kind']) => unknown) {
+    if (item.payment?.status === 'released') return record('Refused: the payment was already released.', args, { error: 'This case is settled and paid. Escalate if you believe the settlement was wrong.' });
+    if (++ctx.proposals > 3) return record('Refused a fourth proposal.', args, { error: 'Three proposals are the limit. Escalate the case.' });
+    // A new proposal replaces whatever was waiting for sign-off.
+    if (item.signoff?.status === 'pending') {
+      item.signoff = undefined;
+      item.state = 'investigating';
+    }
+    const verdict = String(args.verdict ?? 'INSPECT');
+    const source = args.source === 'power' ? 'power' : 'ghcn';
+    const rationale = String(args.rationale ?? '');
+
+    const figures = Array.isArray(args.figures) ? (args.figures as { label?: string; sql?: string; value?: number }[]) : [];
+    const checked = await this.checkFigures(figures);
     const { station, satellite } = await this.series(ctx, item);
     // The code checks the argument itself: the satellite's total for the window must sit inside its
     // own range for the same weeks of earlier years before it can settle a disagreement.
@@ -635,4 +795,13 @@ function signoffReason(item: Case): string | undefined {
 
 function officerNote(text: string, atRest: boolean): string {
   return `The claims officer writes: ${JSON.stringify(text)}\nAnswer with reply_to_officer after checking with your tools, act on it if it is an instruction, then ${atRest ? 'finish_case' : 'carry on with the case'}.`;
+}
+
+function watcherNote(text: string, today: string): string {
+  return `The watcher reports, on ${today}: ${JSON.stringify(text)}\nCheck it with your tools, record any new lesson, tell the operator if it matters, then finish_case.`;
+}
+
+// The latest date literal in a query that falls after today, if any.
+function afterDay(sql: string, today: string): string | undefined {
+  return [...sql.matchAll(/\d{4}-\d{2}-\d{2}/g)].map(m => m[0]).filter(d => d > today).sort().at(-1);
 }

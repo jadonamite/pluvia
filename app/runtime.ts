@@ -6,7 +6,7 @@ import type { ModelAdapter, QueryAdapter } from './adapters/contracts.js';
 import path from 'node:path';
 import { PluviaMemory } from './memory/pluviaMemory.js';
 import { CaseAgent } from './agent/caseAgent.js';
-import { CaseStore } from './agent/cases.js';
+import { CaseStore, type Case } from './agent/cases.js';
 import { Watcher, type WatchState } from './agent/watcher.js';
 import { existsSync, readFileSync } from 'node:fs';
 
@@ -131,16 +131,42 @@ export async function createRuntime(options: RuntimeOptions = {}): Promise<Runti
   const stationsFile = path.join(options.dataDirectory ?? 'data', 'register', 'stations.json');
   const stations = existsSync(stationsFile) ? (JSON.parse(readFileSync(stationsFile, 'utf8')).stations as { id: string; name: string }[]) : [];
   const seasonFile = path.join(options.dataDirectory ?? 'data', 'replays', 'watch-season.json');
-  const recorded = !live && existsSync(seasonFile) ? (JSON.parse(readFileSync(seasonFile, 'utf8')).days as WatchState[]) : undefined;
-  const watcher = new Watcher({ query, directory: logDirectory, stations, recorded });
+  const season = !live && existsSync(seasonFile) ? (JSON.parse(readFileSync(seasonFile, 'utf8')) as { days: WatchState[]; investigations?: Case[] }) : undefined;
+  const claimsFile = path.join(options.dataDirectory ?? 'data', 'register', 'claims.json');
+  const filings = existsSync(claimsFile)
+    ? (JSON.parse(readFileSync(claimsFile, 'utf8')).claims as { claim_id: string; filed_on?: string }[]).filter(c => c.filed_on).map(c => ({ claim_id: c.claim_id, filed_on: c.filed_on! }))
+    : [];
+  let watcher: Watcher;
   const agent = new CaseAgent({
     query,
     memory,
     store: new CaseStore(path.join(logDirectory, 'cases')),
     replayDirectory: path.join(options.dataDirectory ?? 'data', 'replays'),
     live,
-    watch: stationId => watcher.casesFor(stationId),
+    watch: (stationId, visitor) => watcher.casesFor(stationId, visitor),
+    recordedInvestigations: season?.investigations,
     model: live ? { url: config.nightshift.url, token: config.nightshift.runtimeToken, primary: config.agent.model, fallback: config.agent.fallback } : undefined,
+  });
+  watcher = new Watcher({
+    query,
+    directory: logDirectory,
+    stations,
+    recorded: season?.days,
+    filings,
+    perVisitor: !live,
+    onFiled: async (claimIds, visitor) => {
+      for (const id of claimIds) await agent.start(id, visitor).catch(() => undefined);
+    },
+    // Live, the agent investigates each watch case and answers each new finding.
+    handoff: live
+      ? {
+          open: async (item, today, notice) => (await agent.startWatch({ watch: item, today, fallbackNotice: notice, findings: item.findings })).id,
+          wake: async (item, finding, today) => {
+            await agent.wakeWatch(item.agent_case_id!, finding.summary, today);
+            return true;
+          },
+        }
+      : undefined,
   });
 
   return {
