@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#F2EDE3">
+  <meta name="description" content="Review crop-insurance claims against rainfall records and independent satellite evidence.">
+  <title>Pluvia | Claims desk</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/tokens.css">
+  <link rel="stylesheet" href="/styles.css">
+  <script defer src="/vendor/chart.umd.min.js"></script>
+  <script defer src="/legal.js"></script>
+  <script defer src="/app.js"></script>
+</head>
+<body>
+  <a class="skip" href="#claim-detail">Skip to selected claim</a>
+  <header class="masthead">
+    <a class="wordmark" href="/" translate="no">pluvia<span class="brand-period" aria-hidden="true">.</span></a>
+    <span class="desk-name">Claims desk</span>
+    <div class="header-actions"><span class="mode" id="mode">Checking connection…</span><button class="quiet" id="theme" type="button">Dark appearance</button></div>
+  </header>
+  <div class="notice" id="notice"><p>This desk uses synthetic claims and real rainfall records. No payments are made. No analytics or cookies; preferences stay in this tab.</p><button class="quiet" id="dismiss-notice" type="button">Dismiss</button></div>
+  <div class="workspace">
+    <aside class="inbox" aria-labelledby="inbox-title">
+      <div class="inbox-heading"><div><h1 id="inbox-title">Claim inbox</h1></div><span id="claim-count" class="count">—</span></div>
+      <label class="search-label" for="claim-search">Find a claim</label><input id="claim-search" name="claim-search" type="search" placeholder="Group, station or claim ID…" autocomplete="off">
+      <p class="inbox-note">Synthetic policies &amp; claims</p>
+      <nav id="claim-list" aria-label="Claims"><p class="muted loading">Loading claims…</p></nav>
+      <button class="quiet reload" id="reload" type="button">Refresh inbox</button>
+      <div class="inbox-bottom"><span class="small-rule"></span><p>One station is a record.<br>Two sources are a check.</p><span class="inbox-motto">Evidence before settlement</span></div>
+    </aside>
+    <main id="claim-detail" tabindex="-1">
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+      <section id="claim-overview" class="overview"><p class="eyebrow">Rainfall claim review</p><h2>Select a claim to inspect its evidence.</h2><p class="muted">The inbox lists the available synthetic farmer groups and policies.</p></section>
+      <div id="results" hidden>
+        <div class="evidence-layout">
+          <section class="rainfall" aria-labelledby="rainfall-title">
+            <div class="section-heading"><div><p class="eyebrow">01 / Evidence</p><h2 id="rainfall-title">The rainfall record</h2></div><span class="unit">Daily · mm</span></div>
+            <div class="chart-legend"><span><i class="legend-station"></i>Ground station</span><span><i class="legend-satellite"></i>Independent satellite</span><span><i class="legend-missing"></i>Station unavailable</span></div>
+            <div class="chart-wrap"><canvas id="rainfall-chart" role="img" aria-label="Daily station and satellite rainfall. Exact values and unavailable readings are in the daily data table below."></canvas><p id="chart-unavailable" hidden>Chart unavailable. Read the daily data table below for the complete record.</p></div>
+            <p id="chart-caption" class="chart-caption"></p>
+            <div id="source-summary" class="source-summary"></div>
+            <details id="daily-details"><summary>Read daily data and quality flags</summary><div class="table-scroll" tabindex="0" role="region" aria-label="Daily rainfall observations"><table><caption>Unavailable readings are not zero rainfall.</caption><thead><tr><th scope="col">Date</th><th scope="col">Station mm</th><th scope="col">Satellite mm</th><th scope="col">Station flags</th></tr></thead><tbody id="daily-rows"></tbody></table></div></details>
+          </section>
+          <aside class="decision" aria-labelledby="decision-title"><p class="eyebrow">02 / PolicyGate · code</p><div id="decision-content"></div></aside>
+        </div>
+        <section class="comparison" aria-labelledby="comparison-title"><div><h2 id="comparison-title">What the automatic trigger would do</h2><p class="muted">The baseline sums reported station values without checking the missing record.</p></div><div id="naive-content"></div></section>
+        <section class="section-block" aria-labelledby="probes-title"><div class="section-heading"><div><p class="eyebrow">03 / Deterministic checks</p><h2 id="probes-title">Where the record holds up</h2></div><span id="probe-count" class="unit"></span></div><div id="probes"></div></section>
+        <div class="lower-grid"><section class="section-block" aria-labelledby="case-title"><h2 id="case-title">The strongest case for paying</h2><p id="counter-case" class="reading"></p><details><summary>Read the decision letter</summary><pre id="letter" class="letter"></pre></details></section><section class="section-block" aria-labelledby="memory-title"><p class="eyebrow">04 / H-MEM</p><h2 id="memory-title">What this review remembers</h2><div id="memory"></div></section></div>
+        <section class="section-block trace-section" aria-labelledby="trace-title"><div class="section-heading"><div><p class="eyebrow">05 / Review trail</p><h2 id="trace-title">Follow the evidence to the decision</h2></div><span id="run-time" class="unit"></span></div><p id="run-id" class="muted mono"></p><div id="trace"></div></section>
+        <section class="feedback section-block" aria-labelledby="feedback-title"><div><h2 id="feedback-title">Was this review useful?</h2><p class="muted">Your assessment is stored in H-MEM. It does not change the gate decision or payout.</p></div><form id="feedback-form"><div class="feedback-buttons"><button type="submit" name="kind" value="helpful">Confirm · helpful</button><button class="quiet" type="submit" name="kind" value="wrong">Override · wrong</button></div><p id="feedback-status" role="status" aria-live="polite"></p></form></section>
+      </div>
+      <footer><p>Synthetic groups, policies and amounts. Real rainfall evidence. No settlement service.</p><nav aria-label="Policies"><button class="text-button" data-legal="terms">Terms</button><button class="text-button" data-legal="privacy">Privacy</button><button class="text-button" data-legal="cookies">Cookie policy</button></nav></footer>
+    </main>
+  </div>
+  <dialog id="legal-dialog" aria-labelledby="legal-title"><div class="dialog-heading"><h2 id="legal-title"></h2><button class="quiet" id="close-legal" type="button">Close</button></div><p class="muted">Updated 27 October 2026 · Not legally reviewed</p><div id="legal-content" class="reading"></div></dialog>
+</body>
+</html>

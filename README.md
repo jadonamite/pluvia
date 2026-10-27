@@ -12,7 +12,7 @@ Requires Node 20.19 or later. From a clean source checkout:
 npm ci && npm start
 ```
 
-Open [the claims desk](http://localhost:8000). No environment file or account is needed: with no credentials, both services use cached evidence. Each service decides on its own credential. Rainfall data goes live through Zetaris when `ZETARIS_API_KEY` is set, and model steps go live through Nightshift when `METERLESS_RUNTIME_TOKEN` is set. `SAMPLE_MODE=true` forces both onto cached evidence and `SAMPLE_MODE=false` forces both live. Startup and `/health` report `sample_data`, `sample_model` and the reason, and nothing reports a live path while serving cached evidence. The three Lagos claims share one genuine weather window and demonstrate memory across claims. Three further sample pairs exercise the historical Kitale, Teresina and Dodoma evidence.
+Open [the front page](http://localhost:8000) or go straight to [the claims desk](http://localhost:8000/desk). No environment file or account is needed: with no credentials, both services use cached evidence. Each service decides on its own credential. Rainfall data goes live through Zetaris when `ZETARIS_API_KEY` is set, and model steps go live through Nightshift when `METERLESS_RUNTIME_TOKEN` is set. `SAMPLE_MODE=true` forces both onto cached evidence and `SAMPLE_MODE=false` forces both live. Startup and `/health` report `sample_data`, `sample_model` and the reason, and nothing reports a live path while serving cached evidence. The three Lagos claims share one genuine weather window and demonstrate memory across claims. Three further sample pairs exercise the historical Kitale, Teresina and Dodoma evidence.
 
 ```sh
 SAMPLE_MODE=true npm run claim -- input_examples/lagos_01.json
@@ -156,7 +156,7 @@ The original dated Dodoma fixture was not available. The recovered observation s
 
 ## Repository
 
-`app/` contains the loop, probes, gate, adapters and memory integration. `public/` is the claims desk. `data/` holds the synthetic register and genuine small snapshots. `scripts/` contains registration, source retrieval, climatology and official conformance tooling. `eval/` contains labelled cases and repeatable results. `input_examples/` and `output_examples/` pair runnable inputs with actual outputs. [PRD.md](PRD.md) and [Architecture.md](Architecture.md) describe the product contract and stack.
+`app/` contains the loop, probes, gate, adapters and memory integration. `public/` holds the front page (`index.html`, a scroll-driven story) and the claims desk (`desk.html`), with shared tokens, self-hosted fonts and vendored GSAP, Lenis and Chart.js; scene images are in `public/images/scenes`. [DESIGN.md](DESIGN.md) records the interface foundations. `data/` holds the synthetic register and genuine small snapshots. `scripts/` contains registration, source retrieval, climatology and official conformance tooling. `eval/` contains labelled cases and repeatable results. `input_examples/` and `output_examples/` pair runnable inputs with actual outputs. [PRD.md](PRD.md) and [Architecture.md](Architecture.md) describe the product contract and stack.
 
 ## Limits
 

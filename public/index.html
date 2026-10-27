@@ -3,55 +3,226 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#fff4f1">
-  <meta name="description" content="Review crop-insurance claims against rainfall records and independent satellite evidence.">
-  <title>Pluvia | Claims desk</title>
+  <meta name="theme-color" content="#14120E">
+  <meta name="description" content="Pluvia reads the rainfall record behind every crop-insurance claim, so payouts land on the farms that lost the rain.">
+  <title>Pluvia | Read the rain before the money moves</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/styles.css">
-  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-  <script defer src="/app.js"></script>
+  <link rel="preload" href="/fonts/ibm-plex-sans-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/images/scenes/k1-2560.avif" as="image" type="image/avif" media="(min-width: 721px)">
+  <link rel="preload" href="/images/scenes/s03m-1440.avif" as="image" type="image/avif" media="(max-width: 720px)">
+  <link rel="stylesheet" href="/tokens.css">
+  <link rel="stylesheet" href="/landing.css">
+  <script>if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('motion');</script>
+  <script defer src="/vendor/gsap.min.js"></script>
+  <script defer src="/vendor/ScrollTrigger.min.js"></script>
+  <script defer src="/vendor/lenis.min.js"></script>
+  <script defer src="/legal.js"></script>
+  <script defer src="/landing.js"></script>
 </head>
 <body>
-  <a class="skip" href="#claim-detail">Skip to selected claim</a>
-  <header class="masthead">
-    <a class="wordmark" href="/" translate="no">pluvia<span class="brand-period" aria-hidden="true">.</span></a>
-    <span class="desk-name">Claims desk</span>
-    <div class="header-actions"><span class="mode" id="mode">Checking connection…</span><button class="quiet" id="theme" type="button">Dark appearance</button></div>
-  </header>
-  <div class="notice" id="notice"><p>This desk uses synthetic claims and real rainfall records. No payments are made. No analytics or cookies; preferences stay in this tab.</p><button class="quiet" id="dismiss-notice" type="button">Dismiss</button></div>
-  <div class="workspace">
-    <aside class="inbox" aria-labelledby="inbox-title">
-      <div class="inbox-heading"><div><h1 id="inbox-title">Claim inbox</h1></div><span id="claim-count" class="count">—</span></div>
-      <label class="search-label" for="claim-search">Find a claim</label><input id="claim-search" name="claim-search" type="search" placeholder="Group, station or claim ID…" autocomplete="off">
-      <p class="inbox-note">Synthetic policies &amp; claims</p>
-      <nav id="claim-list" aria-label="Claims"><p class="muted loading">Loading claims…</p></nav>
-      <button class="quiet reload" id="reload" type="button">Refresh inbox</button>
-      <div class="inbox-bottom"><span class="small-rule"></span><p>One station is a record.<br>Two sources are a check.</p><span class="inbox-motto">Evidence before settlement</span></div>
-    </aside>
-    <main id="claim-detail" tabindex="-1">
-      <div id="status" class="status" role="status" aria-live="polite"></div>
-      <section id="claim-overview" class="overview"><p class="eyebrow">Rainfall claim review</p><h2>Select a claim to inspect its evidence.</h2><p class="muted">The inbox lists the available synthetic farmer groups and policies.</p></section>
-      <div id="results" hidden>
-        <div class="evidence-layout">
-          <section class="rainfall" aria-labelledby="rainfall-title">
-            <div class="section-heading"><div><p class="eyebrow">01 / Evidence</p><h2 id="rainfall-title">The rainfall record</h2></div><span class="unit">Daily · mm</span></div>
-            <div class="chart-legend"><span><i class="legend-station"></i>Ground station</span><span><i class="legend-satellite"></i>Independent satellite</span><span><i class="legend-missing"></i>Station unavailable</span></div>
-            <div class="chart-wrap"><canvas id="rainfall-chart" role="img" aria-label="Daily station and satellite rainfall. Exact values and unavailable readings are in the daily data table below."></canvas><p id="chart-unavailable" hidden>Chart unavailable. Read the daily data table below for the complete record.</p></div>
-            <p id="chart-caption" class="chart-caption"></p>
-            <div id="source-summary" class="source-summary"></div>
-            <details id="daily-details"><summary>Read daily data and quality flags</summary><div class="table-scroll" tabindex="0" role="region" aria-label="Daily rainfall observations"><table><caption>Unavailable readings are not zero rainfall.</caption><thead><tr><th scope="col">Date</th><th scope="col">Station mm</th><th scope="col">Satellite mm</th><th scope="col">Station flags</th></tr></thead><tbody id="daily-rows"></tbody></table></div></details>
-          </section>
-          <aside class="decision" aria-labelledby="decision-title"><p class="eyebrow">02 / PolicyGate · code</p><div id="decision-content"></div></aside>
-        </div>
-        <section class="comparison" aria-labelledby="comparison-title"><div><h2 id="comparison-title">What the automatic trigger would do</h2><p class="muted">The baseline sums reported station values without checking the missing record.</p></div><div id="naive-content"></div></section>
-        <section class="section-block" aria-labelledby="probes-title"><div class="section-heading"><div><p class="eyebrow">03 / Deterministic checks</p><h2 id="probes-title">Where the record holds up</h2></div><span id="probe-count" class="unit"></span></div><div id="probes"></div></section>
-        <div class="lower-grid"><section class="section-block" aria-labelledby="case-title"><h2 id="case-title">The strongest case for paying</h2><p id="counter-case" class="reading"></p><details><summary>Read the decision letter</summary><pre id="letter" class="letter"></pre></details></section><section class="section-block" aria-labelledby="memory-title"><p class="eyebrow">04 / H-MEM</p><h2 id="memory-title">What this review remembers</h2><div id="memory"></div></section></div>
-        <section class="section-block trace-section" aria-labelledby="trace-title"><div class="section-heading"><div><p class="eyebrow">05 / Review trail</p><h2 id="trace-title">Follow the evidence to the decision</h2></div><span id="run-time" class="unit"></span></div><p id="run-id" class="muted mono"></p><div id="trace"></div></section>
-        <section class="feedback section-block" aria-labelledby="feedback-title"><div><h2 id="feedback-title">Was this review useful?</h2><p class="muted">Your assessment is stored in H-MEM. It does not change the gate decision or payout.</p></div><form id="feedback-form"><div class="feedback-buttons"><button type="submit" name="kind" value="helpful">Confirm · helpful</button><button class="quiet" type="submit" name="kind" value="wrong">Override · wrong</button></div><p id="feedback-status" role="status" aria-live="polite"></p></form></section>
-      </div>
-      <footer><p>Synthetic groups, policies and amounts. Real rainfall evidence. No settlement service.</p><nav aria-label="Policies"><button class="text-button" data-legal="terms">Terms</button><button class="text-button" data-legal="privacy">Privacy</button><button class="text-button" data-legal="cookies">Cookie policy</button></nav></footer>
-    </main>
+  <a class="skip" href="#main">Skip to content</a>
+
+  <div class="loader" id="loader" aria-hidden="true" hidden>
+    <canvas></canvas>
+    <span class="loader-count">Lagos · July 2025 · daily rainfall, mm</span>
   </div>
-  <dialog id="legal-dialog" aria-labelledby="legal-title"><div class="dialog-heading"><h2 id="legal-title"></h2><button class="quiet" id="close-legal" type="button">Close</button></div><p class="muted">Updated 26 October 2026 · Not legally reviewed</p><div id="legal-content" class="reading"></div></dialog>
+
+  <header class="nav">
+    <a class="wordmark" href="/" aria-label="Pluvia home">pluvia</a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#sources">How it reads</a>
+      <a href="#checks">The checks</a>
+      <a href="#outcomes">Outcomes</a>
+    </nav>
+    <a class="button button-solid" href="/desk" aria-label="Open the claims desk"><span class="cta-long">Open the claims desk</span><span class="cta-short" aria-hidden="true">Claims desk</span></a>
+  </header>
+
+  <main id="main">
+    <section class="arrive" id="arrive" aria-labelledby="arrive-title">
+      <picture class="plate">
+        <source type="image/avif" media="(max-width: 720px)" srcset="/images/scenes/s03m-720.avif 720w, /images/scenes/s03m-1440.avif 1440w" sizes="100vw">
+        <source type="image/webp" media="(max-width: 720px)" srcset="/images/scenes/s03m-720.webp 720w, /images/scenes/s03m-1440.webp 1440w" sizes="100vw">
+        <source type="image/avif" srcset="/images/scenes/k1-1280.avif 1280w, /images/scenes/k1-2560.avif 2560w" sizes="100vw">
+        <img src="/images/scenes/k1-1280.webp" srcset="/images/scenes/k1-1280.webp 1280w, /images/scenes/k1-2560.webp 2560w" sizes="100vw" alt="A small field station with a lit window beside a dry maize field at dusk, a storm raining far off on the horizon." fetchpriority="high">
+      </picture>
+      <picture class="plate descent" aria-hidden="true">
+        <source type="image/avif" media="(max-width: 720px)" srcset="/images/scenes/s02m-720.avif 720w, /images/scenes/s02m-1440.avif 1440w" sizes="100vw">
+        <source type="image/webp" media="(max-width: 720px)" srcset="/images/scenes/s02m-720.webp 720w, /images/scenes/s02m-1440.webp 1440w" sizes="100vw">
+        <source type="image/avif" srcset="/images/scenes/s02-1280.avif 1280w, /images/scenes/s02-2560.avif 2560w" sizes="100vw">
+        <img src="/images/scenes/s02-1280.webp" srcset="/images/scenes/s02-1280.webp 1280w, /images/scenes/s02-2560.webp 2560w" sizes="100vw" alt="">
+      </picture>
+      <div class="arrive-shade" aria-hidden="true"></div>
+      <div class="arrive-wordmark" aria-hidden="true"><span>p</span><span>l</span><span>u</span><span>v</span><span>i</span><span>a</span></div>
+      <div class="arrive-copy">
+        <h1 id="arrive-title">Read the rain before the money moves.</h1>
+        <p>Pluvia checks the rainfall record behind every crop-insurance claim, so payouts land on the farms that lost the rain.</p>
+        <div class="arrive-actions">
+          <a class="button button-solid" href="/desk">Open the claims desk</a>
+          <a class="button button-line" href="#window">See it work</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="window" id="window" aria-labelledby="window-title">
+      <div class="window-stage">
+        <picture class="plate calm">
+          <source type="image/avif" srcset="/images/scenes/s04a-1280.avif 1280w, /images/scenes/s04a-2560.avif 2560w" sizes="100vw">
+          <img src="/images/scenes/s04a-1280.webp" srcset="/images/scenes/s04a-1280.webp 1280w, /images/scenes/s04a-2560.webp 2560w" sizes="100vw" alt="A claims officer at his desk at night, rainfall charts on two screens, a storm gathering outside the open window." loading="lazy">
+        </picture>
+        <picture class="plate storm" aria-hidden="true">
+          <source type="image/avif" srcset="/images/scenes/s04b-1280.avif 1280w, /images/scenes/s04b-2560.avif 2560w" sizes="100vw">
+          <img src="/images/scenes/s04b-1280.webp" srcset="/images/scenes/s04b-1280.webp 1280w, /images/scenes/s04b-2560.webp 2560w" sizes="100vw" alt="" loading="lazy">
+        </picture>
+        <div class="window-card">
+          <p class="eyebrow">Lagos · July 2025</p>
+          <h2 id="window-title" class="sr-only">A drought that never happened</h2>
+          <p class="statement" data-fill>The gauge reported 10 days out of 31, and nine of them read zero. A blind trigger adds that up to 6.1 mm, calls it a drought and would pay ₦2,500,000. Pluvia sees 21 missing days and a satellite that measured 131.7 mm, and sends an inspector.</p>
+          <div class="fact-row">
+            <span><strong>10 / 31</strong>days the gauge reported</span>
+            <span><strong>6.1 mm</strong>on the gauge</span>
+            <span><strong>131.7 mm</strong>from the satellite</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sources" id="sources" aria-labelledby="sources-title">
+      <div class="sources-stage">
+        <div class="readings left" aria-hidden="true" data-readings="station"></div>
+        <div class="readings right" aria-hidden="true" data-readings="satellite"></div>
+        <canvas aria-hidden="true"></canvas>
+        <div class="sources-head">
+          <p class="eyebrow">Two sources</p>
+          <h2 id="sources-title" class="scene-title">One gauge on the ground.<br>One satellite overhead.</h2>
+          <p class="lede">Pluvia reads both, day by day, and knows a missing reading from a dry one.</p>
+        </div>
+        <div class="sources-objects">
+          <figure>
+            <img src="/images/scenes/s05a-600.webp" srcset="/images/scenes/s05a-600.webp 600w, /images/scenes/s05a-1200.webp 1200w" sizes="22rem" alt="A weathered metal rain gauge on a concrete plinth in dry red earth." loading="lazy">
+            <figcaption>The ground gauge</figcaption>
+          </figure>
+          <figure>
+            <img src="/images/scenes/s05b-600.webp" srcset="/images/scenes/s05b-600.webp 600w, /images/scenes/s05b-1200.webp 1200w" sizes="22rem" alt="A gold-foiled weather satellite with two solar panels." loading="lazy">
+            <figcaption>The satellite overhead</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="checks" id="checks" aria-labelledby="checks-title">
+      <div class="checks-stage">
+        <div class="checks-head">
+          <p class="eyebrow">Eight checks</p>
+          <h2 id="checks-title" class="scene-title">Eight checks on every claim.</h2>
+          <p class="lede">Each one runs in code over the full record, before anyone talks about money. On the Lagos claim, three of them caught the problem.</p>
+        </div>
+        <ol class="stack" aria-label="The record and the eight checks">
+          <li class="layer record">
+            <span class="layer-id">Record</span>
+            <div><h3>The ground gauge</h3><p>Ten readings in 31 days. Hatched days never arrived.</p><div class="days station" aria-hidden="true" data-days="station"></div></div>
+          </li>
+          <li class="layer record">
+            <span class="layer-id">Record</span>
+            <div><h3>The satellite</h3><p>Every day of the month, measured from orbit.</p><div class="days satellite" aria-hidden="true" data-days="satellite"></div></div>
+          </li>
+          <li class="layer caught"><span class="layer-id">P1</span><div><h3>Missing days</h3><p>Days the gauge never reported.</p><span class="caught-tag">Caught: 21 of 31 days missing</span></div></li>
+          <li class="layer caught"><span class="layer-id">P2</span><div><h3>Gaps posing as dry days</h3><p>Blank days that a trigger would count as zero rain.</p><span class="caught-tag">Caught: zeros on days the satellite saw rain</span></div></li>
+          <li class="layer"><span class="layer-id">P3</span><div><h3>Quality flags</h3><p>Readings the archive itself marked.</p></div></li>
+          <li class="layer"><span class="layer-id">P4</span><div><h3>A record that stops early</h3><p>A gauge that went quiet before the window closed.</p></div></li>
+          <li class="layer"><span class="layer-id">P5</span><div><h3>A gauge too far away</h3><p>A station miles from the farm it pays.</p></div></li>
+          <li class="layer caught"><span class="layer-id">P6</span><div><h3>Sources that disagree</h3><p>Ground and satellite telling different stories.</p><span class="caught-tag">Caught: 6.1 mm against 131.7 mm</span></div></li>
+          <li class="layer"><span class="layer-id">P7</span><div><h3>Satellite gaps</h3><p>Fill values standing in for real measurements.</p></div></li>
+          <li class="layer"><span class="layer-id">P8</span><div><h3>Too close to call</h3><p>A total sitting right on the trigger.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="outcomes" id="outcomes" aria-labelledby="outcomes-title">
+      <div class="outcomes-head">
+        <p class="eyebrow">Four outcomes</p>
+        <h2 id="outcomes-title" class="scene-title">The model explains.<br>The code decides.</h2>
+        <p class="lede">A model reads the findings and writes the case. Plain code applies the contract, so no wording can clear a failed check or set a payout.</p>
+      </div>
+      <ul class="cards">
+        <li class="card">
+          <picture><source type="image/avif" srcset="/images/scenes/s06a-600.avif 600w, /images/scenes/s06a-1000.avif 1000w" sizes="(max-width: 720px) 100vw, 25vw"><img src="/images/scenes/s06a-600.webp" srcset="/images/scenes/s06a-600.webp 600w, /images/scenes/s06a-1000.webp 1000w" sizes="(max-width: 720px) 100vw, 25vw" alt="A farmer shading her eyes in a field of collapsed brown maize under an empty sky." loading="lazy"></picture>
+          <div class="card-body"><span class="verdict pay">Pay</span><h3>The rain failed.</h3><p>Both records agree the farm went dry. The farmer is paid.</p></div>
+        </li>
+        <li class="card">
+          <picture><source type="image/avif" srcset="/images/scenes/s06b-600.avif 600w, /images/scenes/s06b-1000.avif 1000w" sizes="(max-width: 720px) 100vw, 25vw"><img src="/images/scenes/s06b-600.webp" srcset="/images/scenes/s06b-600.webp 600w, /images/scenes/s06b-1000.webp 1000w" sizes="(max-width: 720px) 100vw, 25vw" alt="A farmer in her dry field while rain falls on a distant hill where the gauge stands." loading="lazy"></picture>
+          <div class="card-body"><span class="verdict pay-anyway">Pay anyway</span><h3>Rain hit the gauge, not the farm.</h3><p>A distant station cannot refuse a farm that went dry. Pluvia pays it.</p></div>
+        </li>
+        <li class="card">
+          <picture><source type="image/avif" srcset="/images/scenes/s06c-600.avif 600w, /images/scenes/s06c-1000.avif 1000w" sizes="(max-width: 720px) 100vw, 25vw"><img src="/images/scenes/s06c-600.webp" srcset="/images/scenes/s06c-600.webp 600w, /images/scenes/s06c-1000.webp 1000w" sizes="(max-width: 720px) 100vw, 25vw" alt="A claims officer kneels to touch the soil while the farmer points down a row that is half dry, half green." loading="lazy"></picture>
+          <div class="card-body"><span class="verdict inspect">Inspect</span><h3>The record has holes.</h3><p>Gaps or disagreeing sources send an inspector to walk the field.</p></div>
+        </li>
+        <li class="card">
+          <picture><source type="image/avif" srcset="/images/scenes/s06d-600.avif 600w, /images/scenes/s06d-1000.avif 1000w" sizes="(max-width: 720px) 100vw, 25vw"><img src="/images/scenes/s06d-600.webp" srcset="/images/scenes/s06d-600.webp 600w, /images/scenes/s06d-1000.webp 1000w" sizes="(max-width: 720px) 100vw, 25vw" alt="A smiling farmer checks her phone in tall green maize after rain." loading="lazy"></picture>
+          <div class="card-body"><span class="verdict refuse">Do not pay</span><h3>The rain came.</h3><p>The crop stood. Every refusal still carries the strongest case for paying, for an officer to read.</p></div>
+        </li>
+      </ul>
+    </section>
+
+    <section class="memory" id="memory" aria-labelledby="memory-title">
+      <img class="cloud b" src="/images/scenes/s01c-960.webp" srcset="/images/scenes/s01c-960.webp 960w, /images/scenes/s01c-1920.webp 1920w" sizes="80vw" alt="" loading="lazy">
+      <img class="cloud a" src="/images/scenes/s01a-960.webp" srcset="/images/scenes/s01a-960.webp 960w, /images/scenes/s01a-1920.webp 1920w" sizes="100vw" alt="" loading="lazy">
+      <div class="memory-copy">
+        <p class="eyebrow">Memory</p>
+        <h2 id="memory-title" class="scene-title">It remembers the last storm.</h2>
+        <p class="lede">When a second claim arrives from the same gauge and the same weeks, Pluvia already knows what the record hides and settles it a round sooner.</p>
+      </div>
+    </section>
+
+    <section class="rain" id="rain" aria-labelledby="rain-title">
+      <div class="rain-stage">
+        <picture class="plate before" aria-hidden="true">
+          <source type="image/avif" media="(max-width: 720px)" srcset="/images/scenes/s03m-720.avif 720w, /images/scenes/s03m-1440.avif 1440w" sizes="100vw">
+          <source type="image/avif" srcset="/images/scenes/k1-1280.avif 1280w, /images/scenes/k1-2560.avif 2560w" sizes="100vw">
+          <img src="/images/scenes/k1-1280.webp" srcset="/images/scenes/k1-1280.webp 1280w, /images/scenes/k1-2560.webp 2560w" sizes="100vw" alt="" loading="lazy">
+        </picture>
+        <picture class="plate after">
+          <source type="image/avif" media="(max-width: 720px)" srcset="/images/scenes/s07m-720.avif 720w, /images/scenes/s07m-1440.avif 1440w" sizes="100vw">
+          <source type="image/webp" media="(max-width: 720px)" srcset="/images/scenes/s07m-720.webp 720w, /images/scenes/s07m-1440.webp 1440w" sizes="100vw">
+          <source type="image/avif" srcset="/images/scenes/s07-1280.avif 1280w, /images/scenes/s07-2560.avif 2560w" sizes="100vw">
+          <img src="/images/scenes/s07-1280.webp" srcset="/images/scenes/s07-1280.webp 1280w, /images/scenes/s07-2560.webp 2560w" sizes="100vw" alt="The same field station after rain, the maize tall and green, puddles on the track." loading="lazy">
+        </picture>
+        <canvas aria-hidden="true"></canvas>
+        <div class="rain-copy">
+          <h2 id="rain-title" class="sr-only">Fair both ways</h2>
+          <p>No pool drained by a broken gauge.</p>
+          <p>No farmer refused on one gauge.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="close" id="close" aria-labelledby="close-title">
+      <picture class="plate" aria-hidden="true">
+        <source type="image/avif" srcset="/images/scenes/s08-1280.avif 1280w, /images/scenes/s08-2560.avif 2560w" sizes="100vw">
+        <img src="/images/scenes/s08-1280.webp" srcset="/images/scenes/s08-1280.webp 1280w, /images/scenes/s08-2560.webp 2560w" sizes="100vw" alt="" loading="lazy">
+      </picture>
+      <div class="marquee" aria-hidden="true"><span>Open the claims desk</span><span>Open the claims desk</span><span>Open the claims desk</span></div>
+      <div class="close-card">
+        <h2 id="close-title">Every claim, read twice.</h2>
+        <p>Pick a claim, watch the record get checked day by day, and see the decision the code reaches.</p>
+        <div class="arrive-actions"><a class="button button-ink" href="/desk">Open the claims desk</a></div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <a class="wordmark" href="/">pluvia</a>
+    <p>Real rainfall. Claims checked before money moves.</p>
+    <nav aria-label="Policies">
+      <button class="text-button" type="button" data-legal="terms">Terms</button>
+      <button class="text-button" type="button" data-legal="privacy">Privacy</button>
+      <button class="text-button" type="button" data-legal="cookies">Cookie policy</button>
+    </nav>
+  </footer>
+
+  <dialog id="legal-dialog" aria-labelledby="legal-title">
+    <div class="dialog-heading"><h2 id="legal-title"></h2><button class="button button-line" id="close-legal" type="button">Close</button></div>
+    <p class="muted">Updated 27 October 2026 · Not legally reviewed</p>
+    <div id="legal-content"></div>
+  </dialog>
 </body>
 </html>

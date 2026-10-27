@@ -1,0 +1,63 @@
+/* Pluvia foundations shared by the front page and the claims desk. DESIGN.md explains each role. */
+
+@font-face{font-family:"Plex Sans";src:url(/fonts/ibm-plex-sans-latin-standard-normal.woff2) format("woff2-variations");font-weight:100 700;font-stretch:75% 100%;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Plex Sans";src:url(/fonts/ibm-plex-sans-latin-ext-standard-normal.woff2) format("woff2-variations");font-weight:100 700;font-stretch:75% 100%;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Plex Mono";src:url(/fonts/ibm-plex-mono-latin-400-normal.woff2) format("woff2");font-weight:400;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Plex Mono";src:url(/fonts/ibm-plex-mono-latin-ext-400-normal.woff2) format("woff2");font-weight:400;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+@font-face{font-family:"Plex Mono";src:url(/fonts/ibm-plex-mono-latin-500-normal.woff2) format("woff2");font-weight:500;font-display:swap;unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD}
+@font-face{font-family:"Plex Mono";src:url(/fonts/ibm-plex-mono-latin-ext-500-normal.woff2) format("woff2");font-weight:500;font-display:swap;unicode-range:U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF}
+
+:root{
+  color-scheme:light;
+  --font-sans:"Plex Sans",-apple-system,BlinkMacSystemFont,system-ui,sans-serif;
+  --font-mono:"Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  /* palette A */
+  --pal-ink:#14120E;--pal-paper:#F2EDE3;--pal-sand:#B9AE8E;--pal-terracotta:#C2573A;--pal-sage:#8D9C7A;--pal-amber:#E3A33B;--pal-rain:#5B8DB8;--pal-grass:#5E8C3A;
+
+  /* semantic roles, light */
+  --label:#14120E;--secondary:#5B5346;--background:#F2EDE3;--surface:#E9E2D4;--card:#FAF7F0;
+  --separator:#D3C8B3;--control-border:#8A7F6C;
+  --action:#14120E;--on-action:#F2EDE3;--accent:#A3432A;
+  --station:#B87514;--satellite:#3F6D96;
+  --verdict-pay:#4F6340;--verdict-pay-anyway:#8A5A0E;--verdict-inspect:#A3432A;--verdict-refuse:#5B5346;
+
+  /* type scale, rem from 16px root */
+  --text-display:clamp(3.5rem,14vw,12rem);
+  --text-hero:clamp(2.25rem,5.2vw,4.5rem);
+  --text-large-title:2.25rem;--text-title-1:2.125rem;--text-title-2:1.75rem;--text-title-3:1.1875rem;
+  --text-body:1rem;--text-caption:.875rem;--text-footnote:.75rem;
+
+  /* spacing, 4px base */
+  --space-1:.25rem;--space-2:.5rem;--space-3:.75rem;--space-4:1rem;--space-5:1.25rem;--space-6:1.5rem;
+  --space-8:2rem;--space-10:2.5rem;--space-12:3rem;--space-16:4rem;--space-24:6rem;--space-32:8rem;
+
+  --target:2.75rem;
+  --radius-small:.25rem;--radius-control:.5rem;--radius-panel:.75rem;--radius-card:1rem;--radius-pill:999px;
+  --shadow-float:0 24px 64px #14120E33;
+
+  --duration-quick:120ms;--duration:240ms;--duration-slow:320ms;
+  --ease-out:cubic-bezier(.2,.7,.2,1);--ease-in:cubic-bezier(.5,0,.75,0);
+}
+:root[data-theme=dark]{
+  color-scheme:dark;
+  --label:#F2EDE3;--secondary:#B5AB98;--background:#14120E;--surface:#1D1A15;--card:#25211B;
+  --separator:#3A352C;--control-border:#7F7663;
+  --action:#F2EDE3;--on-action:#14120E;--accent:#E0805F;
+  --station:#E3A33B;--satellite:#82AED6;
+  --verdict-pay:#A3B48F;--verdict-pay-anyway:#E3A33B;--verdict-inspect:#E0805F;--verdict-refuse:#B5AB98;
+  --shadow-float:0 24px 64px #0009;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){
+  color-scheme:dark;
+  --label:#F2EDE3;--secondary:#B5AB98;--background:#14120E;--surface:#1D1A15;--card:#25211B;
+  --separator:#3A352C;--control-border:#7F7663;
+  --action:#F2EDE3;--on-action:#14120E;--accent:#E0805F;
+  --station:#E3A33B;--satellite:#82AED6;
+  --verdict-pay:#A3B48F;--verdict-pay-anyway:#E3A33B;--verdict-inspect:#E0805F;--verdict-refuse:#B5AB98;
+  --shadow-float:0 24px 64px #0009;
+}}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}

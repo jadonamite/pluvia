@@ -57,6 +57,7 @@ export function createApp(orchestrator: Orchestrator, sampleMode: boolean) {
     c.header('Content-Type', 'application/json');
     return c.body(body);
   });
+  app.get('/desk', serveStatic({ path: './public/desk.html' }));
   app.use('/*', serveStatic({ root: './public' }));
   app.notFound(c => c.json(error('not_found', 'Page not found.'), 404));
   return app;
