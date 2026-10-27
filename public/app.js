@@ -143,6 +143,7 @@
     if (item.replay && item.running) { $('working').hidden = false; $('working').textContent = `Replaying a recorded live investigation · step ${item.steps_used} · ${item.events.at(-1)?.summary || ''}`; }
     else $('working').hidden = !working && !item.replay;
     if (!(item.replay && item.running)) $('working').textContent = working ? `The agent is working · step ${item.steps_used} · ${item.events.at(-1)?.summary || ''}` : item.replay ? `A recorded live investigation, replayed${item.models?.length ? ` · ${item.models.join(', ')}` : ''}` : '';
+    $('working').classList.toggle('live', Boolean(item.running));
     renderDecision(item); renderTimeline(item); renderChecks(item.decision?.probes || []); renderActions(item);
     const output = { evidence: item.evidence || {}, policy: policyFor(claim), claim };
     renderFigures(output); if (!$('panel-evidence').hidden) drawChart(output);

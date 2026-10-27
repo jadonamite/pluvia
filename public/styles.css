@@ -180,7 +180,8 @@ td.missing{color:var(--secondary);font-style:italic}
 
 /* the agent at work */
 .working{display:flex;align-items:center;gap:var(--space-3);font-size:var(--text-caption);color:var(--secondary)}
-.working::before{content:"";width:.5rem;height:.5rem;border-radius:50%;background:var(--accent);flex:none;animation:pulse 1.2s var(--ease-out) infinite}
+.working::before{content:"";width:.5rem;height:.5rem;border-radius:50%;background:var(--secondary);flex:none}
+.working.live::before{background:var(--accent);animation:pulse 1.2s var(--ease-out) infinite}
 @keyframes pulse{50%{opacity:.25}}
 .timeline{list-style:none;margin:0;padding:var(--space-2)}
 .timeline li+li .row{box-shadow:0 -1px 0 color-mix(in srgb,var(--label) 7%,transparent)}

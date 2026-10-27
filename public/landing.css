@@ -74,6 +74,7 @@ button{font:inherit}
 .mk-tile{fill:#3FD9C11f;stroke:#3FD9C1;stroke-width:1}
 .mk-tile-text{font-family:var(--font-sans);font-size:14px;opacity:.85}
 .mk-tile-text.strong{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;opacity:1}
+.mk-tile-text.code{font-family:var(--font-mono);font-size:12.5px;opacity:1}
 
 /* the month in two numbers, frosted */
 .readout{position:absolute;z-index:3;right:max(var(--space-6),6vw);top:50%;translate:0 -50%;width:20rem;padding:var(--space-6) var(--space-6) var(--space-5);display:grid;gap:var(--space-5);border-radius:var(--radius-card);background:#2a241d73;border:1px solid #F2EDE31f;-webkit-backdrop-filter:blur(22px) saturate(140%);backdrop-filter:blur(22px) saturate(140%);color:var(--pal-paper)}
@@ -186,7 +187,7 @@ dialog .muted{color:var(--secondary);font-size:var(--text-footnote);margin-botto
   .motion .c1{transform-origin:0 0}.motion .c2{transform-origin:100% 0}.motion .c3{transform-origin:0 100%}.motion .c4{transform-origin:100% 100%}
   .o-title{font-size:1.125rem}
   .o-mark{font-size:.6875rem}  .marks-wide{display:none}.marks-tall{display:block}
-  .mk-label{font-size:19px}.mk-value{font-size:58px}.mk-tile-text{font-size:21px}.mk-tile-text.strong{font-size:16px}
+  .mk-label{font-size:19px}.mk-value{font-size:58px}.mk-tile-text{font-size:21px}.mk-tile-text.strong{font-size:16px}.mk-tile-text.code{font-size:18px}
   .readout{left:var(--space-4);right:var(--space-4);top:auto;bottom:max(var(--space-4),env(safe-area-inset-bottom));translate:none;width:auto;grid-template-columns:1fr 1fr;gap:var(--space-4);padding:var(--space-4)}
   .ro-row{padding-bottom:0;border-bottom:0}
   .ro-figure{font-size:1.75rem}
