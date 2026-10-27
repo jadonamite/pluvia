@@ -48,17 +48,18 @@
       </section>
 
       <section class="empty card" id="empty" hidden>
-        <h2>Run the review to see what the rainfall record supports.</h2>
-        <p class="muted">We read the gauge, compare it with the satellite, run the checks and give you a decision. Nothing is paid.</p>
+        <h2>Hand this claim to the agent.</h2>
+        <p class="muted">It writes its own queries against the rainfall record, checks the gauge against the satellite, proposes a settlement for the policy gate to check, and carries the claim through. You sign anything above ₦1,000,000, every refusal and every inspection close-out.</p>
       </section>
 
       <div id="results" hidden>
-        <nav class="tabs" role="tablist" aria-label="Review">
+        <p class="working" id="working" role="status" aria-live="polite" hidden></p>
+        <nav class="tabs" role="tablist" aria-label="Case">
           <button role="tab" id="tab-decision" aria-controls="panel-decision" aria-selected="true" type="button">Decision</button>
+          <button role="tab" id="tab-investigation" aria-controls="panel-investigation" aria-selected="false" tabindex="-1" type="button">Investigation</button>
           <button role="tab" id="tab-evidence" aria-controls="panel-evidence" aria-selected="false" tabindex="-1" type="button">Evidence</button>
           <button role="tab" id="tab-checks" aria-controls="panel-checks" aria-selected="false" tabindex="-1" type="button">Checks</button>
-          <button role="tab" id="tab-memory" aria-controls="panel-memory" aria-selected="false" tabindex="-1" type="button">Memory</button>
-          <button role="tab" id="tab-trail" aria-controls="panel-trail" aria-selected="false" tabindex="-1" type="button">Trail</button>
+          <button role="tab" id="tab-actions" aria-controls="panel-actions" aria-selected="false" tabindex="-1" type="button">Actions</button>
         </nav>
 
         <section class="panel" role="tabpanel" id="panel-decision" aria-labelledby="tab-decision">
@@ -66,17 +67,12 @@
             <article class="card verdict-card" id="decision"></article>
             <article class="card baseline-card" id="baseline"></article>
           </div>
-          <div class="card call">
-            <div>
-              <h2>Your call</h2>
-              <p class="muted">Saved to memory for the next review. It does not change the decision or the payout.</p>
-            </div>
-            <form id="feedback-form" class="call-actions">
-              <button class="button" type="submit" name="kind" value="helpful">Confirm</button>
-              <button class="button ghost" type="submit" name="kind" value="wrong">Override</button>
-            </form>
-            <p id="feedback-status" class="call-status" role="status" aria-live="polite"></p>
-          </div>
+          <div class="card call" id="call"></div>
+        </section>
+
+        <section class="panel" role="tabpanel" id="panel-investigation" aria-labelledby="tab-investigation" hidden>
+          <p class="summary" id="trail-summary"></p>
+          <ol class="card timeline" id="timeline"></ol>
         </section>
 
         <section class="panel" role="tabpanel" id="panel-evidence" aria-labelledby="tab-evidence" hidden>
@@ -86,7 +82,7 @@
               <button class="button ghost small" id="open-daily" type="button">Daily readings</button>
             </div>
             <div class="legend"><span><i class="key station"></i>Gauge</span><span><i class="key satellite"></i>Satellite</span><span><i class="key missing"></i>Gauge silent</span></div>
-            <div class="chart"><canvas id="rainfall-chart" role="img" aria-label="Daily gauge and satellite rainfall. The exact values are under Daily readings."></canvas><p id="chart-unavailable" class="muted" hidden>The chart is unavailable. Open Daily readings for every value.</p></div>
+            <div class="chart"><canvas id="rainfall-chart" role="img" aria-label="Daily gauge and satellite rainfall. The exact values are under Daily readings."></canvas><p id="chart-unavailable" class="muted" hidden>The agent has not pulled the rainfall series yet.</p></div>
             <p id="chart-caption" class="caption"></p>
           </div>
           <div class="figures" id="figures"></div>
@@ -97,13 +93,9 @@
           <div class="card list" id="checks"></div>
         </section>
 
-        <section class="panel" role="tabpanel" id="panel-memory" aria-labelledby="tab-memory" hidden>
-          <div class="tiles" id="memory"></div>
-        </section>
-
-        <section class="panel" role="tabpanel" id="panel-trail" aria-labelledby="tab-trail" hidden>
-          <p class="summary" id="trail-summary"></p>
-          <div class="card list" id="trail"></div>
+        <section class="panel" role="tabpanel" id="panel-actions" aria-labelledby="tab-actions" hidden>
+          <div class="card" id="inspection"></div>
+          <div class="card list" id="outbox"></div>
         </section>
       </div>
 

@@ -1,0 +1,1720 @@
+{
+  "id": "case_cbb904f3",
+  "claim_id": "CLM-LAG-2025-001",
+  "policy_id": "POL-LAG-2025-014",
+  "state": "settled",
+  "created_at": "2026-10-27T14:32:10.227Z",
+  "updated_at": "2026-10-27T14:36:22.995Z",
+  "models": [
+    "nvidia/nemotron-3-ultra-550b-a55b"
+  ],
+  "steps_used": 14,
+  "events": [
+    {
+      "at": "2026-10-27T14:32:10.227Z",
+      "kind": "start",
+      "summary": "Opened the case for Ikorodu Maize Cooperative."
+    },
+    {
+      "at": "2026-10-27T14:32:28.139Z",
+      "kind": "thought",
+      "summary": "Let me start by understanding the claim and policy details. The claim is for July 2025 rainfall failure for maize crop. The policy has a reference station NIM00065201, cover window July 1-31, 2025. Trigger is 144.3mm, exit is 61.8mm, borderline band 5mm. Sum insured is 2,500,000 NGN.\n\nFirst, I need to investigate the rainfall data. Let me check what views are available and then run the record checks.",
+      "model": "nvidia/nemotron-3-ultra-550b-a55b"
+    },
+    {
+      "at": "2026-10-27T14:32:28.311Z",
+      "kind": "tool",
+      "tool": "list_tables",
+      "input": {},
+      "output": {
+        "tables": [
+          "pluvia.ghcn_prcp",
+          "pluvia.policies",
+          "pluvia.claims",
+          "pluvia.stations",
+          "pluvia.power_lagos_2025_daily",
+          "pluvia.power_lagos_2025_prior_daily"
+        ]
+      },
+      "summary": "Listed 6 views."
+    },
+    {
+      "at": "2026-10-27T14:32:31.918Z",
+      "kind": "thought",
+      "summary": "Let me check the structure of the relevant tables and then run the record checks.",
+      "model": "nvidia/nemotron-3-ultra-550b-a55b"
+    },
+    {
+      "at": "2026-10-27T14:32:38.551Z",
+      "kind": "tool",
+      "tool": "describe_table",
+      "input": {
+        "table": "pluvia.ghcn_prcp"
+      },
+      "output": {
+        "columns": [
+          "station_id string",
+          "obs_date date",
+          "mm double",
+          "m_flag string",
+          "q_flag string",
+          "s_flag string"
+        ]
+      },
+      "summary": "Read the columns of ghcn_prcp."
+    },
+    {
+      "at": "2026-10-27T14:32:41.167Z",
+      "kind": "thought",
+      "summary": "Let me check the satellite data views and then run the record checks.",
+      "model": "nvidia/nemotron-3-ultra-550b-a55b"
+    },
+    {
+      "at": "2026-10-27T14:32:41.420Z",
+      "kind": "tool",
+      "tool": "describe_table",
+      "input": {
+        "table": "pluvia.power_lagos_2025_daily"
+      },
+      "output": {
+        "columns": [
+          "obs_date date",
+          "mm double",
+          "source_id string",
+          "latitude decimal(4,3)",
+          "longitude decimal(4,3)"
+        ]
+      },
+      "summary": "Read the columns of power_lagos_2025_daily."
+    },
+    {
+      "at": "2026-10-27T14:32:42.801Z",
+      "kind": "thought",
+      "summary": "Now let me run the record checks to understand the data quality for this claim.",
+      "model": "nvidia/nemotron-3-ultra-550b-a55b"
+    },
+    {
+      "at": "2026-10-27T14:33:05.889Z",
+      "kind": "tool",
+      "tool": "run_checks",
+      "input": {},
+      "output": {
+        "checks": [
+          {
+            "id": "P1",
+            "name": "Station coverage",
+            "status": "fail",
+            "evidence": "10 of 31 station days valid (32.3%); minimum 80.0%."
+          },
+          {
+            "id": "P2",
+            "name": "Missing treated as zero",
+            "status": "fail",
+            "evidence": "21 missing station days would contribute zero to a naive sum; 1 reported zeros coincide with satellite rain of at least 5 mm. This identifies an unreliable record, not an instrument fault."
+          },
+          {
+            "id": "P3",
+            "name": "Quality and measurement flags",
+            "status": "pass",
+            "evidence": "0 quality-flagged rows excluded. Measurement/source counts: {\"quality_flagged\":0,\"s_flag:S\":10}. A is multi-day accumulation; B/D are partial-day measurements; a blank quality flag does not establish accuracy."
+          },
+          {
+            "id": "P4",
+            "name": "Record ends early",
+            "status": "pass",
+            "evidence": "Last valid station date: 2025-07-30; 1 days before the window end."
+          },
+          {
+            "id": "P5",
+            "name": "Station distance",
+            "status": "pass",
+            "evidence": "Station is 0.0 km from the farm; sole-index limit is 20 km."
+          },
+          {
+            "id": "P6",
+            "name": "Source divergence",
+            "status": "fail",
+            "evidence": "On 10 overlapping days station totals 6.1 mm and satellite 21.9 mm; gap 15.8 mm (72.1%)."
+          },
+          {
+            "id": "P7",
+            "name": "Satellite fill values",
+            "status": "pass",
+            "evidence": "0 satellite days missing, invalid, duplicated or filled; -999 fill values are excluded."
+          },
+          {
+            "id": "P8",
+            "name": "Borderline index",
+            "status": "warn",
+            "evidence": "No usable index selected."
+          }
+        ]
+      },
+      "summary": "Ran the eight record checks; P1, P2, P6, P8 did not pass."
+    },
+    {
+      "at": "2026-10-27T14:33:15.041Z",
+      "kind": "thought",
+      "summary": "The checks show significant issues:\n- P1: Station coverage only 32.3% (10 of 31 days), minimum 80% required - FAIL\n- P2: 21 missing station days would be treated as zero, and 1 reported zero coincides with satellite rain ≥5mm - FAIL\n- P6: Source divergence - station 6.1mm vs satellite 21.9mm on overlapping days, gap 72.1% - FAIL\n- P8: Borderline index - no usable index selected - WARN\n\nThe gauge record is clearly unfit. Let me investigate the actual data more closely to understand the satellite data and compare with prior years.",
+      "model": "nvidia/nemotron-3-ultra-550b-a55b"
+    },
+    {
+      "at": "2026-10-27T14:33:29.172Z",
+      "kind": "tool",
+      "tool": "sql_query",
+      "input": {
+        "sql": "SELECT obs_date, mm\nFROM pluvia.ghcn_prcp\nWHERE station_id = 'NIM00065201'\n  AND obs_date BETWEEN '2025-07-01' AND '2025-07-31'\nORDER BY obs_date\nLIMIT 2000"
+      },
+      "output": {
+        "row_count": 10,
+        "columns": [
+          "obs_date",
+          "mm"
+        ],
+        "numeric": {
+          "mm": {
+            "min": 0,
+            "max": 6.1,
+            "sum": 6.1
+          }
+        },
+        "rows": [
+          {
+            "obs_date": "2025-07-01",
+            "mm": 0
+          },
+          {
+            "obs_date": "2025-07-06",
+            "mm": 0
+          },
+          {
+            "obs_date": "2025-07-07",
+            "mm": 0
+          },
+          {
+            "obs_date": "2025-07-08",
+            "mm": 0
+          },
+          {
+            "obs_date": "2025-07-13",
+            "mm": 0
+          },
+          {
+            "obs_date": "2025-07-21",
+            "mm": 0
+          },
+          {
+            "obs_date": "2025-07-22",
+            "mm": 0
+          },
+          {
+            "obs_date": "2025-07-23",
+            "mm": 6.1
+          },
+          {
+            "obs_date": "2025-07-24",
+            "mm": 0
+          },
+          {
+            "obs_date": "2025-07-30",
+            "mm": 0
+          }
+        ]
+      },
+      "summary": "Ran a query; 10 rows."
+    },
+    {
+      "at": "2026-10-27T14:33:35.018Z",
+      "kind": "thought",
+      "summary": "The gauge only has 10 days of data in July, with only one day (July 23) showing 6.1mm of rain. All other days show 0mm. There are 21 missing days. Let me check the satellite data for the same period.",
+      "model": "nvidia/nemotron-3-ultra-550b-a55b"
+    },
+    {
+      "at": "2026-10-27T14:33:35.486Z",
+      "kind": "tool",
+      "tool": "sql_query",
+      "input": {
+        "sql": "SELECT obs_date, mm\nFROM pluvia.power_lagos_2025_daily\nWHERE obs_date BETWEEN '2025-07-01' AND '2025-07-31'\nORDER BY obs_date\nLIMIT 2000"
+      },
+      "output": {
+        "row_count": 31,
+        "columns": [
+          "obs_date",
+          "mm"
+        ],
+        "numeric": {
+          "mm": {
+            "min": 0,
+            "max": 38.2,
+            "sum": 131.65
+          }
+        },
+        "rows": [
+          {
+            "obs_date": "2025-07-01",
+            "mm": 0.72
+          },
+          {
+            "obs_date": "2025-07-02",
+            "mm": 0.06
+          },
+          {
+            "obs_date": "2025-07-03",
+            "mm": 30.38
+          },
+          {
+            "obs_date": "2025-07-04",
+            "mm": 38.2
+          },
+          {
+            "obs_date": "2025-07-05",
+            "mm": 13.37
+          },
+          {
+            "obs_date": "2025-07-06",
+            "mm": 2.66
+          },
+          {
+            "obs_date": "2025-07-07",
+            "mm": 1.83
+          },
+          {
+            "obs_date": "2025-07-08",
+            "mm": 14.34
+          },
+          {
+            "obs_date": "2025-07-09",
+            "mm": 9.32
+          },
+          {
+            "obs_date": "2025-07-10",
+            "mm": 7.32
+          },
+          {
+            "obs_date": "2025-07-11",
+            "mm": 0.35
+          },
+          {
+            "obs_date": "2025-07-12",
+            "mm": 3.38
+          },
+          {
+            "obs_date": "2025-07-13",
+            "mm": 0
+          },
+          {
+            "obs_date": "2025-07-14",
+            "mm": 0.11
+          },
+          {
+            "obs_date": "2025-07-15",
+            "mm": 0
+          },
+          {
+            "obs_date": "2025-07-16",
+            "mm": 0.38
+          },
+          {
+            "obs_date": "2025-07-17",
+            "mm": 0.13
+          },
+          {
+            "obs_date": "2025-07-18",
+            "mm": 0
+          },
+          {
+            "obs_date": "2025-07-19",
+            "mm": 0.15
+          },
+          {
+            "obs_date": "2025-07-20",
+            "mm": 0.11
+          },
+          {
+            "obs_date": "2025-07-21",
+            "mm": 0.77
+          },
+          {
+            "obs_date": "2025-07-22",
+            "mm": 1.18
+          },
+          {
+            "obs_date": "2025-07-23",
+            "mm": 0
+          },
+          {
+            "obs_date": "2025-07-24",
+            "mm": 0.09
+          },
+          {
+            "obs_date": "2025-07-25",
+            "mm": 0.78
+          },
+          {
+            "obs_date": "2025-07-26",
+            "mm": 0.82
+          },
+          {
+            "obs_date": "2025-07-27",
+            "mm": 0.51
+          },
+          {
+            "obs_date": "2025-07-28",
+            "mm": 0.93
+          },
+          {
+            "obs_date": "2025-07-29",
+            "mm": 0.4
+          },
+          {
+            "obs_date": "2025-07-30",
+            "mm": 0.3
+          }
+        ]
+      },
+      "summary": "Ran a query; 31 rows."
+    },
+    {
+      "at": "2026-10-27T14:33:57.787Z",
+      "kind": "thought",
+      "summary": "The satellite shows 131.65mm total for July 2025, with significant rain early in the month (July 3-5: 30.38+38.2+13.37 = 81.95mm). The gauge only captured 6.1mm total and missed most of the rainy days.\n\nLet me check the prior years' satellite data to understand what's normal for this location.",
+      "model": "nvidia/nemotron-3-ultra-550b-a55b"
+    },
+    {
+      "at": "2026-10-27T14:33:58.405Z",
+      "kind": "tool",
+      "tool": "describe_table",
+      "input": {
+        "table": "pluvia.power_lagos_2025_prior_daily"
+      },
+      "output": {
+        "columns": [
+          "obs_date date",
+          "mm double",
+          "source_id string",
+          "latitude decimal(4,3)",
+          "longitude decimal(4,3)"
+        ]
+      },
+      "summary": "Read the columns of power_lagos_2025_prior_daily."
+    },
+    {
+      "at": "2026-10-27T14:34:00.438Z",
+      "kind": "thought",
+      "summary": "Let me check the prior years data for July to understand the historical context.",
+      "model": "nvidia/nemotron-3-ultra-550b-a55b"
+    },
+    {
+      "at": "2026-10-27T14:34:07.702Z",
+      "kind": "tool",
+      "tool": "sql_query",
+      "input": {
+        "sql": "SELECT \n    EXTRACT(YEAR FROM obs_date) as year,\n    SUM(mm) as total_july_mm,\n    COUNT(*) as days_count\nFROM pluvia.power_lagos_2025_prior_daily\nWHERE EXTRACT(MONTH FROM obs_date) = 7\nGROUP BY EXTRACT(YEAR FROM obs_date)\nORDER BY year\nLIMIT 2000"
+      },
+      "output": {
+        "row_count": 24,
+        "columns": [
+          "year",
+          "total_july_mm",
+          "days_count"
+        ],
+        "numeric": {
+          "year": {
+            "min": 2001,
+            "max": 2024,
+            "sum": 48300
+          },
+          "total_july_mm": {
+            "min": 117.06,
+            "max": 416.37,
+            "sum": 5605.58
+          },
+          "days_count": {
+            "min": 31,
+            "max": 31,
+            "sum": 744
+          }
+        },
+        "rows": [
+          {
+            "year": 2001,
+            "total_july_mm": 173.91000000000008,
+            "days_count": 31
+          },
+          {
+            "year": 2002,
+            "total_july_mm": 314.61999999999995,
+            "days_count": 31
+          },
+          {
+            "year": 2003,
+            "total_july_mm": 129.4,
+            "days_count": 31
+          },
+          {
+            "year": 2004,
+            "total_july_mm": 153.06999999999994,
+            "days_count": 31
+          },
+          {
+            "year": 2005,
+            "total_july_mm": 240.79999999999995,
+            "days_count": 31
+          },
+          {
+            "year": 2006,
+            "total_july_mm": 117.06000000000002,
+            "days_count": 31
+          },
+          {
+            "year": 2007,
+            "total_july_mm": 289.56000000000006,
+            "days_count": 31
+          },
+          {
+            "year": 2008,
+            "total_july_mm": 416.36999999999995,
+            "days_count": 31
+          },
+          {
+            "year": 2009,
+            "total_july_mm": 233.62000000000003,
+            "days_count": 31
+          },
+          {
+            "year": 2010,
+            "total_july_mm": 212.66000000000003,
+            "days_count": 31
+          },
+          {
+            "year": 2011,
+            "total_july_mm": 411.28000000000014,
+            "days_count": 31
+          },
+          {
+            "year": 2012,
+            "total_july_mm": 178.33999999999995,
+            "days_count": 31
+          },
+          {
+            "year": 2013,
+            "total_july_mm": 239.20999999999998,
+            "days_count": 31
+          },
+          {
+            "year": 2014,
+            "total_july_mm": 336.75,
+            "days_count": 31
+          },
+          {
+            "year": 2015,
+            "total_july_mm": 148.77999999999997,
+            "days_count": 31
+          },
+          {
+            "year": 2016,
+            "total_july_mm": 119.85000000000002,
+            "days_count": 31
+          },
+          {
+            "year": 2017,
+            "total_july_mm": 308.82000000000005,
+            "days_count": 31
+          },
+          {
+            "year": 2018,
+            "total_july_mm": 215.84,
+            "days_count": 31
+          },
+          {
+            "year": 2019,
+            "total_july_mm": 184.2,
+            "days_count": 31
+          },
+          {
+            "year": 2020,
+            "total_july_mm": 206.32999999999998,
+            "days_count": 31
+          },
+          {
+            "year": 2021,
+            "total_july_mm": 202.72,
+            "days_count": 31
+          },
+          {
+            "year": 2022,
+            "total_july_mm": 311.1899999999999,
+            "days_count": 31
+          },
+          {
+            "year": 2023,
+            "total_july_mm": 255.29,
+            "days_count": 31
+          },
+          {
+            "year": 2024,
+            "total_july_mm": 205.91000000000003,
+            "days_count": 31
+          }
+        ]
+      },
+      "summary": "Ran a query; 24 rows."
+    },
+    {
+      "at": "2026-10-27T14:34:16.396Z",
+      "kind": "thought",
+      "summary": "The historical July rainfall ranges from 117mm to 416mm, with a median around 200-250mm. The 2025 satellite total of 131.65mm is below the historical average but not extremely low - it's above the minimum of 117mm (2006) and 119.85mm (2016).\n\nNow let me check the policy details more carefully. The trigger is 144.3mm and exit is 61.8mm. The satellite shows 131.65mm, which is below the trigger (144.3mm) but above the exit (61.8mm). This would be in the payout zone.\n\nBut wait - the gauge is clearly unfit (only 32% coverage, missing 21 days, divergence 72%). The policy says \"The gauge record decid",
+      "model": "nvidia/nemotron-3-ultra-550b-a55b"
+    },
+    {
+      "at": "2026-10-27T14:34:32.972Z",
+      "kind": "tool",
+      "tool": "sql_query",
+      "input": {
+        "sql": "SELECT g.obs_date, g.mm as gauge_mm, s.mm as sat_mm\nFROM pluvia.ghcn_prcp g\nJOIN pluvia.power_lagos_2025_daily s ON g.obs_date = s.obs_date\nWHERE g.station_id = 'NIM00065201'\n  AND g.obs_date BETWEEN '2025-07-01' AND '2025-07-31'\n  AND g.mm = 0\n  AND s.mm >= 5\nORDER BY g.obs_date\nLIMIT 2000"
+      },
+      "output": {
+        "row_count": 1,
+        "columns": [
+          "obs_date",
+          "gauge_mm",
+          "sat_mm"
+        ],
+        "numeric": {
+          "gauge_mm": {
+            "min": 0,
+            "max": 0,
+            "sum": 0
+          },
+          "sat_mm": {
+            "min": 14.34,
+            "max": 14.34,
+            "sum": 14.34
+          }
+        },
+        "rows": [
+          {
+            "obs_date": "2025-07-08",
+            "gauge_mm": 0,
+            "sat_mm": 14.34
+          }
+        ]
+      },
+      "summary": "Ran a query; 1 rows."
+    },
+    {
+      "at": "2026-10-27T14:34:54.090Z",
+      "kind": "thought",
+      "summary": "This confirms P2 - on July 8, the gauge reported 0mm but satellite saw 14.34mm. This is a clear gauge failure.\n\nNow let me check the overlapping days comparison more thoroughly.",
+      "model": "nvidia/nemotron-3-ultra-550b-a55b"
+    },
+    {
+      "at": "2026-10-27T14:35:05.672Z",
+      "kind": "tool",
+      "tool": "sql_query",
+      "input": {
+        "sql": "SELECT g.obs_date, g.mm as gauge_mm, s.mm as sat_mm\nFROM pluvia.ghcn_prcp g\nJOIN pluvia.power_lagos_2025_daily s ON g.obs_date = s.obs_date\nWHERE g.station_id = 'NIM00065201'\n  AND g.obs_date BETWEEN '2025-07-01' AND '2025-07-31'\nORDER BY g.obs_date\nLIMIT 2000"
+      },
+      "output": {
+        "row_count": 10,
+        "columns": [
+          "obs_date",
+          "gauge_mm",
+          "sat_mm"
+        ],
+        "numeric": {
+          "gauge_mm": {
+            "min": 0,
+            "max": 6.1,
+            "sum": 6.1
+          },
+          "sat_mm": {
+            "min": 0,
+            "max": 14.34,
+            "sum": 21.89
+          }
+        },
+        "rows": [
+          {
+            "obs_date": "2025-07-01",
+            "gauge_mm": 0,
+            "sat_mm": 0.72
+          },
+          {
+            "obs_date": "2025-07-06",
+            "gauge_mm": 0,
+            "sat_mm": 2.66
+          },
+          {
+            "obs_date": "2025-07-07",
+            "gauge_mm": 0,
+            "sat_mm": 1.83
+          },
+          {
+            "obs_date": "2025-07-08",
+            "gauge_mm": 0,
+            "sat_mm": 14.34
+          },
+          {
+            "obs_date": "2025-07-13",
+            "gauge_mm": 0,
+            "sat_mm": 0
+          },
+          {
+            "obs_date": "2025-07-21",
+            "gauge_mm": 0,
+            "sat_mm": 0.77
+          },
+          {
+            "obs_date": "2025-07-22",
+            "gauge_mm": 0,
+            "sat_mm": 1.18
+          },
+          {
+            "obs_date": "2025-07-23",
+            "gauge_mm": 6.1,
+            "sat_mm": 0
+          },
+          {
+            "obs_date": "2025-07-24",
+            "gauge_mm": 0,
+            "sat_mm": 0.09
+          },
+          {
+            "obs_date": "2025-07-30",
+            "gauge_mm": 0,
+            "sat_mm": 0.3
+          }
+        ]
+      },
+      "summary": "Ran a query; 10 rows."
+    },
+    {
+      "at": "2026-10-27T14:35:34.215Z",
+      "kind": "thought",
+      "summary": "The overlapping days show:\n- Gauge total: 6.1mm\n- Satellite total: 21.89mm\n- Gap: 15.79mm (72.1%)\n\nThe gauge is completely unreliable. It missed the heavy rain period (July 3-5: 81.95mm per satellite), reported 0 on July 8 when satellite saw 14.34mm, and only caught 6.1mm on July 23 when satellite saw 0.\n\nThe satellite total for July 2025 is 131.65mm. This is below the trigger of 144.3mm but above the exit of 61.8mm. So there should be a payout.\n\nSince the gauge is unfit (fails P1, P2, P6), the satellite should decide. The satellite index is 131.65mm.\n\nLet me now propose a settlement using the",
+      "model": "nvidia/nemotron-3-ultra-550b-a55b"
+    },
+    {
+      "at": "2026-10-27T14:36:06.179Z",
+      "kind": "decision",
+      "tool": "propose_settlement",
+      "input": {
+        "verdict": "PAY",
+        "figures": [
+          {
+            "label": "satellite_july_2025_total_mm",
+            "sql": "SELECT SUM(mm) FROM pluvia.power_lagos_2025_daily WHERE obs_date BETWEEN '2025-07-01' AND '2025-07-31'",
+            "value": 131.65
+          },
+          {
+            "label": "gauge_coverage_pct",
+            "sql": "SELECT COUNT(*) * 100.0 / 31 FROM pluvia.ghcn_prcp WHERE station_id = 'NIM00065201' AND obs_date BETWEEN '2025-07-01' AND '2025-07-31'",
+            "value": 32.26
+          },
+          {
+            "label": "overlapping_days_gauge_vs_sat_mm",
+            "sql": "SELECT SUM(g.mm) as gauge_mm, SUM(s.mm) as sat_mm FROM pluvia.ghcn_prcp g JOIN pluvia.power_lagos_2025_daily s ON g.obs_date = s.obs_date WHERE g.station_id = 'NIM00065201' AND g.obs_date BETWEEN '2025-07-01' AND '2025-07-31'",
+            "value": 6.1
+          }
+        ],
+        "source": "power",
+        "rationale": "Gauge record is unfit: P1 fails (32.3% coverage vs 80% minimum), P2 fails (21 missing days, 1 zero reading coinciding with 14.34mm satellite rain on 2025-07-08), P6 fails (72.1% divergence on overlapping days). Satellite provides complete 31-day record totaling 131.65mm, which falls between exit (61.8mm) and trigger (144.3mm), triggering a payout."
+      },
+      "output": {
+        "verdict": "PAY",
+        "payout_ngn": 383333.33,
+        "index_source": "power",
+        "index_mm": 131.65,
+        "reasons": [
+          "Disagreement resolved with figures the code reproduced: satellite 131.65 mm against 24 earlier years ranging 117.06 to 416.37 mm",
+          "Corrected index uses satellite evidence because P1, P2 bars the station as sole index.",
+          "The contractual rainfall trigger is met."
+        ],
+        "figures": [
+          {
+            "label": "satellite_july_2025_total_mm",
+            "claimed": 131.65,
+            "reproduced": 131.65,
+            "match": true
+          },
+          {
+            "label": "gauge_coverage_pct",
+            "claimed": 32.26,
+            "reproduced": 32.258065,
+            "match": true
+          },
+          {
+            "label": "overlapping_days_gauge_vs_sat_mm",
+            "claimed": 6.1,
+            "reproduced": 6.1,
+            "match": true
+          }
+        ],
+        "prior_years": {
+          "years": 24,
+          "min_mm": 117.06,
+          "max_mm": 416.37,
+          "satellite_mm": 131.65,
+          "within": true
+        },
+        "next": "The payout is released. Write to the group, tell the operator if the gauge failed, then finish."
+      },
+      "summary": "Proposed PAY; the gate agreed: Pay, NGN 383,333.33."
+    },
+    {
+      "at": "2026-10-27T14:36:15.687Z",
+      "kind": "thought",
+      "summary": "The policy gate approved the PAY verdict with a payout of 383,333.33 NGN. This is below the 1,000,000 NGN threshold that requires sign-off. Now I need to:\n1. Write to the farmer group about the outcome\n2. Notify the station operator about the gauge failure\n3. Finish the case\n\nLet me draft the letter to the farmer group first.The gate approved PAY with a payout of NGN 383,333.33 (below the NGN 1M sign-off threshold). Now I'll write to the farmer group and notify the station operator about the gauge failure.",
+      "model": "nvidia/nemotron-3-ultra-550b-a55b"
+    },
+    {
+      "at": "2026-10-27T14:36:15.688Z",
+      "kind": "action",
+      "tool": "draft_letter",
+      "input": {
+        "body": "Dear Farmer Group,\n\nYour claim CLM-LAG-2025-001 for maize crop under policy POL-LAG-2025-014 has been settled.\n\n**Outcome: PAY — NGN 383,333.33**\n\n**Why:** The reference gauge (NIM00065201) at your farm location was unfit for the July 2025 cover window:\n- Only 10 of 31 days reported (32% coverage, below the 80% minimum)\n- 21 days missing; one reported zero (2025-07-08) while satellite measured 14.3 mm\n- On the 10 overlapping days the gauge totalled 6.1 mm vs 21.9 mm from satellite — a 72% gap\n\nBecause the gauge record fails our quality checks, the satellite index (NASA POWER) is used. It recorded 131.65 mm for July 2025. This is below the policy trigger of 144.3 mm but above the exit of 61.8 mm, so a proportional payout applies.\n\nThe payout of NGN 383,333.33 has been approved and will be disbursed.\n\nWe have also notified the station operator about the gauge failures on the dates above.\n\nPluvia Claims"
+      },
+      "output": {
+        "ok": true
+      },
+      "summary": "Wrote to the farmer group."
+    },
+    {
+      "at": "2026-10-27T14:36:18.901Z",
+      "kind": "thought",
+      "summary": "Now let me notify the station operator about the gauge failure.",
+      "model": "nvidia/nemotron-3-ultra-550b-a55b"
+    },
+    {
+      "at": "2026-10-27T14:36:18.902Z",
+      "kind": "action",
+      "tool": "notify_operator",
+      "input": {
+        "body": "Station NIM00065201 — gauge failures during July 2025 cover window (policy POL-LAG-2025-014):\n\n- 21 of 31 days missing (no observation recorded)\n- 2025-07-08: gauge reported 0 mm while satellite measured 14.34 mm\n- On 10 overlapping days gauge totalled 6.1 mm vs satellite 21.9 mm (72% divergence)\n\nThe gauge record was deemed unfit and the satellite index settled the claim. Please investigate the instrument and reporting chain for July 2025."
+      },
+      "output": {
+        "ok": true
+      },
+      "summary": "Told the station operator about the gauge."
+    },
+    {
+      "at": "2026-10-27T14:36:22.974Z",
+      "kind": "thought",
+      "summary": "Now I need to finish the case with a summary.",
+      "model": "nvidia/nemotron-3-ultra-550b-a55b"
+    },
+    {
+      "at": "2026-10-27T14:36:22.987Z",
+      "kind": "action",
+      "tool": "finish_case",
+      "input": {
+        "summary": "Claim CLM-LAG-2025-001 settled: gauge record unfit (32% coverage, 21 missing days, 72% divergence from satellite), satellite index 131.65 mm triggered proportional payout of NGN 383,333.33. Farmer group notified, station operator alerted to gauge failures."
+      },
+      "output": {
+        "ok": true,
+        "state": "settled"
+      },
+      "summary": "Finished its work on the case."
+    }
+  ],
+  "segments": [
+    {
+      "trigger": "start",
+      "messages": [
+        {
+          "role": "system",
+          "content": "You are Pluvia's claims agent for weather-index crop insurance. Your goal is to settle each claim correctly or hand it to a person with one precise question.\n\nHow you work:\n- Investigate before deciding. Discover the views, write your own SQL, and do every sum and count in SQL, never in your head. Use GROUP BY to get many totals in one query rather than one query each.\n- Views ending _prior_daily hold earlier years of the same satellite series, for comparing this season with past ones.\n- The gauge record decides the claim unless it is unfit. Find the days the gauge was silent, look for zero readings on days the satellite saw rain, and check how the satellite compares with earlier years at the same place.\n- propose_settlement is checked by the policy gate, which computes the payout from the contract. You cannot raise a payout. If you argue the satellite should settle a disagreement, cite each figure with the exact SQL that produces it; the code reruns your SQL and compares.\n- After the gate answers, act on it: open an inspection naming the dates, request sign-off where it says one is needed, write to the farmer group, and tell the station operator about a failing gauge.\n- Payouts above NGN 1,000,000, every refusal and every inspection close-out need a claims officer's sign-off.\n- End with finish_case. Write plainly and briefly; a claims officer reads every step."
+        },
+        {
+          "role": "user",
+          "content": "New claim. Investigate it and carry it through.\n{\"claim\":{\"claim_id\":\"CLM-LAG-2025-001\",\"statement\":\"Our group reports that July rains failed. Please check the rainfall record before settling the claim.\"},\"policy\":{\"policy_id\":\"POL-LAG-2025-014\",\"crop\":\"maize\",\"ref_station_id\":\"NIM00065201\",\"window_start\":\"2025-07-01\",\"window_end\":\"2025-07-31\",\"trigger_mm\":144.3,\"exit_mm\":61.8,\"borderline_band_mm\":5,\"min_coverage\":0.8,\"max_station_km\":20},\"sum_insured_ngn\":2500000,\"farm\":{\"lat\":6.577,\"lon\":3.321}}"
+        },
+        {
+          "role": "assistant",
+          "content": "Let me start by understanding the claim and policy details. The claim is for July 2025 rainfall failure for maize crop. The policy has a reference station NIM00065201, cover window July 1-31, 2025. Trigger is 144.3mm, exit is 61.8mm, borderline band 5mm. Sum insured is 2,500,000 NGN.\n\nFirst, I need to investigate the rainfall data. Let me check what views are available and then run the record checks.</think>\n",
+          "tool_calls": [
+            {
+              "id": "call-d03e1d0e-4cba-4a6c-b214-74c201a42eb6",
+              "type": "function",
+              "function": {
+                "name": "list_tables",
+                "arguments": "{}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call-d03e1d0e-4cba-4a6c-b214-74c201a42eb6",
+          "content": "{\"tables\":[\"pluvia.ghcn_prcp\",\"pluvia.policies\",\"pluvia.claims\",\"pluvia.stations\",\"pluvia.power_lagos_2025_daily\",\"pluvia.power_lagos_2025_prior_daily\"]}"
+        },
+        {
+          "role": "assistant",
+          "content": "Let me check the structure of the relevant tables and then run the record checks.</think>\n",
+          "tool_calls": [
+            {
+              "id": "call-d001efe4-9f51-4926-bef8-e94fe6c39580",
+              "type": "function",
+              "function": {
+                "name": "describe_table",
+                "arguments": "{\"table\":\"pluvia.ghcn_prcp\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call-d001efe4-9f51-4926-bef8-e94fe6c39580",
+          "content": "{\"columns\":[\"station_id string\",\"obs_date date\",\"mm double\",\"m_flag string\",\"q_flag string\",\"s_flag string\"]}"
+        },
+        {
+          "role": "assistant",
+          "content": "Let me check the satellite data views and then run the record checks.</think>\n",
+          "tool_calls": [
+            {
+              "id": "call-f331bb39-65c3-4d42-9b65-00231fbf755e",
+              "type": "function",
+              "function": {
+                "name": "describe_table",
+                "arguments": "{\"table\":\"pluvia.power_lagos_2025_daily\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call-f331bb39-65c3-4d42-9b65-00231fbf755e",
+          "content": "{\"columns\":[\"obs_date date\",\"mm double\",\"source_id string\",\"latitude decimal(4,3)\",\"longitude decimal(4,3)\"]}"
+        },
+        {
+          "role": "assistant",
+          "content": "Now let me run the record checks to understand the data quality for this claim.</think>\n",
+          "tool_calls": [
+            {
+              "id": "call-db777fff-a235-4862-9bdf-0cb7e7451a27",
+              "type": "function",
+              "function": {
+                "name": "run_checks",
+                "arguments": "{}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call-db777fff-a235-4862-9bdf-0cb7e7451a27",
+          "content": "{\"checks\":[{\"id\":\"P1\",\"name\":\"Station coverage\",\"status\":\"fail\",\"evidence\":\"10 of 31 station days valid (32.3%); minimum 80.0%.\"},{\"id\":\"P2\",\"name\":\"Missing treated as zero\",\"status\":\"fail\",\"evidence\":\"21 missing station days would contribute zero to a naive sum; 1 reported zeros coincide with satellite rain of at least 5 mm. This identifies an unreliable record, not an instrument fault.\"},{\"id\":\"P3\",\"name\":\"Quality and measurement flags\",\"status\":\"pass\",\"evidence\":\"0 quality-flagged rows excluded. Measurement/source counts: {\\\"quality_flagged\\\":0,\\\"s_flag:S\\\":10}. A is multi-day accumulation; B/D are partial-day measurements; a blank quality flag does not establish accuracy.\"},{\"id\":\"P4\",\"name\":\"Record ends early\",\"status\":\"pass\",\"evidence\":\"Last valid station date: 2025-07-30; 1 days before the window end.\"},{\"id\":\"P5\",\"name\":\"Station distance\",\"status\":\"pass\",\"evidence\":\"Station is 0.0 km from the farm; sole-index limit is 20 km.\"},{\"id\":\"P6\",\"name\":\"Source divergence\",\"status\":\"fail\",\"evidence\":\"On 10 overlapping days station totals 6.1 mm and satellite 21.9 mm; gap 15.8 mm (72.1%).\"},{\"id\":\"P7\",\"name\":\"Satellite fill values\",\"status\":\"pass\",\"evidence\":\"0 satellite days missing, invalid, duplicated or filled; -999 fill values are excluded.\"},{\"id\":\"P8\",\"name\":\"Borderline index\",\"status\":\"warn\",\"evidence\":\"No usable index selected.\"}]}"
+        },
+        {
+          "role": "assistant",
+          "content": "The checks show significant issues:\n- P1: Station coverage only 32.3% (10 of 31 days), minimum 80% required - FAIL\n- P2: 21 missing station days would be treated as zero, and 1 reported zero coincides with satellite rain ≥5mm - FAIL\n- P6: Source divergence - station 6.1mm vs satellite 21.9mm on overlapping days, gap 72.1% - FAIL\n- P8: Borderline index - no usable index selected - WARN\n\nThe gauge record is clearly unfit. Let me investigate the actual data more closely to understand the satellite data and compare with prior years.</think>\n",
+          "tool_calls": [
+            {
+              "id": "call-93123a9d-29b3-4faa-b181-8d7890fa7023",
+              "type": "function",
+              "function": {
+                "name": "sql_query",
+                "arguments": "{\"sql\":\"SELECT obs_date, mm\\nFROM pluvia.ghcn_prcp\\nWHERE station_id = 'NIM00065201'\\n  AND obs_date BETWEEN '2025-07-01' AND '2025-07-31'\\nORDER BY obs_date;\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call-93123a9d-29b3-4faa-b181-8d7890fa7023",
+          "content": "{\"row_count\":10,\"columns\":[\"obs_date\",\"mm\"],\"numeric\":{\"mm\":{\"min\":0,\"max\":6.1,\"sum\":6.1}},\"rows\":[{\"obs_date\":\"2025-07-01\",\"mm\":0},{\"obs_date\":\"2025-07-06\",\"mm\":0},{\"obs_date\":\"2025-07-07\",\"mm\":0},{\"obs_date\":\"2025-07-08\",\"mm\":0},{\"obs_date\":\"2025-07-13\",\"mm\":0},{\"obs_date\":\"2025-07-21\",\"mm\":0},{\"obs_date\":\"2025-07-22\",\"mm\":0},{\"obs_date\":\"2025-07-23\",\"mm\":6.1},{\"obs_date\":\"2025-07-24\",\"mm\":0},{\"obs_date\":\"2025-07-30\",\"mm\":0}]}"
+        },
+        {
+          "role": "assistant",
+          "content": "The gauge only has 10 days of data in July, with only one day (July 23) showing 6.1mm of rain. All other days show 0mm. There are 21 missing days. Let me check the satellite data for the same period.</think>\n",
+          "tool_calls": [
+            {
+              "id": "call-c6c77027-fa71-4e25-b708-c786a6101c5c",
+              "type": "function",
+              "function": {
+                "name": "sql_query",
+                "arguments": "{\"sql\":\"SELECT obs_date, mm\\nFROM pluvia.power_lagos_2025_daily\\nWHERE obs_date BETWEEN '2025-07-01' AND '2025-07-31'\\nORDER BY obs_date;\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call-c6c77027-fa71-4e25-b708-c786a6101c5c",
+          "content": "{\"row_count\":31,\"columns\":[\"obs_date\",\"mm\"],\"numeric\":{\"mm\":{\"min\":0,\"max\":38.2,\"sum\":131.65}},\"rows\":[{\"obs_date\":\"2025-07-01\",\"mm\":0.72},{\"obs_date\":\"2025-07-02\",\"mm\":0.06},{\"obs_date\":\"2025-07-03\",\"mm\":30.38},{\"obs_date\":\"2025-07-04\",\"mm\":38.2},{\"obs_date\":\"2025-07-05\",\"mm\":13.37},{\"obs_date\":\"2025-07-06\",\"mm\":2.66},{\"obs_date\":\"2025-07-07\",\"mm\":1.83},{\"obs_date\":\"2025-07-08\",\"mm\":14.34},{\"obs_date\":\"2025-07-09\",\"mm\":9.32},{\"obs_date\":\"2025-07-10\",\"mm\":7.32},{\"obs_date\":\"2025-07-11\",\"mm\":0.35},{\"obs_date\":\"2025-07-12\",\"mm\":3.38},{\"obs_date\":\"2025-07-13\",\"mm\":0},{\"obs_date\":\"2025-07-14\",\"mm\":0.11},{\"obs_date\":\"2025-07-15\",\"mm\":0},{\"obs_date\":\"2025-07-16\",\"mm\":0.38},{\"obs_date\":\"2025-07-17\",\"mm\":0.13},{\"obs_date\":\"2025-07-18\",\"mm\":0},{\"obs_date\":\"2025-07-19\",\"mm\":0.15},{\"obs_date\":\"2025-07-20\",\"mm\":0.11},{\"obs_date\":\"2025-07-21\",\"mm\":0.77},{\"obs_date\":\"2025-07-22\",\"mm\":1.18},{\"obs_date\":\"2025-07-23\",\"mm\":0},{\"obs_date\":\"2025-07-24\",\"mm\":0.09},{\"obs_date\":\"2025-07-25\",\"mm\":0.78},{\"obs_date\":\"2025-07-26\",\"mm\":0.82},{\"obs_date\":\"2025-07-27\",\"mm\":0.51},{\"obs_date\":\"2025-07-28\",\"mm\":0.93},{\"obs_date\":\"2025-07-29\",\"mm\":0.4},{\"obs_date\":\"2025-07-30\",\"mm\":0.3}]}"
+        },
+        {
+          "role": "assistant",
+          "content": "The satellite shows 131.65mm total for July 2025, with significant rain early in the month (July 3-5: 30.38+38.2+13.37 = 81.95mm). The gauge only captured 6.1mm total and missed most of the rainy days.\n\nLet me check the prior years' satellite data to understand what's normal for this location.</think>\n",
+          "tool_calls": [
+            {
+              "id": "call-8f43a7cb-35c7-40ac-b31e-a2eeb350e877",
+              "type": "function",
+              "function": {
+                "name": "describe_table",
+                "arguments": "{\"table\":\"pluvia.power_lagos_2025_prior_daily\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call-8f43a7cb-35c7-40ac-b31e-a2eeb350e877",
+          "content": "{\"columns\":[\"obs_date date\",\"mm double\",\"source_id string\",\"latitude decimal(4,3)\",\"longitude decimal(4,3)\"]}"
+        },
+        {
+          "role": "assistant",
+          "content": "Let me check the prior years data for July to understand the historical context.</think>\n",
+          "tool_calls": [
+            {
+              "id": "call-c5b81601-0687-4a03-ba92-a16664e174dc",
+              "type": "function",
+              "function": {
+                "name": "sql_query",
+                "arguments": "{\"sql\":\"SELECT \\n    EXTRACT(YEAR FROM obs_date) as year,\\n    SUM(mm) as total_july_mm,\\n    COUNT(*) as days_count\\nFROM pluvia.power_lagos_2025_prior_daily\\nWHERE EXTRACT(MONTH FROM obs_date) = 7\\nGROUP BY EXTRACT(YEAR FROM obs_date)\\nORDER BY year;\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call-c5b81601-0687-4a03-ba92-a16664e174dc",
+          "content": "{\"row_count\":24,\"columns\":[\"year\",\"total_july_mm\",\"days_count\"],\"numeric\":{\"year\":{\"min\":2001,\"max\":2024,\"sum\":48300},\"total_july_mm\":{\"min\":117.06,\"max\":416.37,\"sum\":5605.58},\"days_count\":{\"min\":31,\"max\":31,\"sum\":744}},\"rows\":[{\"year\":2001,\"total_july_mm\":173.91000000000008,\"days_count\":31},{\"year\":2002,\"total_july_mm\":314.61999999999995,\"days_count\":31},{\"year\":2003,\"total_july_mm\":129.4,\"days_count\":31},{\"year\":2004,\"total_july_mm\":153.06999999999994,\"days_count\":31},{\"year\":2005,\"total_july_mm\":240.79999999999995,\"days_count\":31},{\"year\":2006,\"total_july_mm\":117.06000000000002,\"days_count\":31},{\"year\":2007,\"total_july_mm\":289.56000000000006,\"days_count\":31},{\"year\":2008,\"total_july_mm\":416.36999999999995,\"days_count\":31},{\"year\":2009,\"total_july_mm\":233.62000000000003,\"days_count\":31},{\"year\":2010,\"total_july_mm\":212.66000000000003,\"days_count\":31},{\"year\":2011,\"total_july_mm\":411.28000000000014,\"days_count\":31},{\"year\":2012,\"total_july_mm\":178.33999999999995,\"days_count\":31},{\"year\":2013,\"total_july_mm\":239.20999999999998,\"days_count\":31},{\"year\":2014,\"total_july_mm\":336.75,\"days_count\":31},{\"year\":2015,\"total_july_mm\":148.77999999999997,\"days_count\":31},{\"year\":2016,\"total_july_mm\":119.85000000000002,\"days_count\":31},{\"year\":2017,\"total_july_mm\":308.82000000000005,\"days_count\":31},{\"year\":2018,\"total_july_mm\":215.84,\"days_count\":31},{\"year\":2019,\"total_july_mm\":184.2,\"days_count\":31},{\"year\":2020,\"total_july_mm\":206.32999999999998,\"days_count\":31},{\"year\":2021,\"total_july_mm\":202.72,\"days_count\":31},{\"year\":2022,\"total_july_mm\":311.1899999999999,\"days_count\":31},{\"year\":2023,\"total_july_mm\":255.29,\"days_count\":31},{\"year\":2024,\"total_july_mm\":205.91000000000003,\"days_count\":31}]}"
+        },
+        {
+          "role": "assistant",
+          "content": "The historical July rainfall ranges from 117mm to 416mm, with a median around 200-250mm. The 2025 satellite total of 131.65mm is below the historical average but not extremely low - it's above the minimum of 117mm (2006) and 119.85mm (2016).\n\nNow let me check the policy details more carefully. The trigger is 144.3mm and exit is 61.8mm. The satellite shows 131.65mm, which is below the trigger (144.3mm) but above the exit (61.8mm). This would be in the payout zone.\n\nBut wait - the gauge is clearly unfit (only 32% coverage, missing 21 days, divergence 72%). The policy says \"The gauge record decides the claim unless it is unfit.\" Since the gauge is unfit, we should use the satellite.\n\nLet me also check if there are any days where the gauge reported 0 but satellite saw ≥5mm rain (as mentioned in P2).</think>\n",
+          "tool_calls": [
+            {
+              "id": "call-daade5b0-5e1a-45b4-ab7c-65afa6dd1fce",
+              "type": "function",
+              "function": {
+                "name": "sql_query",
+                "arguments": "{\"sql\":\"SELECT g.obs_date, g.mm as gauge_mm, s.mm as sat_mm\\nFROM pluvia.ghcn_prcp g\\nJOIN pluvia.power_lagos_2025_daily s ON g.obs_date = s.obs_date\\nWHERE g.station_id = 'NIM00065201'\\n  AND g.obs_date BETWEEN '2025-07-01' AND '2025-07-31'\\n  AND g.mm = 0\\n  AND s.mm >= 5\\nORDER BY g.obs_date;\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call-daade5b0-5e1a-45b4-ab7c-65afa6dd1fce",
+          "content": "{\"row_count\":1,\"columns\":[\"obs_date\",\"gauge_mm\",\"sat_mm\"],\"numeric\":{\"gauge_mm\":{\"min\":0,\"max\":0,\"sum\":0},\"sat_mm\":{\"min\":14.34,\"max\":14.34,\"sum\":14.34}},\"rows\":[{\"obs_date\":\"2025-07-08\",\"gauge_mm\":0,\"sat_mm\":14.34}]}"
+        },
+        {
+          "role": "assistant",
+          "content": "This confirms P2 - on July 8, the gauge reported 0mm but satellite saw 14.34mm. This is a clear gauge failure.\n\nNow let me check the overlapping days comparison more thoroughly.</think>\n",
+          "tool_calls": [
+            {
+              "id": "call-8fbafc62-40d8-47f1-bc7a-5865868084ef",
+              "type": "function",
+              "function": {
+                "name": "sql_query",
+                "arguments": "{\"sql\":\"SELECT g.obs_date, g.mm as gauge_mm, s.mm as sat_mm\\nFROM pluvia.ghcn_prcp g\\nJOIN pluvia.power_lagos_2025_daily s ON g.obs_date = s.obs_date\\nWHERE g.station_id = 'NIM00065201'\\n  AND g.obs_date BETWEEN '2025-07-01' AND '2025-07-31'\\nORDER BY g.obs_date;\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call-8fbafc62-40d8-47f1-bc7a-5865868084ef",
+          "content": "{\"row_count\":10,\"columns\":[\"obs_date\",\"gauge_mm\",\"sat_mm\"],\"numeric\":{\"gauge_mm\":{\"min\":0,\"max\":6.1,\"sum\":6.1},\"sat_mm\":{\"min\":0,\"max\":14.34,\"sum\":21.89}},\"rows\":[{\"obs_date\":\"2025-07-01\",\"gauge_mm\":0,\"sat_mm\":0.72},{\"obs_date\":\"2025-07-06\",\"gauge_mm\":0,\"sat_mm\":2.66},{\"obs_date\":\"2025-07-07\",\"gauge_mm\":0,\"sat_mm\":1.83},{\"obs_date\":\"2025-07-08\",\"gauge_mm\":0,\"sat_mm\":14.34},{\"obs_date\":\"2025-07-13\",\"gauge_mm\":0,\"sat_mm\":0},{\"obs_date\":\"2025-07-21\",\"gauge_mm\":0,\"sat_mm\":0.77},{\"obs_date\":\"2025-07-22\",\"gauge_mm\":0,\"sat_mm\":1.18},{\"obs_date\":\"2025-07-23\",\"gauge_mm\":6.1,\"sat_mm\":0},{\"obs_date\":\"2025-07-24\",\"gauge_mm\":0,\"sat_mm\":0.09},{\"obs_date\":\"2025-07-30\",\"gauge_mm\":0,\"sat_mm\":0.3}]}"
+        },
+        {
+          "role": "assistant",
+          "content": "The overlapping days show:\n- Gauge total: 6.1mm\n- Satellite total: 21.89mm\n- Gap: 15.79mm (72.1%)\n\nThe gauge is completely unreliable. It missed the heavy rain period (July 3-5: 81.95mm per satellite), reported 0 on July 8 when satellite saw 14.34mm, and only caught 6.1mm on July 23 when satellite saw 0.\n\nThe satellite total for July 2025 is 131.65mm. This is below the trigger of 144.3mm but above the exit of 61.8mm. So there should be a payout.\n\nSince the gauge is unfit (fails P1, P2, P6), the satellite should decide. The satellite index is 131.65mm.\n\nLet me now propose a settlement using the satellite data. The payout would be calculated based on the contract terms. Since the sum insured is 2,500,000 NGN and the payout would be above 1,000,000 NGN (likely), I'll need sign-off.\n\nLet me propose the settlement with the satellite as source.</think>The gauge record is unfit: only 32% coverage (10/31 days), 21 missing days, and a 72% divergence from satellite on overlapping days including a 0mm gauge reading on July 8 when satellite recorded 14.34mm. The satellite shows 131.65mm for July 2025, which is below the 144.3mm trigger but above the 61.8mm exit — a payable index. I'll propose settlement using the satellite.\n",
+          "tool_calls": [
+            {
+              "id": "call-894e0e40-ccb9-4313-ada5-b0a2bdc288d6",
+              "type": "function",
+              "function": {
+                "name": "propose_settlement",
+                "arguments": "{\"verdict\":\"PAY\",\"figures\":[{\"label\":\"satellite_july_2025_total_mm\",\"sql\":\"SELECT SUM(mm) FROM pluvia.power_lagos_2025_daily WHERE obs_date BETWEEN '2025-07-01' AND '2025-07-31'\",\"value\":131.65},{\"label\":\"gauge_coverage_pct\",\"sql\":\"SELECT COUNT(*) * 100.0 / 31 FROM pluvia.ghcn_prcp WHERE station_id = 'NIM00065201' AND obs_date BETWEEN '2025-07-01' AND '2025-07-31'\",\"value\":32.26},{\"label\":\"overlapping_days_gauge_vs_sat_mm\",\"sql\":\"SELECT SUM(g.mm) as gauge_mm, SUM(s.mm) as sat_mm FROM pluvia.ghcn_prcp g JOIN pluvia.power_lagos_2025_daily s ON g.obs_date = s.obs_date WHERE g.station_id = 'NIM00065201' AND g.obs_date BETWEEN '2025-07-01' AND '2025-07-31'\",\"value\":6.1}],\"source\":\"power\",\"rationale\":\"Gauge record is unfit: P1 fails (32.3% coverage vs 80% minimum), P2 fails (21 missing days, 1 zero reading coinciding with 14.34mm satellite rain on 2025-07-08), P6 fails (72.1% divergence on overlapping days). Satellite provides complete 31-day record totaling 131.65mm, which falls between exit (61.8mm) and trigger (144.3mm), triggering a payout.\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call-894e0e40-ccb9-4313-ada5-b0a2bdc288d6",
+          "content": "{\"verdict\":\"PAY\",\"payout_ngn\":383333.33,\"index_source\":\"power\",\"index_mm\":131.65,\"reasons\":[\"Disagreement resolved with figures the code reproduced: satellite 131.65 mm against 24 earlier years ranging 117.06 to 416.37 mm\",\"Corrected index uses satellite evidence because P1, P2 bars the station as sole index.\",\"The contractual rainfall trigger is met.\"],\"figures\":[{\"label\":\"satellite_july_2025_total_mm\",\"claimed\":131.65,\"reproduced\":131.65,\"match\":true},{\"label\":\"gauge_coverage_pct\",\"claimed\":32.26,\"reproduced\":32.258065,\"match\":true},{\"label\":\"overlapping_days_gauge_vs_sat_mm\",\"claimed\":6.1,\"reproduced\":6.1,\"match\":true}],\"prior_years\":{\"years\":24,\"min_mm\":117.06,\"max_mm\":416.37,\"satellite_mm\":131.65,\"within\":true},\"next\":\"The payout is released. Write to the group, tell the operator if the gauge failed, then finish.\"}"
+        },
+        {
+          "role": "assistant",
+          "content": "The policy gate approved the PAY verdict with a payout of 383,333.33 NGN. This is below the 1,000,000 NGN threshold that requires sign-off. Now I need to:\n1. Write to the farmer group about the outcome\n2. Notify the station operator about the gauge failure\n3. Finish the case\n\nLet me draft the letter to the farmer group first.</think>The gate approved PAY with a payout of NGN 383,333.33 (below the NGN 1M sign-off threshold). Now I'll write to the farmer group and notify the station operator about the gauge failure.\n\n",
+          "tool_calls": [
+            {
+              "id": "call-b044cd15-d411-4c8c-b5ac-ee35dcf53721",
+              "type": "function",
+              "function": {
+                "name": "draft_letter",
+                "arguments": "{\"body\":\"Dear Farmer Group,\\n\\nYour claim CLM-LAG-2025-001 for maize crop under policy POL-LAG-2025-014 has been settled.\\n\\n**Outcome: PAY — NGN 383,333.33**\\n\\n**Why:** The reference gauge (NIM00065201) at your farm location was unfit for the July 2025 cover window:\\n- Only 10 of 31 days reported (32% coverage, below the 80% minimum)\\n- 21 days missing; one reported zero (2025-07-08) while satellite measured 14.3 mm\\n- On the 10 overlapping days the gauge totalled 6.1 mm vs 21.9 mm from satellite — a 72% gap\\n\\nBecause the gauge record fails our quality checks, the satellite index (NASA POWER) is used. It recorded 131.65 mm for July 2025. This is below the policy trigger of 144.3 mm but above the exit of 61.8 mm, so a proportional payout applies.\\n\\nThe payout of NGN 383,333.33 has been approved and will be disbursed.\\n\\nWe have also notified the station operator about the gauge failures on the dates above.\\n\\nPluvia Claims\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call-b044cd15-d411-4c8c-b5ac-ee35dcf53721",
+          "content": "{\"ok\":true}"
+        },
+        {
+          "role": "assistant",
+          "content": "Now let me notify the station operator about the gauge failure.</think>\n",
+          "tool_calls": [
+            {
+              "id": "call-39b941bb-b0bc-4008-9e2d-41e8fdc7b0d7",
+              "type": "function",
+              "function": {
+                "name": "notify_operator",
+                "arguments": "{\"body\":\"Station NIM00065201 — gauge failures during July 2025 cover window (policy POL-LAG-2025-014):\\n\\n- 21 of 31 days missing (no observation recorded)\\n- 2025-07-08: gauge reported 0 mm while satellite measured 14.34 mm\\n- On 10 overlapping days gauge totalled 6.1 mm vs satellite 21.9 mm (72% divergence)\\n\\nThe gauge record was deemed unfit and the satellite index settled the claim. Please investigate the instrument and reporting chain for July 2025.\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call-39b941bb-b0bc-4008-9e2d-41e8fdc7b0d7",
+          "content": "{\"ok\":true}"
+        },
+        {
+          "role": "assistant",
+          "content": "Now I need to finish the case with a summary.</think>\n\n",
+          "tool_calls": [
+            {
+              "id": "call-c465b96b-d1c6-4a7c-9c8a-813307e825f6",
+              "type": "function",
+              "function": {
+                "name": "finish_case",
+                "arguments": "{\"summary\":\"Claim CLM-LAG-2025-001 settled: gauge record unfit (32% coverage, 21 missing days, 72% divergence from satellite), satellite index 131.65 mm triggered proportional payout of NGN 383,333.33. Farmer group notified, station operator alerted to gauge failures.\"}"
+              }
+            }
+          ]
+        },
+        {
+          "role": "tool",
+          "tool_call_id": "call-c465b96b-d1c6-4a7c-9c8a-813307e825f6",
+          "content": "{\"ok\":true,\"state\":\"settled\"}"
+        }
+      ],
+      "from_event": 0,
+      "to_event": 29,
+      "snapshot": {
+        "state": "settled",
+        "decision": {
+          "verdict": "PAY",
+          "payout_ngn": 383333.33,
+          "index_source": "power",
+          "index_mm": 131.65,
+          "reasons": [
+            "Disagreement resolved with figures the code reproduced: satellite 131.65 mm against 24 earlier years ranging 117.06 to 416.37 mm",
+            "Corrected index uses satellite evidence because P1, P2 bars the station as sole index.",
+            "The contractual rainfall trigger is met."
+          ],
+          "probes": [
+            {
+              "id": "P1",
+              "name": "Station coverage",
+              "status": "fail",
+              "metric": {
+                "valid_days": 10,
+                "window_days": 31,
+                "coverage": 0.3225806451612903,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "10 of 31 station days valid (32.3%); minimum 80.0%."
+            },
+            {
+              "id": "P2",
+              "name": "Missing treated as zero",
+              "status": "fail",
+              "metric": {
+                "missing_days": 21,
+                "suspect_zero_days": 1,
+                "naive_sum_mm": 6.1
+              },
+              "evidence": "21 missing station days would contribute zero to a naive sum; 1 reported zeros coincide with satellite rain of at least 5 mm. This identifies an unreliable record, not an instrument fault."
+            },
+            {
+              "id": "P3",
+              "name": "Quality and measurement flags",
+              "status": "pass",
+              "metric": {
+                "quality_flagged": 0,
+                "s_flag:S": 10
+              },
+              "evidence": "0 quality-flagged rows excluded. Measurement/source counts: {\"quality_flagged\":0,\"s_flag:S\":10}. A is multi-day accumulation; B/D are partial-day measurements; a blank quality flag does not establish accuracy."
+            },
+            {
+              "id": "P4",
+              "name": "Record ends early",
+              "status": "pass",
+              "metric": {
+                "last_valid_date": "2025-07-30",
+                "gap_days": 1
+              },
+              "evidence": "Last valid station date: 2025-07-30; 1 days before the window end."
+            },
+            {
+              "id": "P5",
+              "name": "Station distance",
+              "status": "pass",
+              "metric": {
+                "distance_km": 0,
+                "max_station_km": 20
+              },
+              "evidence": "Station is 0.0 km from the farm; sole-index limit is 20 km."
+            },
+            {
+              "id": "P6",
+              "name": "Source divergence",
+              "status": "fail",
+              "metric": {
+                "overlap_days": 10,
+                "station_mm": 6.1,
+                "satellite_mm": 21.89,
+                "absolute_gap_mm": 15.790000000000001,
+                "relative_gap": 0.7213339424394701
+              },
+              "evidence": "On 10 overlapping days station totals 6.1 mm and satellite 21.9 mm; gap 15.8 mm (72.1%)."
+            },
+            {
+              "id": "P7",
+              "name": "Satellite fill values",
+              "status": "pass",
+              "metric": {
+                "missing_or_fill_days": 0,
+                "valid_days": 31,
+                "duplicate_rows": 0,
+                "invalid_dates": 0
+              },
+              "evidence": "0 satellite days missing, invalid, duplicated or filled; -999 fill values are excluded."
+            },
+            {
+              "id": "P8",
+              "name": "Borderline index",
+              "status": "pass",
+              "metric": {
+                "index_mm": 131.65,
+                "gap_mm": 12.650000000000006,
+                "band_mm": 5
+              },
+              "evidence": "Index 131.7 mm is 12.7 mm from trigger; inspection band is ±5 mm."
+            }
+          ],
+          "naive": {
+            "station_only": {
+              "verdict": "PAY",
+              "payout_ngn": 2500000,
+              "index_mm": 6.1
+            },
+            "satellite_only": {
+              "verdict": "PAY",
+              "payout_ngn": 383333.33,
+              "index_mm": 131.65
+            }
+          },
+          "memory": {
+            "recalled": [],
+            "written": [],
+            "conflicts": []
+          },
+          "rounds": 0,
+          "human_review_required": false
+        },
+        "proposal": {
+          "verdict": "PAY",
+          "source": "power",
+          "rationale": "Gauge record is unfit: P1 fails (32.3% coverage vs 80% minimum), P2 fails (21 missing days, 1 zero reading coinciding with 14.34mm satellite rain on 2025-07-08), P6 fails (72.1% divergence on overlapping days). Satellite provides complete 31-day record totaling 131.65mm, which falls between exit (61.8mm) and trigger (144.3mm), triggering a payout.",
+          "figures_verified": true
+        },
+        "payment": {
+          "amount_ngn": 383333.33,
+          "status": "released"
+        },
+        "outbox": [
+          {
+            "to": "farmer_group",
+            "body": "Dear Farmer Group,\n\nYour claim CLM-LAG-2025-001 for maize crop under policy POL-LAG-2025-014 has been settled.\n\n**Outcome: PAY — NGN 383,333.33**\n\n**Why:** The reference gauge (NIM00065201) at your farm location was unfit for the July 2025 cover window:\n- Only 10 of 31 days reported (32% coverage, below the 80% minimum)\n- 21 days missing; one reported zero (2025-07-08) while satellite measured 14.3 mm\n- On the 10 overlapping days the gauge totalled 6.1 mm vs 21.9 mm from satellite — a 72% gap\n\nBecause the gauge record fails our quality checks, the satellite index (NASA POWER) is used. It recorded 131.65 mm for July 2025. This is below the policy trigger of 144.3 mm but above the exit of 61.8 mm, so a proportional payout applies.\n\nThe payout of NGN 383,333.33 has been approved and will be disbursed.\n\nWe have also notified the station operator about the gauge failures on the dates above.\n\nPluvia Claims",
+            "status": "sent",
+            "at": "2026-10-27T14:36:15.688Z"
+          },
+          {
+            "to": "station_operator",
+            "body": "Station NIM00065201 — gauge failures during July 2025 cover window (policy POL-LAG-2025-014):\n\n- 21 of 31 days missing (no observation recorded)\n- 2025-07-08: gauge reported 0 mm while satellite measured 14.34 mm\n- On 10 overlapping days gauge totalled 6.1 mm vs satellite 21.9 mm (72% divergence)\n\nThe gauge record was deemed unfit and the satellite index settled the claim. Please investigate the instrument and reporting chain for July 2025.",
+            "status": "sent",
+            "at": "2026-10-27T14:36:18.902Z"
+          }
+        ],
+        "summary": "Claim CLM-LAG-2025-001 settled: gauge record unfit (32% coverage, 21 missing days, 72% divergence from satellite), satellite index 131.65 mm triggered proportional payout of NGN 383,333.33. Farmer group notified, station operator alerted to gauge failures."
+      }
+    }
+  ],
+  "outbox": [
+    {
+      "to": "farmer_group",
+      "body": "Dear Farmer Group,\n\nYour claim CLM-LAG-2025-001 for maize crop under policy POL-LAG-2025-014 has been settled.\n\n**Outcome: PAY — NGN 383,333.33**\n\n**Why:** The reference gauge (NIM00065201) at your farm location was unfit for the July 2025 cover window:\n- Only 10 of 31 days reported (32% coverage, below the 80% minimum)\n- 21 days missing; one reported zero (2025-07-08) while satellite measured 14.3 mm\n- On the 10 overlapping days the gauge totalled 6.1 mm vs 21.9 mm from satellite — a 72% gap\n\nBecause the gauge record fails our quality checks, the satellite index (NASA POWER) is used. It recorded 131.65 mm for July 2025. This is below the policy trigger of 144.3 mm but above the exit of 61.8 mm, so a proportional payout applies.\n\nThe payout of NGN 383,333.33 has been approved and will be disbursed.\n\nWe have also notified the station operator about the gauge failures on the dates above.\n\nPluvia Claims",
+      "status": "sent",
+      "at": "2026-10-27T14:36:15.688Z"
+    },
+    {
+      "to": "station_operator",
+      "body": "Station NIM00065201 — gauge failures during July 2025 cover window (policy POL-LAG-2025-014):\n\n- 21 of 31 days missing (no observation recorded)\n- 2025-07-08: gauge reported 0 mm while satellite measured 14.34 mm\n- On 10 overlapping days gauge totalled 6.1 mm vs satellite 21.9 mm (72% divergence)\n\nThe gauge record was deemed unfit and the satellite index settled the claim. Please investigate the instrument and reporting chain for July 2025.",
+      "status": "sent",
+      "at": "2026-10-27T14:36:18.902Z"
+    }
+  ],
+  "evidence": {
+    "station": {
+      "source": "ghcn",
+      "id": "NIM00065201",
+      "lat": 6.577,
+      "lon": 3.321,
+      "window": {
+        "start": "2025-07-01",
+        "end": "2025-07-31"
+      },
+      "days": [
+        {
+          "date": "2025-07-01",
+          "mm": 0,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": "S"
+        },
+        {
+          "date": "2025-07-06",
+          "mm": 0,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": "S"
+        },
+        {
+          "date": "2025-07-07",
+          "mm": 0,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": "S"
+        },
+        {
+          "date": "2025-07-08",
+          "mm": 0,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": "S"
+        },
+        {
+          "date": "2025-07-13",
+          "mm": 0,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": "S"
+        },
+        {
+          "date": "2025-07-21",
+          "mm": 0,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": "S"
+        },
+        {
+          "date": "2025-07-22",
+          "mm": 0,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": "S"
+        },
+        {
+          "date": "2025-07-23",
+          "mm": 6.1,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": "S"
+        },
+        {
+          "date": "2025-07-24",
+          "mm": 0,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": "S"
+        },
+        {
+          "date": "2025-07-30",
+          "mm": 0,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": "S"
+        }
+      ],
+      "fetched_sql": [
+        "SELECT station_id, obs_date, mm, m_flag, q_flag, s_flag FROM pluvia.ghcn_prcp WHERE station_id = 'NIM00065201' AND obs_date BETWEEN '2025-07-01' AND '2025-07-31' ORDER BY obs_date"
+      ]
+    },
+    "satellite": {
+      "source": "power",
+      "id": "power_lagos_2025_daily",
+      "lat": 6.577,
+      "lon": 3.321,
+      "window": {
+        "start": "2025-07-01",
+        "end": "2025-07-31"
+      },
+      "days": [
+        {
+          "date": "2025-07-01",
+          "mm": 0.72,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-02",
+          "mm": 0.06,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-03",
+          "mm": 30.38,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-04",
+          "mm": 38.2,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-05",
+          "mm": 13.37,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-06",
+          "mm": 2.66,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-07",
+          "mm": 1.83,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-08",
+          "mm": 14.34,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-09",
+          "mm": 9.32,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-10",
+          "mm": 7.32,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-11",
+          "mm": 0.35,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-12",
+          "mm": 3.38,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-13",
+          "mm": 0,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-14",
+          "mm": 0.11,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-15",
+          "mm": 0,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-16",
+          "mm": 0.38,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-17",
+          "mm": 0.13,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-18",
+          "mm": 0,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-19",
+          "mm": 0.15,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-20",
+          "mm": 0.11,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-21",
+          "mm": 0.77,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-22",
+          "mm": 1.18,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-23",
+          "mm": 0,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-24",
+          "mm": 0.09,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-25",
+          "mm": 0.78,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-26",
+          "mm": 0.82,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-27",
+          "mm": 0.51,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-28",
+          "mm": 0.93,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-29",
+          "mm": 0.4,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-30",
+          "mm": 0.3,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        },
+        {
+          "date": "2025-07-31",
+          "mm": 3.06,
+          "m_flag": "",
+          "q_flag": "",
+          "s_flag": ""
+        }
+      ],
+      "fetched_sql": [
+        "SELECT obs_date, mm, source_id, latitude, longitude FROM pluvia.power_lagos_2025_daily WHERE obs_date BETWEEN '2025-07-01' AND '2025-07-31' ORDER BY obs_date"
+      ]
+    }
+  },
+  "decision": {
+    "verdict": "PAY",
+    "payout_ngn": 383333.33,
+    "index_source": "power",
+    "index_mm": 131.65,
+    "reasons": [
+      "Disagreement resolved with figures the code reproduced: satellite 131.65 mm against 24 earlier years ranging 117.06 to 416.37 mm",
+      "Corrected index uses satellite evidence because P1, P2 bars the station as sole index.",
+      "The contractual rainfall trigger is met."
+    ],
+    "probes": [
+      {
+        "id": "P1",
+        "name": "Station coverage",
+        "status": "fail",
+        "metric": {
+          "valid_days": 10,
+          "window_days": 31,
+          "coverage": 0.3225806451612903,
+          "duplicate_rows": 0,
+          "invalid_dates": 0
+        },
+        "evidence": "10 of 31 station days valid (32.3%); minimum 80.0%."
+      },
+      {
+        "id": "P2",
+        "name": "Missing treated as zero",
+        "status": "fail",
+        "metric": {
+          "missing_days": 21,
+          "suspect_zero_days": 1,
+          "naive_sum_mm": 6.1
+        },
+        "evidence": "21 missing station days would contribute zero to a naive sum; 1 reported zeros coincide with satellite rain of at least 5 mm. This identifies an unreliable record, not an instrument fault."
+      },
+      {
+        "id": "P3",
+        "name": "Quality and measurement flags",
+        "status": "pass",
+        "metric": {
+          "quality_flagged": 0,
+          "s_flag:S": 10
+        },
+        "evidence": "0 quality-flagged rows excluded. Measurement/source counts: {\"quality_flagged\":0,\"s_flag:S\":10}. A is multi-day accumulation; B/D are partial-day measurements; a blank quality flag does not establish accuracy."
+      },
+      {
+        "id": "P4",
+        "name": "Record ends early",
+        "status": "pass",
+        "metric": {
+          "last_valid_date": "2025-07-30",
+          "gap_days": 1
+        },
+        "evidence": "Last valid station date: 2025-07-30; 1 days before the window end."
+      },
+      {
+        "id": "P5",
+        "name": "Station distance",
+        "status": "pass",
+        "metric": {
+          "distance_km": 0,
+          "max_station_km": 20
+        },
+        "evidence": "Station is 0.0 km from the farm; sole-index limit is 20 km."
+      },
+      {
+        "id": "P6",
+        "name": "Source divergence",
+        "status": "fail",
+        "metric": {
+          "overlap_days": 10,
+          "station_mm": 6.1,
+          "satellite_mm": 21.89,
+          "absolute_gap_mm": 15.790000000000001,
+          "relative_gap": 0.7213339424394701
+        },
+        "evidence": "On 10 overlapping days station totals 6.1 mm and satellite 21.9 mm; gap 15.8 mm (72.1%)."
+      },
+      {
+        "id": "P7",
+        "name": "Satellite fill values",
+        "status": "pass",
+        "metric": {
+          "missing_or_fill_days": 0,
+          "valid_days": 31,
+          "duplicate_rows": 0,
+          "invalid_dates": 0
+        },
+        "evidence": "0 satellite days missing, invalid, duplicated or filled; -999 fill values are excluded."
+      },
+      {
+        "id": "P8",
+        "name": "Borderline index",
+        "status": "pass",
+        "metric": {
+          "index_mm": 131.65,
+          "gap_mm": 12.650000000000006,
+          "band_mm": 5
+        },
+        "evidence": "Index 131.7 mm is 12.7 mm from trigger; inspection band is ±5 mm."
+      }
+    ],
+    "naive": {
+      "station_only": {
+        "verdict": "PAY",
+        "payout_ngn": 2500000,
+        "index_mm": 6.1
+      },
+      "satellite_only": {
+        "verdict": "PAY",
+        "payout_ngn": 383333.33,
+        "index_mm": 131.65
+      }
+    },
+    "memory": {
+      "recalled": [],
+      "written": [],
+      "conflicts": []
+    },
+    "rounds": 0,
+    "human_review_required": false
+  },
+  "proposal": {
+    "verdict": "PAY",
+    "source": "power",
+    "rationale": "Gauge record is unfit: P1 fails (32.3% coverage vs 80% minimum), P2 fails (21 missing days, 1 zero reading coinciding with 14.34mm satellite rain on 2025-07-08), P6 fails (72.1% divergence on overlapping days). Satellite provides complete 31-day record totaling 131.65mm, which falls between exit (61.8mm) and trigger (144.3mm), triggering a payout.",
+    "figures_verified": true
+  },
+  "payment": {
+    "amount_ngn": 383333.33,
+    "status": "released"
+  },
+  "summary": "Claim CLM-LAG-2025-001 settled: gauge record unfit (32% coverage, 21 missing days, 72% divergence from satellite), satellite index 131.65 mm triggered proportional payout of NGN 383,333.33. Farmer group notified, station operator alerted to gauge failures."
+}

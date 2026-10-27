@@ -3,6 +3,10 @@ import { Orchestrator } from './orchestrator.js';
 import { ZetarisAdapter } from './adapters/zetaris.js';
 import { NightshiftAdapter } from './adapters/nightshift.js';
 import type { ModelAdapter, QueryAdapter } from './adapters/contracts.js';
+import path from 'node:path';
+import { PluviaMemory } from './memory/pluviaMemory.js';
+import { CaseAgent } from './agent/caseAgent.js';
+import { CaseStore } from './agent/cases.js';
 
 export class RuntimeError extends Error {
   constructor(public readonly type: string, message: string) {
@@ -23,6 +27,7 @@ export interface Runtime {
   query: QueryAdapter;
   model: ModelAdapter;
   orchestrator: Orchestrator;
+  agent: CaseAgent;
   close(): Promise<void>;
 }
 
@@ -105,9 +110,12 @@ export async function createRuntime(options: RuntimeOptions = {}): Promise<Runti
     model = new NightshiftAdapter(config.nightshift);
   }
 
+  const logDirectory = options.logDirectory ?? 'logs';
+  const memory = new PluviaMemory(path.join(logDirectory, 'memory'));
   const orchestrator = new Orchestrator({
     query,
     model,
+    memory,
     sampleMode: config.sampleMode,
     sampleModeReason: config.sampleModeReason,
     sample: config.sample,
@@ -115,11 +123,23 @@ export async function createRuntime(options: RuntimeOptions = {}): Promise<Runti
     stdout: options.stdout,
   });
 
+  // The agent runs live only when both services are live; otherwise it replays recorded live cases.
+  const live = !config.sample.zetaris && !config.sample.nightshift;
+  const agent = new CaseAgent({
+    query,
+    memory,
+    store: new CaseStore(path.join(logDirectory, 'cases')),
+    replayDirectory: path.join(options.dataDirectory ?? 'data', 'replays'),
+    live,
+    model: live ? { url: config.nightshift.url, token: config.nightshift.runtimeToken, primary: config.agent.model, fallback: config.agent.fallback } : undefined,
+  });
+
   return {
     config,
     query,
     model,
     orchestrator,
+    agent,
     close: async () => {
       await query.close?.();
     },

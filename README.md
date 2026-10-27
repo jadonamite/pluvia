@@ -1,8 +1,8 @@
 # Pluvia
 
-Pluvia checks whether the rainfall record behind a crop-insurance claim can support a decision before any money moves. Built for the Open Agent Hackathon 2026, track **03 · Reasoning Architecture**.
+Pluvia is a claims agent for weather-index crop insurance. Hand it a claim and it investigates the rainfall record itself, writing its own SQL against Zetaris, then carries the claim to the end: it settles, opens an inspection naming the exact dates to verify, writes to the farmer group, tells the station operator about a failing gauge, reads the inspector's report and closes the case. A claims officer signs off on every refusal, every inspection close-out and every payout above ₦1,000,000. Built for the Open Agent Hackathon 2026, track **03 · Reasoning Architecture**.
 
-Pluvia evaluates rainfall evidence across ground stations and independent satellite observations, executes eight deterministic data-integrity probes, and uses episodic and semantic memory across claims to identify unfit records before settlement. The offline application runs end-to-end on real public rainfall snapshots with zero credentials required.
+The agent runs on NVIDIA Nemotron 3 Ultra through Meterless Nightshift. Code keeps the money: the policy gate computes every payout from the contract, and the agent can only make an outcome more careful.
 
 ## Run it
 
@@ -73,6 +73,30 @@ The Lagos example policies are calibrated from complete July windows in prior-ye
 
 Pluvia identifies a record unfit to settle a claim. It does not diagnose a broken instrument. Suspect zero runs cluster across countries in 2002–2005, so an archive ingest problem is a plausible explanation.
 
+## The agent
+
+On the Lagos claims, live, the agent:
+
+- lists the Zetaris views, reads their columns and writes its own queries: gauge days, silent days, a day-by-day join of gauge against satellite, and the satellite's July totals for every year since 2001;
+- runs the eight record checks and recalls what memory holds about the station;
+- proposes a settlement. To argue that the satellite should settle a disagreement with the gauge, it cites each figure with the SQL that produces it. The code reruns every query and compares, and separately checks that the satellite's total sits inside its own range for the same weeks of earlier years;
+- acts on the gate's answer: releases a payout under ₦1,000,000, opens an inspection with the dates and readings to verify, or asks a claims officer to sign;
+- when a cited figure does not reproduce, the gate says which one, what the agent claimed and what its query returned. The agent rechecks and proposes again.
+
+Results from the live runs, recorded and replayable in `data/replays/`:
+
+| Claim | What happened | Outcome |
+|---|---|---|
+| CLM-LAG-2025-001 | Gauge 10 of 31 days, 6.1 mm; satellite complete, 131.65 mm, inside 24 earlier Julys (117.06 to 416.37 mm). Three cited figures reproduced | Pay ₦383,333.33 on the satellite, released; letter and operator notice sent |
+| CLM-LAG-2025-002 | First proposal cited a July median of 210 mm; its own query returned 214.25 mm. The gate sent it to inspection on nine dates. After the inspector's report, the agent revised from 1 of 6 figures reproducing to 4 of 4 | Pay ₦276,000, waiting for sign-off to close the inspection |
+| CLM-LAG-2025-003 | Four cited figures reproduced | Pay ₦184,000, released |
+
+The automatic station-only trigger would have paid the full sum insured on each of these, from 6.1 mm on a gauge that was silent 21 days out of 31.
+
+Every query the agent writes passes a guard first: one SELECT or WITH statement, over the registered Pluvia views only, with a row cap. Writes, second statements and other catalogues are refused and the refusal goes back to the agent. The agent has 24 steps per case; past that the case goes to a person with everything it found.
+
+The hosted copy replays the recorded live investigations step by step and continues from the recorded inspector's report. Run Pluvia with live Zetaris and Nightshift to watch the agent work a new case.
+
 ## Code makes the decision
 
 A model plans the review, explains probe findings and requests evidence. PolicyGate recomputes the probes from the rainfall series and applies the contract. Model wording cannot clear a failed probe or set a payout.
@@ -116,6 +140,17 @@ Thresholds are fixed in [app/probes/config.ts](app/probes/config.ts), outside pr
 GHCN precipitation is divided by ten exactly once. Missing, duplicate, malformed, non-finite and quality-flagged observations cannot count as valid station days.
 
 ## API
+
+```sh
+curl -X POST http://localhost:8000/cases -H 'Content-Type: application/json' -d '{"claim_id":"CLM-LAG-2025-001"}'
+curl http://localhost:8000/cases/<case_id>
+curl -X POST http://localhost:8000/cases/<case_id>/inspection-report -H 'Content-Type: application/json' -d '{"report":"..."}'
+curl -X POST http://localhost:8000/cases/<case_id>/signoff -H 'Content-Type: application/json' -d '{"approve":true}'
+```
+
+`POST /cases` hands a claim to the agent and returns at once; the case fills in while it works. `GET /cases?claim=<id>` lists cases for a claim. Save a finished live case as the replay for its claim with `npm run record-replay -- <case_id>`.
+
+The original single review is still available:
 
 ```sh
 curl http://localhost:8000/health

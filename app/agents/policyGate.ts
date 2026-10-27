@@ -21,6 +21,9 @@ export interface PolicyGateInput {
   memory_conflicts?: MemoryConflict[];
   memory?: MemorySummary;
   rounds?: number;
+  // Set when the agent argued a gauge-satellite disagreement with figures the code reran and
+  // reproduced. It can clear the disagreement only; every refusal guarantee still applies.
+  resolution?: { verified: boolean; summary: string };
 }
 
 // Applies policy contract rules and guardrails to determine claim verdict.
@@ -32,6 +35,7 @@ export function policyGate({
   memory_conflicts = [],
   memory = { recalled: [], written: [], conflicts: [] },
   rounds = 0,
+  resolution,
 }: PolicyGateInput): Decision {
   validatePolicy(policy);
 
@@ -73,6 +77,11 @@ export function policyGate({
   };
 
   const passed = (id: string) => probes.find(p => p.id === id)?.status === 'pass';
+  const resolved =
+    resolution?.verified === true &&
+    Boolean(satelliteData) &&
+    satelliteData!.missing === 0 &&
+    passed('P7');
 
   // Validate source identities match the policy evidence contract.
   if (
@@ -101,6 +110,7 @@ export function policyGate({
 
   // Unresolved or low-confidence memory conflicts force inspection.
   if (
+    !resolved &&
     memory_conflicts.some(
       c =>
         c.status === 'open' ||
@@ -112,7 +122,7 @@ export function policyGate({
   }
 
   // Source divergence must be resolved by valid evidence passing probes.
-  if (!passed('P6')) {
+  if (!passed('P6') && !resolved) {
     return inspect('P6: source comparison failed; new evidence must pass the probes before this conflict can be cleared.');
   }
 
@@ -128,10 +138,11 @@ export function policyGate({
     if (!passed('P7') || !satelliteData || satelliteData.missing > 0) {
       return inspect('Station is unreliable and the satellite lacks a complete usable window.');
     }
-    if (!citations) {
+    if (!citations && !resolved) {
       return inspect(`Satellite substitution requires a rationale citing ${failedStation.join(', ')}.`);
     }
     source = 'power';
+    if (resolved) result.reasons.push(`Disagreement resolved with figures the code reproduced: ${resolution!.summary}`);
     result.reasons.push(
       `Corrected index uses satellite evidence because ${failedStation.join(', ')} bars the station as sole index.`
     );

@@ -1,7 +1,7 @@
 'use strict';
 (() => {
   const $ = id => document.getElementById(id);
-  const state = { claims: [], policies: [], selected: null, run: null, chart: null, busy: false, ticket: 0, filter: 'all', verdicts: {} };
+  const state = { claims: [], policies: [], selected: null, run: null, chart: null, busy: false, ticket: 0, filter: 'all', verdicts: {}, poll: null, shown: {}, reveal: null };
   const money = value => Number.isFinite(value) ? new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(value) : 'Not available';
   const number = value => Number.isFinite(value) ? new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(value) : 'Unavailable';
   const labels = { PAY: 'Pay', PAY_ANYWAY: 'Pay anyway', INSPECT: 'Inspect', NO_PAY: 'Do not pay' };
@@ -23,8 +23,8 @@
   function themeLabel() { $('theme').textContent = currentTheme() === 'dark' ? 'Light appearance' : 'Dark appearance'; document.querySelector('meta[name="theme-color"]').content = currentTheme() === 'dark' ? '#14120E' : '#F2EDE3'; }
   try { const stored = sessionStorage.getItem('pluvia-theme'); if (stored === 'light' || stored === 'dark') document.documentElement.dataset.theme = stored; state.verdicts = JSON.parse(sessionStorage.getItem('pluvia-verdicts') || '{}'); } catch { /* Session preferences are optional. */ }
   themeLabel();
-  $('theme').addEventListener('click', () => { const theme = currentTheme() === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = theme; try { sessionStorage.setItem('pluvia-theme', theme); } catch { /* Session preferences are optional. */ } themeLabel(); if (state.run) drawChart(state.run.output); });
-  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { themeLabel(); if (state.run) drawChart(state.run.output); });
+  $('theme').addEventListener('click', () => { const theme = currentTheme() === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = theme; try { sessionStorage.setItem('pluvia-theme', theme); } catch { /* Session preferences are optional. */ } themeLabel(); if (state.run) showCase(state.run); });
+  matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { themeLabel(); if (state.run) showCase(state.run); });
 
   // one sheet for every detail view; closes on Esc, the close button or a click outside it
   const sheet = $('sheet');
@@ -65,84 +65,168 @@
   function caseHead(claim, policy) {
     const root = $('case-head'); root.replaceChildren();
     const top = el('div', null, 'case-top'); top.append(el('span', claim.claim_id, 'mono muted'), el('span', 'Synthetic', 'tag'));
-    const verdict = state.run && state.run.output?.claim?.claim_id === claim.claim_id ? state.run.output.decision.verdict : state.verdicts[claim.claim_id];
+    const verdict = state.run?.claim_id === claim.claim_id ? state.run.decision?.verdict : state.verdicts[claim.claim_id];
     const title = el('div', null, 'case-title'); title.append(el('h2', (policy?.group_name || claim.policy_id).replace(/ \(synthetic\)$/, '')), verdict ? verdictTag(verdict) : el('span', 'To review', 'todo'));
     const actions = el('div', null, 'case-actions');
-    const run = button(state.run?.output?.claim?.claim_id === claim.claim_id ? 'Review again' : 'Review rainfall', 'button', runReview); run.id = 'run-review'; run.disabled = state.busy || !policy;
+    const run = button(state.run ? 'Open a new case' : 'Hand to the agent', 'button', startCase); run.id = 'run-review'; run.disabled = state.busy || !policy;
     actions.append(run, button('Policy terms', 'button ghost', () => policySheet(claim, policy)));
     root.append(top, title, el('p', claim.event_text || 'No statement from the group.', 'event'), actions);
   }
 
-  function selectClaim(id, navigate = true) {
+  function selectClaim(id, navigate = true, latest = true) {
     const claim = state.claims.find(c => c.claim_id === id); if (!claim) { status('That claim is not in the register. Pick one from the list.', true); return; }
-    state.ticket++; state.selected = claim; state.run = null; state.busy = false; $('results').hidden = true; $('empty').hidden = false;
+    state.ticket++; clearTimeout(state.poll); state.selected = claim; state.run = null; state.busy = false; $('results').hidden = true; $('empty').hidden = false;
     if (state.chart) { state.chart.destroy(); state.chart = null; }
-    caseHead(claim, policyFor(claim)); renderInbox(); status(''); if (navigate) query({ claim: id, run: null });
+    caseHead(claim, policyFor(claim)); renderInbox(); status(''); if (navigate) query({ claim: id, case: null }); if (latest) latestCase(claim.claim_id);
   }
   async function loadInbox() {
     status('Loading claims…');
     try {
       const data = await request('/claims'); state.claims = Array.isArray(data.claims) ? data.claims : []; state.policies = Array.isArray(data.policies) ? data.policies : []; renderInbox(); status('');
       const params = new URLSearchParams(location.search); const id = params.get('claim') || state.selected?.claim_id || state.claims[0]?.claim_id;
-      if (id) selectClaim(id, false); if (params.get('claim')) view('case'); if (params.get('run')) await loadRun(params.get('run'));
+      await loadVerdicts(); if (id) selectClaim(id, false, !params.get('case')); if (params.get('claim')) view('case'); if (params.get('case')) await openCase(params.get('case'));
     } catch (error) { status(`The claims could not be loaded. ${error.message} Reload the page to try again.`, true); $('claim-list').replaceChildren(el('p', 'The list is unavailable.', 'muted')); }
   }
-  async function runReview() {
-    if (!state.selected || state.busy) return; const ticket = ++state.ticket; const claimId = state.selected.claim_id; state.busy = true;
-    const run = $('run-review'); run.disabled = true; run.textContent = 'Reviewing…'; status('Reading the gauge, the satellite and the policy. This takes a few seconds.');
-    try {
-      const result = await request('/run', { method: 'POST', body: JSON.stringify({ input: { claim_id: claimId } }) }); if (ticket !== state.ticket) return;
-      if (!result.output?.decision) throw new Error('The review returned no decision.');
-      renderRun(result); query({ claim: claimId, run: result.run_id });
-      status(result.status === 'partial' ? 'This review is partial. Read the trail before acting on it.' : 'Review complete. Nothing has been paid.');
-    } catch (error) { if (ticket === state.ticket) status(`The review stopped. ${error.message} Try again.`, true); }
-    finally { if (ticket === state.ticket) { state.busy = false; caseHead(state.selected, policyFor(state.selected)); } }
+  const labels2 = { investigating: 'The agent is working', inspection_open: 'Inspection open', awaiting_signoff: 'Waiting for your sign-off', settled: 'Settled', closed: 'Closed', escalated: 'With a person', failed: 'Stopped' };
+  async function loadVerdicts() {
+    try { const { cases } = await request('/cases'); state.verdicts = {}; for (const c of cases.reverse()) if (c.decision) state.verdicts[c.claim_id] = c.decision.verdict; } catch { /* The list still works without verdicts. */ }
   }
-  async function loadRun(id) {
-    const ticket = ++state.ticket; status('Opening the saved review…');
-    try {
-      const run = await request(`/runs/${encodeURIComponent(id)}`); if (ticket !== state.ticket) return; if (!run.output?.decision) throw new Error('This saved review has no decision.');
-      const claim = run.output.claim; if (claim) state.selected = state.claims.find(c => c.claim_id === claim.claim_id) || claim;
-      renderRun(run); status('');
-    } catch (error) { if (ticket === state.ticket) status(`The saved review could not be opened. ${error.message} Run a new review.`, true); }
+  async function latestCase(claimId) {
+    const ticket = state.ticket;
+    try { const { cases } = await request(`/cases?claim=${encodeURIComponent(claimId)}`); if (ticket !== state.ticket || !cases.length) return; showCase(cases[0]); } catch { /* No earlier case for this claim. */ }
+  }
+  async function openCase(id) {
+    try { showCase(await request(`/cases/${encodeURIComponent(id)}`)); } catch (error) { status(`That case could not be opened. ${error.message}`, true); }
+  }
+  async function startCase() {
+    if (!state.selected || state.busy) return; state.busy = true; const ticket = ++state.ticket;
+    const run = $('run-review'); run.disabled = true; run.textContent = 'Starting…';
+    try { const item = await request('/cases', { method: 'POST', body: JSON.stringify({ claim_id: state.selected.claim_id }) }); if (ticket !== state.ticket) return; query({ claim: state.selected.claim_id, case: item.id }); showCase(item); }
+    catch (error) { status(`The agent could not start. ${error.message}`, true); }
+    finally { state.busy = false; if (state.selected) caseHead(state.selected, policyFor(state.selected)); }
+  }
+  // While the agent works, the case is fetched every two seconds and redrawn.
+  function poll(id) {
+    clearTimeout(state.poll); const ticket = state.ticket;
+    state.poll = setTimeout(async () => { try { const item = await request(`/cases/${encodeURIComponent(id)}`); if (ticket === state.ticket) showCase(item); } catch { poll(id); } }, 2000);
+  }
+  async function act(path, body, done) {
+    try { showCase(await request(path, { method: 'POST', body: JSON.stringify(body) })); if (done) status(done); } catch (error) { status(error.message, true); }
   }
 
   // tabs: arrow keys move between them
   const tabs = [...document.querySelectorAll('[role="tab"]')];
   function selectTab(tab, focus = false) {
     for (const t of tabs) { const on = t === tab; t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1; $(t.getAttribute('aria-controls')).hidden = !on; }
-    if (focus) tab.focus(); if (tab.id === 'tab-evidence' && state.run) drawChart(state.run.output);
+    if (focus) tab.focus(); if (tab.id === 'tab-evidence' && state.run) drawChart({ evidence: state.run.evidence || {}, policy: policyFor(state.selected), claim: state.selected });
   }
   tabs.forEach((tab, i) => {
     tab.addEventListener('click', () => selectTab(tab));
     tab.addEventListener('keydown', event => { const step = { ArrowRight: 1, ArrowLeft: -1 }[event.key]; if (event.key === 'Home') selectTab(tabs[0], true); else if (event.key === 'End') selectTab(tabs[tabs.length - 1], true); else if (step) selectTab(tabs[(i + step + tabs.length) % tabs.length], true); else return; event.preventDefault(); });
   });
 
-  function renderRun(run) {
-    state.run = run; const output = run.output; const decision = output.decision; const claim = state.selected;
-    if (claim) { state.verdicts[claim.claim_id] = decision.verdict; try { sessionStorage.setItem('pluvia-verdicts', JSON.stringify(state.verdicts)); } catch { /* Session preferences are optional. */ } }
-    $('empty').hidden = true; $('results').hidden = false; selectTab(tabs[0]);
-    if (claim) caseHead(claim, output.policy || policyFor(claim)); renderInbox();
-    renderDecision(output, decision); renderFigures(output); renderChecks(output.probes || decision.probes || []); renderMemory(run.memory || decision.memory); renderTrail(run);
-    $('feedback-status').textContent = ''; $('feedback-form').querySelectorAll('button').forEach(b => b.disabled = false);
+  // A replayed case plays its recorded steps out one by one, as they happened live.
+  function revealed(item) {
+    if (!item.replay || matchMedia('(prefers-reduced-motion: reduce)').matches) return item;
+    const count = state.shown[item.id] ?? 0; if (count >= item.events.length) return item;
+    clearTimeout(state.reveal); const ticket = state.ticket;
+    state.reveal = setTimeout(() => { if (ticket !== state.ticket || state.run?.id !== item.id) return; state.shown[item.id] = count + 1; showCase(item); }, item.events[count]?.kind === 'thought' ? 700 : 450);
+    const events = item.events.slice(0, count); const decided = events.some(e => e.kind === 'decision');
+    return { ...item, events, running: true, steps_used: events.filter(e => e.kind === 'tool' || e.kind === 'decision' || e.kind === 'action').length, state: 'investigating', decision: decided ? item.decision : undefined, proposal: decided ? item.proposal : undefined, inspection: undefined, signoff: undefined, payment: undefined, outbox: [], summary: undefined };
+  }
+  function showCase(full) {
+    state.run = full; const claim = state.selected; const item = revealed(full);
+    if (item.decision) state.verdicts[item.claim_id] = item.decision.verdict;
+    const first = $('results').hidden; $('empty').hidden = true; $('results').hidden = false; if (first) selectTab(tabs[0]);
+    if (claim) caseHead(claim, policyFor(claim)); renderInbox();
+    const working = item.running || (item.state === 'investigating' && !item.replay);
+    if (item.replay && item.running) { $('working').hidden = false; $('working').textContent = `Replaying a recorded live investigation · step ${item.steps_used} · ${item.events.at(-1)?.summary || ''}`; }
+    else $('working').hidden = !working && !item.replay;
+    if (!(item.replay && item.running)) $('working').textContent = working ? `The agent is working · step ${item.steps_used} · ${item.events.at(-1)?.summary || ''}` : item.replay ? `A recorded live investigation, replayed${item.models?.length ? ` · ${item.models.join(', ')}` : ''}` : '';
+    renderDecision(item); renderTimeline(item); renderChecks(item.decision?.probes || []); renderActions(item);
+    const output = { evidence: item.evidence || {}, policy: policyFor(claim), claim };
+    renderFigures(output); if (!$('panel-evidence').hidden) drawChart(output);
+    if (item.running && !item.replay) poll(item.id);
   }
 
-  function renderDecision(output, decision) {
-    const root = $('decision'); root.replaceChildren();
-    const reasons = Array.isArray(decision.reasons) ? decision.reasons : [];
-    root.append(el('p', 'Our decision', 'label'), verdictTag(decision.verdict, null), el('p', money(decision.payout_ngn), 'amount'), el('p', decision.verdict === 'INSPECT' ? 'Held until the field is checked' : 'Computed payout, synthetic', 'muted small'));
-    if (typeof decision.inspection_question === 'string' && decision.inspection_question.trim()) { const q = el('div', null, 'question'); q.append(el('p', 'For the inspector', 'label'), el('p', decision.inspection_question)); root.append(q); }
-    else if (reasons[0]) root.append(el('p', reasons[0], 'lead'));
-    const more = el('div', null, 'card-actions');
-    more.append(button('Why', 'button ghost small', () => { const list = el('ul', null, 'reasons'); for (const r of reasons) list.append(el('li', r)); const source = el('p', `Index used: ${sourceName(decision.index_source)}${Number.isFinite(decision.index_mm) ? `, ${number(decision.index_mm)} mm` : ''}`, 'muted'); const nodes = [reasons.length ? list : el('p', 'No reasons were attached.', 'muted'), source]; if (decision.human_review_required || ['INSPECT', 'NO_PAY'].includes(decision.verdict)) nodes.push(el('p', decision.verdict === 'NO_PAY' ? 'A person must review this refusal before it is final.' : 'A person must review this before settlement.', 'note')); openSheet(labels[decision.verdict] || 'Decision', 'Why we decided this', ...nodes); }));
-    more.append(button('Case for paying', 'button ghost small', () => openSheet('Counter-case', 'The strongest case for paying', el('p', decision.counter_case || output.card?.counter_case || 'No counter-case was attached. A refusal needs a person to review the case for paying.', 'reading'))));
-    more.append(button('Letter', 'button ghost small', () => openSheet('Decision letter', 'The letter to the group', el('pre', output.letter_markdown || 'No letter was attached to this review.', 'letter'))));
-    root.append(more);
-
-    const base = $('baseline'); base.replaceChildren(); const naive = output.naive?.station_only || decision.naive?.station_only;
+  const money2 = v => money(v);
+  function renderDecision(item) {
+    const root = $('decision'); root.replaceChildren(); const decision = item.decision;
+    root.append(el('p', 'The agent', 'label'));
+    if (!decision) { root.append(el('p', item.running ? 'Still investigating.' : labels2[item.state] || 'No decision yet.', 'lead')); }
+    else {
+      const reasons = Array.isArray(decision.reasons) ? decision.reasons : [];
+      root.append(verdictTag(decision.verdict), el('p', money2(decision.payout_ngn), 'amount'), el('p', `${labels2[item.state] || item.state}${item.payment ? ` · payment ${item.payment.status}` : ''}`, 'muted small'));
+      if (item.proposal?.rationale) root.append(el('p', item.proposal.rationale, 'lead'));
+      const more = el('div', null, 'card-actions');
+      more.append(button('Why', 'button ghost small', () => { const list = el('ul', null, 'reasons'); for (const r of reasons) list.append(el('li', r)); const nodes = [list, el('p', `Index used: ${sourceName(decision.index_source)}${Number.isFinite(decision.index_mm) ? `, ${number(decision.index_mm)} mm` : ''}`, 'muted')]; if (item.proposal) nodes.push(el('p', `The agent proposed ${labels[item.proposal.verdict] || item.proposal.verdict}${item.proposal.figures_verified === true ? '; its figures were reproduced by the code' : item.proposal.figures_verified === false ? '; its figures were not reproduced' : ''}.`, 'note')); openSheet(labels[decision.verdict] || 'Decision', 'What the gate allowed, and why', ...nodes); }));
+      if (decision.counter_case) more.append(button('Case for paying', 'button ghost small', () => openSheet('Counter-case', 'The strongest case for paying', el('p', decision.counter_case, 'reading'))));
+      if (item.summary) more.append(button('Summary', 'button ghost small', () => openSheet('The agent', 'Its summary of the case', el('p', item.summary, 'reading'))));
+      root.append(more);
+    }
+    const base = $('baseline'); base.replaceChildren(); const naive = decision?.naive?.station_only;
     base.append(el('p', 'Automatic trigger', 'label'));
-    if (naive) base.append(verdictTag(naive.verdict), el('p', money(naive.payout_ngn), 'amount'), el('p', `Adds up ${number(naive.index_mm)} mm from the gauge and never checks the days it stayed silent.`, 'muted small'));
-    else base.append(el('p', 'No comparison for this claim.', 'muted'));
+    if (naive) base.append(verdictTag(naive.verdict), el('p', money2(naive.payout_ngn), 'amount'), el('p', `Adds up ${number(naive.index_mm)} mm from the gauge and never checks the days it stayed silent.`, 'muted small'));
+    else base.append(el('p', 'Shown once the agent has a decision.', 'muted'));
+
+    const call = $('call'); call.replaceChildren();
+    if (item.state === 'awaiting_signoff' && item.signoff) {
+      const text = el('div'); text.append(el('h2', 'Your sign-off'), el('p', `Needed for ${item.signoff.reason}. ${item.signoff.summary || ''}`, 'muted'));
+      const note = el('input'); note.type = 'text'; note.placeholder = 'Note (optional)'; note.className = 'note-input'; note.setAttribute('aria-label', 'Sign-off note');
+      const actions = el('div', null, 'call-actions');
+      actions.append(button('Approve', 'button', () => act(`/cases/${item.id}/signoff`, { approve: true, note: note.value || undefined }, 'Approved.')), button('Decline', 'button ghost', () => act(`/cases/${item.id}/signoff`, { approve: false, note: note.value || undefined }, 'Declined. The case is with a person.')));
+      call.append(text, actions, note); call.hidden = false;
+    } else if (item.signoff && item.signoff.status !== 'pending') {
+      call.append(el('div'), el('p', `${item.signoff.status === 'approved' ? 'Approved' : 'Declined'} by a claims officer${item.signoff.note ? `: ${item.signoff.note}` : '.'}`, 'muted')); call.hidden = false;
+    } else if (decision && item.payment?.status === 'released') {
+      call.append(el('p', `Released without sign-off: ${money2(item.payment.amount_ngn)} is under ₦1,000,000.`, 'muted')); call.hidden = false;
+    } else call.hidden = true;
+  }
+
+  const kindLabel = { start: 'Opened', thought: 'Reasoning', tool: 'Query', decision: 'Gate', action: 'Action', person: 'Person', note: 'Note' };
+  function renderTimeline(item) {
+    const list = $('timeline'); list.replaceChildren();
+    const queries = item.events.filter(e => e.tool === 'sql_query').length;
+    $('trail-summary').textContent = `${item.steps_used} steps · ${queries} queries written by the agent${item.models?.length ? ` · ${item.models.join(', ')}` : ''}`;
+    for (const event of item.events) {
+      const kind = event.kind === 'tool' && event.tool !== 'sql_query' ? 'Tool' : kindLabel[event.kind] || event.kind;
+      const li = el('li', null, `step ${event.kind}`);
+      const row = button(null, 'row');
+      row.append(el('span', kind, `state ${event.kind === 'decision' ? 'warn' : event.kind === 'action' ? 'pass' : event.kind === 'person' ? 'fail' : 'step'}`), el('span', event.summary, 'row-title'), el('span', '', 'chevron'));
+      const detail = [];
+      if (event.input?.sql) detail.push(el('p', 'The query it wrote', 'label'), el('pre', event.input.sql, 'code'));
+      else if (event.input && Object.keys(event.input).length) detail.push(el('p', 'What it sent', 'label'), el('pre', typeof event.input === 'string' ? event.input : JSON.stringify(event.input, null, 2), 'code'));
+      if (event.output !== undefined) detail.push(el('p', 'What came back', 'label'), el('pre', JSON.stringify(event.output, null, 2).slice(0, 6000), 'code'));
+      if (event.model) detail.push(el('p', `Model: ${event.model}`, 'muted small'));
+      if (detail.length) row.addEventListener('click', () => openSheet(kind, event.summary.slice(0, 90), ...detail)); else row.disabled = event.kind !== 'thought';
+      if (event.kind === 'thought') row.addEventListener('click', () => openSheet('Reasoning', 'What the agent was thinking', el('p', event.summary, 'reading')));
+      li.append(row); list.append(li);
+    }
+  }
+
+  function renderActions(item) {
+    const box = $('inspection'); box.replaceChildren();
+    box.append(el('p', 'Inspection', 'label'));
+    if (!item.inspection) box.append(el('p', item.decision?.verdict === 'INSPECT' ? 'Not opened yet.' : 'No inspection on this case.', 'muted'));
+    else {
+      box.append(el('p', `${item.inspection.dates.length} dates to verify`, 'lead'), el('p', item.inspection.instructions, 'small'));
+      if (item.inspection.dates.length) box.append(el('p', item.inspection.dates.join(', '), 'mono muted'));
+      if (item.inspection.report) box.append(el('p', 'Report received', 'label'), el('p', item.inspection.report.text, 'small'));
+      else if (item.state === 'inspection_open') {
+        const form = el('form', null, 'report-form'); const area = el('textarea'); area.rows = 4; area.placeholder = 'Paste the inspector’s report'; if (item.replay?.report) { area.value = item.replay.report; area.readOnly = true; } area.setAttribute('aria-label', 'Inspector’s report'); area.required = true; area.minLength = 10;
+        const send = el('button', 'Send to the agent', 'button'); send.type = 'submit';
+        form.append(area, send); form.addEventListener('submit', event => { event.preventDefault(); act(`/cases/${item.id}/inspection-report`, { report: area.value }, 'The agent is reading the report.'); });
+        box.append(form);
+      }
+    }
+    const out = $('outbox'); out.replaceChildren();
+    if (!item.outbox.length) out.append(el('p', 'No letters or notices yet.', 'muted small'));
+    for (const message of item.outbox) {
+      const row = button(null, 'row'); const to = message.to === 'farmer_group' ? 'Farmer group' : 'Station operator';
+      row.append(el('span', message.status === 'held' ? 'Held' : 'Sent', `state ${message.status === 'held' ? 'warn' : 'pass'}`), el('span', `Letter to the ${to.toLowerCase()}`, 'row-title'), el('span', '', 'chevron'));
+      row.addEventListener('click', () => openSheet(to, message.status === 'held' ? 'Held until sign-off' : 'Sent', el('p', message.body, 'reading letter')));
+      out.append(row);
+    }
   }
 
   function valid(day) { return !!day && Number.isFinite(day.mm) && day.mm >= 0 && !day.q_flag?.trim() && !day.fill; }
@@ -188,46 +272,9 @@
     }
   }
 
-  function renderMemory(memory) {
-    $('memory').replaceChildren();
-    const text = value => typeof value === 'string' ? value : value?.content || (value?.status ? `${value.status}, confidence ${number(value.resolution_confidence)}, ${value.id}` : JSON.stringify(value));
-    for (const [key, name, empty, title] of [['recalled', 'Earlier reviews recalled', 'Nothing recalled yet.', 'What we remembered'], ['written', 'Saved from this review', 'Nothing saved.', 'What we saved'], ['conflicts', 'Source conflicts', 'No conflicts recorded.', 'Where the sources disagree']]) {
-      const values = Array.isArray(memory?.[key]) ? memory[key] : []; const tile = el('div', null, 'card tile');
-      const preview = !values.length ? empty : key === 'conflicts' ? `${values.filter(v => v?.status === 'open').length} still open, waiting on a closer look.` : key === 'written' ? 'Kept for the next review of this station.' : text(values[0]);
-      tile.append(el('p', name, 'label'), el('p', String(values.length), 'amount'), el('p', preview, 'muted small clamp'));
-      if (values.length) tile.append(button('View all', 'button ghost small', () => { const list = el('ul', null, 'plain'); for (const v of values) list.append(el('li', text(v))); openSheet('Memory', title, list); }));
-      $('memory').append(tile);
-    }
-  }
-
-  function renderTrail(run) {
-    const trace = Array.isArray(run.trace) ? run.trace : []; const groups = new Map();
-    for (const event of trace) { const agent = event.agent || 'Review'; if (!groups.has(agent)) groups.set(agent, []); groups.get(agent).push(event); }
-    $('trail-summary').textContent = trace.length ? `${trace.length} steps across ${groups.size} parts${Number.isFinite(run.execution_time_seconds) ? `, ${number(run.execution_time_seconds)} seconds` : ''}. Run ${run.run_id || 'unknown'}.` : 'No trail came with this review.';
-    $('trail').replaceChildren();
-    for (const [agent, events] of groups) {
-      const warnings = events.filter(e => e.status && e.status !== 'ok').length;
-      const row = button(null, 'row'); row.append(el('span', String(events.length), 'state step'), el('span', agent.replace(/Agent$/, ''), 'row-title'), el('span', warnings ? `${warnings} to watch` : 'All clear', 'row-meta'), el('span', '', 'chevron'));
-      row.addEventListener('click', () => {
-        const list = el('ol', null, 'steps');
-        for (const event of events) { const item = el('li'); item.append(el('strong', event.action || 'Event'), el('span', [event.status, event.model ? `model ${event.model}` : null, Number.isFinite(event.round) ? `round ${event.round}` : null].filter(Boolean).join(' · '), 'muted small')); if (event.output_summary || event.input_summary) item.append(el('p', event.output_summary || event.input_summary, 'small')); const raw = el('details'); raw.append(el('summary', event.sql ? 'SQL and raw event' : 'Raw event'), el('pre', event.sql ? `${event.sql}\n\n${JSON.stringify(event, null, 2)}` : JSON.stringify(event, null, 2))); item.append(raw); list.append(item); }
-        openSheet('Trail', agent.replace(/Agent$/, ''), list);
-      });
-      $('trail').append(row);
-    }
-  }
-
-  $('feedback-form').addEventListener('submit', async event => {
-    event.preventDefault(); if (!state.run || !event.submitter) return; const runId = state.run.run_id; const kind = event.submitter.value; const buttons = [...$('feedback-form').querySelectorAll('button')];
-    buttons.forEach(b => b.disabled = true); $('feedback-status').textContent = 'Saving…';
-    try { await request(`/runs/${encodeURIComponent(runId)}/feedback`, { method: 'POST', body: JSON.stringify({ kind }) }); if (state.run?.run_id === runId) $('feedback-status').textContent = kind === 'helpful' ? 'Confirmed and saved. The payout is unchanged.' : 'Override saved. The payout is unchanged.'; }
-    catch (error) { if (state.run?.run_id === runId) $('feedback-status').textContent = `Not saved. ${error.message} Try again.`; }
-    finally { if (state.run?.run_id === runId) buttons.forEach(b => b.disabled = false); }
-  });
-
   document.querySelectorAll('[data-legal]').forEach(link => link.addEventListener('click', () => { const [title, ...paragraphs] = window.PLUVIA_LEGAL[link.dataset.legal]; openSheet('Updated 27 October 2026 · not legally reviewed', title, ...paragraphs.map(text => el('p', text, 'reading'))); }));
   $('claim-search').addEventListener('input', renderInbox);
-  window.addEventListener('popstate', () => { const params = new URLSearchParams(location.search); const id = params.get('claim') || state.claims[0]?.claim_id; if (id) selectClaim(id, false); if (params.get('run')) loadRun(params.get('run')); });
+  window.addEventListener('popstate', () => { const params = new URLSearchParams(location.search); const id = params.get('claim') || state.claims[0]?.claim_id; if (id) selectClaim(id, false); if (params.get('case')) openCase(params.get('case')); });
   request('/health').then(health => { const sample = health.sample_mode ?? health.sampleMode ?? (health.mode === 'sample' ? true : health.mode === 'live' ? false : undefined); $('mode').textContent = sample ? 'Sample mode' : sample === false ? `Live · Zetaris ${health.zetaris || 'unknown'} · Nightshift ${health.nightshift || 'unknown'}` : 'Connected'; }).catch(() => { $('mode').textContent = 'Offline'; });
   loadInbox();
 })();

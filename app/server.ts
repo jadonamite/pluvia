@@ -4,6 +4,7 @@ import { serveStatic } from '@hono/node-server/serve-static';
 import { readFile } from 'node:fs/promises';
 import { z } from 'zod';
 import type { Orchestrator } from './orchestrator.js';
+import type { CaseAgent } from './agent/caseAgent.js';
 
 const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 export const inputSchema = z.object({
@@ -21,7 +22,7 @@ const requestSchema = z.object({
 }).strict();
 const error = (type: string, message: string, recoverable = true) => ({ status: 'error', error: { type, message, recoverable } });
 
-export function createApp(orchestrator: Orchestrator, sampleMode: boolean) {
+export function createApp(orchestrator: Orchestrator, sampleMode: boolean, agent?: CaseAgent) {
   const app = new Hono();
   app.onError((_err, c) => c.json(error('service_error', 'The request could not be completed. Check the service status and the run trace.'), 503));
   app.get('/health', async c => c.json(await orchestrator.health()));
@@ -50,6 +51,52 @@ export function createApp(orchestrator: Orchestrator, sampleMode: boolean) {
     for (const id of run.memory.written) orchestrator.feedback(id, parsed.data.kind);
     return c.json({ status: 'success', memory_ids: run.memory.written, message: 'Memory feedback recorded. The PolicyGate decision is unchanged.' });
   });
+  if (agent) {
+    const view = (id: string) => {
+      const item = agent.store.get(id);
+      return item && { ...item, segments: undefined, running: agent.isRunning(id) };
+    };
+    const small = bodyLimit({ maxSize: 12000, onError: c => c.json(error('invalid_input', 'The request is too large.'), 413) });
+    app.get('/cases', c => {
+      const claim = c.req.query('claim');
+      const items = agent.store.list().filter(item => !claim || item.claim_id === claim);
+      return c.json({ cases: items.map(item => view(item.id)) });
+    });
+    app.get('/cases/:id', c => {
+      const item = view(c.req.param('id'));
+      return item ? c.json(item) : c.json(error('case_not_found', 'This case does not exist.'), 404);
+    });
+    app.post('/cases', small, async c => {
+      const parsed = z.object({ claim_id: z.string().min(1).max(120) }).strict().safeParse(await c.req.json().catch(() => null));
+      if (!parsed.success) return c.json(error('invalid_input', 'Name the claim to open a case for.'), 400);
+      try {
+        const item = await agent.start(parsed.data.claim_id);
+        return c.json(view(item.id), 202);
+      } catch (e) {
+        return c.json(error('case_not_started', (e as Error).message), 422);
+      }
+    });
+    app.post('/cases/:id/signoff', small, async c => {
+      const parsed = z.object({ approve: z.boolean(), note: z.string().max(2000).optional() }).strict().safeParse(await c.req.json().catch(() => null));
+      if (!parsed.success) return c.json(error('invalid_input', 'Approve or decline, with an optional note.'), 400);
+      try {
+        const item = await agent.signoff(c.req.param('id'), parsed.data.approve, parsed.data.note);
+        return c.json(view(item.id));
+      } catch (e) {
+        return c.json(error('signoff_refused', (e as Error).message), 409);
+      }
+    });
+    app.post('/cases/:id/inspection-report', small, async c => {
+      const parsed = z.object({ report: z.string().min(10).max(8000) }).strict().safeParse(await c.req.json().catch(() => null));
+      if (!parsed.success) return c.json(error('invalid_input', 'Paste the inspector’s report, at least a sentence.'), 400);
+      try {
+        const item = await agent.inspectionReport(c.req.param('id'), parsed.data.report);
+        return c.json(view(item.id), 202);
+      } catch (e) {
+        return c.json(error('report_refused', (e as Error).message), 409);
+      }
+    });
+  }
   app.get('/register/:name', async c => {
     const name = c.req.param('name');
     if (!['policies.json', 'claims.json', 'stations.json'].includes(name)) return c.json(error('not_found', 'Register not found.'), 404);

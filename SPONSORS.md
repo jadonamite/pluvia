@@ -1,10 +1,41 @@
 # Sponsor technology use
 
-Pluvia reviews the rainfall record behind a crop-insurance claim. Zetaris is
-the sole live data path. Meterless H-MEM stores precedents and station lessons.
-Nightshift is the primary live model provider; NVIDIA Nemotron is reached through
-Nightshift. The sample application executes real SQL, probes, contract rules and
-memory operations using cached rainfall and a deterministic model stand-in.
+Pluvia is a claims agent. It investigates each crop-insurance claim by writing its own SQL
+against Zetaris, reasons on NVIDIA Nemotron 3 Ultra reached through Meterless Nightshift, recalls
+station lessons from Meterless H-MEM, and carries the claim through to settlement, inspection or
+a claims officer's sign-off.
+
+## The agent, live on all three sponsors
+
+On 27 October 2026 the agent worked all three Lagos claims live: Zetaris running locally in
+Docker with all 22 objects registered, every model step on `nvidia/nemotron-3-ultra-550b-a55b`
+through Nightshift with native tool calls. Each case is committed in `data/replays/` with every
+query the agent wrote, every model step and its serving model.
+
+- **Zetaris is the agent's workspace, not a loading step.** The agent lists the views, reads
+  their columns and writes its own queries, including a day-by-day join of gauge against
+  satellite and the satellite's July totals for each year since 2001 over NASA POWER registered
+  as a Zetaris REST table. Each settlement argument cites figures with the SQL behind them;
+  the code reruns that SQL in Zetaris before the gate accepts it.
+- **Nemotron chose its own path.** Cases took 14 to 22 steps. When a cited figure did not
+  reproduce, Nemotron rechecked and revised: on claim 002 from one of six figures reproducing
+  to four of four.
+- **Nightshift carried every call** with tool definitions passed through to the model. Six
+  candidate routes were trialled on three live Zetaris tasks before the agent model was chosen;
+  the results are in the table below.
+- **H-MEM** supplies the station's earlier lessons to the agent and stores each closed case.
+
+Model choice, measured on the same three live Zetaris tasks (count the gauge days, list the
+silent days, compare July 2025 with every earlier July):
+
+| Route | Tasks right | SQL errors | Seconds |
+|---|---|---:|---:|
+| Nemotron 3 Ultra 550B | 3 of 3 | 1, fixed by itself | 173 |
+| GPT-5.6 Luna | 3 of 3 | 0 | 96 |
+| DeepSeek V4.1 Flash | 3 of 3 | 4 | 137 |
+| Nemotron 3.5 Bolt | 0 of 3 | 16 | 66 |
+
+The agent runs on Nemotron 3 Ultra, with GPT-5.6 Luna as a recorded fallback.
 
 ## What is proven today
 

@@ -148,3 +148,38 @@ describe('PolicyGate guards', () => {
     expect(policyGate(i).verdict).toBe('INSPECT');
   });
 });
+
+describe('agent resolution of a source disagreement', () => {
+  // Gauge sparse and low, satellite complete and wet: the sources disagree.
+  const disagreeing = () => {
+    const station = series('ghcn', 0.5);
+    station.days = station.days.filter((_, i) => i % 3 === 0);
+    return { station, satellite: series('power', 12) };
+  };
+
+  it('keeps an unresolved disagreement at inspection', () => {
+    const { station, satellite } = disagreeing();
+    expect(policyGate({ policy, station, satellite, proposal: { action: 'decide' } }).verdict).toBe('INSPECT');
+  });
+
+  it('clears the disagreement when the agent figures were reproduced', () => {
+    const { station, satellite } = disagreeing();
+    const decision = policyGate({ policy, station, satellite, proposal: { action: 'decide' }, resolution: { verified: true, summary: 'satellite July inside 24 prior Julys' } });
+    expect(decision.verdict).not.toBe('INSPECT');
+    expect(decision.index_source).toBe('power');
+    expect(decision.reasons.join(' ')).toContain('figures the code reproduced');
+  });
+
+  it('ignores a resolution the code could not reproduce', () => {
+    const { station, satellite } = disagreeing();
+    const decision = policyGate({ policy, station, satellite, proposal: { action: 'decide' }, resolution: { verified: false, summary: 'unverified' } });
+    expect(decision.verdict).toBe('INSPECT');
+  });
+
+  it('never accepts a resolution when the satellite record is incomplete', () => {
+    const { station, satellite } = disagreeing();
+    satellite.days = satellite.days.slice(1);
+    const decision = policyGate({ policy, station, satellite, proposal: { action: 'decide' }, resolution: { verified: true, summary: 'test' } });
+    expect(decision.verdict).toBe('INSPECT');
+  });
+});

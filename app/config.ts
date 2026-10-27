@@ -14,6 +14,7 @@ export interface AppConfig {
     contactEmail?: string;
   };
   nightshift: { url: string; runtimeToken: string; model: string };
+  agent: { model: string; fallback: string };
 }
 
 // Each service runs live or on cached evidence independently, so one configured
@@ -68,6 +69,10 @@ export function loadConfig(env: NodeJS.ProcessEnv = process.env): AppConfig {
       url: (env.METERLESS_BASE_URL ?? 'http://127.0.0.1:8088/v1').replace(/\/$/, ''),
       runtimeToken: env.METERLESS_RUNTIME_TOKEN ?? '',
       model: env.METERLESS_MODEL ?? '',
+    },
+    agent: {
+      model: env.PLUVIA_AGENT_MODEL || 'nvidia/nemotron-3-ultra-550b-a55b',
+      fallback: env.PLUVIA_AGENT_FALLBACK || 'openrouter/openai/gpt-5.6-luna',
     },
   };
 }
