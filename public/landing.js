@@ -122,7 +122,7 @@
   })();
 
   // the journey: one timeline over 100 units, scrubbed by the whole page's scroll
-  const tl = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: '.journey', start: 'top top', end: 'bottom bottom', scrub: true } });
+  const tl = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: '.journey', start: 'top top', end: 'bottom bottom', scrub: true, invalidateOnRefresh: true } });
   tl.to({}, { duration: 100 }, 0);
   const show = (sel, at, d = 0.4) => tl.fromTo(sel, { autoAlpha: 0 }, { autoAlpha: 1, duration: d, immediateRender: false }, at);
   const hide = (sel, at, d = 0.4) => tl.fromTo(sel, { autoAlpha: 1 }, { autoAlpha: 0, duration: d, immediateRender: false }, at);
@@ -160,8 +160,8 @@
   say('.w2', 13.2, 15.8);
   // the field markings draw themselves onto the land
   tl.fromTo('.marks .mk', { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, stagger: 0.5, immediateRender: false }, 13.4)
-    .fromTo('.marks .mk-ring, .marks .mk-lead', { strokeDashoffset: 1, strokeDasharray: '1 1' }, { strokeDashoffset: 0, duration: 1.4, stagger: 0.12, ease: 'power2.out', immediateRender: false }, 13.4)
-    .fromTo('.marks .mk-link', { autoAlpha: 0 }, { autoAlpha: 0.7, duration: 0.8, immediateRender: false }, 14.6);
+    .fromTo('.marks .mk-ring, .marks .mk-icon', { strokeDashoffset: 1, strokeDasharray: '1 1' }, { strokeDashoffset: 0, duration: 1.4, stagger: 0.12, ease: 'power2.out', immediateRender: false }, 13.4)
+    .fromTo('.marks .mk-link', { strokeDashoffset: 1, strokeDasharray: '1 1', autoAlpha: 1 }, { strokeDashoffset: 0, duration: 1, immediateRender: false }, 14.4);
   tl.fromTo('.f2 .plate', { scale: 1, autoAlpha: 1 }, { scale: 0.9, autoAlpha: 0, duration: 2, immediateRender: false }, 17.2);
   show('.f3', 16.8, 1.8);
   hide('.f2', 18.8, 0.3);
@@ -250,19 +250,22 @@
   show('.f7', 59, 1.5);
   hide('.f6', 60, 1);
 
-  // 7. the outcomes: four panels turn open like blinds, each widens in turn, then they turn shut
+  // 7. the outcomes: the staggered board arrives, then each card in turn comes forward and settles back
   tl.fromTo('.f7 .plate', { scale: 1.35, yPercent: 10 }, { scale: 1.05, yPercent: 0, duration: 15 }, 59);
-  say('.w7', 60.5, 72);
+  say('.w7', 60, 72.4);
   const outcomes = $$('.outcome');
-  const notes = $$('.card-body');
-  tl.fromTo(outcomes, { rotateY: 90, autoAlpha: 0 }, { rotateY: 0, autoAlpha: 1, duration: 1.4, stagger: 0.35, ease: 'power2.out', immediateRender: false }, 61);
-  outcomes.forEach((_, i) => {
-    const at = 63.4 + i * 2.2;
-    tl.to(outcomes, { flexGrow: j => j === i ? 5 : 1, duration: 1.2, ease: 'power2.inOut' }, at);
-    tl.to(notes, { autoAlpha: j => j === i ? 1 : 0, duration: 0.7 }, at + 0.4);
+  tl.fromTo(outcomes, { autoAlpha: 0, y: 80 }, { autoAlpha: 1, y: 0, duration: 1.4, stagger: 0.3, ease: 'power2.out', immediateRender: false }, 60.2);
+  outcomes.forEach((item, i) => {
+    const at = 62.6 + i * 2.4;
+    const others = outcomes.filter(other => other !== item);
+    tl.set(item, { zIndex: 2 }, at)
+      .fromTo(item, { scale: 1 }, { scale: () => window.innerWidth > 720 ? 1.16 : 1.5, duration: 1, ease: 'power2.out', immediateRender: false }, at)
+      .fromTo(others, { filter: 'brightness(1)' }, { filter: 'brightness(0.6)', duration: 0.8, immediateRender: false }, at)
+      .to(item, { scale: 1, duration: 1, ease: 'power2.inOut' }, at + 1.5)
+      .to(others, { filter: 'brightness(1)', duration: 0.8 }, at + 1.6)
+      .set(item, { zIndex: 0 }, at + 2.4);
   });
-  tl.to(notes, { autoAlpha: 0, duration: 0.5 }, 72);
-  tl.to(outcomes, { rotateY: -90, autoAlpha: 0, duration: 1.2, stagger: 0.25, ease: 'power2.in' }, 72.3);
+  tl.to(outcomes, { autoAlpha: 0, y: -60, duration: 1.2, stagger: 0.15, ease: 'power2.in' }, 72.4);
   flyThrough('.fly-a', 73, 4.5);
   hide('.f7', 75.2);
   show('.f8', 75);
