@@ -5,8 +5,10 @@ Pluvia has two surfaces that share one set of foundations in `public/tokens.css`
 - **The front page (`/`)** is a scroll-driven story in one painted world: a field station beside
   a maize field in south-west Nigeria, one dry-season evening, a storm that arrives, breaks and
   passes. The images carry the colour; the interface stays quiet over them.
-- **The claims desk (`/desk`)** is the working tool: inbox, daily rainfall evidence, the
-  code-gated decision. The chart is the main visual. Motion there is feedback only.
+- **The claims desk (`/desk`)** is the working tool: a claim list, then one claim at a time
+  in five tabs (Decision, Evidence, Checks, Memory, Trail). Each tab stays short; detail opens
+  in a sheet. On phones the list and the claim are separate screens and the tabs sit at the
+  bottom. Motion there is feedback only.
 
 Structure, input behaviour and accessibility follow the Apple Human Interface Guidelines web
 translation. Visual identity comes from the painted world and palette A, not from the HIG.
@@ -55,12 +57,15 @@ Verdicts always appear as words as well as colour: Pay (sage), Pay anyway (amber
 
 Every interactive element has a 44px hit region in both dimensions, with at least 8px between
 neighbours. Radius steps: 4px labels, 8px controls, 12px panels, 16px cards, pill for the
-floating navigation. Desk content has no elevation; the legal dialog and the front-page
-navigation float.
+floating navigation. Desk cards sit flat on the page; the sheet and the front-page navigation
+float.
 
-The floating navigation is the one glass surface (backdrop blur over the images). It falls back
-to a solid surface when blur is unsupported, under reduced transparency and under increased
-contrast.
+Glass (backdrop blur) is kept to the functional layer: the front-page navigation, and on the
+desk the top bar, the tab bar and the detail sheet. Content cards are solid. Every glass
+surface falls back to a solid surface when blur is unsupported, under reduced transparency and
+under increased contrast. Detail sheets are used to read information, not only to finish a
+task, which departs from the usual modal guidance by choice; they never stack and close with
+Esc, the close button or a click outside.
 
 ## Motion
 

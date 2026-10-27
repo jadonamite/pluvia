@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <meta name="theme-color" content="#F2EDE3">
+  <meta name="theme-color" content="#14120E">
   <meta name="description" content="Review crop-insurance claims against rainfall records and independent satellite evidence.">
   <title>Pluvia | Claims desk</title>
   <link rel="icon" href="/favicon.svg" type="image/svg+xml">
@@ -14,46 +14,116 @@
   <script defer src="/app.js"></script>
 </head>
 <body>
-  <a class="skip" href="#claim-detail">Skip to selected claim</a>
-  <header class="masthead">
-    <a class="wordmark" href="/" translate="no">pluvia<span class="brand-period" aria-hidden="true">.</span></a>
-    <span class="desk-name">Claims desk</span>
-    <div class="header-actions"><span class="mode" id="mode">Checking connection…</span><button class="quiet" id="theme" type="button">Dark appearance</button></div>
+  <a class="skip" href="#case">Skip to the selected claim</a>
+
+  <header class="bar">
+    <a class="wordmark" href="/" translate="no">pluvia</a>
+    <span class="bar-title">Claims desk</span>
+    <span class="mode" id="mode">Connecting…</span>
+    <button class="button ghost" id="theme" type="button">Dark appearance</button>
   </header>
-  <div class="notice" id="notice"><p>This desk uses synthetic claims and real rainfall records. No payments are made. No analytics or cookies; preferences stay in this tab.</p><button class="quiet" id="dismiss-notice" type="button">Dismiss</button></div>
-  <div class="workspace">
+
+  <div class="desk" id="desk">
     <aside class="inbox" aria-labelledby="inbox-title">
-      <div class="inbox-heading"><div><h1 id="inbox-title">Claim inbox</h1></div><span id="claim-count" class="count">—</span></div>
-      <label class="search-label" for="claim-search">Find a claim</label><input id="claim-search" name="claim-search" type="search" placeholder="Group, station or claim ID…" autocomplete="off">
-      <p class="inbox-note">Synthetic policies &amp; claims</p>
-      <nav id="claim-list" aria-label="Claims"><p class="muted loading">Loading claims…</p></nav>
-      <button class="quiet reload" id="reload" type="button">Refresh inbox</button>
-      <div class="inbox-bottom"><span class="small-rule"></span><p>One station is a record.<br>Two sources are a check.</p><span class="inbox-motto">Evidence before settlement</span></div>
-    </aside>
-    <main id="claim-detail" tabindex="-1">
-      <div id="status" class="status" role="status" aria-live="polite"></div>
-      <section id="claim-overview" class="overview"><p class="eyebrow">Rainfall claim review</p><h2>Select a claim to inspect its evidence.</h2><p class="muted">The inbox lists the available synthetic farmer groups and policies.</p></section>
-      <div id="results" hidden>
-        <div class="evidence-layout">
-          <section class="rainfall" aria-labelledby="rainfall-title">
-            <div class="section-heading"><div><p class="eyebrow">01 / Evidence</p><h2 id="rainfall-title">The rainfall record</h2></div><span class="unit">Daily · mm</span></div>
-            <div class="chart-legend"><span><i class="legend-station"></i>Ground station</span><span><i class="legend-satellite"></i>Independent satellite</span><span><i class="legend-missing"></i>Station unavailable</span></div>
-            <div class="chart-wrap"><canvas id="rainfall-chart" role="img" aria-label="Daily station and satellite rainfall. Exact values and unavailable readings are in the daily data table below."></canvas><p id="chart-unavailable" hidden>Chart unavailable. Read the daily data table below for the complete record.</p></div>
-            <p id="chart-caption" class="chart-caption"></p>
-            <div id="source-summary" class="source-summary"></div>
-            <details id="daily-details"><summary>Read daily data and quality flags</summary><div class="table-scroll" tabindex="0" role="region" aria-label="Daily rainfall observations"><table><caption>Unavailable readings are not zero rainfall.</caption><thead><tr><th scope="col">Date</th><th scope="col">Station mm</th><th scope="col">Satellite mm</th><th scope="col">Station flags</th></tr></thead><tbody id="daily-rows"></tbody></table></div></details>
-          </section>
-          <aside class="decision" aria-labelledby="decision-title"><p class="eyebrow">02 / PolicyGate · code</p><div id="decision-content"></div></aside>
-        </div>
-        <section class="comparison" aria-labelledby="comparison-title"><div><h2 id="comparison-title">What the automatic trigger would do</h2><p class="muted">The baseline sums reported station values without checking the missing record.</p></div><div id="naive-content"></div></section>
-        <section class="section-block" aria-labelledby="probes-title"><div class="section-heading"><div><p class="eyebrow">03 / Deterministic checks</p><h2 id="probes-title">Where the record holds up</h2></div><span id="probe-count" class="unit"></span></div><div id="probes"></div></section>
-        <div class="lower-grid"><section class="section-block" aria-labelledby="case-title"><h2 id="case-title">The strongest case for paying</h2><p id="counter-case" class="reading"></p><details><summary>Read the decision letter</summary><pre id="letter" class="letter"></pre></details></section><section class="section-block" aria-labelledby="memory-title"><p class="eyebrow">04 / H-MEM</p><h2 id="memory-title">What this review remembers</h2><div id="memory"></div></section></div>
-        <section class="section-block trace-section" aria-labelledby="trace-title"><div class="section-heading"><div><p class="eyebrow">05 / Review trail</p><h2 id="trace-title">Follow the evidence to the decision</h2></div><span id="run-time" class="unit"></span></div><p id="run-id" class="muted mono"></p><div id="trace"></div></section>
-        <section class="feedback section-block" aria-labelledby="feedback-title"><div><h2 id="feedback-title">Was this review useful?</h2><p class="muted">Your assessment is stored in H-MEM. It does not change the gate decision or payout.</p></div><form id="feedback-form"><div class="feedback-buttons"><button type="submit" name="kind" value="helpful">Confirm · helpful</button><button class="quiet" type="submit" name="kind" value="wrong">Override · wrong</button></div><p id="feedback-status" role="status" aria-live="polite"></p></form></section>
+      <div class="inbox-head">
+        <h1 id="inbox-title">Claims</h1>
+        <span class="count" id="claim-count">0</span>
       </div>
-      <footer><p>Synthetic groups, policies and amounts. Real rainfall evidence. No settlement service.</p><nav aria-label="Policies"><button class="text-button" data-legal="terms">Terms</button><button class="text-button" data-legal="privacy">Privacy</button><button class="text-button" data-legal="cookies">Cookie policy</button></nav></footer>
+      <label class="visually-hidden" for="claim-search">Find a claim</label>
+      <input id="claim-search" type="search" placeholder="Search group, station or ID" autocomplete="off">
+      <div class="filters" role="group" aria-label="Show claims">
+        <button class="chip" type="button" data-filter="all" aria-pressed="true">All</button>
+        <button class="chip" type="button" data-filter="todo" aria-pressed="false">To review</button>
+        <button class="chip" type="button" data-filter="done" aria-pressed="false">Reviewed</button>
+      </div>
+      <nav id="claim-list" class="claim-list" aria-label="Claims"><p class="muted">Loading claims…</p></nav>
+    </aside>
+
+    <main class="case" id="case" tabindex="-1">
+      <button class="button ghost back" id="back" type="button">All claims</button>
+      <div id="status" class="status" role="status" aria-live="polite"></div>
+
+      <section class="case-head card" id="case-head" aria-live="polite">
+        <p class="muted">Pick a claim from the list to start.</p>
+      </section>
+
+      <section class="empty card" id="empty" hidden>
+        <h2>Run the review to see what the rainfall record supports.</h2>
+        <p class="muted">We read the gauge, compare it with the satellite, run the checks and give you a decision. Nothing is paid.</p>
+      </section>
+
+      <div id="results" hidden>
+        <nav class="tabs" role="tablist" aria-label="Review">
+          <button role="tab" id="tab-decision" aria-controls="panel-decision" aria-selected="true" type="button">Decision</button>
+          <button role="tab" id="tab-evidence" aria-controls="panel-evidence" aria-selected="false" tabindex="-1" type="button">Evidence</button>
+          <button role="tab" id="tab-checks" aria-controls="panel-checks" aria-selected="false" tabindex="-1" type="button">Checks</button>
+          <button role="tab" id="tab-memory" aria-controls="panel-memory" aria-selected="false" tabindex="-1" type="button">Memory</button>
+          <button role="tab" id="tab-trail" aria-controls="panel-trail" aria-selected="false" tabindex="-1" type="button">Trail</button>
+        </nav>
+
+        <section class="panel" role="tabpanel" id="panel-decision" aria-labelledby="tab-decision">
+          <div class="pair">
+            <article class="card verdict-card" id="decision"></article>
+            <article class="card baseline-card" id="baseline"></article>
+          </div>
+          <div class="card call">
+            <div>
+              <h2>Your call</h2>
+              <p class="muted">Saved to memory for the next review. It does not change the decision or the payout.</p>
+            </div>
+            <form id="feedback-form" class="call-actions">
+              <button class="button" type="submit" name="kind" value="helpful">Confirm</button>
+              <button class="button ghost" type="submit" name="kind" value="wrong">Override</button>
+            </form>
+            <p id="feedback-status" class="call-status" role="status" aria-live="polite"></p>
+          </div>
+        </section>
+
+        <section class="panel" role="tabpanel" id="panel-evidence" aria-labelledby="tab-evidence" hidden>
+          <div class="card">
+            <div class="card-head">
+              <h2>Daily rainfall</h2>
+              <button class="button ghost small" id="open-daily" type="button">Daily readings</button>
+            </div>
+            <div class="legend"><span><i class="key station"></i>Gauge</span><span><i class="key satellite"></i>Satellite</span><span><i class="key missing"></i>Gauge silent</span></div>
+            <div class="chart"><canvas id="rainfall-chart" role="img" aria-label="Daily gauge and satellite rainfall. The exact values are under Daily readings."></canvas><p id="chart-unavailable" class="muted" hidden>The chart is unavailable. Open Daily readings for every value.</p></div>
+            <p id="chart-caption" class="caption"></p>
+          </div>
+          <div class="figures" id="figures"></div>
+        </section>
+
+        <section class="panel" role="tabpanel" id="panel-checks" aria-labelledby="tab-checks" hidden>
+          <p class="summary" id="check-summary"></p>
+          <div class="card list" id="checks"></div>
+        </section>
+
+        <section class="panel" role="tabpanel" id="panel-memory" aria-labelledby="tab-memory" hidden>
+          <div class="tiles" id="memory"></div>
+        </section>
+
+        <section class="panel" role="tabpanel" id="panel-trail" aria-labelledby="tab-trail" hidden>
+          <p class="summary" id="trail-summary"></p>
+          <div class="card list" id="trail"></div>
+        </section>
+      </div>
+
+      <footer class="foot">
+        <p>Synthetic groups, policies and amounts. Real rainfall records. No payments are made, and the desk sets no cookies.</p>
+        <nav aria-label="Policies">
+          <button class="link" type="button" data-legal="terms">Terms</button>
+          <button class="link" type="button" data-legal="privacy">Privacy</button>
+          <button class="link" type="button" data-legal="cookies">Cookie policy</button>
+        </nav>
+      </footer>
     </main>
   </div>
-  <dialog id="legal-dialog" aria-labelledby="legal-title"><div class="dialog-heading"><h2 id="legal-title"></h2><button class="quiet" id="close-legal" type="button">Close</button></div><p class="muted">Updated 27 October 2026 · Not legally reviewed</p><div id="legal-content" class="reading"></div></dialog>
+
+  <dialog class="sheet" id="sheet" aria-labelledby="sheet-title">
+    <div class="sheet-head">
+      <div><h2 id="sheet-title"></h2><p class="muted small" id="sheet-label"></p></div>
+      <button class="button ghost close" id="sheet-close" type="button" aria-label="Close">Close</button>
+    </div>
+    <div class="sheet-body" id="sheet-body" tabindex="-1" autofocus></div>
+  </dialog>
 </body>
 </html>
