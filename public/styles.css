@@ -205,6 +205,7 @@ pre.code{margin:0;padding:var(--space-3) var(--space-4);border-radius:var(--radi
 .plan-step.is-dropped .row-title{text-decoration:line-through}
 .thread{list-style:none;margin:0;padding:0;display:grid;gap:var(--space-3);max-height:24rem;overflow:auto}
 .bubble{display:grid;gap:var(--space-1);max-width:36rem;padding:var(--space-3) var(--space-4);border-radius:var(--radius-panel);background:color-mix(in srgb,var(--label) 5%,transparent);line-height:1.5}
+.bubble p{white-space:pre-line}
 .bubble.officer{justify-self:end;background:color-mix(in srgb,var(--accent) 10%,transparent)}
 .talk-form{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:var(--space-3)}
 .talk-form textarea{width:100%;min-height:var(--target);padding:var(--space-3) var(--space-4);border:1px solid var(--control-border);border-radius:var(--radius-control);background:color-mix(in srgb,var(--card) 80%,transparent);font:inherit;font-size:var(--text-caption);resize:vertical}
@@ -216,7 +217,7 @@ pre.code{margin:0;padding:var(--space-3) var(--space-4);border-radius:var(--radi
 .switch .chip{border-color:transparent}
 .inbox-head h2{font-size:var(--text-title-2);line-height:1.1;letter-spacing:-.025em;font-weight:600}
 .claim .state{margin-top:var(--space-1)}
-.station{display:grid;gap:var(--space-5)}
+.station{display:grid;gap:var(--space-5);min-width:0}
 .calendar{list-style:none;margin:0 0 var(--space-4);padding:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:var(--space-1)}
 .weekday{padding-bottom:var(--space-1);font-family:var(--font-mono);font-size:var(--text-footnote);letter-spacing:.06em;text-transform:uppercase;color:var(--secondary);text-align:center}
 .day{display:grid;align-content:space-between;gap:var(--space-1);min-height:3.5rem;padding:var(--space-2);border-radius:var(--radius-control);border:1px solid color-mix(in srgb,var(--label) 8%,transparent);font-variant-numeric:tabular-nums;transition:background-color var(--duration) var(--ease-out)}
@@ -234,6 +235,7 @@ pre.code{margin:0;padding:var(--space-3) var(--space-4);border-radius:var(--radi
 .strong{font-weight:600}
 .list.flush{padding:0;margin:0 calc(var(--space-4) * -1)}
 .claim-links{display:flex;flex-wrap:wrap;gap:var(--space-2)}
+.claim-links .button{white-space:normal;text-align:left;padding-block:var(--space-2)}
 .watch-link{display:grid;grid-template-columns:1fr auto;align-items:center;gap:var(--space-3) var(--space-6)}
 .watch-link .small{margin-top:var(--space-1);max-width:34rem}
 
@@ -259,7 +261,7 @@ pre.code{margin:0;padding:var(--space-3) var(--space-4);border-radius:var(--radi
   .weekday::first-letter{font-size:var(--text-footnote)}
   .plan-step{grid-template-columns:4.75rem minmax(0,1fr);gap:var(--space-3)}
   .tabs{position:fixed;top:auto;left:var(--space-3);right:var(--space-3);bottom:max(var(--space-3),env(safe-area-inset-bottom));z-index:30}
-  [role=tab]{flex:1 1 0;min-width:0;padding:0 var(--space-1);font-size:var(--text-footnote)}
+  [role=tab]{flex:1 1 auto;min-width:0;padding:0 var(--space-2);font-size:var(--text-footnote)}
   #results{padding-bottom:5rem}
   .row{grid-template-columns:4.75rem minmax(0,1fr) 1rem;gap:var(--space-3)}
   .row-meta{display:none}

@@ -143,9 +143,9 @@
     const first = $('results').hidden; $('empty').hidden = true; $('results').hidden = false; if (first) selectTab(tabs[0]);
     if (claim) caseHead(claim, policyFor(claim)); renderInbox();
     const working = item.running || (item.state === 'investigating' && !item.replay);
-    if (item.replay && item.running) { $('working').hidden = false; $('working').textContent = `Replaying a recorded live investigation · step ${item.steps_used} · ${item.events.at(-1)?.summary || ''}`; }
+    if (item.replay && item.running) { $('working').hidden = false; $('working').textContent = `Replaying a recorded live investigation · step ${item.steps_used} · ${(item.events.at(-1)?.summary || '').slice(0, 110)}${(item.events.at(-1)?.summary || '').length > 110 ? '…' : ''}`; }
     else $('working').hidden = !working && !item.replay;
-    if (!(item.replay && item.running)) $('working').textContent = working ? `The agent is working · step ${item.steps_used} · ${item.events.at(-1)?.summary || ''}` : item.replay ? `A recorded live investigation, replayed${item.models?.length ? ` · ${item.models.join(', ')}` : ''}` : '';
+    if (!(item.replay && item.running)) $('working').textContent = working ? `The agent is working · step ${item.steps_used} · ${(item.events.at(-1)?.summary || '').slice(0, 110)}${(item.events.at(-1)?.summary || '').length > 110 ? '…' : ''}` : item.replay ? `A recorded live investigation, replayed${item.models?.length ? ` · ${item.models.join(', ')}` : ''}` : '';
     $('working').classList.toggle('live', Boolean(item.running));
     renderWatchLink(item); renderDecision(item); renderPlan(item); renderTalk(item); renderTimeline(item); renderChecks(item.decision?.probes || []); renderActions(item);
     const output = { evidence: item.evidence || {}, policy: policyFor(claim), claim };
@@ -203,7 +203,7 @@
     const { steps, revisions } = planFrom(item.events);
     if (!steps.length) { root.append(el('p', item.running ? 'Writing its plan.' : 'This case was worked before the agent wrote plans.', 'muted')); return; }
     const list = el('ol', null, 'plan-steps');
-    steps.forEach((step, i) => { const [word, cls] = stepWord[step.status] || stepWord.todo; const li = el('li', null, `plan-step is-${step.status}`); const body = el('div'); body.append(el('span', `${i + 1}. ${step.text}`, 'row-title')); if (step.note) body.append(el('span', step.note, 'muted small')); li.append(el('span', word, `state ${cls}`), body); list.append(li); });
+    steps.forEach((step, i) => { const [word, cls] = item.running ? stepWord[step.status] || stepWord.todo : step.status === 'todo' ? ['Unmarked', 'step'] : step.status === 'doing' ? ['Started', 'step'] : stepWord[step.status] || stepWord.todo; const li = el('li', null, `plan-step is-${step.status}`); const body = el('div'); body.append(el('span', `${i + 1}. ${step.text}`, 'row-title')); if (step.note) body.append(el('span', step.note, 'muted small')); li.append(el('span', word, `state ${cls}`), body); list.append(li); });
     root.append(list);
     for (const reason of revisions) root.append(el('p', `Changed course: ${reason}`, 'note'));
   }
@@ -213,6 +213,8 @@
     thread.hidden = !thread.children.length;
     const area = $('talk-text'), send = $('talk-send'), note = $('talk-note');
     const replay = item.replay, next = replay?.questions?.[replay.played ?? 0];
+    $('talk').hidden = Boolean(replay && item.running && !thread.children.length);
+    if (replay && item.running) { $('talk-form').hidden = true; note.hidden = true; return; }
     if (replay) { area.readOnly = true; area.value = next || ''; note.hidden = false; note.textContent = next ? 'A recorded investigation: this is the question the officer asked the live agent.' : 'This recorded investigation has no further questions. Run Pluvia live to ask your own.'; }
     else { area.readOnly = false; note.hidden = true; }
     $('talk-form').hidden = Boolean(replay && !next);

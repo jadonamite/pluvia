@@ -1,0 +1,6101 @@
+{
+  "recorded_at": "2026-10-27T16:15:34.050Z",
+  "days": [
+    {
+      "today": "2025-07-01",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        }
+      ],
+      "cases": []
+    },
+    {
+      "today": "2025-07-02",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        }
+      ],
+      "cases": []
+    },
+    {
+      "today": "2025-07-03",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        }
+      ],
+      "cases": []
+    },
+    {
+      "today": "2025-07-04",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-04",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04"
+              ],
+              "summary": "The gauge has sent no reading for 3 days, since 2 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-05",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-06",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-07",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-08",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-09",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-10",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-10",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 7.32,
+          "silent_run": 2,
+          "status": "ok"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-11",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-10",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 7.32,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-11",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.35,
+          "silent_run": 3,
+          "status": "silent"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-11",
+              "last_seen": "2025-07-11",
+              "dates": [
+                "2025-07-09",
+                "2025-07-10",
+                "2025-07-11"
+              ],
+              "summary": "The gauge has sent no reading for 3 days, since 9 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-11",
+              "body": "The gauge has sent no reading for 3 days, since 9 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-12",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-10",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 7.32,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-11",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.35,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-12",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 3.38,
+          "silent_run": 4,
+          "status": "silent"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-11",
+              "last_seen": "2025-07-12",
+              "dates": [
+                "2025-07-09",
+                "2025-07-10",
+                "2025-07-11",
+                "2025-07-12"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 9 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-11",
+              "body": "The gauge has sent no reading for 3 days, since 9 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-13",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-10",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 7.32,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-11",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.35,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-12",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 3.38,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-13",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-11",
+              "last_seen": "2025-07-12",
+              "dates": [
+                "2025-07-09",
+                "2025-07-10",
+                "2025-07-11",
+                "2025-07-12"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 9 July."
+            },
+            {
+              "kind": "divergence",
+              "first_seen": "2025-07-13",
+              "last_seen": "2025-07-13",
+              "dates": [
+                "2025-07-13"
+              ],
+              "summary": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-11",
+              "body": "The gauge has sent no reading for 3 days, since 9 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-13",
+              "body": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-14",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-10",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 7.32,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-11",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.35,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-12",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 3.38,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-13",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-14",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 1,
+          "status": "diverging"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-11",
+              "last_seen": "2025-07-12",
+              "dates": [
+                "2025-07-09",
+                "2025-07-10",
+                "2025-07-11",
+                "2025-07-12"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 9 July."
+            },
+            {
+              "kind": "divergence",
+              "first_seen": "2025-07-13",
+              "last_seen": "2025-07-14",
+              "dates": [
+                "2025-07-13"
+              ],
+              "summary": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-11",
+              "body": "The gauge has sent no reading for 3 days, since 9 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-13",
+              "body": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-15",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-10",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 7.32,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-11",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.35,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-12",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 3.38,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-13",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-14",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-15",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 2,
+          "status": "diverging"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-11",
+              "last_seen": "2025-07-12",
+              "dates": [
+                "2025-07-09",
+                "2025-07-10",
+                "2025-07-11",
+                "2025-07-12"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 9 July."
+            },
+            {
+              "kind": "divergence",
+              "first_seen": "2025-07-13",
+              "last_seen": "2025-07-15",
+              "dates": [
+                "2025-07-13"
+              ],
+              "summary": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-11",
+              "body": "The gauge has sent no reading for 3 days, since 9 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-13",
+              "body": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-16",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-10",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 7.32,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-11",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.35,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-12",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 3.38,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-13",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-14",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-15",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 2,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-16",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.38,
+          "silent_run": 3,
+          "status": "silent"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-11",
+              "last_seen": "2025-07-12",
+              "dates": [
+                "2025-07-09",
+                "2025-07-10",
+                "2025-07-11",
+                "2025-07-12"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 9 July."
+            },
+            {
+              "kind": "divergence",
+              "first_seen": "2025-07-13",
+              "last_seen": "2025-07-16",
+              "dates": [
+                "2025-07-13"
+              ],
+              "summary": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-16",
+              "last_seen": "2025-07-16",
+              "dates": [
+                "2025-07-14",
+                "2025-07-15",
+                "2025-07-16"
+              ],
+              "summary": "The gauge has sent no reading for 3 days, since 14 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-11",
+              "body": "The gauge has sent no reading for 3 days, since 9 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-13",
+              "body": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-16",
+              "body": "The gauge has sent no reading for 3 days, since 14 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-17",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-10",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 7.32,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-11",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.35,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-12",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 3.38,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-13",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-14",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-15",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 2,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-16",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.38,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-17",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.13,
+          "silent_run": 4,
+          "status": "silent"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-11",
+              "last_seen": "2025-07-12",
+              "dates": [
+                "2025-07-09",
+                "2025-07-10",
+                "2025-07-11",
+                "2025-07-12"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 9 July."
+            },
+            {
+              "kind": "divergence",
+              "first_seen": "2025-07-13",
+              "last_seen": "2025-07-17",
+              "dates": [
+                "2025-07-13"
+              ],
+              "summary": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-16",
+              "last_seen": "2025-07-17",
+              "dates": [
+                "2025-07-14",
+                "2025-07-15",
+                "2025-07-16",
+                "2025-07-17"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 14 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-11",
+              "body": "The gauge has sent no reading for 3 days, since 9 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-13",
+              "body": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-16",
+              "body": "The gauge has sent no reading for 3 days, since 14 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-18",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-10",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 7.32,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-11",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.35,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-12",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 3.38,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-13",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-14",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-15",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 2,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-16",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.38,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-17",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.13,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-18",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 5,
+          "status": "silent"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-11",
+              "last_seen": "2025-07-12",
+              "dates": [
+                "2025-07-09",
+                "2025-07-10",
+                "2025-07-11",
+                "2025-07-12"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 9 July."
+            },
+            {
+              "kind": "divergence",
+              "first_seen": "2025-07-13",
+              "last_seen": "2025-07-18",
+              "dates": [
+                "2025-07-13"
+              ],
+              "summary": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-16",
+              "last_seen": "2025-07-18",
+              "dates": [
+                "2025-07-14",
+                "2025-07-15",
+                "2025-07-16",
+                "2025-07-17",
+                "2025-07-18"
+              ],
+              "summary": "The gauge has sent no reading for 5 days, since 14 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-11",
+              "body": "The gauge has sent no reading for 3 days, since 9 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-13",
+              "body": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-16",
+              "body": "The gauge has sent no reading for 3 days, since 14 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-19",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-10",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 7.32,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-11",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.35,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-12",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 3.38,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-13",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-14",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-15",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 2,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-16",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.38,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-17",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.13,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-18",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 5,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-19",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.15,
+          "silent_run": 6,
+          "status": "silent"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-11",
+              "last_seen": "2025-07-12",
+              "dates": [
+                "2025-07-09",
+                "2025-07-10",
+                "2025-07-11",
+                "2025-07-12"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 9 July."
+            },
+            {
+              "kind": "divergence",
+              "first_seen": "2025-07-13",
+              "last_seen": "2025-07-19",
+              "dates": [
+                "2025-07-13"
+              ],
+              "summary": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-16",
+              "last_seen": "2025-07-19",
+              "dates": [
+                "2025-07-14",
+                "2025-07-15",
+                "2025-07-16",
+                "2025-07-17",
+                "2025-07-18",
+                "2025-07-19"
+              ],
+              "summary": "The gauge has sent no reading for 6 days, since 14 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-11",
+              "body": "The gauge has sent no reading for 3 days, since 9 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-13",
+              "body": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-16",
+              "body": "The gauge has sent no reading for 3 days, since 14 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-20",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-10",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 7.32,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-11",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.35,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-12",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 3.38,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-13",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-14",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-15",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 2,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-16",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.38,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-17",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.13,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-18",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 5,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-19",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.15,
+          "silent_run": 6,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-20",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 7,
+          "status": "silent"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-11",
+              "last_seen": "2025-07-12",
+              "dates": [
+                "2025-07-09",
+                "2025-07-10",
+                "2025-07-11",
+                "2025-07-12"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 9 July."
+            },
+            {
+              "kind": "divergence",
+              "first_seen": "2025-07-13",
+              "last_seen": "2025-07-20",
+              "dates": [
+                "2025-07-13"
+              ],
+              "summary": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-16",
+              "last_seen": "2025-07-20",
+              "dates": [
+                "2025-07-14",
+                "2025-07-15",
+                "2025-07-16",
+                "2025-07-17",
+                "2025-07-18",
+                "2025-07-19",
+                "2025-07-20"
+              ],
+              "summary": "The gauge has sent no reading for 7 days, since 14 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-11",
+              "body": "The gauge has sent no reading for 3 days, since 9 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-13",
+              "body": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-16",
+              "body": "The gauge has sent no reading for 3 days, since 14 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-21",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-10",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 7.32,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-11",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.35,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-12",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 3.38,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-13",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-14",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-15",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 2,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-16",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.38,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-17",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.13,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-18",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 5,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-19",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.15,
+          "silent_run": 6,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-20",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 7,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-21",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.77,
+          "silent_run": 0,
+          "status": "diverging"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-11",
+              "last_seen": "2025-07-12",
+              "dates": [
+                "2025-07-09",
+                "2025-07-10",
+                "2025-07-11",
+                "2025-07-12"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 9 July."
+            },
+            {
+              "kind": "divergence",
+              "first_seen": "2025-07-13",
+              "last_seen": "2025-07-21",
+              "dates": [
+                "2025-07-13"
+              ],
+              "summary": "On the 6 days both reported, the gauge totals 0.0 mm and the satellite 20.3 mm."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-16",
+              "last_seen": "2025-07-20",
+              "dates": [
+                "2025-07-14",
+                "2025-07-15",
+                "2025-07-16",
+                "2025-07-17",
+                "2025-07-18",
+                "2025-07-19",
+                "2025-07-20"
+              ],
+              "summary": "The gauge has sent no reading for 7 days, since 14 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-11",
+              "body": "The gauge has sent no reading for 3 days, since 9 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-13",
+              "body": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-16",
+              "body": "The gauge has sent no reading for 3 days, since 14 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-22",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-10",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 7.32,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-11",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.35,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-12",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 3.38,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-13",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-14",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-15",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 2,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-16",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.38,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-17",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.13,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-18",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 5,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-19",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.15,
+          "silent_run": 6,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-20",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 7,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-21",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.77,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-22",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.18,
+          "silent_run": 0,
+          "status": "diverging"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-11",
+              "last_seen": "2025-07-12",
+              "dates": [
+                "2025-07-09",
+                "2025-07-10",
+                "2025-07-11",
+                "2025-07-12"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 9 July."
+            },
+            {
+              "kind": "divergence",
+              "first_seen": "2025-07-13",
+              "last_seen": "2025-07-22",
+              "dates": [
+                "2025-07-13"
+              ],
+              "summary": "On the 7 days both reported, the gauge totals 0.0 mm and the satellite 21.5 mm."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-16",
+              "last_seen": "2025-07-20",
+              "dates": [
+                "2025-07-14",
+                "2025-07-15",
+                "2025-07-16",
+                "2025-07-17",
+                "2025-07-18",
+                "2025-07-19",
+                "2025-07-20"
+              ],
+              "summary": "The gauge has sent no reading for 7 days, since 14 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-11",
+              "body": "The gauge has sent no reading for 3 days, since 9 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-13",
+              "body": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-16",
+              "body": "The gauge has sent no reading for 3 days, since 14 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-23",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-10",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 7.32,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-11",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.35,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-12",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 3.38,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-13",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-14",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-15",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 2,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-16",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.38,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-17",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.13,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-18",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 5,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-19",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.15,
+          "silent_run": 6,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-20",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 7,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-21",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.77,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-22",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.18,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-23",
+          "station_id": "NIM00065201",
+          "gauge_mm": 6.1,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-11",
+              "last_seen": "2025-07-12",
+              "dates": [
+                "2025-07-09",
+                "2025-07-10",
+                "2025-07-11",
+                "2025-07-12"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 9 July."
+            },
+            {
+              "kind": "divergence",
+              "first_seen": "2025-07-13",
+              "last_seen": "2025-07-23",
+              "dates": [
+                "2025-07-13"
+              ],
+              "summary": "On the 8 days both reported, the gauge totals 6.1 mm and the satellite 21.5 mm."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-16",
+              "last_seen": "2025-07-20",
+              "dates": [
+                "2025-07-14",
+                "2025-07-15",
+                "2025-07-16",
+                "2025-07-17",
+                "2025-07-18",
+                "2025-07-19",
+                "2025-07-20"
+              ],
+              "summary": "The gauge has sent no reading for 7 days, since 14 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-11",
+              "body": "The gauge has sent no reading for 3 days, since 9 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-13",
+              "body": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-16",
+              "body": "The gauge has sent no reading for 3 days, since 14 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-24",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-10",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 7.32,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-11",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.35,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-12",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 3.38,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-13",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-14",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-15",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 2,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-16",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.38,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-17",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.13,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-18",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 5,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-19",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.15,
+          "silent_run": 6,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-20",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 7,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-21",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.77,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-22",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.18,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-23",
+          "station_id": "NIM00065201",
+          "gauge_mm": 6.1,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-24",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.09,
+          "silent_run": 0,
+          "status": "diverging"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-11",
+              "last_seen": "2025-07-12",
+              "dates": [
+                "2025-07-09",
+                "2025-07-10",
+                "2025-07-11",
+                "2025-07-12"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 9 July."
+            },
+            {
+              "kind": "divergence",
+              "first_seen": "2025-07-13",
+              "last_seen": "2025-07-24",
+              "dates": [
+                "2025-07-13"
+              ],
+              "summary": "On the 9 days both reported, the gauge totals 6.1 mm and the satellite 21.6 mm."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-16",
+              "last_seen": "2025-07-20",
+              "dates": [
+                "2025-07-14",
+                "2025-07-15",
+                "2025-07-16",
+                "2025-07-17",
+                "2025-07-18",
+                "2025-07-19",
+                "2025-07-20"
+              ],
+              "summary": "The gauge has sent no reading for 7 days, since 14 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-11",
+              "body": "The gauge has sent no reading for 3 days, since 9 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-13",
+              "body": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-16",
+              "body": "The gauge has sent no reading for 3 days, since 14 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-25",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-10",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 7.32,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-11",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.35,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-12",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 3.38,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-13",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-14",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-15",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 2,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-16",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.38,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-17",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.13,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-18",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 5,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-19",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.15,
+          "silent_run": 6,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-20",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 7,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-21",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.77,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-22",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.18,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-23",
+          "station_id": "NIM00065201",
+          "gauge_mm": 6.1,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-24",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.09,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-25",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.78,
+          "silent_run": 1,
+          "status": "diverging"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-11",
+              "last_seen": "2025-07-12",
+              "dates": [
+                "2025-07-09",
+                "2025-07-10",
+                "2025-07-11",
+                "2025-07-12"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 9 July."
+            },
+            {
+              "kind": "divergence",
+              "first_seen": "2025-07-13",
+              "last_seen": "2025-07-25",
+              "dates": [
+                "2025-07-13"
+              ],
+              "summary": "On the 9 days both reported, the gauge totals 6.1 mm and the satellite 21.6 mm."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-16",
+              "last_seen": "2025-07-20",
+              "dates": [
+                "2025-07-14",
+                "2025-07-15",
+                "2025-07-16",
+                "2025-07-17",
+                "2025-07-18",
+                "2025-07-19",
+                "2025-07-20"
+              ],
+              "summary": "The gauge has sent no reading for 7 days, since 14 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-11",
+              "body": "The gauge has sent no reading for 3 days, since 9 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-13",
+              "body": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-16",
+              "body": "The gauge has sent no reading for 3 days, since 14 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-26",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-10",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 7.32,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-11",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.35,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-12",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 3.38,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-13",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-14",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-15",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 2,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-16",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.38,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-17",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.13,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-18",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 5,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-19",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.15,
+          "silent_run": 6,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-20",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 7,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-21",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.77,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-22",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.18,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-23",
+          "station_id": "NIM00065201",
+          "gauge_mm": 6.1,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-24",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.09,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-25",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.78,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-26",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.82,
+          "silent_run": 2,
+          "status": "diverging"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-11",
+              "last_seen": "2025-07-12",
+              "dates": [
+                "2025-07-09",
+                "2025-07-10",
+                "2025-07-11",
+                "2025-07-12"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 9 July."
+            },
+            {
+              "kind": "divergence",
+              "first_seen": "2025-07-13",
+              "last_seen": "2025-07-26",
+              "dates": [
+                "2025-07-13"
+              ],
+              "summary": "On the 9 days both reported, the gauge totals 6.1 mm and the satellite 21.6 mm."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-16",
+              "last_seen": "2025-07-20",
+              "dates": [
+                "2025-07-14",
+                "2025-07-15",
+                "2025-07-16",
+                "2025-07-17",
+                "2025-07-18",
+                "2025-07-19",
+                "2025-07-20"
+              ],
+              "summary": "The gauge has sent no reading for 7 days, since 14 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-11",
+              "body": "The gauge has sent no reading for 3 days, since 9 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-13",
+              "body": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-16",
+              "body": "The gauge has sent no reading for 3 days, since 14 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-27",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-10",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 7.32,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-11",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.35,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-12",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 3.38,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-13",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-14",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-15",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 2,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-16",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.38,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-17",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.13,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-18",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 5,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-19",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.15,
+          "silent_run": 6,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-20",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 7,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-21",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.77,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-22",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.18,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-23",
+          "station_id": "NIM00065201",
+          "gauge_mm": 6.1,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-24",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.09,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-25",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.78,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-26",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.82,
+          "silent_run": 2,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-27",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.51,
+          "silent_run": 3,
+          "status": "silent"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-11",
+              "last_seen": "2025-07-12",
+              "dates": [
+                "2025-07-09",
+                "2025-07-10",
+                "2025-07-11",
+                "2025-07-12"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 9 July."
+            },
+            {
+              "kind": "divergence",
+              "first_seen": "2025-07-13",
+              "last_seen": "2025-07-27",
+              "dates": [
+                "2025-07-13"
+              ],
+              "summary": "On the 9 days both reported, the gauge totals 6.1 mm and the satellite 21.6 mm."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-16",
+              "last_seen": "2025-07-20",
+              "dates": [
+                "2025-07-14",
+                "2025-07-15",
+                "2025-07-16",
+                "2025-07-17",
+                "2025-07-18",
+                "2025-07-19",
+                "2025-07-20"
+              ],
+              "summary": "The gauge has sent no reading for 7 days, since 14 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-27",
+              "last_seen": "2025-07-27",
+              "dates": [
+                "2025-07-25",
+                "2025-07-26",
+                "2025-07-27"
+              ],
+              "summary": "The gauge has sent no reading for 3 days, since 25 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-11",
+              "body": "The gauge has sent no reading for 3 days, since 9 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-13",
+              "body": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-16",
+              "body": "The gauge has sent no reading for 3 days, since 14 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-27",
+              "body": "The gauge has sent no reading for 3 days, since 25 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-28",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-10",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 7.32,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-11",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.35,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-12",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 3.38,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-13",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-14",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-15",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 2,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-16",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.38,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-17",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.13,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-18",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 5,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-19",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.15,
+          "silent_run": 6,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-20",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 7,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-21",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.77,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-22",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.18,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-23",
+          "station_id": "NIM00065201",
+          "gauge_mm": 6.1,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-24",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.09,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-25",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.78,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-26",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.82,
+          "silent_run": 2,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-27",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.51,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-28",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.93,
+          "silent_run": 4,
+          "status": "silent"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-11",
+              "last_seen": "2025-07-12",
+              "dates": [
+                "2025-07-09",
+                "2025-07-10",
+                "2025-07-11",
+                "2025-07-12"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 9 July."
+            },
+            {
+              "kind": "divergence",
+              "first_seen": "2025-07-13",
+              "last_seen": "2025-07-28",
+              "dates": [
+                "2025-07-13"
+              ],
+              "summary": "On the 9 days both reported, the gauge totals 6.1 mm and the satellite 21.6 mm."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-16",
+              "last_seen": "2025-07-20",
+              "dates": [
+                "2025-07-14",
+                "2025-07-15",
+                "2025-07-16",
+                "2025-07-17",
+                "2025-07-18",
+                "2025-07-19",
+                "2025-07-20"
+              ],
+              "summary": "The gauge has sent no reading for 7 days, since 14 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-27",
+              "last_seen": "2025-07-28",
+              "dates": [
+                "2025-07-25",
+                "2025-07-26",
+                "2025-07-27",
+                "2025-07-28"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 25 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-11",
+              "body": "The gauge has sent no reading for 3 days, since 9 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-13",
+              "body": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-16",
+              "body": "The gauge has sent no reading for 3 days, since 14 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-27",
+              "body": "The gauge has sent no reading for 3 days, since 25 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-29",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-10",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 7.32,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-11",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.35,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-12",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 3.38,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-13",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-14",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-15",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 2,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-16",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.38,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-17",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.13,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-18",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 5,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-19",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.15,
+          "silent_run": 6,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-20",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 7,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-21",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.77,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-22",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.18,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-23",
+          "station_id": "NIM00065201",
+          "gauge_mm": 6.1,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-24",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.09,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-25",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.78,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-26",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.82,
+          "silent_run": 2,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-27",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.51,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-28",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.93,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-29",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.4,
+          "silent_run": 5,
+          "status": "silent"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-11",
+              "last_seen": "2025-07-12",
+              "dates": [
+                "2025-07-09",
+                "2025-07-10",
+                "2025-07-11",
+                "2025-07-12"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 9 July."
+            },
+            {
+              "kind": "divergence",
+              "first_seen": "2025-07-13",
+              "last_seen": "2025-07-29",
+              "dates": [
+                "2025-07-13"
+              ],
+              "summary": "On the 9 days both reported, the gauge totals 6.1 mm and the satellite 21.6 mm."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-16",
+              "last_seen": "2025-07-20",
+              "dates": [
+                "2025-07-14",
+                "2025-07-15",
+                "2025-07-16",
+                "2025-07-17",
+                "2025-07-18",
+                "2025-07-19",
+                "2025-07-20"
+              ],
+              "summary": "The gauge has sent no reading for 7 days, since 14 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-27",
+              "last_seen": "2025-07-29",
+              "dates": [
+                "2025-07-25",
+                "2025-07-26",
+                "2025-07-27",
+                "2025-07-28",
+                "2025-07-29"
+              ],
+              "summary": "The gauge has sent no reading for 5 days, since 25 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-11",
+              "body": "The gauge has sent no reading for 3 days, since 9 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-13",
+              "body": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-16",
+              "body": "The gauge has sent no reading for 3 days, since 14 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-27",
+              "body": "The gauge has sent no reading for 3 days, since 25 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-30",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-10",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 7.32,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-11",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.35,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-12",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 3.38,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-13",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-14",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-15",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 2,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-16",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.38,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-17",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.13,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-18",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 5,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-19",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.15,
+          "silent_run": 6,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-20",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 7,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-21",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.77,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-22",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.18,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-23",
+          "station_id": "NIM00065201",
+          "gauge_mm": 6.1,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-24",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.09,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-25",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.78,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-26",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.82,
+          "silent_run": 2,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-27",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.51,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-28",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.93,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-29",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.4,
+          "silent_run": 5,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-30",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.3,
+          "silent_run": 0,
+          "status": "diverging"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-11",
+              "last_seen": "2025-07-12",
+              "dates": [
+                "2025-07-09",
+                "2025-07-10",
+                "2025-07-11",
+                "2025-07-12"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 9 July."
+            },
+            {
+              "kind": "divergence",
+              "first_seen": "2025-07-13",
+              "last_seen": "2025-07-30",
+              "dates": [
+                "2025-07-13"
+              ],
+              "summary": "On the 10 days both reported, the gauge totals 6.1 mm and the satellite 21.9 mm."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-16",
+              "last_seen": "2025-07-20",
+              "dates": [
+                "2025-07-14",
+                "2025-07-15",
+                "2025-07-16",
+                "2025-07-17",
+                "2025-07-18",
+                "2025-07-19",
+                "2025-07-20"
+              ],
+              "summary": "The gauge has sent no reading for 7 days, since 14 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-27",
+              "last_seen": "2025-07-29",
+              "dates": [
+                "2025-07-25",
+                "2025-07-26",
+                "2025-07-27",
+                "2025-07-28",
+                "2025-07-29"
+              ],
+              "summary": "The gauge has sent no reading for 5 days, since 25 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-11",
+              "body": "The gauge has sent no reading for 3 days, since 9 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-13",
+              "body": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-16",
+              "body": "The gauge has sent no reading for 3 days, since 14 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-27",
+              "body": "The gauge has sent no reading for 3 days, since 25 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "today": "2025-07-31",
+      "checks": [
+        {
+          "date": "2025-07-01",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.72,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-02",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.06,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-03",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 30.38,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-04",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 38.2,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-05",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 13.37,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-06",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 2.66,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-07",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.83,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-08",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 14.34,
+          "silent_run": 0,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-09",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 9.32,
+          "silent_run": 1,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-10",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 7.32,
+          "silent_run": 2,
+          "status": "ok"
+        },
+        {
+          "date": "2025-07-11",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.35,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-12",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 3.38,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-13",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-14",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-15",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 2,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-16",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.38,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-17",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.13,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-18",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0,
+          "silent_run": 5,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-19",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.15,
+          "silent_run": 6,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-20",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.11,
+          "silent_run": 7,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-21",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.77,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-22",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 1.18,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-23",
+          "station_id": "NIM00065201",
+          "gauge_mm": 6.1,
+          "satellite_mm": 0,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-24",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.09,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-25",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.78,
+          "silent_run": 1,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-26",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.82,
+          "silent_run": 2,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-27",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.51,
+          "silent_run": 3,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-28",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.93,
+          "silent_run": 4,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-29",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 0.4,
+          "silent_run": 5,
+          "status": "silent"
+        },
+        {
+          "date": "2025-07-30",
+          "station_id": "NIM00065201",
+          "gauge_mm": 0,
+          "satellite_mm": 0.3,
+          "silent_run": 0,
+          "status": "diverging"
+        },
+        {
+          "date": "2025-07-31",
+          "station_id": "NIM00065201",
+          "gauge_mm": null,
+          "satellite_mm": 3.06,
+          "silent_run": 1,
+          "status": "diverging"
+        }
+      ],
+      "cases": [
+        {
+          "id": "watch_7501865c",
+          "station_id": "NIM00065201",
+          "station_name": "MURTALA MUHAMMED",
+          "policy_ids": [
+            "POL-LAG-2025-014",
+            "POL-LAG-2025-015",
+            "POL-LAG-2025-016"
+          ],
+          "opened_on": "2025-07-04",
+          "findings": [
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-04",
+              "last_seen": "2025-07-05",
+              "dates": [
+                "2025-07-02",
+                "2025-07-03",
+                "2025-07-04",
+                "2025-07-05"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 2 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-11",
+              "last_seen": "2025-07-12",
+              "dates": [
+                "2025-07-09",
+                "2025-07-10",
+                "2025-07-11",
+                "2025-07-12"
+              ],
+              "summary": "The gauge has sent no reading for 4 days, since 9 July."
+            },
+            {
+              "kind": "divergence",
+              "first_seen": "2025-07-13",
+              "last_seen": "2025-07-31",
+              "dates": [
+                "2025-07-13"
+              ],
+              "summary": "On the 10 days both reported, the gauge totals 6.1 mm and the satellite 21.9 mm."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-16",
+              "last_seen": "2025-07-20",
+              "dates": [
+                "2025-07-14",
+                "2025-07-15",
+                "2025-07-16",
+                "2025-07-17",
+                "2025-07-18",
+                "2025-07-19",
+                "2025-07-20"
+              ],
+              "summary": "The gauge has sent no reading for 7 days, since 14 July."
+            },
+            {
+              "kind": "silent",
+              "first_seen": "2025-07-27",
+              "last_seen": "2025-07-29",
+              "dates": [
+                "2025-07-25",
+                "2025-07-26",
+                "2025-07-27",
+                "2025-07-28",
+                "2025-07-29"
+              ],
+              "summary": "The gauge has sent no reading for 5 days, since 25 July."
+            }
+          ],
+          "outbox": [
+            {
+              "to": "station_operator",
+              "on": "2025-07-04",
+              "body": "The gauge has sent no reading for 3 days, since 2 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-11",
+              "body": "The gauge has sent no reading for 3 days, since 9 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-13",
+              "body": "On the 5 days both reported, the gauge totals 0.0 mm and the satellite 19.6 mm. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-16",
+              "body": "The gauge has sent no reading for 3 days, since 14 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            },
+            {
+              "to": "station_operator",
+              "on": "2025-07-27",
+              "body": "The gauge has sent no reading for 3 days, since 25 July. This is the rain gauge at MURTALA MUHAMMED (NIM00065201), which 3 insured farmer groups depend on this season. Please check the instrument and its data link, and tell us the dates it was out of service."
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
