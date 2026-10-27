@@ -144,7 +144,7 @@
     else $('working').hidden = !working && !item.replay;
     if (!(item.replay && item.running)) $('working').textContent = working ? `The agent is working · step ${item.steps_used} · ${item.events.at(-1)?.summary || ''}` : item.replay ? `A recorded live investigation, replayed${item.models?.length ? ` · ${item.models.join(', ')}` : ''}` : '';
     $('working').classList.toggle('live', Boolean(item.running));
-    renderDecision(item); renderTimeline(item); renderChecks(item.decision?.probes || []); renderActions(item);
+    renderDecision(item); renderPlan(item); renderTalk(item); renderTimeline(item); renderChecks(item.decision?.probes || []); renderActions(item);
     const output = { evidence: item.evidence || {}, policy: policyFor(claim), claim };
     renderFigures(output); if (!$('panel-evidence').hidden) drawChart(output);
     if (item.running && !item.replay) poll(item.id);
@@ -184,7 +184,44 @@
     } else call.hidden = true;
   }
 
-  const kindLabel = { start: 'Opened', thought: 'Reasoning', tool: 'Query', decision: 'Gate', action: 'Action', person: 'Person', note: 'Note' };
+  // The plan as it stood after each event, so a replay shows it ticking through in order.
+  function planFrom(events) {
+    let steps = []; const revisions = [];
+    for (const e of events) {
+      if (e.kind !== 'plan' || !e.output?.ok) continue;
+      if (e.tool === 'set_plan') { if (steps.length && e.input?.reason) revisions.push(e.input.reason); steps = (e.input?.steps || []).map(s => ({ text: typeof s === 'string' ? s : s.text, status: s.status || 'todo' })); }
+      else if (e.tool === 'mark_step' && steps[e.input.step - 1]) Object.assign(steps[e.input.step - 1], { status: e.input.status, note: e.input.note });
+    }
+    return { steps, revisions };
+  }
+  const stepWord = { todo: ['Next', 'step'], doing: ['Now', 'warn'], done: ['Done', 'pass'], dropped: ['Dropped', 'fail'] };
+  function renderPlan(item) {
+    const root = $('plan'); root.replaceChildren(el('p', 'Its plan', 'label'));
+    const { steps, revisions } = planFrom(item.events);
+    if (!steps.length) { root.append(el('p', item.running ? 'Writing its plan.' : 'This case was worked before the agent wrote plans.', 'muted')); return; }
+    const list = el('ol', null, 'plan-steps');
+    steps.forEach((step, i) => { const [word, cls] = stepWord[step.status] || stepWord.todo; const li = el('li', null, `plan-step is-${step.status}`); const body = el('div'); body.append(el('span', `${i + 1}. ${step.text}`, 'row-title')); if (step.note) body.append(el('span', step.note, 'muted small')); li.append(el('span', word, `state ${cls}`), body); list.append(li); });
+    root.append(list);
+    for (const reason of revisions) root.append(el('p', `Changed course: ${reason}`, 'note'));
+  }
+  function renderTalk(item) {
+    const thread = $('thread'); thread.replaceChildren();
+    for (const e of item.events) if (e.kind === 'officer' || e.kind === 'reply') { const li = el('li', null, `bubble ${e.kind}`); li.append(el('span', e.kind === 'officer' ? 'You' : 'The agent', 'muted small'), el('p', e.summary)); thread.append(li); }
+    thread.hidden = !thread.children.length;
+    const area = $('talk-text'), send = $('talk-send'), note = $('talk-note');
+    const replay = item.replay, next = replay?.questions?.[replay.played ?? 0];
+    if (replay) { area.readOnly = true; area.value = next || ''; note.hidden = false; note.textContent = next ? 'A recorded investigation: this is the question the officer asked the live agent.' : 'This recorded investigation has no further questions. Run Pluvia live to ask your own.'; }
+    else { area.readOnly = false; note.hidden = true; }
+    $('talk-form').hidden = Boolean(replay && !next);
+    send.disabled = Boolean(item.replay && item.running);
+  }
+  $('talk-form').addEventListener('submit', async event => {
+    event.preventDefault(); const item = state.run; const text = $('talk-text').value.trim(); if (!item || text.length < 2) return;
+    $('talk-send').disabled = true;
+    try { showCase(await request(`/cases/${encodeURIComponent(item.id)}/messages`, { method: 'POST', body: JSON.stringify({ text }) })); if (!item.replay) $('talk-text').value = ''; } catch (error) { status(error.message, true); } finally { $('talk-send').disabled = false; }
+  });
+
+  const kindLabel = { start: 'Opened', thought: 'Reasoning', tool: 'Query', decision: 'Gate', action: 'Action', person: 'Person', note: 'Note', plan: 'Plan', officer: 'You', reply: 'Answer' };
   function renderTimeline(item) {
     const list = $('timeline'); list.replaceChildren();
     const queries = item.events.filter(e => e.tool === 'sql_query').length;
@@ -193,13 +230,14 @@
       const kind = event.kind === 'tool' && event.tool !== 'sql_query' ? 'Tool' : kindLabel[event.kind] || event.kind;
       const li = el('li', null, `step ${event.kind}`);
       const row = button(null, 'row');
-      row.append(el('span', kind, `state ${event.kind === 'decision' ? 'warn' : event.kind === 'action' ? 'pass' : event.kind === 'person' ? 'fail' : 'step'}`), el('span', event.summary, 'row-title'), el('span', '', 'chevron'));
+      row.append(el('span', kind, `state ${event.kind === 'decision' ? 'warn' : event.kind === 'action' || event.kind === 'reply' ? 'pass' : event.kind === 'person' || event.kind === 'officer' ? 'fail' : 'step'}`), el('span', event.summary, 'row-title'), el('span', '', 'chevron'));
       const detail = [];
       if (event.input?.sql) detail.push(el('p', 'The query it wrote', 'label'), el('pre', event.input.sql, 'code'));
       else if (event.input && Object.keys(event.input).length) detail.push(el('p', 'What it sent', 'label'), el('pre', typeof event.input === 'string' ? event.input : JSON.stringify(event.input, null, 2), 'code'));
       if (event.output !== undefined) detail.push(el('p', 'What came back', 'label'), el('pre', JSON.stringify(event.output, null, 2).slice(0, 6000), 'code'));
       if (event.model) detail.push(el('p', `Model: ${event.model}`, 'muted small'));
       if (detail.length) row.addEventListener('click', () => openSheet(kind, event.summary.slice(0, 90), ...detail)); else row.disabled = event.kind !== 'thought';
+      if (event.kind === 'officer' || event.kind === 'reply') { row.disabled = false; row.addEventListener('click', () => openSheet(kind, event.kind === 'officer' ? 'What you wrote' : 'What the agent answered', el('p', event.summary, 'reading'))); }
       if (event.kind === 'thought') row.addEventListener('click', () => openSheet('Reasoning', 'What the agent was thinking', el('p', event.summary, 'reading')));
       li.append(row); list.append(li);
     }

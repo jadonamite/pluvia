@@ -61,7 +61,7 @@ export async function main(args = process.argv.slice(2), io: CliIO = defaultIO, 
       if (typeof evaluation.runEvaluation !== 'function') throw new RuntimeError('evaluation_contract', 'The evaluation module must export runEvaluation(runtime).');
       io.out(await evaluation.runEvaluation(runtime)); return 0;
     }
-    const app = createApp(runtime.orchestrator, runtime.config.sampleMode, runtime.agent);
+    const app = createApp(runtime.orchestrator, runtime.config.sampleMode, runtime.agent, runtime.watcher);
     const server = serve({ fetch: app.fetch, hostname: '0.0.0.0', port: runtime.config.port });
     serving = true;
     let closing = false;

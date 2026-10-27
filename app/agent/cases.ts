@@ -13,7 +13,7 @@ export type CaseState =
 
 export interface CaseEvent {
   at: string;
-  kind: 'start' | 'thought' | 'tool' | 'decision' | 'action' | 'person' | 'note';
+  kind: 'start' | 'thought' | 'tool' | 'decision' | 'action' | 'person' | 'note' | 'plan' | 'officer' | 'reply';
   tool?: string;
   input?: unknown;
   output?: unknown;
@@ -28,15 +28,27 @@ export interface OutboxMessage {
   at: string;
 }
 
+export interface PlanStep {
+  text: string;
+  status: 'todo' | 'doing' | 'done' | 'dropped';
+  note?: string;
+}
+
+// The agent's plan for the case, and every change of course with its reason.
+export interface Plan {
+  steps: PlanStep[];
+  revisions: { at: string; reason: string }[];
+}
+
 // One recorded stretch of agent work, replayable without the live services.
 export interface Segment {
-  trigger: 'start' | 'inspection_report';
+  trigger: 'start' | 'inspection_report' | 'message';
   input?: string;
   messages: unknown[];
   // Event range this stretch produced, and the case as it stood when the stretch ended.
   from_event: number;
   to_event?: number;
-  snapshot?: Pick<Case, 'state' | 'decision' | 'proposal' | 'inspection' | 'signoff' | 'payment' | 'outbox' | 'summary'>;
+  snapshot?: Pick<Case, 'state' | 'decision' | 'proposal' | 'inspection' | 'signoff' | 'payment' | 'outbox' | 'summary' | 'plan'>;
 }
 
 export interface Case {
@@ -46,7 +58,8 @@ export interface Case {
   state: CaseState;
   created_at: string;
   updated_at: string;
-  replay?: { recorded_at: string; source_case: string; report?: string };
+  // questions: what the officer wrote to the live agent after it stopped, in order; played: how many were replayed.
+  replay?: { recorded_at: string; source_case: string; report?: string; questions?: string[]; played?: number };
   models: string[];
   steps_used: number;
   events: CaseEvent[];
@@ -58,6 +71,9 @@ export interface Case {
   payment?: { amount_ngn: number; status: 'held' | 'released' | 'none' };
   outbox: OutboxMessage[];
   summary?: string;
+  plan?: Plan;
+  // Officer messages that arrived while the agent was mid-step, read before its next step.
+  inbox?: string[];
   // The contract series the checks and the gate used, for the desk's chart.
   evidence?: { station: DailySeries; satellite: DailySeries | null };
 }

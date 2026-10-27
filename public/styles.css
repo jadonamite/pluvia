@@ -195,6 +195,21 @@ pre.code{margin:0;padding:var(--space-3) var(--space-4);border-radius:var(--radi
 .report-form .button{justify-self:start}
 #inspection{display:grid;gap:var(--space-2)}
 
+/* the case room: plan and conversation */
+.plan,.talk{display:grid;gap:var(--space-3)}
+.plan-steps{list-style:none;margin:0;padding:0;display:grid}
+.plan-step{display:grid;grid-template-columns:5.5rem minmax(0,1fr);align-items:start;gap:var(--space-4);padding:var(--space-3) 0;transition:opacity var(--duration) var(--ease-out)}
+.plan-step+.plan-step{box-shadow:0 -1px 0 color-mix(in srgb,var(--label) 7%,transparent)}
+.plan-step>div{display:grid;gap:var(--space-1)}
+.plan-step.is-done .row-title,.plan-step.is-dropped .row-title{color:var(--secondary)}
+.plan-step.is-dropped .row-title{text-decoration:line-through}
+.thread{list-style:none;margin:0;padding:0;display:grid;gap:var(--space-3);max-height:24rem;overflow:auto}
+.bubble{display:grid;gap:var(--space-1);max-width:36rem;padding:var(--space-3) var(--space-4);border-radius:var(--radius-panel);background:color-mix(in srgb,var(--label) 5%,transparent);line-height:1.5}
+.bubble.officer{justify-self:end;background:color-mix(in srgb,var(--accent) 10%,transparent)}
+.talk-form{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:end;gap:var(--space-3)}
+.talk-form textarea{width:100%;min-height:var(--target);padding:var(--space-3) var(--space-4);border:1px solid var(--control-border);border-radius:var(--radius-control);background:color-mix(in srgb,var(--card) 80%,transparent);font:inherit;font-size:var(--text-caption);resize:vertical}
+.talk-form textarea[readonly]{color:var(--secondary)}
+
 /* footer */
 .foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--space-4);padding-top:var(--space-6);margin-top:var(--space-6);border-top:1px solid color-mix(in srgb,var(--label) 8%,transparent);font-size:var(--text-footnote);color:var(--secondary)}
 .foot p{max-width:30rem}
@@ -210,7 +225,8 @@ pre.code{margin:0;padding:var(--space-3) var(--space-4);border-radius:var(--radi
   .card{padding:var(--space-5)}
   .case-title h2{font-size:var(--text-title-2)}
   .pair,.figures,.tiles{grid-template-columns:1fr}
-  .call{grid-template-columns:1fr}
+  .call,.talk-form{grid-template-columns:1fr}
+  .plan-step{grid-template-columns:4.75rem minmax(0,1fr);gap:var(--space-3)}
   .tabs{position:fixed;top:auto;left:var(--space-3);right:var(--space-3);bottom:max(var(--space-3),env(safe-area-inset-bottom));z-index:30}
   [role=tab]{flex:1 1 0;min-width:0;padding:0 var(--space-1);font-size:var(--text-footnote)}
   #results{padding-bottom:5rem}
@@ -219,4 +235,4 @@ pre.code{margin:0;padding:var(--space-3) var(--space-4);border-radius:var(--radi
   .sheet{width:100%;max-width:none;max-height:88vh;margin:auto 0 0;border-radius:1.25rem 1.25rem 0 0;padding-bottom:env(safe-area-inset-bottom)}
   @keyframes sheet{from{transform:translateY(40px);opacity:0}}
 }
-@media (prefers-reduced-motion:reduce){.panel,.sheet[open],.working::before{animation:none}.button,.chip,[role=tab],.row,.claim{transition:none}}
+@media (prefers-reduced-motion:reduce){.panel,.sheet[open],.working::before{animation:none}.button,.chip,[role=tab],.row,.claim,.plan-step{transition:none}}

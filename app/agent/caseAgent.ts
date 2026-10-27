@@ -6,13 +6,17 @@ import { policyTerms, probeSummaries } from '../agents/modelPayloads.js';
 import type { PluviaMemory } from '../memory/pluviaMemory.js';
 import { runProbes } from '../probes/index.js';
 import type { Claim, DailySeries, Decision, Policy } from '../types.js';
-import { CaseStore, readReplay, type Case, type CaseEvent, type Segment } from './cases.js';
+import { CaseStore, readReplay, type Case, type CaseEvent, type PlanStep, type Segment } from './cases.js';
 import { guardSql } from './sqlGuard.js';
 
 // Payouts above this need a person; so does every refusal and every inspection close-out.
 export const SIGNOFF_ABOVE_NGN = 1_000_000;
 const STEP_BUDGET = 24;
 const RESUME_BUDGET = 10;
+const MESSAGE_BUDGET = 10;
+const PLAN_STEPS = 10;
+// Turns spent only on the plan don't use up the step budget, up to this many.
+const PLAN_TURNS = 20;
 
 export interface ModelRoute {
   url: string;
@@ -30,6 +34,16 @@ const fn = (name: string, description: string, properties: Record<string, unknow
 });
 const text = { type: 'string' };
 const TOOLS = [
+  fn('set_plan', 'Write your plan for the case before anything else, or rewrite it when the evidence changes your course. Give the reason for every rewrite.', {
+    steps: { type: 'array', items: { type: 'object', properties: { text, status: { type: 'string', enum: ['todo', 'doing', 'done', 'dropped'] } }, required: ['text'] } },
+    reason: { type: 'string', description: 'Why the plan changed. Required when rewriting.' },
+  }, ['steps']),
+  fn('mark_step', 'Mark one step of your plan as started, done or dropped. Dropping a step needs a note saying why.', {
+    step: { type: 'integer', description: 'The step number, from 1' },
+    status: { type: 'string', enum: ['doing', 'done', 'dropped'] },
+    note: text,
+  }, ['step', 'status']),
+  fn('reply_to_officer', 'Answer the claims officer. Find the answer with your other tools first; quote the figures you found.', { text }, ['text']),
   fn('list_tables', 'List the rainfall views you can query.'),
   fn('describe_table', 'Show the columns of one view.', { table: text }, ['table']),
   fn('sql_query', 'Run one read-only SELECT over the pluvia views. Returns a summary and up to 30 rows.', { sql: text }, ['sql']),
@@ -53,12 +67,14 @@ const TOOLS = [
 const SYSTEM = `You are Pluvia's claims agent for weather-index crop insurance. Your goal is to settle each claim correctly or hand it to a person with one precise question.
 
 How you work:
+- Before anything else, write your plan with set_plan: the steps you will take for this claim, in order. Mark each step with mark_step as you start and finish it, in the same turn as the tool calls that do the work. When something you find changes your course, rewrite the plan with set_plan and say why.
 - Investigate before deciding. Discover the views, write your own SQL, and do every sum and count in SQL, never in your head. Use GROUP BY to get many totals in one query rather than one query each.
 - Views ending _prior_daily hold earlier years of the same satellite series, for comparing this season with past ones.
 - The gauge record decides the claim unless it is unfit. Find the days the gauge was silent, look for zero readings on days the satellite saw rain, and check how the satellite compares with earlier years at the same place.
 - propose_settlement is checked by the policy gate, which computes the payout from the contract. You cannot raise a payout. If you argue the satellite should settle a disagreement, cite each figure with the exact SQL that produces it; the code reruns your SQL and compares.
 - After the gate answers, act on it: open an inspection naming the dates, request sign-off where it says one is needed, write to the farmer group, and tell the station operator about a failing gauge.
 - Payouts above NGN ${SIGNOFF_ABOVE_NGN.toLocaleString('en')}, every refusal and every inspection close-out need a claims officer's sign-off.
+- The claims officer can write to you at any point. Answer with reply_to_officer after checking with your tools, act on any instruction, then carry on. If they ask for something the data cannot show, say so plainly.
 - End with finish_case. Write plainly and briefly; a claims officer reads every step.`;
 
 const now = () => new Date().toISOString();
@@ -103,6 +119,8 @@ export class CaseAgent {
       model?: ModelRoute;
       replayDirectory: string;
       live: boolean;
+      // What the station watcher found before the claim arrived.
+      watch?: (stationId: string) => unknown[];
       // Replaces the Nightshift call, for tests.
       chat?: (messages: Message[]) => Promise<{ message: Message; model: string }>;
     }
@@ -145,7 +163,13 @@ export class CaseAgent {
         policy_id: recorded.policy_id,
         created_at: now(),
         updated_at: now(),
-        replay: { recorded_at: recorded.created_at, source_case: recorded.id, report: recorded.inspection?.report?.text },
+        replay: {
+          recorded_at: recorded.created_at,
+          source_case: recorded.id,
+          report: recorded.inspection?.report?.text,
+          questions: recorded.segments.filter(seg => seg.trigger === 'message').map(seg => seg.input ?? ''),
+          played: 0,
+        },
         models: recorded.models,
         steps_used: recorded.steps_used,
         segments: [],
@@ -176,6 +200,7 @@ export class CaseAgent {
       policy: policyTerms(ctx.policy),
       sum_insured_ngn: ctx.policy.sum_insured_ngn,
       farm: { lat: ctx.policy.farm_lat, lon: ctx.policy.farm_lon },
+      watch_cases: this.deps.watch?.(ctx.policy.ref_station_id) ?? [],
     };
     const messages: Message[] = [
       { role: 'system', content: SYSTEM },
@@ -207,6 +232,44 @@ export class CaseAgent {
     ];
     void this.loop(item, ctx, messages, segment, RESUME_BUDGET);
     return item;
+  }
+
+  // The officer asks or instructs. Mid-run, the agent reads it before its next step; at rest, it wakes to answer and carries on.
+  async message(id: string, text: string): Promise<Case> {
+    const item = this.mustGet(id);
+    if (!this.deps.live && item.replay) return this.replayMessage(item);
+    this.log(item, { kind: 'officer', summary: text });
+    if (this.running.has(id)) {
+      item.inbox = [...(item.inbox ?? []), text];
+      return this.deps.store.save(item);
+    }
+    if (!this.deps.live) {
+      this.log(item, { kind: 'note', summary: 'The agent needs the live services to answer. Run Pluvia live to continue.' });
+      return item;
+    }
+    const ctx = await this.context(item.claim_id);
+    if (item.state === 'failed') item.state = 'investigating';
+    const segment: Segment = { trigger: 'message', input: text, messages: [], from_event: item.events.length - 1 };
+    const prior = item.segments.at(-1)?.messages as Message[] | undefined;
+    item.segments.push(segment);
+    const messages: Message[] = [...(prior ?? [{ role: 'system', content: SYSTEM }]), { role: 'user', content: officerNote(text, true) }];
+    void this.loop(item, ctx, messages, segment, MESSAGE_BUDGET);
+    return item;
+  }
+
+  // A replay answers with the next question the officer put to the live agent, and what followed.
+  private replayMessage(item: Case): Case {
+    const recorded = readReplay(this.deps.replayDirectory, item.claim_id);
+    const played = item.replay!.played ?? 0;
+    const segment = recorded?.segments.filter(seg => seg.trigger === 'message')[played];
+    if (!recorded || !segment?.snapshot) {
+      this.log(item, { kind: 'note', summary: 'The recorded investigation has no further questions. Run Pluvia live to ask your own.' });
+      return item;
+    }
+    item.replay!.played = played + 1;
+    item.events.push(...recorded.events.slice(segment.from_event, segment.to_event).map(e => ({ ...e, at: now() })));
+    Object.assign(item, structuredClone(segment.snapshot));
+    return this.deps.store.save(item);
   }
 
   // A claims officer approves or declines what the agent asked them to sign.
@@ -272,8 +335,10 @@ export class CaseAgent {
 
   private async loop(item: Case, ctx: Context, messages: Message[], segment: Segment, budget: number) {
     this.running.add(item.id);
+    let planTurns = 0;
     try {
       for (let step = 0; step < budget; step++) {
+        for (const text of item.inbox?.splice(0) ?? []) messages.push({ role: 'user', content: officerNote(text, false) });
         const { message, model } = await this.callModel(messages);
         if (!item.models.includes(model)) item.models.push(model);
         const assistant: Message = { role: 'assistant', content: message.content ?? null, tool_calls: message.tool_calls };
@@ -287,6 +352,7 @@ export class CaseAgent {
           messages.push({ role: 'user', content: 'Continue by calling a tool. End with finish_case when the case is carried through.' });
           continue;
         }
+        if (calls.every(call => ['set_plan', 'mark_step'].includes(call.function.name)) && planTurns++ < PLAN_TURNS) step--;
         let finished = false;
         for (const call of calls) {
           let args: Record<string, unknown> = {};
@@ -300,7 +366,8 @@ export class CaseAgent {
           if (call.function.name === 'finish_case' && !(result as { error?: string }).error) finished = true;
         }
         this.deps.store.save(item);
-        if (finished) return;
+        // A message that arrived during the last step still gets answered.
+        if (finished && !item.inbox?.length) return;
       }
       item.state = 'escalated';
       this.log(item, { kind: 'note', summary: 'The agent reached its step budget. The case is with a person, with everything it found so far.' });
@@ -309,8 +376,8 @@ export class CaseAgent {
       this.log(item, { kind: 'note', summary: `The investigation stopped: ${String((error as Error).message ?? error)}` });
     } finally {
       segment.to_event = item.events.length;
-      const { state, decision, proposal, inspection, signoff, payment, outbox, summary } = item;
-      segment.snapshot = structuredClone({ state, decision, proposal, inspection, signoff, payment, outbox, summary });
+      const { state, decision, proposal, inspection, signoff, payment, outbox, summary, plan } = item;
+      segment.snapshot = structuredClone({ state, decision, proposal, inspection, signoff, payment, outbox, summary, plan });
       this.running.delete(item.id);
       this.deps.store.save(item);
     }
@@ -327,7 +394,42 @@ export class CaseAgent {
       this.log(item, { kind, tool: name, input, output, summary });
       return output;
     };
+    if (!item.plan && !['set_plan', 'reply_to_officer'].includes(name)) {
+      return record('Refused: no plan yet.', args, { error: 'Write your plan with set_plan before anything else.' });
+    }
     switch (name) {
+      case 'set_plan': {
+        const steps = (Array.isArray(args.steps) ? args.steps : [])
+          .slice(0, PLAN_STEPS)
+          .map(s => (typeof s === 'string' ? { text: s } : (s as Record<string, unknown>)))
+          .map((s): PlanStep => ({ text: String(s.text ?? '').slice(0, 300), status: ['doing', 'done', 'dropped'].includes(String(s.status)) ? (s.status as PlanStep['status']) : 'todo' }))
+          .filter(s => s.text);
+        if (!steps.length) return record('Refused an empty plan.', args, { error: 'Give at least one step.' });
+        const reason = String(args.reason ?? '').trim();
+        const revising = Boolean(item.plan);
+        if (revising && !reason) return record('Refused a new plan without a reason.', args, { error: 'Say why the plan changed.' });
+        item.plan = item.plan ? { steps, revisions: [...item.plan.revisions, { at: now(), reason }] } : { steps, revisions: [] };
+        return record(revising ? `Changed course: ${reason}` : `Wrote a plan of ${steps.length} steps.`, args, { ok: true, plan: steps.map((s, i) => `${i + 1}. [${s.status}] ${s.text}`) }, 'plan');
+      }
+      case 'mark_step': {
+        const index = Number(args.step) - 1;
+        const step = item.plan!.steps[index];
+        if (!step) return record('Refused: no such step.', args, { error: `The plan has steps 1 to ${item.plan!.steps.length}.` });
+        const status = String(args.status);
+        if (!['doing', 'done', 'dropped'].includes(status)) return record('Refused a step status.', args, { error: 'Use doing, done or dropped.' });
+        const note = String(args.note ?? '').trim();
+        if (status === 'dropped' && !note) return record('Refused to drop a step without a reason.', args, { error: 'Say why the step is dropped.' });
+        step.status = status as PlanStep['status'];
+        if (note) step.note = note.slice(0, 300);
+        const verb = { doing: 'Started', done: 'Finished', dropped: 'Dropped' }[status];
+        return record(`${verb} step ${index + 1}: ${step.text}${note ? ` (${note})` : ''}`, args, { ok: true }, 'plan');
+      }
+      case 'reply_to_officer': {
+        const answer = String(args.text ?? '').trim();
+        if (!answer) return record('Refused an empty reply.', args, { error: 'Write the answer.' });
+        this.log(item, { kind: 'reply', summary: answer.slice(0, 2000) });
+        return { ok: true };
+      }
       case 'list_tables': {
         const rows = await this.deps.query.query('SHOW TABLES FROM pluvia');
         const tables = rows.map(r => String(r.table_identifier ?? r.tableName ?? Object.values(r)[0]).toLowerCase());
@@ -397,8 +499,9 @@ export class CaseAgent {
       case 'finish_case': {
         const ready = ['inspection_open', 'awaiting_signoff', 'settled', 'escalated', 'closed'].includes(item.state);
         if (!ready) return record('Refused to finish: the case is not carried through yet.', args, { error: 'Act on the gate decision first: open an inspection, request sign-off, or settle.' });
+        const first = item.summary === undefined;
         item.summary = String(args.summary ?? '');
-        if (item.decision) {
+        if (item.decision && first) {
           try {
             this.deps.memory.writePrecedent(item.id, ctx.claim, ctx.policy, item.decision);
             this.deps.memory.writeStationLesson(item.id, ctx.policy, item.decision.probes);
@@ -436,7 +539,13 @@ export class CaseAgent {
   }
 
   private async propose(item: Case, ctx: Context, args: Record<string, unknown>, record: (s: string, i: unknown, o: unknown, k?: CaseEvent['kind']) => unknown) {
+    if (item.payment?.status === 'released') return record('Refused: the payment was already released.', args, { error: 'This case is settled and paid. Escalate if you believe the settlement was wrong.' });
     if (++ctx.proposals > 3) return record('Refused a fourth proposal.', args, { error: 'Three proposals are the limit. Escalate the case.' });
+    // A new proposal replaces whatever was waiting for sign-off.
+    if (item.signoff?.status === 'pending') {
+      item.signoff = undefined;
+      item.state = 'investigating';
+    }
     const verdict = String(args.verdict ?? 'INSPECT');
     const source = args.source === 'power' ? 'power' : 'ghcn';
     const rationale = String(args.rationale ?? '');
@@ -518,4 +627,8 @@ function signoffReason(item: Case): string | undefined {
   if (item.inspection?.report) return 'closing an inspection';
   if (d.payout_ngn > SIGNOFF_ABOVE_NGN) return `a payout above NGN ${SIGNOFF_ABOVE_NGN.toLocaleString('en')}`;
   return undefined;
+}
+
+function officerNote(text: string, atRest: boolean): string {
+  return `The claims officer writes: ${JSON.stringify(text)}\nAnswer with reply_to_officer after checking with your tools, act on it if it is an instruction, then ${atRest ? 'finish_case' : 'carry on with the case'}.`;
 }

@@ -71,6 +71,17 @@
         </section>
 
         <section class="panel" role="tabpanel" id="panel-investigation" aria-labelledby="tab-investigation" hidden>
+          <div class="card plan" id="plan"></div>
+          <div class="card talk" id="talk">
+            <p class="label">Talk to the agent</p>
+            <ol class="thread" id="thread" aria-live="polite"></ol>
+            <form class="talk-form" id="talk-form">
+              <label class="visually-hidden" for="talk-text">Ask or instruct the agent</label>
+              <textarea id="talk-text" rows="2" maxlength="2000" placeholder="Ask why, or tell it what to check"></textarea>
+              <button class="button" id="talk-send" type="submit">Send</button>
+            </form>
+            <p class="muted small" id="talk-note" hidden></p>
+          </div>
           <p class="summary" id="trail-summary"></p>
           <ol class="card timeline" id="timeline"></ol>
         </section>

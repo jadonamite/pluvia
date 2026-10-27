@@ -5,6 +5,7 @@ import { readFile } from 'node:fs/promises';
 import { z } from 'zod';
 import type { Orchestrator } from './orchestrator.js';
 import type { CaseAgent } from './agent/caseAgent.js';
+import type { Watcher } from './agent/watcher.js';
 
 const date = z.string().regex(/^\d{4}-\d{2}-\d{2}$/);
 export const inputSchema = z.object({
@@ -22,7 +23,7 @@ const requestSchema = z.object({
 }).strict();
 const error = (type: string, message: string, recoverable = true) => ({ status: 'error', error: { type, message, recoverable } });
 
-export function createApp(orchestrator: Orchestrator, sampleMode: boolean, agent?: CaseAgent) {
+export function createApp(orchestrator: Orchestrator, sampleMode: boolean, agent?: CaseAgent, watcher?: Watcher) {
   const app = new Hono();
   app.onError((_err, c) => c.json(error('service_error', 'The request could not be completed. Check the service status and the run trace.'), 503));
   app.get('/health', async c => c.json(await orchestrator.health()));
@@ -86,6 +87,16 @@ export function createApp(orchestrator: Orchestrator, sampleMode: boolean, agent
         return c.json(error('signoff_refused', (e as Error).message), 409);
       }
     });
+    app.post('/cases/:id/messages', small, async c => {
+      const parsed = z.object({ text: z.string().trim().min(2).max(2000) }).strict().safeParse(await c.req.json().catch(() => null));
+      if (!parsed.success) return c.json(error('invalid_input', 'Write a question or an instruction for the agent.'), 400);
+      try {
+        const item = await agent.message(c.req.param('id'), parsed.data.text);
+        return c.json(view(item.id), 202);
+      } catch (e) {
+        return c.json(error('message_refused', (e as Error).message), 409);
+      }
+    });
     app.post('/cases/:id/inspection-report', small, async c => {
       const parsed = z.object({ report: z.string().min(10).max(8000) }).strict().safeParse(await c.req.json().catch(() => null));
       if (!parsed.success) return c.json(error('invalid_input', 'Paste the inspector’s report, at least a sentence.'), 400);
@@ -96,6 +107,15 @@ export function createApp(orchestrator: Orchestrator, sampleMode: boolean, agent
         return c.json(error('report_refused', (e as Error).message), 409);
       }
     });
+  }
+  if (watcher) {
+    app.get('/watch', c => c.json(watcher.view()));
+    app.post('/watch/advance', bodyLimit({ maxSize: 200 }), async c => {
+      const parsed = z.object({ days: z.number().int().min(1).max(31).optional() }).strict().safeParse(await c.req.json().catch(() => ({})));
+      if (!parsed.success) return c.json(error('invalid_input', 'Move the calendar forward 1 to 31 days.'), 400);
+      return c.json(await watcher.advance(parsed.data.days ?? 1));
+    });
+    app.post('/watch/reset', c => c.json(watcher.reset()));
   }
   app.get('/register/:name', async c => {
     const name = c.req.param('name');

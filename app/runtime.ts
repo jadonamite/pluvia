@@ -7,6 +7,8 @@ import path from 'node:path';
 import { PluviaMemory } from './memory/pluviaMemory.js';
 import { CaseAgent } from './agent/caseAgent.js';
 import { CaseStore } from './agent/cases.js';
+import { Watcher } from './agent/watcher.js';
+import { existsSync, readFileSync } from 'node:fs';
 
 export class RuntimeError extends Error {
   constructor(public readonly type: string, message: string) {
@@ -28,6 +30,7 @@ export interface Runtime {
   model: ModelAdapter;
   orchestrator: Orchestrator;
   agent: CaseAgent;
+  watcher: Watcher;
   close(): Promise<void>;
 }
 
@@ -125,12 +128,16 @@ export async function createRuntime(options: RuntimeOptions = {}): Promise<Runti
 
   // The agent runs live only when both services are live; otherwise it replays recorded live cases.
   const live = !config.sample.zetaris && !config.sample.nightshift;
+  const stationsFile = path.join(options.dataDirectory ?? 'data', 'register', 'stations.json');
+  const stations = existsSync(stationsFile) ? (JSON.parse(readFileSync(stationsFile, 'utf8')).stations as { id: string; name: string }[]) : [];
+  const watcher = new Watcher({ query, directory: logDirectory, stations });
   const agent = new CaseAgent({
     query,
     memory,
     store: new CaseStore(path.join(logDirectory, 'cases')),
     replayDirectory: path.join(options.dataDirectory ?? 'data', 'replays'),
     live,
+    watch: stationId => watcher.casesFor(stationId),
     model: live ? { url: config.nightshift.url, token: config.nightshift.runtimeToken, primary: config.agent.model, fallback: config.agent.fallback } : undefined,
   });
 
@@ -140,6 +147,7 @@ export async function createRuntime(options: RuntimeOptions = {}): Promise<Runti
     model,
     orchestrator,
     agent,
+    watcher,
     close: async () => {
       await query.close?.();
     },
