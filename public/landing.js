@@ -258,8 +258,11 @@
   outcomes.forEach((item, i) => {
     const at = 62.6 + i * 2.4;
     const others = outcomes.filter(other => other !== item);
+    const note = item.querySelector('.o-note');
     tl.set(item, { zIndex: 2 }, at)
-      .fromTo(item, { scale: 1 }, { scale: () => window.innerWidth > 720 ? 1.16 : 1.5, duration: 1, ease: 'power2.out', immediateRender: false }, at)
+      .fromTo(item, { scale: 1 }, { scale: () => window.innerWidth > 720 ? 1.7 : 1.85, duration: 1, ease: 'power2.out', immediateRender: false }, at)
+      .fromTo(note, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, immediateRender: false }, at + 0.6)
+      .to(note, { autoAlpha: 0, duration: 0.3 }, at + 1.4)
       .fromTo(others, { filter: 'brightness(1)' }, { filter: 'brightness(0.6)', duration: 0.8, immediateRender: false }, at)
       .to(item, { scale: 1, duration: 1, ease: 'power2.inOut' }, at + 1.5)
       .to(others, { filter: 'brightness(1)', duration: 0.8 }, at + 1.6)
