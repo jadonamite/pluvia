@@ -210,6 +210,33 @@ pre.code{margin:0;padding:var(--space-3) var(--space-4);border-radius:var(--radi
 .talk-form textarea{width:100%;min-height:var(--target);padding:var(--space-3) var(--space-4);border:1px solid var(--control-border);border-radius:var(--radius-control);background:color-mix(in srgb,var(--card) 80%,transparent);font:inherit;font-size:var(--text-caption);resize:vertical}
 .talk-form textarea[readonly]{color:var(--secondary)}
 
+/* stations: the watcher's calendar */
+.off{display:none!important}
+.switch{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-1);padding:var(--space-1);border-radius:var(--radius-pill);border:1px solid var(--control-border)}
+.switch .chip{border-color:transparent}
+.inbox-head h2{font-size:var(--text-title-2);line-height:1.1;letter-spacing:-.025em;font-weight:600}
+.claim .state{margin-top:var(--space-1)}
+.station{display:grid;gap:var(--space-5)}
+.calendar{list-style:none;margin:0 0 var(--space-4);padding:0;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:var(--space-1)}
+.weekday{padding-bottom:var(--space-1);font-family:var(--font-mono);font-size:var(--text-footnote);letter-spacing:.06em;text-transform:uppercase;color:var(--secondary);text-align:center}
+.day{display:grid;align-content:space-between;gap:var(--space-1);min-height:3.5rem;padding:var(--space-2);border-radius:var(--radius-control);border:1px solid color-mix(in srgb,var(--label) 8%,transparent);font-variant-numeric:tabular-nums;transition:background-color var(--duration) var(--ease-out)}
+.day-number{font-weight:600;font-size:var(--text-caption)}
+.day-mm{font-family:var(--font-mono);font-size:var(--text-footnote);color:var(--secondary);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.day.future{border-style:dashed;color:var(--secondary)}
+.day.reported{background:color-mix(in srgb,var(--station) 16%,transparent)}
+.day.silent{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--secondary) 30%,transparent) 0 1px,transparent 1px 6px)}
+.day.gap{background:color-mix(in srgb,var(--verdict-inspect) 14%,transparent);border-color:color-mix(in srgb,var(--verdict-inspect) 55%,transparent)}
+.day.opened{box-shadow:0 0 0 2px var(--accent);border-color:transparent}
+.key.gap{background:color-mix(in srgb,var(--verdict-inspect) 30%,transparent);box-shadow:inset 0 0 0 1px var(--verdict-inspect)}
+.key.opened{box-shadow:inset 0 0 0 2px var(--accent)}
+.calendar-actions{margin-top:var(--space-2)}
+#watch-case{display:grid;gap:var(--space-3)}
+.strong{font-weight:600}
+.list.flush{padding:0;margin:0 calc(var(--space-4) * -1)}
+.claim-links{display:flex;flex-wrap:wrap;gap:var(--space-2)}
+.watch-link{display:grid;grid-template-columns:1fr auto;align-items:center;gap:var(--space-3) var(--space-6)}
+.watch-link .small{margin-top:var(--space-1);max-width:34rem}
+
 /* footer */
 .foot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:var(--space-4);padding-top:var(--space-6);margin-top:var(--space-6);border-top:1px solid color-mix(in srgb,var(--label) 8%,transparent);font-size:var(--text-footnote);color:var(--secondary)}
 .foot p{max-width:30rem}
@@ -225,7 +252,11 @@ pre.code{margin:0;padding:var(--space-3) var(--space-4);border-radius:var(--radi
   .card{padding:var(--space-5)}
   .case-title h2{font-size:var(--text-title-2)}
   .pair,.figures,.tiles{grid-template-columns:1fr}
-  .call,.talk-form{grid-template-columns:1fr}
+  .call,.talk-form,.watch-link{grid-template-columns:1fr}
+  .day{min-height:2.75rem;padding:var(--space-1)}
+  .day-mm{display:none}
+  .weekday{font-size:0;letter-spacing:0}
+  .weekday::first-letter{font-size:var(--text-footnote)}
   .plan-step{grid-template-columns:4.75rem minmax(0,1fr);gap:var(--space-3)}
   .tabs{position:fixed;top:auto;left:var(--space-3);right:var(--space-3);bottom:max(var(--space-3),env(safe-area-inset-bottom));z-index:30}
   [role=tab]{flex:1 1 0;min-width:0;padding:0 var(--space-1);font-size:var(--text-footnote)}
@@ -235,4 +266,4 @@ pre.code{margin:0;padding:var(--space-3) var(--space-4);border-radius:var(--radi
   .sheet{width:100%;max-width:none;max-height:88vh;margin:auto 0 0;border-radius:1.25rem 1.25rem 0 0;padding-bottom:env(safe-area-inset-bottom)}
   @keyframes sheet{from{transform:translateY(40px);opacity:0}}
 }
-@media (prefers-reduced-motion:reduce){.panel,.sheet[open],.working::before{animation:none}.button,.chip,[role=tab],.row,.claim,.plan-step{transition:none}}
+@media (prefers-reduced-motion:reduce){.panel,.sheet[open],.working::before{animation:none}.button,.chip,[role=tab],.row,.claim,.plan-step,.day{transition:none}}

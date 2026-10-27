@@ -113,9 +113,13 @@ export function createApp(orchestrator: Orchestrator, sampleMode: boolean, agent
     app.post('/watch/advance', bodyLimit({ maxSize: 200 }), async c => {
       const parsed = z.object({ days: z.number().int().min(1).max(31).optional() }).strict().safeParse(await c.req.json().catch(() => ({})));
       if (!parsed.success) return c.json(error('invalid_input', 'Move the calendar forward 1 to 31 days.'), 400);
-      return c.json(await watcher.advance(parsed.data.days ?? 1));
+      await watcher.advance(parsed.data.days ?? 1);
+      return c.json(watcher.view());
     });
-    app.post('/watch/reset', c => c.json(watcher.reset()));
+    app.post('/watch/reset', c => {
+      watcher.reset();
+      return c.json(watcher.view());
+    });
   }
   app.get('/register/:name', async c => {
     const name = c.req.param('name');

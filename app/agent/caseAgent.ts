@@ -8,6 +8,7 @@ import { runProbes } from '../probes/index.js';
 import type { Claim, DailySeries, Decision, Policy } from '../types.js';
 import { CaseStore, readReplay, type Case, type CaseEvent, type PlanStep, type Segment } from './cases.js';
 import { guardSql } from './sqlGuard.js';
+import type { WatchCase } from './watcher.js';
 
 // Payouts above this need a person; so does every refusal and every inspection close-out.
 export const SIGNOFF_ABOVE_NGN = 1_000_000;
@@ -120,7 +121,7 @@ export class CaseAgent {
       replayDirectory: string;
       live: boolean;
       // What the station watcher found before the claim arrived.
-      watch?: (stationId: string) => unknown[];
+      watch?: (stationId: string) => WatchCase[];
       // Replaces the Nightshift call, for tests.
       chat?: (messages: Message[]) => Promise<{ message: Message; model: string }>;
     }
@@ -174,6 +175,7 @@ export class CaseAgent {
         steps_used: recorded.steps_used,
         segments: [],
         evidence: recorded.evidence,
+        watch: recorded.watch,
         events: recorded.events.slice(0, first.to_event).map(e => ({ ...e })),
         ...structuredClone(first.snapshot),
       };
@@ -192,6 +194,8 @@ export class CaseAgent {
       segments: [],
       outbox: [],
     };
+    const watch = this.deps.watch?.(ctx.policy.ref_station_id) ?? [];
+    if (watch.length) item.watch = watch.map(w => ({ id: w.id, station_id: w.station_id, station_name: w.station_name, opened_on: w.opened_on }));
     this.log(item, { kind: 'start', summary: `Opened the case for ${ctx.policy.group_name.replace(/ \(synthetic\)$/, '')}.` });
     const segment: Segment = { trigger: 'start', messages: [], from_event: 0 };
     item.segments.push(segment);
@@ -200,7 +204,7 @@ export class CaseAgent {
       policy: policyTerms(ctx.policy),
       sum_insured_ngn: ctx.policy.sum_insured_ngn,
       farm: { lat: ctx.policy.farm_lat, lon: ctx.policy.farm_lon },
-      watch_cases: this.deps.watch?.(ctx.policy.ref_station_id) ?? [],
+      watch_cases: watch,
     };
     const messages: Message[] = [
       { role: 'system', content: SYSTEM },

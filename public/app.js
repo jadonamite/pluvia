@@ -1,7 +1,7 @@
 'use strict';
 (() => {
   const $ = id => document.getElementById(id);
-  const state = { claims: [], policies: [], selected: null, run: null, chart: null, busy: false, ticket: 0, filter: 'all', verdicts: {}, poll: null, shown: {}, reveal: null };
+  const state = { mode: 'claims', stations: [], watch: null, station: null, playing: false, cases: [], claims: [], policies: [], selected: null, run: null, chart: null, busy: false, ticket: 0, filter: 'all', verdicts: {}, poll: null, shown: {}, reveal: null };
   const money = value => Number.isFinite(value) ? new Intl.NumberFormat('en-NG', { style: 'currency', currency: 'NGN', maximumFractionDigits: 0 }).format(value) : 'Not available';
   const number = value => Number.isFinite(value) ? new Intl.NumberFormat(undefined, { maximumFractionDigits: 1 }).format(value) : 'Unavailable';
   const labels = { PAY: 'Pay', PAY_ANYWAY: 'Pay anyway', INSPECT: 'Inspect', NO_PAY: 'Do not pay' };
@@ -74,6 +74,7 @@
   }
 
   function selectClaim(id, navigate = true, latest = true) {
+    setMode('claims', false);
     const claim = state.claims.find(c => c.claim_id === id); if (!claim) { status('That claim is not in the register. Pick one from the list.', true); return; }
     state.ticket++; clearTimeout(state.poll); state.selected = claim; state.run = null; state.busy = false; $('results').hidden = true; $('empty').hidden = false;
     if (state.chart) { state.chart.destroy(); state.chart = null; }
@@ -84,12 +85,14 @@
     try {
       const data = await request('/claims'); state.claims = Array.isArray(data.claims) ? data.claims : []; state.policies = Array.isArray(data.policies) ? data.policies : []; renderInbox(); status('');
       const params = new URLSearchParams(location.search); const id = params.get('claim') || state.selected?.claim_id || state.claims[0]?.claim_id;
-      await loadVerdicts(); if (id) selectClaim(id, false, !params.get('case')); if (params.get('claim')) view('case'); if (params.get('case')) await openCase(params.get('case'));
+      await loadVerdicts();
+      if (params.get('station')) { setMode('stations', false); await loadWatch(); selectStation(params.get('station'), false); return; }
+      if (id) selectClaim(id, false, !params.get('case')); if (params.get('claim')) view('case'); if (params.get('case')) await openCase(params.get('case'));
     } catch (error) { status(`The claims could not be loaded. ${error.message} Reload the page to try again.`, true); $('claim-list').replaceChildren(el('p', 'The list is unavailable.', 'muted')); }
   }
   const labels2 = { investigating: 'The agent is working', inspection_open: 'Inspection open', awaiting_signoff: 'Waiting for your sign-off', settled: 'Settled', closed: 'Closed', escalated: 'With a person', failed: 'Stopped' };
   async function loadVerdicts() {
-    try { const { cases } = await request('/cases'); state.verdicts = {}; for (const c of cases.reverse()) if (c.decision) state.verdicts[c.claim_id] = c.decision.verdict; } catch { /* The list still works without verdicts. */ }
+    try { const { cases } = await request('/cases'); state.cases = cases; state.verdicts = {}; for (const c of cases.reverse()) if (c.decision) state.verdicts[c.claim_id] = c.decision.verdict; } catch { /* The list still works without verdicts. */ }
   }
   async function latestCase(claimId) {
     const ticket = state.ticket;
@@ -144,7 +147,7 @@
     else $('working').hidden = !working && !item.replay;
     if (!(item.replay && item.running)) $('working').textContent = working ? `The agent is working · step ${item.steps_used} · ${item.events.at(-1)?.summary || ''}` : item.replay ? `A recorded live investigation, replayed${item.models?.length ? ` · ${item.models.join(', ')}` : ''}` : '';
     $('working').classList.toggle('live', Boolean(item.running));
-    renderDecision(item); renderPlan(item); renderTalk(item); renderTimeline(item); renderChecks(item.decision?.probes || []); renderActions(item);
+    renderWatchLink(item); renderDecision(item); renderPlan(item); renderTalk(item); renderTimeline(item); renderChecks(item.decision?.probes || []); renderActions(item);
     const output = { evidence: item.evidence || {}, policy: policyFor(claim), claim };
     renderFigures(output); if (!$('panel-evidence').hidden) drawChart(output);
     if (item.running && !item.replay) poll(item.id);
@@ -311,9 +314,131 @@
     }
   }
 
+  // Stations: the watcher's simulated July, one day per step.
+  const title = name => String(name).toLowerCase().replace(/\b[a-z]/g, c => c.toUpperCase());
+  const longDate = d => new Intl.DateTimeFormat(undefined, { day: 'numeric', month: 'long', timeZone: 'UTC' }).format(new Date(`${d}T00:00:00Z`));
+  const health = { ok: ['Healthy', 'pass'], silent: ['Quiet', 'warn'], diverging: ['Diverging', 'fail'] };
+  function setMode(mode, navigate = true) {
+    state.mode = mode;
+    document.querySelectorAll('[data-mode]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.mode === mode)));
+    document.querySelectorAll('[data-for]').forEach(n => (n.hidden = n.dataset.for !== mode));
+    const stations = mode === 'stations';
+    $('station').hidden = !stations || !state.station;
+    for (const id of ['case-head', 'empty', 'results']) $(id).classList.toggle('off', stations);
+    if (stations) { loadWatch(); if (navigate) query({ claim: null, case: null, station: state.station?.id ?? null }); }
+  }
+  document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
+  async function loadWatch() {
+    try {
+      const [watch, register] = await Promise.all([request('/watch'), state.stations.length ? null : request('/register/stations.json')]);
+      if (register) state.stations = register.stations || [];
+      state.watch = watch; renderStations(); if (state.station) renderStation();
+    } catch (error) { status(`The stations could not be loaded. ${error.message}`, true); }
+  }
+  function checksFor(id) { return (state.watch?.checks || []).filter(c => c.station_id === id); }
+  function renderStations() {
+    const list = $('station-list'); list.replaceChildren();
+    const insured = state.stations.filter(s => state.policies.some(p => p.ref_station_id === s.id));
+    $('station-count').textContent = String(insured.length);
+    if (!insured.length) { list.append(el('p', 'No insured stations in the register.', 'muted')); return; }
+    for (const station of insured) {
+      const link = el('a', null, 'claim'); link.href = `/desk?station=${encodeURIComponent(station.id)}`;
+      if (state.station?.id === station.id) link.setAttribute('aria-current', 'true');
+      const last = checksFor(station.id).at(-1); const [word, cls] = last ? health[last.status] : ['Not checked yet', 'step'];
+      const silent = checksFor(station.id).filter(c => c.gauge_mm == null).length;
+      const groups = state.policies.filter(p => p.ref_station_id === station.id).length;
+      link.append(el('strong', title(station.name)), el('span', station.id, 'mono'), el('span', word, `state ${cls}`), el('span', last ? `${silent} silent ${silent === 1 ? 'day' : 'days'} · ${groups} insured groups` : `${groups} insured groups`, 'todo'));
+      link.addEventListener('click', event => { if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button) return; event.preventDefault(); selectStation(station.id); });
+      list.append(link);
+    }
+  }
+  function selectStation(id, navigate = true) {
+    const station = state.stations.find(s => s.id === id); if (!station) return;
+    state.station = station; $('station').hidden = false; renderStations(); renderStation(); view('case');
+    if (navigate) query({ station: id, claim: null, case: null });
+  }
+  function renderStation() {
+    const station = state.station; const policies = state.policies.filter(p => p.ref_station_id === station.id);
+    const start = policies.map(p => p.window_start).sort()[0], end = policies.map(p => p.window_end).sort().at(-1);
+    const head = $('station-head'); head.replaceChildren();
+    const top = el('div', null, 'case-top'); top.append(el('span', station.id, 'mono muted'), el('span', 'Real record', 'tag'));
+    const checks = checksFor(station.id); const last = checks.at(-1); const [word, cls] = last ? health[last.status] : ['Not checked yet', 'step'];
+    const name = el('div', null, 'case-title'); name.append(el('h2', title(station.name)), el('span', word, `state ${cls}`));
+    head.append(top, name, el('p', `${policies.length} insured farmer groups depend on this gauge from ${longDate(start)} to ${longDate(end)}. The watcher checks it once a day and reads only what had arrived by that day.`, 'event'));
+    // calendar, Monday first
+    const cal = $('calendar'); cal.replaceChildren();
+    for (const d of ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']) cal.append(el('li', d, 'weekday'));
+    const first = Date.parse(`${start}T00:00:00Z`), days = Math.round((Date.parse(`${end}T00:00:00Z`) - first) / 86400000) + 1;
+    for (let i = 0; i < (new Date(first).getUTCDay() + 6) % 7; i++) cal.append(el('li', null, 'blank'));
+    const item = state.watch?.cases.find(c => c.station_id === station.id);
+    for (let i = 0; i < days; i++) {
+      const date = new Date(first + i * 86400000).toISOString().slice(0, 10); const check = checks.find(c => c.date === date);
+      const kind = !check ? 'future' : check.gauge_mm == null ? 'silent' : check.status === 'diverging' ? 'gap' : 'reported';
+      const cell = el('li', null, `day ${kind}${item?.opened_on === date ? ' opened' : ''}`);
+      cell.append(el('span', String(i + 1), 'day-number'), el('span', check ? (check.gauge_mm == null ? 'silent' : `${number(check.gauge_mm)} mm`) : '', 'day-mm'));
+      cell.setAttribute('aria-label', `${longDate(date)}: ${!check ? 'not checked yet' : check.gauge_mm == null ? 'gauge silent' : `gauge ${number(check.gauge_mm)} mm, satellite ${number(check.satellite_mm)} mm`}${item?.opened_on === date ? ', watch case opened' : ''}`);
+      cal.append(cell);
+    }
+    const today = state.watch?.today; const done = today && today >= end;
+    $('calendar-today').textContent = today ? `Checked through ${longDate(today)}` : 'Not started';
+    $('watch-next').disabled = state.playing || done; $('watch-run').disabled = state.playing || done; $('watch-reset').disabled = state.playing || !today;
+    $('watch-mode').textContent = state.watch?.recorded ? 'The calendar is simulated. The readings are real, and this season was recorded from a live run through Zetaris.' : 'The calendar is simulated. The readings are the real record for this station.';
+    renderWatchCase(station, item, policies);
+    const list = $('watch-days'); list.replaceChildren(); list.hidden = !checks.length; $('watch-days-title').hidden = !checks.length;
+    for (const check of [...checks].reverse()) {
+      const row = button(null, 'row'); const [w, c] = check.gauge_mm == null ? ['Silent', 'warn'] : check.status === 'diverging' ? ['Apart', 'fail'] : ['Reported', 'pass'];
+      row.append(el('span', w, `state ${c}`), el('span', longDate(check.date), 'row-title'), el('span', `Gauge ${check.gauge_mm == null ? 'silent' : `${number(check.gauge_mm)} mm`} · satellite ${number(check.satellite_mm)} mm`, 'row-meta'), el('span', '', 'chevron'));
+      row.addEventListener('click', () => { const list = el('dl', null, 'terms'); for (const [k, v] of [['Gauge', check.gauge_mm == null ? 'No reading' : `${number(check.gauge_mm)} mm`], ['Satellite', `${number(check.satellite_mm)} mm`], ['Silent days in a row', String(check.silent_run)]]) { const r = el('div'); r.append(el('dt', k), el('dd', v)); list.append(r); } openSheet('Daily check', longDate(check.date), list); });
+      list.append(row);
+    }
+  }
+  function renderWatchCase(station, item, policies) {
+    const root = $('watch-case'); root.replaceChildren(el('p', 'Watch case', 'label'));
+    if (!item) { root.append(el('p', state.watch?.today ? 'No watch case. The gauge has reported normally so far.' : 'Step through July to watch the gauge. A case opens after three silent days, or when the gauge and the satellite drift apart.', 'muted')); return; }
+    root.append(el('p', `Opened ${longDate(item.opened_on)}, before any claim`, 'lead strong'));
+    const findings = el('div', null, 'list flush');
+    for (const f of item.findings) {
+      const row = button(null, 'row'); row.append(el('span', f.kind === 'silent' ? 'Silent' : 'Apart', `state ${f.kind === 'silent' ? 'warn' : 'fail'}`), el('span', f.summary, 'row-title'), el('span', longDate(f.first_seen), 'row-meta'), el('span', '', 'chevron'));
+      row.addEventListener('click', () => openSheet(f.kind === 'silent' ? 'Gauge silent' : 'Gauge and satellite apart', `Seen ${longDate(f.first_seen)}`, el('p', f.summary, 'reading'), el('p', f.dates.map(longDate).join(', '), 'mono muted')));
+      findings.append(row);
+    }
+    root.append(findings, el('p', 'Notices to the operator', 'label'));
+    const notices = el('div', null, 'list flush');
+    for (const m of item.outbox) {
+      const row = button(null, 'row'); row.append(el('span', 'Sent', 'state pass'), el('span', `Notice to the station operator`, 'row-title'), el('span', longDate(m.on), 'row-meta'), el('span', '', 'chevron'));
+      row.addEventListener('click', () => openSheet('Station operator', `Sent ${longDate(m.on)}`, el('p', m.body, 'reading letter')));
+      notices.append(row);
+    }
+    root.append(notices, el('p', 'Claims on this gauge', 'label'));
+    const claims = el('div', null, 'claim-links');
+    for (const policy of policies) {
+      const claim = state.claims.find(c => c.policy_id === policy.policy_id); if (!claim) continue;
+      const started = state.cases.some(c => c.claim_id === claim.claim_id && c.watch?.some(w => w.station_id === station.id));
+      const link = el('a', null, 'button ghost small'); link.href = `/desk?claim=${encodeURIComponent(claim.claim_id)}`;
+      link.textContent = `${policy.group_name.replace(/ \(synthetic\)$/, '')}${started ? ' · started from this case' : ''}`;
+      link.addEventListener('click', event => { if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button) return; event.preventDefault(); selectClaim(claim.claim_id); view('case'); });
+      claims.append(link);
+    }
+    root.append(claims);
+  }
+  async function advanceWatch(body) { const watch = await request('/watch/advance', { method: 'POST', body: JSON.stringify(body) }); state.watch = watch; renderStations(); renderStation(); }
+  $('watch-next').addEventListener('click', () => advanceWatch({ days: 1 }).catch(error => status(error.message, true)));
+  $('watch-run').addEventListener('click', async () => {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return advanceWatch({ days: 31 }).catch(error => status(error.message, true));
+    state.playing = true; renderStation();
+    try { const end = state.policies.filter(p => p.ref_station_id === state.station.id).map(p => p.window_end).sort().at(-1); while (state.mode === 'stations' && (!state.watch.today || state.watch.today < end)) { await advanceWatch({ days: 1 }); await new Promise(r => setTimeout(r, 150)); } }
+    catch (error) { status(error.message, true); } finally { state.playing = false; if (state.station) renderStation(); }
+  });
+  $('watch-reset').addEventListener('click', async () => { try { state.watch = await request('/watch/reset', { method: 'POST', body: '{}' }); renderStations(); renderStation(); } catch (error) { status(error.message, true); } });
+  function renderWatchLink(item) {
+    const box = $('watch-link'); box.replaceChildren(); const w = item.watch?.[0]; box.hidden = !w; if (!w) return;
+    const text = el('div'); text.append(el('p', 'Started from a watch case', 'label'), el('p', `The watcher had the ${title(w.station_name)} gauge under watch from ${longDate(w.opened_on)}. The agent read that case before it began.`, 'small'));
+    box.append(text, button('Open the station', 'button ghost small', () => { setMode('stations'); selectStation(w.station_id); }));
+  }
+
   document.querySelectorAll('[data-legal]').forEach(link => link.addEventListener('click', () => { const [title, ...paragraphs] = window.PLUVIA_LEGAL[link.dataset.legal]; openSheet('Updated 27 October 2026 · not legally reviewed', title, ...paragraphs.map(text => el('p', text, 'reading'))); }));
   $('claim-search').addEventListener('input', renderInbox);
-  window.addEventListener('popstate', () => { const params = new URLSearchParams(location.search); const id = params.get('claim') || state.claims[0]?.claim_id; if (id) selectClaim(id, false); if (params.get('case')) openCase(params.get('case')); });
+  window.addEventListener('popstate', () => { const params = new URLSearchParams(location.search); if (params.get('station')) { setMode('stations', false); selectStation(params.get('station'), false); return; } const id = params.get('claim') || state.claims[0]?.claim_id; if (id) selectClaim(id, false); if (params.get('case')) openCase(params.get('case')); });
   request('/health').then(health => { const sample = health.sample_mode ?? health.sampleMode ?? (health.mode === 'sample' ? true : health.mode === 'live' ? false : undefined); $('mode').textContent = sample ? 'Sample mode' : sample === false ? `Live · Zetaris ${health.zetaris || 'unknown'} · Nightshift ${health.nightshift || 'unknown'}` : 'Connected'; }).catch(() => { $('mode').textContent = 'Offline'; });
   loadInbox();
 })();

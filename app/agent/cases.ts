@@ -72,6 +72,8 @@ export interface Case {
   outbox: OutboxMessage[];
   summary?: string;
   plan?: Plan;
+  // Watch cases on the policy's station that were in the agent's brief when the case opened.
+  watch?: { id: string; station_id: string; station_name: string; opened_on: string }[];
   // Officer messages that arrived while the agent was mid-step, read before its next step.
   inbox?: string[];
   // The contract series the checks and the gate used, for the desk's chart.

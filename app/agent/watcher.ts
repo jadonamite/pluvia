@@ -64,15 +64,23 @@ export class Watcher {
   private state: WatchState;
   private file: string;
 
-  constructor(private deps: { query: QueryAdapter; directory: string; stations?: { id: string; name: string }[] }) {
+  constructor(
+    private deps: {
+      query: QueryAdapter;
+      directory: string;
+      stations?: { id: string; name: string }[];
+      // A season recorded from a live run, one state per day; when given, the calendar plays it back.
+      recorded?: WatchState[];
+    }
+  ) {
     this.data = new DataAgent(deps.query);
     mkdirSync(deps.directory, { recursive: true });
     this.file = path.join(deps.directory, 'watch.json');
     this.state = existsSync(this.file) ? (JSON.parse(readFileSync(this.file, 'utf8')) as WatchState) : { today: null, checks: [], cases: [] };
   }
 
-  view(): WatchState {
-    return this.state;
+  view(): WatchState & { recorded: boolean } {
+    return { ...this.state, recorded: Boolean(this.deps.recorded?.length) };
   }
 
   reset(): WatchState {
@@ -87,6 +95,12 @@ export class Watcher {
 
   // Moves the calendar forward one day at a time and checks each station on each day.
   async advance(days = 1): Promise<WatchState> {
+    const recorded = this.deps.recorded;
+    if (recorded?.length) {
+      const index = recorded.findIndex(s => s.today === this.state.today);
+      this.state = structuredClone(recorded[Math.min(index + days, recorded.length - 1)]!);
+      return this.save();
+    }
     const stations = await this.stations();
     if (!stations.length) return this.state;
     const first = stations.map(s => s.start).sort()[0]!;

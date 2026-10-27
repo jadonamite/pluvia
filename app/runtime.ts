@@ -7,7 +7,7 @@ import path from 'node:path';
 import { PluviaMemory } from './memory/pluviaMemory.js';
 import { CaseAgent } from './agent/caseAgent.js';
 import { CaseStore } from './agent/cases.js';
-import { Watcher } from './agent/watcher.js';
+import { Watcher, type WatchState } from './agent/watcher.js';
 import { existsSync, readFileSync } from 'node:fs';
 
 export class RuntimeError extends Error {
@@ -130,7 +130,9 @@ export async function createRuntime(options: RuntimeOptions = {}): Promise<Runti
   const live = !config.sample.zetaris && !config.sample.nightshift;
   const stationsFile = path.join(options.dataDirectory ?? 'data', 'register', 'stations.json');
   const stations = existsSync(stationsFile) ? (JSON.parse(readFileSync(stationsFile, 'utf8')).stations as { id: string; name: string }[]) : [];
-  const watcher = new Watcher({ query, directory: logDirectory, stations });
+  const seasonFile = path.join(options.dataDirectory ?? 'data', 'replays', 'watch-season.json');
+  const recorded = !live && existsSync(seasonFile) ? (JSON.parse(readFileSync(seasonFile, 'utf8')).days as WatchState[]) : undefined;
+  const watcher = new Watcher({ query, directory: logDirectory, stations, recorded });
   const agent = new CaseAgent({
     query,
     memory,
