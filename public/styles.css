@@ -213,7 +213,7 @@ pre.code{margin:0;padding:var(--space-3) var(--space-4);border-radius:var(--radi
 
 /* stations: the watcher's calendar */
 .off{display:none!important}
-.switch{display:grid;grid-template-columns:1fr 1fr;gap:var(--space-1);padding:var(--space-1);border-radius:var(--radius-pill);border:1px solid var(--control-border)}
+.switch{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--space-1);padding:var(--space-1);border-radius:var(--radius-pill);border:1px solid var(--control-border)}
 .switch .chip{border-color:transparent}
 .inbox-head h2{font-size:var(--text-title-2);line-height:1.1;letter-spacing:-.025em;font-weight:600}
 .claim .state{margin-top:var(--space-1)}
@@ -234,6 +234,16 @@ pre.code{margin:0;padding:var(--space-3) var(--space-4);border-radius:var(--radi
 #watch-case{display:grid;gap:var(--space-3)}
 .strong{font-weight:600}
 .list.flush{padding:0;margin:0 calc(var(--space-4) * -1)}
+.station-investigation{display:grid;gap:var(--space-5)}
+.queue{display:grid;gap:var(--space-5)}
+.queue-group{display:grid;gap:var(--space-1)}
+.queue-group h3{margin-bottom:var(--space-1);font-weight:400}
+.queue .list.flush{margin:0}
+.queue .row{grid-template-columns:auto minmax(0,1fr) 1rem;gap:var(--space-3);padding-inline:var(--space-2)}
+.row-stack{display:grid;gap:2px;min-width:0}
+.switch .chip{padding:0 var(--space-2);min-width:0}
+.day.filed{background:color-mix(in srgb,var(--accent) 12%,transparent);border-color:color-mix(in srgb,var(--accent) 45%,transparent)}
+.day.outside{border-style:dotted;color:var(--secondary)}
 .claim-links{display:flex;flex-wrap:wrap;gap:var(--space-2)}
 .claim-links .button{white-space:normal;text-align:left;padding-block:var(--space-2)}
 .watch-link{display:grid;grid-template-columns:1fr auto;align-items:center;gap:var(--space-3) var(--space-6)}

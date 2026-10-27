@@ -28,6 +28,7 @@
       <div class="switch" role="group" aria-label="Show">
         <button class="chip" type="button" data-mode="claims" aria-pressed="true">Claims</button>
         <button class="chip" type="button" data-mode="stations" aria-pressed="false">Stations</button>
+        <button class="chip" type="button" data-mode="queue" aria-pressed="false">Queue</button>
       </div>
       <div class="inbox-head" data-for="claims">
         <h1 id="inbox-title">Claims</h1>
@@ -46,6 +47,11 @@
         <span class="count" id="station-count">0</span>
       </div>
       <nav id="station-list" class="claim-list" aria-label="Stations" data-for="stations" hidden></nav>
+      <div class="inbox-head" data-for="queue" hidden>
+        <h2 class="inbox-title">Queue</h2>
+        <span class="count" id="queue-count">0</span>
+      </div>
+      <nav id="queue-list" class="queue" aria-label="Cases by who they wait on" data-for="queue" hidden></nav>
     </aside>
 
     <main class="case" id="case" tabindex="-1">
@@ -69,6 +75,12 @@
           <p class="caption" id="watch-mode"></p>
         </section>
         <section class="card" id="watch-case"></section>
+        <div class="station-investigation" id="watch-investigation" hidden>
+          <p class="working" id="watch-working" role="status" aria-live="polite"></p>
+          <div class="card plan" id="watch-plan"></div>
+          <p class="summary" id="watch-trail-summary"></p>
+          <ol class="card timeline" id="watch-timeline" aria-label="The agent's steps on the watch case"></ol>
+        </div>
         <p class="summary" id="watch-days-title">Daily checks, newest first</p>
         <section class="card list" id="watch-days" aria-labelledby="watch-days-title"></section>
       </div>
@@ -142,7 +154,7 @@
       </div>
 
       <footer class="foot">
-        <p>Synthetic groups, policies and amounts. Real rainfall records. No payments are made, and the desk sets no cookies.</p>
+        <p>Synthetic groups, policies and amounts. Real rainfall records. No payments are made. On the hosted copy, one cookie keeps your calendar apart from other visitors'.</p>
         <nav aria-label="Policies">
           <button class="link" type="button" data-legal="terms">Terms</button>
           <button class="link" type="button" data-legal="privacy">Privacy</button>

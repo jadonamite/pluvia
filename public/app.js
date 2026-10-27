@@ -74,7 +74,7 @@
   }
 
   function selectClaim(id, navigate = true, latest = true) {
-    setMode('claims', false);
+    if (state.mode !== 'queue') setMode('claims', false);
     const claim = state.claims.find(c => c.claim_id === id); if (!claim) { status('That claim is not in the register. Pick one from the list.', true); return; }
     state.ticket++; clearTimeout(state.poll); state.selected = claim; state.run = null; state.busy = false; $('results').hidden = true; $('empty').hidden = false;
     if (state.chart) { state.chart.destroy(); state.chart = null; }
@@ -87,6 +87,7 @@
       const params = new URLSearchParams(location.search); const id = params.get('claim') || state.selected?.claim_id || state.claims[0]?.claim_id;
       await loadVerdicts();
       if (params.get('station')) { setMode('stations', false); await loadWatch(); selectStation(params.get('station'), false); return; }
+      if (params.get('queue')) { setMode('queue', false); if (params.get('case')) { if (params.get('claim')) selectClaim(params.get('claim'), false, false); await openCase(params.get('case')); view('case'); } return; }
       if (id) selectClaim(id, false, !params.get('case')); if (params.get('claim')) view('case'); if (params.get('case')) await openCase(params.get('case'));
     } catch (error) { status(`The claims could not be loaded. ${error.message} Reload the page to try again.`, true); $('claim-list').replaceChildren(el('p', 'The list is unavailable.', 'muted')); }
   }
@@ -198,8 +199,8 @@
     return { steps, revisions };
   }
   const stepWord = { todo: ['Next', 'step'], doing: ['Now', 'warn'], done: ['Done', 'pass'], dropped: ['Dropped', 'fail'] };
-  function renderPlan(item) {
-    const root = $('plan'); root.replaceChildren(el('p', 'Its plan', 'label'));
+  function renderPlan(item, root = $('plan')) {
+    root.replaceChildren(el('p', 'Its plan', 'label'));
     const { steps, revisions } = planFrom(item.events);
     if (!steps.length) { root.append(el('p', item.running ? 'Writing its plan.' : 'This case was worked before the agent wrote plans.', 'muted')); return; }
     const list = el('ol', null, 'plan-steps');
@@ -226,16 +227,16 @@
     try { showCase(await request(`/cases/${encodeURIComponent(item.id)}/messages`, { method: 'POST', body: JSON.stringify({ text }) })); if (!item.replay) $('talk-text').value = ''; } catch (error) { status(error.message, true); } finally { $('talk-send').disabled = false; }
   });
 
-  const kindLabel = { start: 'Opened', thought: 'Reasoning', tool: 'Query', decision: 'Gate', action: 'Action', person: 'Person', note: 'Note', plan: 'Plan', officer: 'You', reply: 'Answer' };
-  function renderTimeline(item) {
-    const list = $('timeline'); list.replaceChildren();
+  const kindLabel = { start: 'Opened', thought: 'Reasoning', tool: 'Query', decision: 'Gate', action: 'Action', person: 'Person', note: 'Note', plan: 'Plan', officer: 'You', reply: 'Answer', watcher: 'Watcher' };
+  function renderTimeline(item, list = $('timeline'), summary = $('trail-summary')) {
+    list.replaceChildren();
     const queries = item.events.filter(e => e.tool === 'sql_query').length;
-    $('trail-summary').textContent = `${item.steps_used} steps · ${queries} queries written by the agent${item.models?.length ? ` · ${item.models.join(', ')}` : ''}`;
+    summary.textContent = `${item.steps_used} steps · ${queries} queries written by the agent${item.models?.length ? ` · ${item.models.join(', ')}` : ''}`;
     for (const event of item.events) {
       const kind = event.kind === 'tool' && event.tool !== 'sql_query' ? 'Tool' : kindLabel[event.kind] || event.kind;
       const li = el('li', null, `step ${event.kind}`);
       const row = button(null, 'row');
-      row.append(el('span', kind, `state ${event.kind === 'decision' ? 'warn' : event.kind === 'action' || event.kind === 'reply' ? 'pass' : event.kind === 'person' || event.kind === 'officer' ? 'fail' : 'step'}`), el('span', event.summary, 'row-title'), el('span', '', 'chevron'));
+      row.append(el('span', kind, `state ${event.kind === 'decision' || event.kind === 'watcher' ? 'warn' : event.kind === 'action' || event.kind === 'reply' ? 'pass' : event.kind === 'person' || event.kind === 'officer' ? 'fail' : 'step'}`), el('span', event.summary, 'row-title'), el('span', '', 'chevron'));
       const detail = [];
       if (event.input?.sql) detail.push(el('p', 'The query it wrote', 'label'), el('pre', event.input.sql, 'code'));
       else if (event.input && Object.keys(event.input).length) detail.push(el('p', 'What it sent', 'label'), el('pre', typeof event.input === 'string' ? event.input : JSON.stringify(event.input, null, 2), 'code'));
@@ -328,6 +329,7 @@
     $('station').hidden = !stations || !state.station;
     for (const id of ['case-head', 'empty', 'results']) $(id).classList.toggle('off', stations);
     if (stations) { loadWatch(); if (navigate) query({ claim: null, case: null, station: state.station?.id ?? null }); }
+    if (mode === 'queue') { loadQueue(); if (navigate) query({ queue: '1', station: null }); } else if (navigate) query({ queue: null });
   }
   document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
   async function loadWatch() {
@@ -370,22 +372,27 @@
     // calendar, Monday first
     const cal = $('calendar'); cal.replaceChildren();
     for (const d of ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']) cal.append(el('li', d, 'weekday'));
-    const first = Date.parse(`${start}T00:00:00Z`), days = Math.round((Date.parse(`${end}T00:00:00Z`) - first) / 86400000) + 1;
+    const filed = (state.watch?.filings || []).filter(f => policies.some(p => state.claims.find(c => c.claim_id === f.claim_id)?.policy_id === p.policy_id));
+    const lastShown = [end, ...filed.map(f => f.filed_on)].sort().at(-1);
+    const first = Date.parse(`${start}T00:00:00Z`), days = Math.round((Date.parse(`${lastShown}T00:00:00Z`) - first) / 86400000) + 1;
     for (let i = 0; i < (new Date(first).getUTCDay() + 6) % 7; i++) cal.append(el('li', null, 'blank'));
-    const item = state.watch?.cases.find(c => c.station_id === station.id);
+    const item = state.watch?.cases.find(c => c.station_id === station.id); const today = state.watch?.today;
     for (let i = 0; i < days; i++) {
       const date = new Date(first + i * 86400000).toISOString().slice(0, 10); const check = checks.find(c => c.date === date);
-      const kind = !check ? 'future' : check.gauge_mm == null ? 'silent' : check.status === 'diverging' ? 'gap' : 'reported';
+      const filing = date > end ? filed.filter(f => f.filed_on === date) : [];
+      const reached = today && date <= today;
+      const kind = date > end ? (filing.length ? (reached ? 'filed' : 'future') : 'outside') : !check ? 'future' : check.gauge_mm == null ? 'silent' : check.status === 'diverging' ? 'gap' : 'reported';
       const cell = el('li', null, `day ${kind}${item?.opened_on === date ? ' opened' : ''}`);
-      cell.append(el('span', String(i + 1), 'day-number'), el('span', check ? (check.gauge_mm == null ? 'silent' : `${number(check.gauge_mm)} mm`) : '', 'day-mm'));
-      cell.setAttribute('aria-label', `${longDate(date)}: ${!check ? 'not checked yet' : check.gauge_mm == null ? 'gauge silent' : `gauge ${number(check.gauge_mm)} mm, satellite ${number(check.satellite_mm)} mm`}${item?.opened_on === date ? ', watch case opened' : ''}`);
+      cell.append(el('span', new Date(`${date}T00:00:00Z`).getUTCDate() === 1 && i ? longDate(date) : String(new Date(`${date}T00:00:00Z`).getUTCDate()), 'day-number'), el('span', filing.length ? `${filing.length} ${filing.length === 1 ? 'claim' : 'claims'}` : check ? (check.gauge_mm == null ? 'silent' : `${number(check.gauge_mm)} mm`) : '', 'day-mm'));
+      cell.setAttribute('aria-label', `${longDate(date)}: ${filing.length ? `${filing.length} claims filed${reached ? ' and picked up by the agent' : ''}` : date > end ? 'after the cover window' : !check ? 'not checked yet' : check.gauge_mm == null ? 'gauge silent' : `gauge ${number(check.gauge_mm)} mm, satellite ${number(check.satellite_mm)} mm`}${item?.opened_on === date ? ', watch case opened' : ''}`);
       cal.append(cell);
     }
-    const today = state.watch?.today; const done = today && today >= end;
+    const done = today && today >= (state.watch?.last_day || end);
     $('calendar-today').textContent = today ? `Checked through ${longDate(today)}` : 'Not started';
     $('watch-next').disabled = state.playing || done; $('watch-run').disabled = state.playing || done; $('watch-reset').disabled = state.playing || !today;
     $('watch-mode').textContent = state.watch?.recorded ? 'The calendar is simulated. The readings are real, and this season was recorded from a live run through Zetaris.' : 'The calendar is simulated. The readings are the real record for this station.';
     renderWatchCase(station, item, policies);
+    renderInvestigation(item && state.watch?.investigations?.[item.id]);
     const list = $('watch-days'); list.replaceChildren(); list.hidden = !checks.length; $('watch-days-title').hidden = !checks.length;
     for (const check of [...checks].reverse()) {
       const row = button(null, 'row'); const [w, c] = check.gauge_mm == null ? ['Silent', 'warn'] : check.status === 'diverging' ? ['Apart', 'fail'] : ['Reported', 'pass'];
@@ -404,11 +411,24 @@
       row.addEventListener('click', () => openSheet(f.kind === 'silent' ? 'Gauge silent' : 'Gauge and satellite apart', `Seen ${longDate(f.first_seen)}`, el('p', f.summary, 'reading'), el('p', f.dates.map(longDate).join(', '), 'mono muted')));
       findings.append(row);
     }
-    root.append(findings, el('p', 'Notices to the operator', 'label'));
+    const investigation = state.watch?.investigations?.[item.id];
+    if (investigation?.lessons?.length) {
+      root.append(findings, el('p', 'What the agent established', 'label'));
+      const lessons = el('div', null, 'list flush');
+      for (const lesson of investigation.lessons) {
+        const row = button(null, 'row'); row.append(el('span', 'Lesson', 'state pass'), el('span', lesson.text, 'row-title'), el('span', lesson.day ? longDate(lesson.day) : '', 'row-meta'), el('span', '', 'chevron'));
+        row.addEventListener('click', () => { const list = el('dl', null, 'terms'); for (const f of lesson.figures) { const r = el('div'); r.append(el('dt', f.label), el('dd', `${number(f.reproduced)} reproduced`)); list.append(r); } openSheet('Lesson', 'Recorded in memory for the claims that follow', el('p', lesson.text, 'reading'), el('p', 'The code reran every figure the agent cited.', 'muted small'), list); });
+        lessons.append(row);
+      }
+      root.append(lessons);
+    } else root.append(findings);
+    root.append(el('p', 'Notices to the operator', 'label'));
     const notices = el('div', null, 'list flush');
-    for (const m of item.outbox) {
-      const row = button(null, 'row'); row.append(el('span', 'Sent', 'state pass'), el('span', `Notice to the station operator`, 'row-title'), el('span', longDate(m.on), 'row-meta'), el('span', '', 'chevron'));
-      row.addEventListener('click', () => openSheet('Station operator', `Sent ${longDate(m.on)}`, el('p', m.body, 'reading letter')));
+    const sent = [...item.outbox.map(m => ({ day: m.on, body: m.body, by: 'The watcher' })), ...(investigation?.outbox || []).filter(m => m.to === 'station_operator').map(m => ({ day: m.day, body: m.body, by: 'The agent' }))].sort((a, b) => String(a.day).localeCompare(String(b.day)));
+    if (!sent.length) notices.append(el('p', investigation ? 'The agent has not written to the operator yet.' : 'None yet.', 'muted small'));
+    for (const m of sent) {
+      const row = button(null, 'row'); row.append(el('span', 'Sent', 'state pass'), el('span', `${m.by} to the station operator`, 'row-title'), el('span', m.day ? longDate(m.day) : '', 'row-meta'), el('span', '', 'chevron'));
+      row.addEventListener('click', () => openSheet('Station operator', `${m.by}, ${m.day ? longDate(m.day) : ''}`, el('p', m.body, 'reading letter')));
       notices.append(row);
     }
     root.append(notices, el('p', 'Claims on this gauge', 'label'));
@@ -423,12 +443,81 @@
     }
     root.append(claims);
   }
-  async function advanceWatch(body) { const watch = await request('/watch/advance', { method: 'POST', body: JSON.stringify(body) }); state.watch = watch; renderStations(); renderStation(); }
+  // Queue: every case grouped by who it waits on, oldest first, then every letter and notice.
+  const queueGroups = [
+    ['Needs you', c => ['awaiting_signoff', 'inspection_open', 'escalated', 'failed'].includes(c.state) && !c.running],
+    ['Working', c => c.running || c.state === 'investigating'],
+    ['Closed', c => ['settled', 'closed'].includes(c.state) && !c.running],
+  ];
+  async function loadQueue() {
+    clearTimeout(state.queuePoll);
+    try { const { cases } = await request('/cases'); state.cases = cases; renderQueue(); if (state.mode === 'queue' && cases.some(c => c.running)) state.queuePoll = setTimeout(loadQueue, 3000); }
+    catch (error) { status(`The queue could not be loaded. ${error.message}`, true); }
+  }
+  function caseTitle(c) {
+    if (c.kind === 'watch') return `Watch case · ${title(c.station?.name || c.claim_id)}`;
+    const policy = state.policies.find(p => p.policy_id === c.policy_id);
+    return (policy?.group_name || c.claim_id).replace(/ \(synthetic\)$/, '');
+  }
+  function openQueued(c) {
+    if (c.kind === 'watch') { setMode('stations'); selectStation(c.station.id); return; }
+    selectClaim(c.claim_id, false, false); query({ claim: c.claim_id, case: c.id, queue: '1' }); openCase(c.id); view('case');
+  }
+  function renderQueue() {
+    const root = $('queue-list'); root.replaceChildren();
+    const cases = [...state.cases].sort((a, b) => a.created_at.localeCompare(b.created_at));
+    $('queue-count').textContent = String(cases.length);
+    if (!cases.length) { root.append(el('p', 'No cases yet. Hand a claim to the agent, or run the station calendar to the filing day and the agent picks the claims up itself.', 'muted')); return; }
+    for (const [name, test] of queueGroups) {
+      const items = cases.filter(test); const group = el('section', null, 'queue-group'); group.append(el('h3', `${name} · ${items.length}`, 'label'));
+      if (!items.length) group.append(el('p', name === 'Needs you' ? 'Nothing waits on you.' : 'None.', 'muted small'));
+      for (const c of items) {
+        const link = el('a', null, 'claim'); link.href = c.kind === 'watch' ? `/desk?station=${encodeURIComponent(c.station?.id || '')}` : `/desk?claim=${encodeURIComponent(c.claim_id)}&case=${encodeURIComponent(c.id)}`;
+        if (state.run?.id === c.id) link.setAttribute('aria-current', 'true');
+        link.append(el('strong', caseTitle(c)), el('span', c.kind === 'watch' ? c.station?.id : c.claim_id, 'mono'), el('span', c.running ? 'The agent is working' : labels2[c.state] || c.state, 'todo'));
+        link.addEventListener('click', event => { if (event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || event.button) return; event.preventDefault(); openQueued(c); });
+        group.append(link);
+      }
+      root.append(group);
+    }
+    const outbox = cases.flatMap(c => c.outbox.map(m => ({ ...m, owner: caseTitle(c) })));
+    const box = el('section', null, 'queue-group'); box.append(el('h3', `Outbox · ${outbox.length}`, 'label'));
+    if (!outbox.length) box.append(el('p', 'No letters or notices yet.', 'muted small'));
+    const rows = el('div', null, 'list flush');
+    for (const m of outbox) {
+      const to = m.to === 'farmer_group' ? 'Farmer group' : 'Station operator'; const row = button(null, 'row');
+      const text = el('span', null, 'row-stack'); text.append(el('span', to, 'row-title'), el('span', m.owner, 'muted small'));
+      row.append(el('span', m.status === 'held' ? 'Held' : 'Sent', `state ${m.status === 'held' ? 'warn' : 'pass'}`), text, el('span', '', 'chevron'));
+      row.addEventListener('click', () => openSheet(to, `${m.owner} · ${m.status === 'held' ? 'held until sign-off' : 'sent'}`, el('p', m.body, 'reading letter')));
+      rows.append(row);
+    }
+    box.append(rows); root.append(box);
+  }
+
+  // The agent's own investigation of the watch case, with the same plan and trail as a claim.
+  function renderInvestigation(item) {
+    $('watch-investigation').hidden = !item; clearTimeout(state.watchPoll); if (!item) return;
+    $('watch-working').textContent = item.running ? `The agent is investigating · ${(item.events.at(-1)?.summary || '').slice(0, 110)}` : item.replay ? 'A recorded live investigation, shown as it stood on this day' : item.summary || 'The agent finished its investigation.';
+    $('watch-working').classList.toggle('live', Boolean(item.running));
+    renderPlan(item, $('watch-plan')); renderTimeline(item, $('watch-timeline'), $('watch-trail-summary'));
+    if (item.running) state.watchPoll = setTimeout(() => { if (state.mode === 'stations') loadWatch(); }, 2000);
+  }
+  async function advanceWatch(body) {
+    const before = state.watch?.picked?.length || 0;
+    const watch = await request('/watch/advance', { method: 'POST', body: JSON.stringify(body) }); state.watch = watch; renderStations(); renderStation();
+    if ((watch.picked?.length || 0) > before) { await loadVerdicts(); renderInbox(); renderQueue(); status(`${watch.picked.length - before} claims filed on ${longDate(watch.today)}. The agent picked them up.`); }
+  }
   $('watch-next').addEventListener('click', () => advanceWatch({ days: 1 }).catch(error => status(error.message, true)));
   $('watch-run').addEventListener('click', async () => {
-    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return advanceWatch({ days: 31 }).catch(error => status(error.message, true));
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) return advanceWatch({ days: 62 }).catch(error => status(error.message, true));
     state.playing = true; renderStation();
-    try { const end = state.policies.filter(p => p.ref_station_id === state.station.id).map(p => p.window_end).sort().at(-1); while (state.mode === 'stations' && (!state.watch.today || state.watch.today < end)) { await advanceWatch({ days: 1 }); await new Promise(r => setTimeout(r, 150)); } }
+    try {
+      while (state.mode === 'stations' && !(state.watch.last_day && state.watch.today >= state.watch.last_day)) {
+        const before = state.watch.today; await advanceWatch({ days: 1 });
+        if (state.watch.today === before) break;
+        await new Promise(r => setTimeout(r, 150));
+      }
+    }
     catch (error) { status(error.message, true); } finally { state.playing = false; if (state.station) renderStation(); }
   });
   $('watch-reset').addEventListener('click', async () => { try { state.watch = await request('/watch/reset', { method: 'POST', body: '{}' }); renderStations(); renderStation(); } catch (error) { status(error.message, true); } });

@@ -64,7 +64,7 @@ describe('the station watcher', () => {
   it('serves the calendar over HTTP and refuses a bad step', async () => {
     const app = createApp({} as Orchestrator, true, undefined, watcher());
     const post = (route: string, body: unknown) => app.request(route, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-    expect((await post('/watch/advance', { days: 40 })).status).toBe(400);
+    expect((await post('/watch/advance', { days: 70 })).status).toBe(400);
     const moved = await (await post('/watch/advance', { days: 4 })).json();
     expect(moved).toMatchObject({ today: '2025-07-04', recorded: false });
     expect((await (await app.request('/watch')).json()).cases).toHaveLength(1);
@@ -87,5 +87,23 @@ describe('the station watcher', () => {
     const item = await agent.start('CLM-LAG-2025-001');
     expect(item.watch).toEqual([{ id: w.view().cases[0]!.id, station_id: 'NIM00065201', station_name: 'MURTALA MUHAMMED', opened_on: '2025-07-04' }]);
     for (let i = 0; i < 200 && agent.isRunning(item.id); i++) await new Promise(r => setTimeout(r, 25));
+  });
+
+  it('runs on to the filing day and picks each claim up once', async () => {
+    const picked: string[][] = [];
+    const filings = ['CLM-LAG-2025-001', 'CLM-LAG-2025-002', 'CLM-LAG-2025-003'].map(claim_id => ({ claim_id, filed_on: '2025-08-01' }));
+    const w = new Watcher({ query: new ZetarisSampleAdapter(), directory: mkdtempSync(path.join(tmpdir(), 'pluvia-watch-')), filings, onFiled: async ids => { picked.push(ids); } });
+    await w.advance(31);
+    expect(w.view().today).toBe('2025-07-31');
+    expect(picked).toEqual([]);
+    await w.advance(5);
+    expect(w.view()).toMatchObject({ today: '2025-08-01', last_day: '2025-08-01', picked: filings.map(f => f.claim_id) });
+    expect(picked).toEqual([filings.map(f => f.claim_id)]);
+    expect(w.view().checks).toHaveLength(31);
+    await w.advance();
+    expect(picked).toHaveLength(1);
+    w.reset();
+    await w.advance(40);
+    expect(picked).toHaveLength(2);
   });
 });
