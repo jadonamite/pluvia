@@ -1,7 +1,11 @@
 # Pluvia as an agent: the full plan
 
-Written 27 October 2026 against commit `f843100`. Nothing here is built. Each phase ends in a
-test that can be watched passing; a phase is not done until that test passes.
+Written 27 October 2026 against commit `f843100`. Each phase ends in a test that can be watched
+passing; a phase is not done until that test passes.
+
+Where it stands on 27 October 2026: phases 0 to 3 and 6 are built, phase 5 is built apart from
+the Queue view, phase 7 has its agent story with the watcher scene still to come, and phase 4 is
+the next piece of work. Each phase below says so under its heading.
 
 Replaces `ai-reasoning-plan.md`, which made the model's opinion count inside the existing fixed
 pipeline. This plan replaces the pipeline.
@@ -61,6 +65,8 @@ letters, notifying operators, holding payment, and releasing payouts at or under
 
 ## Phase 0. Groundwork and choosing the model
 
+**Built.** Nemotron 3 Ultra chosen on three live Zetaris tasks; the trial is in `workbench/model-trial.md`.
+
 **Why first.** The model has to write correct SQL and choose tools well across ten or more steps.
 Picking it by guess risks building the whole agent around one that cannot do the job.
 
@@ -100,6 +106,8 @@ one for planning, a cheaper one for routine steps) with its measured scores, and
 live query through Zetaris from this machine.
 
 ## Phase 1. The case store, the tools and the SQL guard
+
+**Built.** `app/agent/cases.ts`, `app/agent/sqlGuard.ts` and the tools in `app/agent/caseAgent.ts`, each tested.
 
 No agent yet. Every tool is built and tested on its own first.
 
@@ -151,6 +159,8 @@ list), and the case store walks a claim through every state in a test.
 
 ## Phase 2. The investigator
 
+**Built.** It also writes and ticks off a plan, and answers the claims officer mid-case.
+
 **The loop.** The agent receives the claim, the policy terms and anything memory holds about the
 station, and a goal: settle the claim correctly, or hand it to a person with one precise
 question. It has a step budget, proposed at 16 tool calls and a cost ceiling per case. It works
@@ -179,6 +189,8 @@ and reaches the same result.
 
 ## Phase 3. The end-to-end handler
 
+**Built.** Inspection, report, re-investigation, sign-off, letters and operator notices.
+
 **After the verdict, the agent acts.**
 - **Pay or pay anyway**, at or under the threshold: releases payment through the gate, drafts the
   letter, closes the case. Above the threshold: parks it for sign-off, then completes once
@@ -202,6 +214,8 @@ the letter lands in the outbox and the case closes. Each step is in the case rec
 
 ## Phase 4. The evaluation, rebuilt for an agent
 
+**Next.** Not built yet.
+
 **New cases where the satellite is wrong.** Every current fault is injected into the gauge, so an
 agent that always trusts the satellite would look perfect. Add cases with injected false dry days
 in the satellite, and satellite totals pushed far outside the place's prior-year range while the
@@ -224,6 +238,8 @@ payout, that is reported as it is and the gate's rules are tightened.
 
 ## Phase 5. The desk
 
+**Built, apart from Queue.** Watch shipped as Stations beside Claims; the Investigation tab also holds the plan and the conversation.
+
 Same design system, more of the work visible:
 
 - **Investigation tab**, replacing Trail: the agent's steps as a readable timeline, each query
@@ -242,6 +258,8 @@ laptop, in both themes, passing the HIG checklist and the anti-slop pass.
 
 ## Phase 6. The watcher
 
+**Built.** It opens the Lagos watch case on 4 July and every later claim starts with it in the agent's brief. The agent does not yet investigate a watch case on its own before a claim.
+
 **What it does.** For every insured station inside its cover window, once a day: query Zetaris
 for the latest gauge days and the satellite. Open a watch case when the gauge is silent for three
 days running, or when gauge and satellite disagree beyond the P6 threshold. The agent then
@@ -257,6 +275,8 @@ the first silent stretch, the operator notice lands in the outbox, and a claim f
 starts from the watch case's findings.
 
 ## Phase 7. The front page
+
+**Agent story built.** The watcher scene waits until after this round.
 
 Storyboard first, for approval, before code. The camera journey and look stay; the story changes
 from a checking tool to an agent working the case. Frames expected to change: the opening

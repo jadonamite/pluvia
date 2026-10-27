@@ -1,29 +1,56 @@
 # Sponsor technology use
 
-Pluvia is a claims agent. It investigates each crop-insurance claim by writing its own SQL
-against Zetaris, reasons on NVIDIA Nemotron 3 Ultra reached through Meterless Nightshift, recalls
+Pluvia is a claims agent. It watches every insured gauge through the season over Zetaris,
+investigates each crop-insurance claim by writing its own SQL against Zetaris, reasons on NVIDIA Nemotron 3 Ultra reached through Meterless Nightshift, recalls
 station lessons from Meterless H-MEM, and carries the claim through to settlement, inspection or
 a claims officer's sign-off.
+
+## The watcher, live on Zetaris
+
+On 27 October 2026 the watcher ran the whole of July 2025 against the live Zetaris instance,
+one simulated day at a time. Each day it reads the policy register, the station row, the NOAA
+gauge readings and the NASA POWER satellite series through the Pluvia views, then looks only at
+the days that had arrived by then:
+
+```sql
+SELECT * FROM pluvia.policies;
+SELECT * FROM pluvia.stations WHERE id = 'NIM00065201';
+SELECT station_id, obs_date, mm, m_flag, q_flag, s_flag FROM pluvia.ghcn_prcp
+  WHERE station_id = 'NIM00065201' AND obs_date BETWEEN '2025-07-01' AND '2025-07-31'
+  ORDER BY obs_date;
+SELECT obs_date, mm, source_id, latitude, longitude FROM pluvia.power_lagos_2025_daily
+  WHERE obs_date BETWEEN '2025-07-01' AND '2025-07-31' ORDER BY obs_date;
+```
+
+It opened the Lagos watch case on 4 July, the third silent day, before any claim existed, and
+wrote to the station operator. By 31 July the case held four silent stretches and the gap
+between gauge and satellite first seen on 13 July. The season is committed day by day in
+`data/replays/watch-season.json`, and every claim case after it carries the watch case in the
+agent's brief.
 
 ## The agent, live on all three sponsors
 
 On 27 October 2026 the agent worked all three Lagos claims live: Zetaris running locally in
-Docker with all 22 objects registered, every model step on `nvidia/nemotron-3-ultra-550b-a55b`
-through Nightshift with native tool calls. Each case is committed in `data/replays/` with every
-query the agent wrote, every model step and its serving model.
+Docker with all 22 objects registered, the agent's steps on `nvidia/nemotron-3-ultra-550b-a55b`
+through Nightshift with native tool calls, and GPT-5.6 Luna through the same Nightshift answering
+the odd step when a Nemotron call failed. Each case is committed in `data/replays/` with every
+query the agent wrote and the models that served it.
 
 - **Zetaris is the agent's workspace, not a loading step.** The agent lists the views, reads
   their columns and writes its own queries, including a day-by-day join of gauge against
   satellite and the satellite's July totals for each year since 2001 over NASA POWER registered
   as a Zetaris REST table. Each settlement argument cites figures with the SQL behind them;
   the code reruns that SQL in Zetaris before the gate accepts it.
-- **Nemotron chose its own path.** Cases took 14 to 22 steps. When a cited figure did not
-  reproduce, Nemotron rechecked and revised: on claim 002 from one of six figures reproducing
-  to four of four.
+- **Nemotron chose its own path.** The committed cases took 21 to 33 steps, each with its own
+  plan and its own queries. Every figure they cited reproduced when the code reran it.
 - **Nightshift carried every call** with tool definitions passed through to the model. Six
   candidate routes were trialled on three live Zetaris tasks before the agent model was chosen;
   the results are in the table below.
 - **H-MEM** supplies the station's earlier lessons to the agent and stores each closed case.
+- **The case room runs on the same route.** Nemotron writes its plan as a tool call before any
+  other, ticks each step as it works, and answers the claims officer mid-case. Asked "What did
+  the satellite record on 3 to 5 July?", it queried Zetaris and answered 30.38, 38.20 and
+  13.37 mm, then carried on and settled claim 003.
 
 Model choice, measured on the same three live Zetaris tasks (count the gauge days, list the
 silent days, compare July 2025 with every earlier July):
@@ -39,17 +66,15 @@ The agent runs on Nemotron 3 Ultra, with GPT-5.6 Luna as a recorded fallback.
 
 ## What is proven today
 
-| Integration | Proven live | Still to prove |
-|---|---|---|
-| Zetaris | Authenticated REST SQL against a self-hosted instance (Docker on an AWS EC2 virtual machine, 9 of 9 platform checks). The registrar created all 22 objects: the NOAA per-station CSV on public S3, the NASA POWER `IMERG_PRECTOT` REST tables and the register REST tables, each with its view. The views return the measured figures: gauge 10 days and 6.1 mm, satellite 31 of 31 days and 131.7 mm, 8,766 prior-year days. A Lagos claim ran its six DataAgent queries through Zetaris and returned `INSPECT` | The same claim with Nightshift live in the same run, kept as a committed trace |
-| Meterless H-MEM | Official conformance: 13/13; persistent recall across separate processes; conflict queue integrated with the inspection decision | Nothing for the local engine; it requires no provider credentials |
-| Nightshift | On the build Mac: authenticated `GET /v1/models` listing 56 routes, and full claims completed through the configured route (175 seconds with no extra rounds), each call carrying a `meterless.compute_receipt.v1` | A committed trace from a pinned Nemotron route, with live Zetaris data in the same run |
-| NVIDIA | `nvidia/nemotron-3.5-bolt-e4b` served claim calls through Nightshift with a compute receipt per call. `meterless/auto` sent one of five calls in one run to a non-NVIDIA model, so the route is pinned | A committed trace in which every `model_response` names an `nvidia/` model |
+| Integration | Proven live |
+|---|---|
+| Zetaris | Authenticated REST SQL against a self-hosted instance. The registrar created all 22 objects: the NOAA per-station CSV on public S3, the NASA POWER `IMERG_PRECTOT` REST tables and the register REST tables, each with its view. The views return the measured figures: gauge 10 days and 6.1 mm, satellite 31 of 31 days and 131.7 mm, 8,766 prior-year days. The watcher's season and all three claim cases ran on it, committed in `data/replays/` |
+| Meterless H-MEM | Official conformance: 13/13; persistent recall across separate processes; conflict queue integrated with the inspection decision; the agent recalls the station's lessons as one of its tools |
+| Nightshift | Authenticated `GET /v1/models` listing 56 routes; every agent step of the committed cases served through it with tool calls passed through |
+| NVIDIA | `nvidia/nemotron-3-ultra-550b-a55b` serves the agent's steps through a pinned route, since `meterless/auto` can send a call to another vendor. When a Nemotron call fails, GPT-5.6 Luna answers that step, and each committed case lists every model that served it. Claim 003's case ran on Nemotron alone |
 
-These are different kinds of proof. DuckDB execution does not establish that a
-Zetaris registration succeeded; the live registration above does. The Nightshift and
-NVIDIA rows record observations on the build Mac whose traces are not yet committed. `sample-rules` is deterministic application code;
-it is not NVIDIA inference or a recorded Nemotron answer.
+`sample-rules` is deterministic application code for the original single-review path; it is
+not NVIDIA inference. The agent's hosted replays are its recorded live runs, step for step.
 
 ## Zetaris: one live query boundary
 

@@ -76,6 +76,27 @@ material (cloud, rain, light). Reduced motion turns off the loader, pinning, smo
 and particles: each scene renders as its final frame with its text. Without JavaScript the page
 renders the same static sequence.
 
+## The case room and the watcher
+
+The Investigation tab opens on the agent's plan: one row per step with a state chip (Next,
+Now, Done, Dropped), the same row rhythm as the checks list. A finished case shows any step the
+agent left unticked as Unmarked rather than Next. A rewritten plan adds a "Changed course" note
+with the agent's reason. Below the plan, "Talk to the agent" holds the conversation as two
+bubbles, the officer's on the right in the accent tint and the agent's on the left on a neutral
+tint, keeping the agent's line breaks. In a replay the box holds the recorded question, read
+only.
+
+Stations sits beside Claims as a two-way switch at the top of the left column, built from the
+filter chips. A station opens in the case area: a header with its health chip (Healthy, Quiet,
+Diverging), a Monday-first calendar of the cover window, the watch case and the day-by-day
+checks, newest first. Calendar cells use the evidence chart's marks: a gauge tint for reported
+days, the same hatching for silent days, the inspect colour with a matching border for days
+the gauge and satellite are apart, and an accent ring on the day the watch case opened. Each
+cell carries its full reading as an accessible label. On phones the cells drop the reading and
+the weekday names shorten to one letter. "Run to the end of July" steps a day every 150ms;
+under reduced motion it jumps to the end. A claim that started from a watch case shows a card
+above its decision linking back to the station.
+
 ## Imagery
 
 Painterly cinematic illustration for a mature Nigerian and African professional audience.

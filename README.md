@@ -1,6 +1,6 @@
 # Pluvia
 
-Pluvia is a claims agent for weather-index crop insurance. Hand it a claim and it investigates the rainfall record itself, writing its own SQL against Zetaris, then carries the claim to the end: it settles, opens an inspection naming the exact dates to verify, writes to the farmer group, tells the station operator about a failing gauge, reads the inspector's report and closes the case. A claims officer signs off on every refusal, every inspection close-out and every payout above ₦1,000,000. Built for the Open Agent Hackathon 2026, track **03 · Reasoning Architecture**.
+Pluvia is a claims agent for weather-index crop insurance. It watches every insured rain gauge through the season, so a claim arrives already knowing whether its station went quiet. Hand it a claim and it writes its plan, then investigates the rainfall record itself, writing its own SQL against Zetaris, then carries the claim to the end: it settles, opens an inspection naming the exact dates to verify, writes to the farmer group, tells the station operator about a failing gauge, reads the inspector's report and closes the case. A claims officer signs off on every refusal, every inspection close-out and every payout above ₦1,000,000. Built for the Open Agent Hackathon 2026, track **03 · Reasoning Architecture**.
 
 The agent runs on NVIDIA Nemotron 3 Ultra through Meterless Nightshift. Code keeps the money: the policy gate computes every payout from the contract, and the agent can only make an outcome more careful.
 
@@ -73,7 +73,19 @@ The Lagos example policies are calibrated from complete July windows in prior-ye
 
 Pluvia identifies a record unfit to settle a claim. It does not diagnose a broken instrument. Suspect zero runs cluster across countries in 2002–2005, so an archive ingest problem is a plausible explanation.
 
+## The watcher
+
+The watcher checks each insured station once a day through its cover window, reading only what had arrived by that day. It opens a watch case after three silent days, or when the gauge and the satellite drift apart by the same test as check P6, and writes to the station operator. The calendar is simulated; the readings are the real record, read live through Zetaris.
+
+On the Lagos gauge for July 2025 it opens the watch case on 4 July, before any claim exists, covering all three insured groups. By the end of the month the case holds four silent stretches (from 2, 9, 14 and 25 July) and the gap between gauge and satellite first seen on 13 July. Every claim on that station starts with the watch case in the agent's brief, and the desk links the two.
+
+On the desk, **Stations** sits beside **Claims**: a July calendar filled one day per step, the watch case with its findings and operator notices, and the claims that started from it. The hosted copy plays back the season recorded from a live run (`npm run record-watch` on a live server).
+
 ## The agent
+
+Before anything else the agent writes its plan, and the desk shows each step go from next to now to done. Nothing else runs until a plan exists, and rewriting it needs a reason, which the desk shows as a change of course.
+
+The claims officer can talk to it at any point from the Investigation tab. Mid-case, the agent reads the message before its next step; on a finished case, the message wakes it. It answers with its tools, then carries on. On the live runs below the officer asked "Why did you not trust the gauge on 8 July?" and got the 0 mm gauge reading against 14.34 mm from the satellite, from the agent's own query.
 
 On the Lagos claims, live, the agent:
 
@@ -87,15 +99,15 @@ Results from the live runs, recorded and replayable in `data/replays/`:
 
 | Claim | What happened | Outcome |
 |---|---|---|
-| CLM-LAG-2025-001 | Gauge 10 of 31 days, 6.1 mm; satellite complete, 131.65 mm, inside 24 earlier Julys (117.06 to 416.37 mm). Three cited figures reproduced | Pay ₦383,333.33 on the satellite, released; letter and operator notice sent |
-| CLM-LAG-2025-002 | First proposal cited a July median of 210 mm; its own query returned 214.25 mm. The gate sent it to inspection on nine dates. After the inspector's report, the agent revised from 1 of 6 figures reproducing to 4 of 4 | Pay ₦276,000, waiting for sign-off to close the inspection |
-| CLM-LAG-2025-003 | Four cited figures reproduced | Pay ₦184,000, released |
+| CLM-LAG-2025-001 | Gauge 10 of 31 days, 6.1 mm; satellite complete, 131.65 mm, inside 24 earlier Julys (117.06 to 416.37 mm). Asked mid-case about 8 July, it named the four silent stretches and the 6.1 against 21.9 mm gap. All five cited figures reproduced | Pay ₦383,333.33 on the satellite, released; letter and operator notice sent |
+| CLM-LAG-2025-002 | Seven cited figures, all reproduced, among them the 109.76 mm the satellite saw on the gauge's silent days | Pay ₦276,000, released; letter and operator notice sent |
+| CLM-LAG-2025-003 | Asked mid-case what the satellite recorded on 3 to 5 July, it queried Zetaris and answered 30.38, 38.20 and 13.37 mm. All five cited figures reproduced | Pay ₦184,000, released |
 
 The automatic station-only trigger would have paid the full sum insured on each of these, from 6.1 mm on a gauge that was silent 21 days out of 31.
 
-Every query the agent writes passes a guard first: one SELECT or WITH statement, over the registered Pluvia views only, with a row cap. Writes, second statements and other catalogues are refused and the refusal goes back to the agent. The agent has 24 steps per case; past that the case goes to a person with everything it found.
+Every query the agent writes passes a guard first: one SELECT or WITH statement, over the registered Pluvia views only, with a row cap. Writes, second statements and other catalogues are refused and the refusal goes back to the agent. The agent has 24 steps per case, not counting turns spent only on its plan; past that the case goes to a person with everything it found. A message from the officer gives it 10 more.
 
-The hosted copy replays the recorded live investigations step by step and continues from the recorded inspector's report. Run Pluvia with live Zetaris and Nightshift to watch the agent work a new case.
+The hosted copy replays the recorded live investigations step by step, conversation included. Run Pluvia with live Zetaris and Nightshift to ask your own questions and watch the agent work a new case.
 
 ## Code makes the decision
 
@@ -144,11 +156,12 @@ GHCN precipitation is divided by ten exactly once. Missing, duplicate, malformed
 ```sh
 curl -X POST http://localhost:8000/cases -H 'Content-Type: application/json' -d '{"claim_id":"CLM-LAG-2025-001"}'
 curl http://localhost:8000/cases/<case_id>
+curl -X POST http://localhost:8000/cases/<case_id>/messages -H 'Content-Type: application/json' -d '{"text":"Why did you not trust the gauge on 8 July?"}'
 curl -X POST http://localhost:8000/cases/<case_id>/inspection-report -H 'Content-Type: application/json' -d '{"report":"..."}'
 curl -X POST http://localhost:8000/cases/<case_id>/signoff -H 'Content-Type: application/json' -d '{"approve":true}'
 ```
 
-`POST /cases` hands a claim to the agent and returns at once; the case fills in while it works. `GET /cases?claim=<id>` lists cases for a claim. Save a finished live case as the replay for its claim with `npm run record-replay -- <case_id>`.
+`GET /watch` returns the watcher's calendar, `POST /watch/advance` with `{"days":n}` moves it forward and `POST /watch/reset` starts the season again. `POST /cases` hands a claim to the agent and returns at once; the case fills in while it works. `GET /cases?claim=<id>` lists cases for a claim. Save a finished live case as the replay for its claim with `npm run record-replay -- <case_id>`.
 
 The original single review is still available:
 
@@ -197,6 +210,6 @@ The original dated Dodoma fixture was not available. The recovered observation s
 
 ## Limits
 
-Pluvia cannot establish what happened on a farm from these two indexes alone. Thin station coverage and legitimate point-versus-area differences can require inspection. The sample examples cover Lagos, Kitale, Teresina and Dodoma. Kitale returns `PAY_ANYWAY` with a synthetic distance assumption; the others inspect. Policy calibration is a documented demonstration assumption, not actuarially validated pricing. The optional learned-bias detector is not implemented. No forecasting, yield modelling, underwriting or real settlement is provided. Live Zetaris and Nightshift adapters are fully implemented. Nightshift has served full claims through a Nemotron route with a compute receipt per call; authenticated Zetaris registration has not yet been verified. No funds are transferred.
+Pluvia cannot establish what happened on a farm from these two indexes alone. Thin station coverage and legitimate point-versus-area differences can require inspection. The sample examples cover Lagos, Kitale, Teresina and Dodoma. Kitale returns `PAY_ANYWAY` with a synthetic distance assumption; the others inspect. Policy calibration is a documented demonstration assumption, not actuarially validated pricing. The optional learned-bias detector is not implemented. No forecasting, yield modelling, underwriting or real settlement is provided. No funds are transferred.
 
 MIT for Pluvia. The vendored H-MEM code retains its Apache 2.0 licence.
